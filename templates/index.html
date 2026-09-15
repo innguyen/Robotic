@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PuppyPi AI - YOLO Vision Controller</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-card: rgba(22, 30, 49, 0.75);
+            --border-glow: rgba(56, 189, 248, 0.25);
+            --accent-cyan: #38bdf8;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-amber: #f59e0b;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 40%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .robot-icon {
+            font-size: 28px;
+            filter: drop-shadow(0 0 8px var(--accent-cyan));
+        }
+
+        .title-box h1 {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title-box p {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.85);
+            }
+        }
+
+        /* Video Feed */
+        .video-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: #000;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transform: translateZ(0);
+            will-change: transform;
+            image-rendering: -webkit-optimize-contrast;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .hud-tag {
+            background: rgba(11, 15, 25, 0.75);
+            backdrop-filter: blur(8px);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--accent-cyan);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .hud-action {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-amber);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Search Section */
+        .search-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .search-input {
+            flex: 1;
+            background: rgba(11, 15, 25, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+        }
+
+        .btn-search {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.1s, filter 0.2s;
+        }
+
+        .btn-search:active {
+            transform: scale(0.96);
+            filter: brightness(1.1);
+        }
+
+        /* Quick Tags */
+        .quick-tags-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        .quick-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+
+        .tag-btn:hover {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .tag-btn.active {
+            background: var(--accent-cyan);
+            color: #0b0f19;
+            font-weight: 600;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Control Actions */
+        .control-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn-ctrl {
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        .btn-ctrl:active {
+            transform: scale(0.97);
+        }
+
+        .btn-stand {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-stand:hover {
+            background: rgba(56, 189, 248, 0.25);
+        }
+
+        .btn-stop {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* Speed Settings Card */
+        .speed-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .card-header-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .slider-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .slider-val {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .custom-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+        }
+
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--accent-cyan);
+            transition: transform 0.1s;
+        }
+
+        .custom-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        /* Manual D-Pad Controller */
+        .dpad-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dpad-grid {
+            display: grid;
+            grid-template-columns: 60px 60px 60px;
+            grid-template-rows: 60px 60px 60px;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dpad-btn {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-main);
+            font-size: 20px;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            user-select: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .dpad-btn:active {
+            background: var(--accent-cyan);
+            color: #0b0f19;
+            transform: scale(0.92);
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+        }
+
+        .dpad-btn span {
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .btn-stop-dpad {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: var(--accent-red);
+        }
+
+        .btn-stop-dpad:active {
+            background: var(--accent-red);
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo-group">
+                <span class="robot-icon">🐕</span>
+                <div class="title-box">
+                    <h1>PuppyPi YOLO AI</h1>
+                    <p>Hệ thống tìm vật thể theo yêu cầu</p>
+                </div>
+            </div>
+            <div class="status-badge" id="badge-status">
+                <span class="pulse-dot"></span>
+                <span id="txt-status">KẾT NỐI</span>
+            </div>
+        </header>
+
+        <!-- Live Video Feed -->
+        <div class="video-card">
+            <img src="/video_feed" alt="PuppyPi Camera Feed" id="camera-stream" title="Click a detected target to lock it">
+            <div class="video-overlay">
+                <span class="hud-tag">AI: YOLOv11n</span>
+                <span class="hud-tag" id="hud-target">MỤC TIÊU: BOTTLE</span>
+            </div>
+            <div class="hud-action" id="hud-action">
+                <span>🤖</span>
+                <span id="hud-action-text">Đang sẵn sàng nhận lệnh...</span>
+            </div>
+        </div>
+
+        <!-- Search & Target Selection Card -->
+        <div class="search-card">
+            <div class="search-row">
+                <input type="text" id="target-input" class="search-input"
+                    placeholder="Gõ tên vật thể (vd: bottle, cup, phone...)" autocomplete="off">
+                <button class="btn-search" onclick="submitCustomTarget()">
+                    <span>🔍</span> Tìm
+                </button>
+            </div>
+
+            <div class="quick-tags-label">Gợi ý vật thể tìm nhanh:</div>
+            <div class="quick-tags">
+                <button class="tag-btn active" onclick="selectTag('bottle', this)">🍾 Chai nước</button>
+                <button class="tag-btn" onclick="selectTag('cell phone', this)">📱 Điện thoại</button>
+                <button class="tag-btn" onclick="selectTag('cup', this)">☕ Cốc / Ly</button>
+                <button class="tag-btn" onclick="selectTag('backpack', this)">🎒 Ba lô</button>
+                <button class="tag-btn" onclick="selectTag('sports ball', this)">⚽ Quả bóng</button>
+                <button class="tag-btn" onclick="selectTag('person', this)">👤 Người</button>
+                <button class="tag-btn" onclick="selectTag('chair', this)">🪑 Ghế</button>
+            </div>
+        </div>
+
+        <!-- Speed Adjustment Card -->
+        <div class="speed-card">
+            <div class="card-header-title">
+                <span>⚡</span> TÙY CHỈNH TỐC ĐỘ ROBOT
+            </div>
+            <div class="slider-group">
+                <div class="slider-label-row">
+                    <span>Tốc độ xoay quét tìm kiếm (deg/s)</span>
+                    <span class="slider-val" id="val-scan-speed">10.0°/s</span>
+                </div>
+                <input type="range" min="5" max="18" step="0.5" value="10" class="custom-slider" id="slider-scan"
+                    oninput="updateSpeedSetting()">
+            </div>
+            <div class="slider-group">
+                <div class="slider-label-row">
+                    <span>Tốc độ tiến tới mục tiêu (cm/s)</span>
+                    <span class="slider-val" id="val-forward-speed">8.0 cm/s</span>
+                </div>
+                <input type="range" min="3" max="15" step="0.5" value="8" class="custom-slider" id="slider-forward"
+                    oninput="updateSpeedSetting()">
+            </div>
+        </div>
+
+        <!-- Manual Directional D-Pad Card -->
+        <div class="dpad-card">
+            <div class="card-header-title">
+                <span>🎮</span> LÁI ROBOT THỦ CÔNG (D-PAD / PHÍM MŨI TÊN)
+            </div>
+            <div class="dpad-grid">
+                <div></div>
+                <button class="dpad-btn" onclick="manualDrive('forward')" title="Tiến tới (Mũi tên Lên / W)">
+                    ▲<span>TIẾN</span>
+                </button>
+                <div></div>
+
+                <button class="dpad-btn" onclick="manualDrive('left')" title="Xoay Trái (Mũi tên Trái / A)">
+                    ◀<span>TRÁI</span>
+                </button>
+                <button class="dpad-btn btn-stop-dpad" onclick="manualDrive('stop')" title="Dừng (Space)">
+                    ⏹<span>DỪNG</span>
+                </button>
+                <button class="dpad-btn" onclick="manualDrive('right')" title="Xoay Phải (Mũi tên Phải / D)">
+                    ▶<span>PHẢI</span>
+                </button>
+
+                <div></div>
+                <button class="dpad-btn" onclick="manualDrive('backward')" title="Lùi lại (Mũi tên Xuống / S)">
+                    ▼<span>LÙI</span>
+                </button>
+                <div></div>
+            </div>
+        </div>
+
+        <!-- Robot System Action Controls -->
+        <div class="control-row">
+            <button class="btn-ctrl btn-stand" onclick="sendControl('stand')">
+                <span>⚖️</span> Đứng Cân Bằng (Bật Tìm Kiếm)
+            </button>
+            <button class="btn-ctrl btn-stop" onclick="sendControl('stop')">
+                <span>🛑</span> Dừng Khẩn Cấp
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentTarget = "bottle";
+
+        // When more than one same-class object is visible, let the operator choose
+        // exactly which tracked object the robot must follow.
+        document.getElementById('camera-stream').addEventListener('click', function (event) {
+            const rect = this.getBoundingClientRect();
+            if (!this.naturalWidth || !this.naturalHeight) return;
+            const x = (event.clientX - rect.left) * this.naturalWidth / rect.width;
+            const y = (event.clientY - rect.top) * this.naturalHeight / rect.height;
+            fetch('/lock_target', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ x: x, y: y })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.locked) console.warn('No confirmed target at clicked position');
+                })
+                .catch(err => console.error('Lock target error:', err));
+        });
+
+        // Tra cứu nhanh từ tiếng Việt sang nhãn tiếng Anh của YOLO
+        const vietnameseMap = {
+            "chai": "bottle",
+            "chai nước": "bottle",
+            "bình nước": "bottle",
+            "nước": "bottle",
+            "cốc": "cup",
+            "ly": "cup",
+            "tách": "cup",
+            "điện thoại": "cell phone",
+            "đt": "cell phone",
+            "phone": "cell phone",
+            "ba lô": "backpack",
+            "balo": "backpack",
+            "túi xách": "handbag",
+            "bóng": "sports ball",
+            "trái banh": "sports ball",
+            "người": "person",
+            "con người": "person",
+            "chó": "dog",
+            "mèo": "cat",
+            "ghế": "chair",
+            "sách": "book",
+            "quyển sách": "book",
+            "kéo": "scissors"
+        };
+
+        function selectTag(label, element) {
+            document.querySelectorAll('.tag-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            document.getElementById('target-input').value = label;
+            setRobotTarget(label);
+        }
+
+        function submitCustomTarget() {
+            let input = document.getElementById('target-input').value.trim().toLowerCase();
+            if (!input) return;
+
+            // Chuyển đổi nếu người dùng gõ tiếng Việt
+            let finalLabel = vietnameseMap[input] || input;
+
+            // Cập nhật giao diện
+            document.querySelectorAll('.tag-btn').forEach(btn => btn.classList.remove('active'));
+            setRobotTarget(finalLabel);
+        }
+
+        // Nhấn Enter để tìm
+        document.getElementById('target-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                submitCustomTarget();
+            }
+        });
+
+        function setRobotTarget(target) {
+            currentTarget = target;
+            document.getElementById('hud-target').innerText = "MỤC TIÊU: " + target.toUpperCase();
+
+            fetch('/set_target', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ target: target })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Set target success:", data);
+                })
+                .catch(err => console.error("Loi:", err));
+        }
+
+        function sendControl(cmd) {
+            fetch('/control', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: cmd })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Control success:", data);
+                })
+                .catch(err => console.error("Loi:", err));
+        }
+
+        function updateSpeedSetting() {
+            let scanVal = parseFloat(document.getElementById('slider-scan').value);
+            let fwdVal = parseFloat(document.getElementById('slider-forward').value);
+
+            document.getElementById('val-scan-speed').innerText = scanVal.toFixed(1) + "°/s";
+            document.getElementById('val-forward-speed').innerText = fwdVal.toFixed(1) + " cm/s";
+
+            fetch('/set_speed', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ scan_speed: scanVal, forward_speed: fwdVal })
+            }).catch(() => { });
+        }
+
+        function manualDrive(direction) {
+            fetch('/manual_move', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ direction: direction })
+            }).catch(() => { });
+        }
+
+        // Ho tro lai bang ban phim may tinh (Mui ten hoac W/A/S/D)
+        window.addEventListener('keydown', function (e) {
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+                e.preventDefault();
+                manualDrive('forward');
+            } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+                e.preventDefault();
+                manualDrive('backward');
+            } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+                e.preventDefault();
+                manualDrive('left');
+            } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+                e.preventDefault();
+                manualDrive('right');
+            } else if (e.key === ' ' || e.key === 'Spacebar') {
+                e.preventDefault();
+                manualDrive('stop');
+            }
+        });
+
+        // Cập nhật trạng thái thời gian thực từ robot (mỗi 0.5 giây)
+        setInterval(() => {
+            fetch('/status')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.action_text) {
+                        document.getElementById('hud-action-text').innerText = data.action_text;
+                    }
+                    if (data.target) {
+                        document.getElementById('hud-target').innerText = "MỤC TIÊU: " + data.target.toUpperCase();
+                    }
+                })
+                .catch(() => { });
+        }, 500);
+    </script>
+</body>
+
+</html>
