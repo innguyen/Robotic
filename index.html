@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetAuto AI Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00E5FF;
+            --bg-color: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at top right, #1e293b, #0f172a);
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            margin-top: 2rem;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .header h1 {
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin: 0;
+            background: linear-gradient(to right, #00E5FF, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        .target-badge {
+            display: inline-block;
+            background: rgba(0, 229, 255, 0.15);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+            vertical-align: middle;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            width: 90%;
+            max-width: 800px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .stream-container {
+            position: relative;
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .stream-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .control-panel {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        button {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(to right, #00E5FF, #3B82F6);
+            color: #000;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 229, 255, 0.4);
+        }
+
+        .btn-pause {
+            background: linear-gradient(to right, #f43f5e, #e11d48);
+            color: white;
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+        }
+
+        .btn-pause:hover {
+            box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4);
+        }
+
+        .btn-resume {
+            background: linear-gradient(to right, #22c55e, #16a34a);
+            color: white;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .status-bar {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>JetAuto Vision<span class="target-badge" id="targetBadge">🎯 """ + TARGET_CLASS.upper() + """</span></h1>
+        <p>Hệ thống AI nhận diện và bám đuổi mục tiêu thông minh</p>
+    </div>
+    <div class="container">
+        <div class="stream-container">
+            <img class="stream-img" src="/cam.mjpg" alt="Live Camera Stream" />
+        </div>
+        <div class="control-panel">
+            <input type="text" id="targetInput" placeholder="Nhập tiếng Anh (VD: bottle, cup, cat, phone...)"
+                onkeypress="if(event.key==='Enter') setTarget()" />
+            <button onclick="setTarget()">TÌM KIẾM</button>
+            <button id="pauseBtn" class="btn-pause" onclick="togglePause()">TẠM DỪNG</button>
+        </div>
+        <div class="status-bar">
+            <div class="status-indicator">
+                <div class="dot" id="statusDot"></div><span id="statusText">Hệ thống đang hoạt động</span>
+            </div>
+            <div class="status-indicator" style="color: var(--primary);">YOLO11 AI Engine</div>
+        </div>
+    </div>
+    <script>
+        function setTarget() {
+            const target = document.getElementById('targetInput').value.trim();
+            if (!target) return;
+            fetch('/set_target', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ target: target })
+            }).then(res => res.json()).then(data => {
+                if (data.status === 'ok') {
+                    document.getElementById('targetBadge').innerText = '🎯 ' + target.toUpperCase();
+                    document.getElementById('targetInput').value = '';
+                    updatePauseUI(false);
+                }
+            }).catch(err => alert("Loi ket noi: " + err));
+        }
+        function togglePause() {
+            fetch('/toggle_pause', { method: 'POST' })
+                .then(res => res.json())
+                .then(data => updatePauseUI(data.paused))
+                .catch(err => alert("Loi ket noi: " + err));
+        }
+        function updatePauseUI(isPaused) {
+            const btn = document.getElementById('pauseBtn');
+            const dot = document.getElementById('statusDot');
+            const txt = document.getElementById('statusText');
+            if (isPaused) {
+                btn.className = 'btn-resume';
+                btn.innerText = 'TIẾP TỤC';
+                dot.style.backgroundColor = '#f59e0b';
+                dot.style.boxShadow = '0 0 10px #f59e0b';
+                txt.innerText = 'Đã tạm dừng';
+            } else {
+                btn.className = 'btn-pause';
+                btn.innerText = 'TẠM DỪNG';
+                dot.style.backgroundColor = '#22c55e';
+                dot.style.boxShadow = '0 0 10px #22c55e';
+                txt.innerText = 'Hệ thống đang hoạt động';
+            }
+        }
+    </script>
+</body>
+
+</html>

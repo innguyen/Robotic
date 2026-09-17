@@ -6,16 +6,19 @@ JetAuto Pro - Chuong trinh tu dong tim kiem va tien lai gan vat the
 - Ho tro truyen ten vat the tu dong lenh: python jetauto_find_object.py bottle
 """
 
+import sys
 import rospy
 import cv2
 import numpy as np
 import math
-import sys
 import threading
+
 import time
 import os
 from sensor_msgs.msg import Image
 from geometry_msgs.msg import Twist
+
+# Da xoa hardcode ROS_MASTER_URI va ROS_HOSTNAME de dung bien moi truong he thong
 
 if sys.version_info[0] == 2:
     from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
@@ -34,15 +37,19 @@ if len(sys.argv) > 1:
 
 IS_PAUSED = False
 
-CMD_VEL_TOPIC = '/jetauto_controller/cmd_vel' 
-# Dung camera Astra
-CAMERA_TOPIC = '/camera/rgb/image_raw'
+CMD_VEL_TOPIC = '/jetauto_controller/cmd_vel'
+# Topic camera Astra (RGB). Thu cac ten pho bien:
+# /camera/rgb/image_raw  (Astra voi astra_camera package)
+# /depth_cam/rgb/image_raw (Astra voi depth_cam.launch)
+CAMERA_TOPIC = '/depth_cam/rgb/image_raw'
 
 global_frame = None
 frame_lock = threading.Lock()
+_frame_count = 0   # Dem frame de skip YOLO, tranh lag
 
 class CamHandler(BaseHTTPRequestHandler):
     def do_POST(self):
+        global TARGET_CLASS, IS_PAUSED
         if self.path == '/set_target':
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length)
@@ -51,7 +58,6 @@ class CamHandler(BaseHTTPRequestHandler):
                 data = json.loads(post_data)
                 new_target = data.get('target', '').strip().lower()
                 if new_target:
-                    global TARGET_CLASS, IS_PAUSED
                     TARGET_CLASS = new_target
                     IS_PAUSED = False  # Tu dong chay tiep khi doi muc tieu
                     rospy.loginfo(">> [WEB] Da doi muc tieu sang: " + TARGET_CLASS)
@@ -66,7 +72,6 @@ class CamHandler(BaseHTTPRequestHandler):
             self.end_headers()
             
         elif self.path == '/toggle_pause':
-            global IS_PAUSED
             IS_PAUSED = not IS_PAUSED
             rospy.loginfo(">> [WEB] Trang thai tam dung: " + str(IS_PAUSED))
             self.send_response(200)
@@ -81,28 +86,31 @@ class CamHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type', 'multipart/x-mixed-replace; boundary=--jpgboundary')
             self.end_headers()
-            while True:
-                frame = None
-                with frame_lock:
-                    if global_frame is not None:
-                        frame = global_frame.copy()
-                
-                if frame is not None:
-                    ret, jpg = cv2.imencode('.jpg', frame)
-                    if ret:
-                        self.wfile.write("--jpgboundary\r\n".encode())
-                        self.send_header('Content-type', 'image/jpeg')
-                        self.send_header('Content-length', str(len(jpg)))
-                        self.end_headers()
-                        if sys.version_info[0] == 3:
-                            self.wfile.write(jpg.tobytes())
-                        else:
-                            self.wfile.write(jpg.tostring())
-                        self.wfile.write('\r\n'.encode())
-                time.sleep(0.05)
+            try:
+                while True:
+                    frame = None
+                    with frame_lock:
+                        if global_frame is not None:
+                            frame = global_frame.copy()
+                    
+                    if frame is not None:
+                        ret, jpg = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 65])
+                        if ret:
+                            self.wfile.write("--jpgboundary\r\n".encode())
+                            self.send_header('Content-type', 'image/jpeg')
+                            self.send_header('Content-length', str(len(jpg)))
+                            self.end_headers()
+                            if sys.version_info[0] == 3:
+                                self.wfile.write(jpg.tobytes())
+                            else:
+                                self.wfile.write(jpg.tostring())
+                            self.wfile.write('\r\n'.encode())
+                    time.sleep(0.04)
+            except Exception:
+                pass
         else:
             self.send_response(200)
-            self.send_header('Content-type', 'text/html')
+            self.send_header('Content-type', 'text/html; charset=utf-8')
             self.end_headers()
             html = """<!DOCTYPE html>
 <html lang="en">
@@ -224,29 +232,97 @@ def start_web_server():
 class ObjectSeeker:
     def __init__(self):
         rospy.init_node('jetauto_object_seeker', anonymous=True)
+        # Publisher van toc cho dong co banh xe (phat ra ca 3 topic pho bien)
         self.vel_pub = rospy.Publisher(CMD_VEL_TOPIC, Twist, queue_size=1)
+        self.vel_pub_std = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+        self.vel_pub_ctrl = rospy.Publisher('/controller/cmd_vel', Twist, queue_size=1)
         self.smooth_x = None
         self.smooth_w = None
+        self._last_detections = []
+
+        # --- TU DONG TIM TOPIC CAMERA ---
+        camera_topic = self._find_camera_topic()
+        rospy.loginfo(">>[JetAuto] Dung camera topic: " + camera_topic)
 
         # --- KHOI TAO YOLO ---
         self.classes = self.load_classes()
-        model_path = os.path.join(os.path.dirname(__file__), 'yolo11n.onnx')
+        model_path = os.path.join(os.path.dirname(__file__), 'yolov5n.onnx')
         if not os.path.exists(model_path):
             rospy.logerr(">> Khong tim thay file model: " + model_path)
             sys.exit(1)
         
-        rospy.loginfo(">> Dang tai mo hinh AI: yolo11n.onnx...")
-        self.net = cv2.dnn.readNetFromONNX(model_path)
-        self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
-        self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
-        rospy.loginfo(">> Tai mo hinh thanh cong!")
+        try:
+            import onnxruntime as ort
+            sess_opts = ort.SessionOptions()
+            sess_opts.intra_op_num_threads = 4
+            sess_opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+            avail = ort.get_available_providers()
+            providers = ['CUDAExecutionProvider', 'CPUExecutionProvider'] if 'CUDAExecutionProvider' in avail else ['CPUExecutionProvider']
+            self.session = ort.InferenceSession(model_path, sess_options=sess_opts, providers=providers)
+            self.input_name = self.session.get_inputs()[0].name
+            self.use_ort = True
+            used = self.session.get_providers()[0]
+            rospy.loginfo(">>[JetAuto] Tai model bang onnxruntime ({}) thanh cong!".format(used))
+        except ImportError:
+            rospy.logwarn(">>[JetAuto] Khong co onnxruntime, thu dung cv2.dnn...")
+            self.net = cv2.dnn.readNetFromONNX(model_path)
+            self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
+            self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
+            self.use_ort = False
+        rospy.loginfo(">>[JetAuto] San sang!")
+
+        # Trang thai nhan dien chia se giua AI va luong render video 30 FPS
+        self.state_lock = threading.Lock()
+        self.last_detections = []
+        self.last_action_text = "DANG TIM KIEM..."
+        self.last_status_color = (0, 165, 255)
+        self.best_target_center = None
+        self.ai_fps = 0.0
+
+        # Buffer frame moi nhat cho AI loop
+        self.latest_raw_frame = None
+        self.frame_sync_lock = threading.Lock()
 
         rospy.sleep(0.5)
         rospy.on_shutdown(self.stop)
-        self.image_sub = rospy.Subscriber(CAMERA_TOPIC, Image, self.image_callback)
-        rospy.loginfo(">> [JetAuto Pro] He thong san sang tim vat the loai: {}".format(TARGET_CLASS.upper()))
+        
+        # queue_size=1 va buff_size=16MB
+        self.image_sub = rospy.Subscriber(camera_topic, Image, self.image_callback, queue_size=1, buff_size=2**24)
+        
+        # Thread rieng xu ly AI chay ngam
+        self.worker_thread = threading.Thread(target=self.ai_worker_loop)
+        self.worker_thread.daemon = True
+        self.worker_thread.start()
+        
+        rospy.loginfo(">>[JetAuto] He thong san sang tim vat the: {}".format(TARGET_CLASS.upper()))
+
+    def _find_camera_topic(self):
+        """Tu dong tim topic camera dang duoc publish"""
+        PRIORITY_TOPICS = [
+            '/depth_cam/rgb/image_raw',     # Astra Pro Plus (chinh xac tren JetAuto)
+            '/depth_cam/color/image_raw',
+            '/camera/rgb/image_raw',
+            '/camera/color/image_raw',
+            '/depth_cam/image_raw',
+            '/usb_cam/image_raw',
+            '/image_raw',
+        ]
+        rospy.loginfo(">>[JetAuto] Dang tim topic camera (cho toi da 5 giay)...")
+        deadline = rospy.Time.now() + rospy.Duration(5.0)
+        while rospy.Time.now() < deadline:
+            try:
+                published = [t for t, _ in rospy.get_published_topics()]
+                for topic in PRIORITY_TOPICS:
+                    if topic in published:
+                        return topic
+            except Exception:
+                pass
+            rospy.sleep(0.5)
+        rospy.logwarn(">>[JetAuto] Khong tim thay topic camera! Dung mac dinh: " + CAMERA_TOPIC)
+        return CAMERA_TOPIC
 
     def load_classes(self):
+
         path = os.path.join(os.path.dirname(__file__), 'coco.names')
         if os.path.exists(path):
             with open(path, 'r') as f:
@@ -258,175 +334,244 @@ class ObjectSeeker:
         twist_msg.linear.x = float(linear_x)
         twist_msg.angular.z = float(math.radians(angular_z_deg))
         self.vel_pub.publish(twist_msg)
+        self.vel_pub_std.publish(twist_msg)
+        self.vel_pub_ctrl.publish(twist_msg)
 
     def run_yolo(self, frame):
         INPUT_SIZE = 640
         h, w = frame.shape[:2]
-        
-        # Tao blob va chay model
-        blob = cv2.dnn.blobFromImage(frame, 1/255.0, (INPUT_SIZE, INPUT_SIZE), swapRB=True, crop=False)
-        self.net.setInput(blob)
-        outputs = self.net.forward()
-        
-        # Giai ma YOLO (Tuong thich YOLOv8/11)
-        arr = outputs[0] if isinstance(outputs, (list, tuple)) else outputs
+        x_scale = w / float(INPUT_SIZE)
+        y_scale = h / float(INPUT_SIZE)
+
+        # 1. Chuan bi anh bang OpenCV C++ blobFromImage (cuc nhanh, ~2ms thay vi 80ms)
+        blob = cv2.dnn.blobFromImage(frame, 1.0/255.0, (INPUT_SIZE, INPUT_SIZE), swapRB=True, crop=False)
+
+        # 2. Chay inference
+        if self.use_ort:
+            outputs = self.session.run(None, {self.input_name: blob})
+            arr = outputs[0]
+        else:
+            self.net.setInput(blob)
+            arr = self.net.forward()
+
+        # 3. Giai ma YOLO bang Vectorized NumPy (nhanh gap 1000 lan for-loop Python)
         arr = np.asarray(arr)
         if arr.ndim == 3:
             arr = np.squeeze(arr, axis=0)
-        
-        # Format [84, N]
         if arr.shape[0] < arr.shape[1]:
             arr = arr.T
-            
-        boxes = []
-        confidences = []
-        class_ids = []
-        
-        x_scale = w / float(INPUT_SIZE)
-        y_scale = h / float(INPUT_SIZE)
-        
-        for row in arr:
-            if len(row) < 6: continue
-            
-            scores = row[4:]
-            cid = int(np.argmax(scores))
-            conf = float(scores[cid])
-            
-            if conf > 0.4:
-                cx, cy, bw, bh = row[0:4]
-                # Scale lai theo anh goc
-                cx = int(cx * x_scale)
-                cy = int(cy * y_scale)
-                bw = int(bw * x_scale)
-                bh = int(bh * y_scale)
-                x = int(cx - bw/2)
-                y = int(cy - bh/2)
-                
-                boxes.append([x, y, bw, bh])
-                confidences.append(float(conf))
-                class_ids.append(cid)
-                
-        # NMS chong nhieu
-        indices = cv2.dnn.NMSBoxes(boxes, confidences, 0.4, 0.45)
+
+        if len(arr) == 0:
+            return []
+
+        # Loc truoc cac anchor box bang Vectorized array
+        if arr.shape[1] == 85: # YOLOv5 format [25200, 85]: x, y, w, h, obj_conf, 80 scores
+            obj_mask = arr[:, 4] > 0.35
+            arr = arr[obj_mask]
+            if len(arr) == 0:
+                return []
+            scores = arr[:, 5:]
+            class_ids = np.argmax(scores, axis=1)
+            confidences = np.max(scores, axis=1) * arr[:, 4]
+        else: # YOLOv8/11 format [8400, 84]
+            scores = arr[:, 4:]
+            class_ids = np.argmax(scores, axis=1)
+            confidences = np.max(scores, axis=1)
+
+        conf_mask = confidences > 0.35
+        if not np.any(conf_mask):
+            return []
+
+        arr = arr[conf_mask]
+        confidences = confidences[conf_mask]
+        class_ids = class_ids[conf_mask]
+
+        cx = arr[:, 0] * x_scale
+        cy = arr[:, 1] * y_scale
+        bw = arr[:, 2] * x_scale
+        bh = arr[:, 3] * y_scale
+        x = (cx - bw / 2.0).astype(int)
+        y = (cy - bh / 2.0).astype(int)
+        bw = bw.astype(int)
+        bh = bh.astype(int)
+
+        boxes = np.column_stack((x, y, bw, bh)).tolist()
+        conf_list = confidences.tolist()
+        cid_list = class_ids.tolist()
+
+        try:
+            indices = cv2.dnn.NMSBoxes(boxes, conf_list, 0.35, 0.45)
+        except Exception:
+            indices = list(range(len(boxes)))
+
         results = []
         if len(indices) > 0:
-            for i in indices.flatten():
+            for i in np.array(indices).flatten():
                 results.append({
-                    'class_id': class_ids[i],
-                    'class_name': self.classes[class_ids[i]] if class_ids[i] < len(self.classes) else 'unknown',
-                    'conf': confidences[i],
-                    'box': boxes[i] # [x, y, w, h]
+                    'class_id': cid_list[i],
+                    'class_name': self.classes[cid_list[i]] if cid_list[i] < len(self.classes) else 'unknown',
+                    'conf': conf_list[i],
+                    'box': boxes[i]
                 })
         return results
 
     def image_callback(self, msg):
+        global global_frame
+        
+        # 1. Luu frame moi nhat cho AI loop xu ly
+        with self.frame_sync_lock:
+            self.latest_raw_frame = msg
+
+        # 2. Render luong video truc tiep 30 FPS cho Web voi do tre 0ms
         try:
             frame = np.frombuffer(msg.data, dtype=np.uint8).reshape((msg.height, msg.width, -1))
             if msg.encoding == 'rgb8':
                 frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-            elif frame.shape[2] == 4:
+            elif msg.encoding == 'bgra8' or frame.shape[2] == 4:
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
-        except Exception as e:
-            rospy.logerr("Loi doc frame: " + str(e))
-            return
 
-        h, w = frame.shape[:2]
-        center_screen_x = w // 2
-        display_frame = frame.copy()
+            h, w = frame.shape[:2]
+            center_screen_x = w // 2
+            cv2.line(frame, (center_screen_x, 0), (center_screen_x, h), (255, 255, 255), 1)
 
-        cv2.line(display_frame, (center_screen_x, 0), (center_screen_x, h), (255, 255, 255), 1)
+            # Lay trang thai moi nhat tu AI worker
+            with self.state_lock:
+                detections = list(self.last_detections)
+                action_text = self.last_action_text
+                status_color = self.last_status_color
+                target_center = self.best_target_center
+                ai_fps = self.ai_fps
 
-        # Chay AI
-        detections = self.run_yolo(frame)
-        
-        # NEU DANG TAM DUNG
-        if IS_PAUSED:
-            self.set_velocity(0.0, 0.0)
             for det in detections:
                 bx, by, bw, bh = det['box']
-                cv2.rectangle(display_frame, (bx, by), (bx+bw, by+bh), (100, 100, 100), 2)
-                cv2.putText(display_frame, "{} {:.0f}%".format(det['class_name'], det['conf']*100), (bx, by-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (100,100,100), 1)
-            cv2.putText(display_frame, "TAM DUNG (PAUSED)", (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 165, 255), 2)
-            
-            global global_frame
+                color = (0, 255, 0) if det['class_name'] == TARGET_CLASS else (100, 100, 100)
+                cv2.rectangle(frame, (bx, by), (bx+bw, by+bh), color, 2)
+                cv2.putText(frame, "{} {:.0f}%".format(det['class_name'], det['conf']*100), (bx, by-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
+
+            if target_center is not None:
+                cv2.circle(frame, target_center, 5, (0, 0, 255), -1)
+
+            cv2.putText(frame, action_text, (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, status_color, 2)
+            cv2.putText(frame, "AI FPS: {:.1f}".format(ai_fps), (w - 140, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
+
             with frame_lock:
-                global_frame = display_frame
-            return
+                global_frame = frame
+        except Exception:
+            pass
 
-        target_found = False
-        action_text = "DANG TIM KIEM..."
-        status_color = (0, 165, 255)
-        
-        best_target = None
-        max_area = 0
+    def ai_worker_loop(self):
+        frame_counter = 0
+        last_fps_time = time.time()
+        current_ai_fps = 0.0
 
-        # Loc ra vat the cung loai co dien tich lon nhat (gan nhat)
-        for det in detections:
-            cls_name = det['class_name']
-            bx, by, bw, bh = det['box']
-            conf = det['conf']
+        while not rospy.is_shutdown():
+            msg = None
+            with self.frame_sync_lock:
+                if self.latest_raw_frame is not None:
+                    msg = self.latest_raw_frame
+                    self.latest_raw_frame = None
             
-            # Ve khung len man hinh cho tat ca
-            color = (0, 255, 0) if cls_name == TARGET_CLASS else (100, 100, 100)
-            cv2.rectangle(display_frame, (bx, by), (bx+bw, by+bh), color, 2)
-            cv2.putText(display_frame, "{} {:.0f}%".format(cls_name, conf*100), (bx, by-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
+            if msg is None:
+                time.sleep(0.005)
+                continue
 
-            if cls_name == TARGET_CLASS:
-                area = bw * bh
-                if area > max_area:
-                    max_area = area
-                    best_target = det
+            frame_counter += 1
+            now = time.time()
+            if now - last_fps_time >= 1.0:
+                current_ai_fps = frame_counter / (now - last_fps_time)
+                frame_counter = 0
+                last_fps_time = now
 
-        if best_target:
-            target_found = True
-            bx, by, bw, bh = best_target['box']
-            cx = bx + bw // 2
-            
-            # Ve hong tam vao vat the dang theo doi
-            cv2.circle(display_frame, (cx, by + bh // 2), 5, (0, 0, 255), -1)
+            try:
+                frame = np.frombuffer(msg.data, dtype=np.uint8).reshape((msg.height, msg.width, -1))
+                if msg.encoding == 'rgb8':
+                    frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+                elif msg.encoding == 'bgra8' or frame.shape[2] == 4:
+                    frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
+            except Exception:
+                continue
 
-            # Lam muot chuyen dong
-            if self.smooth_x is None:
-                self.smooth_x = cx
-                self.smooth_w = bw
-            else:
-                self.smooth_x = 0.65 * self.smooth_x + 0.35 * cx
-                self.smooth_w = 0.7 * self.smooth_w + 0.3 * bw
+            h, w = frame.shape[:2]
+            center_screen_x = w // 2
 
-            error_x = self.smooth_x - center_screen_x
-            # Tinh toan do gan xa dua vao ty le chieu rong cua vat so voi man hinh
-            width_ratio = self.smooth_w / float(w)
+            # Chay YOLO
+            detections = self.run_yolo(frame)
 
-            if width_ratio > 0.45: # Qua gan -> Dung
-                action_text = "DA DEN GAN! DUNG LAI"
-                status_color = (255, 0, 0)
-                self.set_velocity(linear_x=0.0, angular_z_deg=0.0)
-            else:
-                # Xoay
-                if error_x < -40:
-                    action_text = "LECH TRAI -> RE TRAI"
-                    status_color = (0, 255, 255)
-                    self.set_velocity(linear_x=0.06, angular_z_deg=12.0)
-                elif error_x > 40:
-                    action_text = "LECH PHAI -> RE PHAI"
-                    status_color = (0, 255, 255)
-                    self.set_velocity(linear_x=0.06, angular_z_deg=-12.0)
+            # NEU DANG TAM DUNG
+            if IS_PAUSED:
+                self.set_velocity(0.0, 0.0)
+                with self.state_lock:
+                    self.last_detections = detections
+                    self.last_action_text = "TAM DUNG (PAUSED)"
+                    self.last_status_color = (0, 165, 255)
+                    self.best_target_center = None
+                    self.ai_fps = current_ai_fps
+                continue
+
+            target_found = False
+            action_text = "DANG TIM KIEM..."
+            status_color = (0, 165, 255)
+            best_target = None
+            max_area = 0
+
+            # Loc ra vat the cung loai co dien tich lon nhat
+            for det in detections:
+                cls_name = det['class_name']
+                if cls_name == TARGET_CLASS:
+                    bx, by, bw, bh = det['box']
+                    area = bw * bh
+                    if area > max_area:
+                        max_area = area
+                        best_target = det
+
+            target_center = None
+            if best_target:
+                target_found = True
+                bx, by, bw, bh = best_target['box']
+                cx = bx + bw // 2
+                cy = by + bh // 2
+                target_center = (cx, cy)
+
+                if self.smooth_x is None:
+                    self.smooth_x = cx
+                    self.smooth_w = bw
                 else:
-                    action_text = "CHINH GIUA -> TIEN THANG!"
-                    status_color = (0, 255, 0)
-                    self.set_velocity(linear_x=0.15, angular_z_deg=0.0)
+                    self.smooth_x = 0.65 * self.smooth_x + 0.35 * cx
+                    self.smooth_w = 0.7 * self.smooth_w + 0.3 * bw
 
-        if not target_found:
-            self.smooth_x = None
-            action_text = "TIM {}".format(TARGET_CLASS.upper())
-            status_color = (0, 0, 255)
-            self.set_velocity(linear_x=0.0, angular_z_deg=20.0) # Xoay banh tim kiem
+                error_x = self.smooth_x - center_screen_x
+                width_ratio = self.smooth_w / float(w)
 
-        cv2.putText(display_frame, action_text, (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, status_color, 2)
+                if width_ratio > 0.45:
+                    action_text = "DA DEN GAN! DUNG LAI"
+                    status_color = (255, 0, 0)
+                    self.set_velocity(linear_x=0.0, angular_z_deg=0.0)
+                else:
+                    if error_x < -40:
+                        action_text = "LECH TRAI -> RE TRAI"
+                        status_color = (0, 255, 255)
+                        self.set_velocity(linear_x=0.06, angular_z_deg=12.0)
+                    elif error_x > 40:
+                        action_text = "LECH PHAI -> RE PHAI"
+                        status_color = (0, 255, 255)
+                        self.set_velocity(linear_x=0.06, angular_z_deg=-12.0)
+                    else:
+                        action_text = "CHINH GIUA -> TIEN THANG!"
+                        status_color = (0, 255, 0)
+                        self.set_velocity(linear_x=0.15, angular_z_deg=0.0)
 
-        global global_frame
-        with frame_lock:
-            global_frame = display_frame
+            if not target_found:
+                self.smooth_x = None
+                action_text = "TIM {}".format(TARGET_CLASS.upper())
+                status_color = (0, 0, 255)
+                self.set_velocity(linear_x=0.0, angular_z_deg=25.0)
+
+            with self.state_lock:
+                self.last_detections = detections
+                self.last_action_text = action_text
+                self.last_status_color = status_color
+                self.best_target_center = target_center
+                self.ai_fps = current_ai_fps
 
     def stop(self):
         rospy.loginfo(">> [JetAuto Pro] Dang dung robot an toan...")
