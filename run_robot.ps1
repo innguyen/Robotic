@@ -14,4 +14,4 @@ Write-Host "`n========================================================" -Foregro
 Write-Host "[2/2] Khoi chay he thong tren Robot..." -ForegroundColor Green
 Write-Host "========================================================" -ForegroundColor Green
 
-ssh -t jetauto@192.168.149.1 "chmod +x /home/jetauto/start_server.sh && bash -l /home/jetauto/start_server.sh"
+ssh -t jetauto@192.168.149.1 "chmod +x /home/jetauto/start_server.sh && (which zsh >/dev/null 2>&1 && zsh -l -c '/home/jetauto/start_server.sh' || bash -l /home/jetauto/start_server.sh)"
