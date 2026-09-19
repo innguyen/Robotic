@@ -14,6 +14,7 @@ for ws in /home/jetauto/jetauto_ws/devel/setup.bash \
 done
 
 [ -f /home/jetauto/.bashrc ] && source /home/jetauto/.bashrc 2>/dev/null || true
+[ -f /home/jetauto/jetauto_ws/.typerc ] && source /home/jetauto/jetauto_ws/.typerc 2>/dev/null || true
 export ROS_MASTER_URI=http://192.168.149.1:11311
 export ROS_HOSTNAME=192.168.149.1
 export ROS_IP=192.168.149.1
@@ -40,7 +41,14 @@ echo "========================================"
 # Giai phong conflict tu app mac dinh cua Hiwonder va cap quyen thiet bi
 sudo systemctl stop start_app_node.service 2>/dev/null || true
 pkill -9 -f "app_node" 2>/dev/null || true
-sudo chmod 666 /dev/ttyTHS* /dev/ttyUSB* /dev/video* 2>/dev/null || true
+sudo chmod 666 /dev/ttyTHS* /dev/ttyUSB* /dev/video* /dev/rrc /dev/ttyACM* 2>/dev/null || true
+
+# Cap quyen USB cho OAK-D Myriad X (03e7)
+if [ ! -f /etc/udev/rules.d/80-movidius.rules ]; then
+    echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="03e7", MODE="0666"' | sudo tee /etc/udev/rules.d/80-movidius.rules >/dev/null 2>&1 || true
+    sudo udevadm control --reload-rules 2>/dev/null || true
+    sudo udevadm trigger 2>/dev/null || true
+fi
 
 # ================================================================
 # BUOC 1: Kiem tra ROS Master (roscore)
@@ -86,55 +94,31 @@ else
 fi
 
 # ================================================================
-# BUOC 2.5: Kiem tra va khoi dong Dong co / Chassis Controller
+# BUOC 2.5: Kiem tra va khoi dong Bo dieu khien Dong co Khung gam (bringup.launch)
 # ================================================================
-echo ">> [2.5/5] Kiem tra va khoi dong Dong co (Chassis Controller)..."
-if pgrep -f "chassis|jetauto_controller|driver_node" > /dev/null 2>&1; then
-    echo "   Dong co / Chassis Controller dang hoat dong san!"
+echo ">> [2.5/5] Kiem tra va khoi dong Bo dieu khien Khung gam (jetauto_bringup)..."
+if rostopic list 2>/dev/null | grep -q "/jetauto_controller/cmd_vel\|/ros_robot_controller/cmd_vel" || \
+   pgrep -f "bringup.launch|ros_robot_controller" > /dev/null 2>&1; then
+    echo "   Bo dieu khien khung gam (jetauto_bringup) dang hoat dong san!"
 else
-    echo "   Dang tim va khoi dong Controller Dong co..."
+    echo "   Dang khoi dong jetauto_bringup bringup.launch..."
+    pkill -9 -f "ros_robot_controller" 2>/dev/null || true
+    sleep 1
+    nohup roslaunch jetauto_bringup bringup.launch > /tmp/bringup.log 2>&1 &
+    
     CHASSIS_STARTED=false
-    for CANDIDATE in \
-        "jetauto_controller jetauto_controller.launch" \
-        "jetauto_controller controller.launch" \
-        "jetauto_bringup bringup.launch" \
-        "jetauto_bringup jetauto_bringup.launch" \
-        "jetauto_bringup robot_bringup.launch" \
-        "jetauto_bringup robot.launch" \
-        "jetauto_driver driver.launch" \
-        "jetauto_driver chassis_driver.launch"; do
-        PKG=$(echo $CANDIDATE | cut -d' ' -f1)
-        LAUNCH=$(echo $CANDIDATE | cut -d' ' -f2)
-        PKG_DIR=$(rospack find "$PKG" 2>/dev/null)
-        if [ -n "$PKG_DIR" ]; then
-            LAUNCH_PATH=$(find "$PKG_DIR" -name "$LAUNCH" 2>/dev/null | head -1)
-            if [ -n "$LAUNCH_PATH" ]; then
-                echo "   Phat hien launch file: $LAUNCH_PATH"
-                echo "   Dang khoi dong $PKG $LAUNCH..."
-                nohup roslaunch $PKG $LAUNCH > /tmp/chassis.log 2>&1 &
-                sleep 3
-                if pgrep -f "chassis|jetauto_controller|driver" > /dev/null 2>&1; then
-                    CHASSIS_STARTED=true
-                    echo "   >> Controller Dong co da bat thanh cong!"
-                    break
-                fi
-            fi
+    for i in 1 2 3 4 5 6 7 8 9 10; do
+        sleep 1
+        if rostopic list 2>/dev/null | grep -q "/jetauto_controller/cmd_vel\|/cmd_vel" || \
+           pgrep -f "ros_robot_controller" > /dev/null 2>&1; then
+            CHASSIS_STARTED=true
+            echo "   >> Bo dieu khien khung gam da khoi dong thanh cong! (Log: /tmp/bringup.log)"
+            break
         fi
     done
     if [ "$CHASSIS_STARTED" = false ]; then
-        FOUND_LAUNCH=$(find /home/jetauto/jetauto_ws/src/ /home/jetauto/catkin_ws/src/ /home/jetauto/ -name "*bringup*.launch" -o -name "*chassis*.launch" -o -name "*controller*.launch" 2>/dev/null | grep -v "depth\|lidar\|arm\|view" | head -1)
-        if [ -n "$FOUND_LAUNCH" ]; then
-            echo "   Phat hien launch file chassis tu dong: $FOUND_LAUNCH"
-            nohup roslaunch "$FOUND_LAUNCH" > /tmp/chassis.log 2>&1 &
-            sleep 3
-            CHASSIS_STARTED=true
-        fi
-    fi
-    if [ "$CHASSIS_STARTED" = true ]; then
-        echo "   Controller Dong co da duoc khoi dong! (Log: /tmp/chassis.log)"
-    else
-        echo "   [CANH BAO] Chua khoi dong duoc Chassis Controller! Log /tmp/chassis.log:"
-        cat /tmp/chassis.log 2>/dev/null | tail -15
+        echo "   [CANH BAO] jetauto_bringup chua len hoan toan! Kiem tra log /tmp/bringup.log:"
+        cat /tmp/bringup.log 2>/dev/null | tail -15
     fi
 fi
 

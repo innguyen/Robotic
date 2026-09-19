@@ -1,23 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-JetAuto Pro - AI Vision Tracker & Single Camera Controller
-- Giao dien Web don camera sac net, nhe CPU (tiet kiem tai toi da cho Jetson Nano).
-- Camera chinh mac dinh: Luxonis OAK-D RGB (DepthAI truc tiep, khong do tre).
-- Ho tro doi sang Astra Pro Plus bat cu luc nao.
-- He thong lai 10Hz Heartbeat duy tri an toan voi STM32 watchdog.
-- Ho tro che do Stream MJPEG va Live Snapshot Polling chong den man hinh.
-- Tich hop D-Pad lai thu cong va nut Test Dong Co 2 giay.
+JetAuto Pro - Dual Vision AI Tracker & Mecanum Obstacle Avoidance Controller
+- Mắt 1 (Astra Pro Plus): Chạy YOLOv5 AI nhận diện và khóa mục tiêu (Heading lock).
+- Mắt 2 (Luxonis OAK-D): Quét độ sâu Stereo Depth gầm xe, tính khoảng cách vật cản 3 hướng (Trái / Giữa / Phải).
+- Chiến thuật Mecanum Strafing: Tự động trượt ngang (linear.y) luồn lách qua chướng ngại vật mà ĐẦU XE KHÔNG QUAY ĐI, giữ mục tiêu 100% trong khung hình!
+- Bộ đệm nén JPEG nền (Background JPEG Cache): Stream 2 camera đồng thời mượt mà không khóa GIL hay ngốn CPU.
+- Giao diện Web: Xem độc lập 2 Card hoặc xem Ghép 1 luồng Unified Side-by-Side.
 """
 
+from __future__ import print_function
 import sys
-import rospy
-import cv2
-import numpy as np
-import math
-import threading
-import time
 import os
+import time
+import math
+import signal
+import threading
+import numpy as np
+import cv2
+
+import rospy
 from geometry_msgs.msg import Twist
 
 try:
@@ -38,7 +40,7 @@ else:
     from socketserver import ThreadingMixIn
 
 # ==========================================================
-# CAU HINH HE THONG
+# CẤU HÌNH HỆ THỐNG
 # ==========================================================
 TARGET_CLASS = 'person'
 if len(sys.argv) > 1:
@@ -52,47 +54,215 @@ CMD_VEL_TOPICS = [
     '/hiwonder_controller/cmd_vel'
 ]
 
-# Khung hinh toan cuc cho ca 2 Camera
+# Khung hình toàn cục cho cả 2 Camera
 raw_frame_astra = None
 raw_frame_oakd = None
-display_frame_astra = None  # Astra: Co Bounding Box AI & HUD Dieu Khien
-display_frame_oakd = None   # OAK-D: Luong Video FPV Sach Net (Khong chay Detect)
+depth_frame_oakd = None
+display_frame_astra = None  # Astra: Bounding Box AI & Khóa mục tiêu
+display_frame_oakd = None   # OAK-D: FPV Gầm xe + Thước đo Radar vật cản
 frame_lock = threading.Lock()
-seeker_instance = None
 
+# Bộ đệm JPEG cache nén sẵn trên RAM (chống nghẽn socket và khóa GIL của Python)
+cached_jpeg_astra = None
+cached_jpeg_oakd = None
+cached_jpeg_combined = None
+jpeg_lock = threading.Lock()
+
+# Thông số vật cản từ OAK-D (Khoảng cách cm)
+obstacle_info = {
+    'dist_l': 999.0,
+    'dist_c': 999.0,
+    'dist_r': 999.0,
+    'status': 'AN TOAN',
+    'strafe_dir': 'NONE'
+}
+obstacle_lock = threading.Lock()
+
+seeker_instance = None
 cam_source_astra = "Khoi tao..."
 cam_source_oakd = "Khoi tao..."
 
 
+# ==========================================================
+# CÁC HÀM XỬ LÝ KHUNG HÌNH VÀ BỘ ĐỆM JPEG
+# ==========================================================
 def get_frame_for_cam(cam_name='astra'):
-    """Lay khung hinh cho tung camera cu the (Astra hoac OAK-D)."""
+    """Lấy khung hình cho từng camera cụ thể hoặc khung hình ghép."""
+    if cam_name == 'combined':
+        return get_combined_frame()
+
     with frame_lock:
         if cam_name == 'astra':
             if display_frame_astra is not None:
                 return display_frame_astra.copy()
             if raw_frame_astra is not None:
                 return raw_frame_astra.copy()
-            title = "ASTRA PRO PLUS (AI DETECT & TRACK)"
+            title = "ASTRA PRO PLUS (AI TARGET TRACKER)"
             status = cam_source_astra
         else:
             if display_frame_oakd is not None:
                 return display_frame_oakd.copy()
             if raw_frame_oakd is not None:
                 return raw_frame_oakd.copy()
-            title = "LUXONIS OAK-D (LIVE FPV STREAM)"
+            title = "LUXONIS OAK-D (OBSTACLE RADAR)"
             status = cam_source_oakd
 
     f = np.zeros((480, 640, 3), dtype=np.uint8)
     cv2.rectangle(f, (0, 0), (640, 480), (15, 23, 42), -1)
-    cv2.putText(f, title, (30, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 229, 255), 2)
+    cv2.putText(f, title, (30, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 229, 255), 2)
     cv2.putText(f, "DANG CHO TIN HIEU CAMERA...", (30, 240), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 165, 255), 2)
     cv2.putText(f, status, (30, 420), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (148, 163, 184), 1)
     return f
 
 
-def get_active_frame():
-    """Fallback lay frame Astra mac dinh."""
-    return get_frame_for_cam('astra')
+def get_combined_frame():
+    """Ghép 2 camera thành 1 khung hình Side-by-Side (Astra bên trái, OAK-D bên phải)."""
+    f1 = get_frame_for_cam('astra')
+    f2 = get_frame_for_cam('oakd')
+    f1_s = cv2.resize(f1, (480, 360))
+    f2_s = cv2.resize(f2, (480, 360))
+    combined = np.hstack([f1_s, f2_s])
+    # Vẽ đường phân cách
+    cv2.line(combined, (480, 0), (480, 360), (0, 229, 255), 2)
+    return combined
+
+
+def jpeg_encoder_loop():
+    """Thread chuyên trách nén JPEG sẵn vào RAM ở tốc độ ~22 FPS."""
+    global cached_jpeg_astra, cached_jpeg_oakd, cached_jpeg_combined
+    while not rospy.is_shutdown():
+        try:
+            # 1. Nén ảnh Astra
+            f_astra = None
+            with frame_lock:
+                if display_frame_astra is not None:
+                    f_astra = display_frame_astra
+                elif raw_frame_astra is not None:
+                    f_astra = raw_frame_astra
+
+            if f_astra is not None:
+                ret, jpg = cv2.imencode('.jpg', f_astra, [int(cv2.IMWRITE_JPEG_QUALITY), 65])
+                if ret:
+                    raw_bytes = jpg.tobytes() if sys.version_info[0] == 3 else jpg.tostring()
+                    with jpeg_lock:
+                        cached_jpeg_astra = raw_bytes
+
+            # 2. Nén ảnh OAK-D
+            f_oakd = None
+            with frame_lock:
+                if display_frame_oakd is not None:
+                    f_oakd = display_frame_oakd
+                elif raw_frame_oakd is not None:
+                    f_oakd = raw_frame_oakd
+
+            if f_oakd is not None:
+                ret, jpg = cv2.imencode('.jpg', f_oakd, [int(cv2.IMWRITE_JPEG_QUALITY), 65])
+                if ret:
+                    raw_bytes = jpg.tobytes() if sys.version_info[0] == 3 else jpg.tostring()
+                    with jpeg_lock:
+                        cached_jpeg_oakd = raw_bytes
+
+            # 3. Nén ảnh Ghép Side-by-Side
+            if f_astra is not None or f_oakd is not None:
+                comb = get_combined_frame()
+                ret, jpg = cv2.imencode('.jpg', comb, [int(cv2.IMWRITE_JPEG_QUALITY), 60])
+                if ret:
+                    raw_bytes = jpg.tobytes() if sys.version_info[0] == 3 else jpg.tostring()
+                    with jpeg_lock:
+                        cached_jpeg_combined = raw_bytes
+
+        except Exception:
+            pass
+
+        time.sleep(0.045)
+
+
+# ==========================================================
+# THUẬT TOÁN ĐO KHOẢNG CÁCH VẬT CẢN TỪ STEREO DEPTH OAK-D
+# ==========================================================
+def process_obstacle_depth(depth_frame):
+    """
+    Phân tích ma trận độ sâu OAK-D (đơn vị mm, uint16).
+    Chia nửa dưới khung hình (mặt sàn) thành 3 vùng: Trái, Giữa, Phải.
+    Trả về: (dist_l_cm, dist_c_cm, dist_r_cm)
+    """
+    if depth_frame is None or depth_frame.size == 0:
+        return 999.0, 999.0, 999.0
+
+    h, w = depth_frame.shape[:2]
+    # Chỉ quét khu vực từ 35% đến 90% chiều cao (vùng có vật cản gầm xe)
+    roi = depth_frame[int(h * 0.35):int(h * 0.90), :]
+
+    col_w = w // 3
+    zone_l = roi[:, :col_w]
+    zone_c = roi[:, col_w:col_w * 2]
+    zone_r = roi[:, col_w * 2:]
+
+    def calc_dist(z):
+        # Lấy các điểm trong tầm đo hiệu dụng từ 15cm đến 3m
+        valid = z[(z > 150) & (z < 3000)]
+        if len(valid) < 60:
+            return 999.0  # Thông thoáng
+        # Dùng phân vị thứ 10 để loại trừ pixel nhiễu
+        return float(np.percentile(valid, 10)) / 10.0  # mm sang cm
+
+    return calc_dist(zone_l), calc_dist(zone_c), calc_dist(zone_r)
+
+
+def render_oakd_hud(frame, dl, dc, dr, strafe_dir="NONE"):
+    """Vẽ giao diện radar và thước đo khoảng cách 3 vùng lên video OAK-D."""
+    h, w = frame.shape[:2]
+    out = frame.copy()
+    col_w = w // 3
+    y_start = int(h * 0.42)
+    y_end = int(h * 0.94)
+
+    def get_color(dist):
+        if dist < 30.0:
+            return (0, 0, 255)      # Đỏ: Nguy hiểm (< 30cm)
+        elif dist < 60.0:
+            return (0, 215, 255)    # Vàng: Cảnh báo (30-60cm)
+        else:
+            return (0, 255, 0)      # Xanh: An toàn (> 60cm)
+
+    # Vẽ 3 khung radar
+    zones = [
+        (0, col_w, dl, "TRAI"),
+        (col_w, col_w * 2, dc, "GIUA"),
+        (col_w * 2, w, dr, "PHAI")
+    ]
+    for x1, x2, dist, name in zones:
+        c = get_color(dist)
+        cv2.rectangle(out, (x1 + 4, y_start), (x2 - 4, y_end), c, 2)
+        txt = "{}: {:.0f}cm".format(name, dist) if dist < 800 else "{}: THOANG".format(name)
+        cv2.putText(out, txt, (x1 + 10, y_end - 12), cv2.FONT_HERSHEY_SIMPLEX, 0.55, c, 2)
+
+    # Thanh trạng thái phía trên
+    cv2.rectangle(out, (0, 0), (w, 42), (15, 23, 42), -1)
+    status_text = "OAK-D RADAR"
+    if strafe_dir == "LEFT":
+        status_text += " | <<< TRUOT TRAI NE"
+        banner_c = (0, 215, 255)
+    elif strafe_dir == "RIGHT":
+        status_text += " | TRUOT PHAI NE >>>"
+        banner_c = (0, 215, 255)
+    elif dc < 30.0:
+        status_text += " | PHANH KHAN CAP (<30cm)!"
+        banner_c = (0, 0, 255)
+    else:
+        status_text += " | DUONG THOANG"
+        banner_c = (0, 255, 0)
+
+    cv2.putText(out, status_text, (15, 28), cv2.FONT_HERSHEY_SIMPLEX, 0.65, banner_c, 2)
+    return out
+
+
+# ==========================================================
+# WEB SERVER & REQUEST HANDLERS
+# ==========================================================
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    daemon_threads = True
+    allow_reuse_address = True
 
 
 class CamHandler(BaseHTTPRequestHandler):
@@ -108,22 +278,46 @@ class CamHandler(BaseHTTPRequestHandler):
         self.end_headers()
         try:
             while True:
-                frame = get_frame_for_cam(cam_name)
-                ret, jpg = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 65])
-                if ret:
-                    raw = jpg.tobytes() if sys.version_info[0] == 3 else jpg.tostring()
+                raw = None
+                with jpeg_lock:
+                    if cam_name == 'astra' and cached_jpeg_astra is not None:
+                        raw = cached_jpeg_astra
+                    elif cam_name == 'oakd' and cached_jpeg_oakd is not None:
+                        raw = cached_jpeg_oakd
+                    elif cam_name == 'combined' and cached_jpeg_combined is not None:
+                        raw = cached_jpeg_combined
+
+                if raw is None:
+                    frame = get_frame_for_cam(cam_name)
+                    ret, jpg = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 65])
+                    if ret:
+                        raw = jpg.tobytes() if sys.version_info[0] == 3 else jpg.tostring()
+
+                if raw is not None:
                     packet = b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + raw + b'\r\n'
                     self.wfile.write(packet)
                     self.wfile.flush()
-                time.sleep(0.04)
+                time.sleep(0.045)
         except Exception:
             pass
 
     def _serve_snapshot(self, cam_name='astra'):
-        frame = get_frame_for_cam(cam_name)
-        ret, jpg = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 75])
-        if ret:
-            raw = jpg.tobytes() if sys.version_info[0] == 3 else jpg.tostring()
+        raw = None
+        with jpeg_lock:
+            if cam_name == 'astra' and cached_jpeg_astra is not None:
+                raw = cached_jpeg_astra
+            elif cam_name == 'oakd' and cached_jpeg_oakd is not None:
+                raw = cached_jpeg_oakd
+            elif cam_name == 'combined' and cached_jpeg_combined is not None:
+                raw = cached_jpeg_combined
+
+        if raw is None:
+            frame = get_frame_for_cam(cam_name)
+            ret, jpg = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 75])
+            if ret:
+                raw = jpg.tobytes() if sys.version_info[0] == 3 else jpg.tostring()
+
+        if raw is not None:
             self.send_response(200)
             self.send_header('Content-Type', 'image/jpeg')
             self.send_header('Content-Length', str(len(raw)))
@@ -150,8 +344,7 @@ class CamHandler(BaseHTTPRequestHandler):
             new_target = data.get('target', '').strip().lower()
             if new_target:
                 TARGET_CLASS = new_target
-                IS_PAUSED = False
-                rospy.loginfo(">> [WEB] Da doi muc tieu sang: " + TARGET_CLASS)
+                rospy.loginfo(">> [WEB] Doi muc tieu sang: " + TARGET_CLASS)
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
@@ -167,23 +360,13 @@ class CamHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({'paused': IS_PAUSED}).encode())
             return
 
-        elif self.path == '/switch_camera':
-            cam_choice = data.get('cam', 'oakd').strip().lower()
-            if seeker_instance:
-                ok, msg = seeker_instance.switch_camera(cam_choice)
-                self.send_response(200 if ok else 400)
-                self.send_header('Content-type', 'application/json')
-                self.end_headers()
-                self.wfile.write(json.dumps({'status': 'ok' if ok else 'error', 'msg': msg, 'current': seeker_instance.active_ai_cam}).encode())
-                return
-
         elif self.path == '/test_motors':
             if seeker_instance:
                 seeker_instance.trigger_motor_test()
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                self.wfile.write(b'{"status": "ok", "msg": "Dang test dong co trong 2 giay!"}')
+                self.wfile.write(b'{"status": "ok", "msg": "Dang test dong co 3-DOF trong 2 giay!"}')
                 return
 
         elif self.path == '/manual_move':
@@ -201,32 +384,42 @@ class CamHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         import json
-        if self.path.startswith('/cam_oakd') or self.path.startswith('/video_feed_oakd'):
+        if self.path.startswith('/cam_combined') or self.path.startswith('/video_feed_combined'):
+            self._stream_mjpeg('combined')
+        elif self.path.startswith('/cam_oakd') or self.path.startswith('/video_feed_oakd'):
             self._stream_mjpeg('oakd')
-        elif self.path.startswith('/cam_astra') or self.path.startswith('/video_feed_astra'):
+        elif self.path.startswith('/cam_astra') or self.path.startswith('/video_feed_astra') or self.path.startswith('/cam.mjpg'):
             self._stream_mjpeg('astra')
-        elif self.path.startswith('/video_feed') or self.path.startswith('/cam_combined.mjpg') or self.path.startswith('/cam_single.mjpg'):
-            self._stream_mjpeg('astra')
+        elif self.path.startswith('/snapshot_combined'):
+            self._serve_snapshot('combined')
         elif self.path.startswith('/snapshot_oakd'):
             self._serve_snapshot('oakd')
-        elif self.path.startswith('/snapshot_astra'):
-            self._serve_snapshot('astra')
-        elif self.path.startswith('/snapshot'):
+        elif self.path.startswith('/snapshot_astra') or self.path.startswith('/snapshot'):
             self._serve_snapshot('astra')
         elif self.path.startswith('/status'):
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
+
+            with obstacle_lock:
+                obs_copy = dict(obstacle_info)
+
             status_data = {
                 'target': TARGET_CLASS,
                 'paused': IS_PAUSED,
-                'ai_fps': seeker_instance.ai_fps if seeker_instance else 0.0,
+                'ai_fps': round(seeker_instance.ai_fps, 1) if seeker_instance else 0.0,
                 'action_text': seeker_instance.last_action_text if seeker_instance else "CHO KHOI DONG",
                 'source_astra': cam_source_astra,
                 'source_oakd': cam_source_oakd,
-                'linear_x': seeker_instance.desired_linear_x if seeker_instance else 0.0,
-                'angular_z': seeker_instance.desired_angular_z if seeker_instance else 0.0
+                'linear_x': round(seeker_instance.desired_linear_x, 2) if seeker_instance else 0.0,
+                'linear_y': round(seeker_instance.desired_linear_y, 2) if seeker_instance else 0.0,
+                'angular_z': round(seeker_instance.desired_angular_z, 1) if seeker_instance else 0.0,
+                'dist_left': round(obs_copy['dist_l'], 1),
+                'dist_center': round(obs_copy['dist_c'], 1),
+                'dist_right': round(obs_copy['dist_r'], 1),
+                'strafe_dir': obs_copy['strafe_dir'],
+                'obs_status': obs_copy['status']
             }
             self.wfile.write(json.dumps(status_data).encode())
         else:
@@ -235,13 +428,13 @@ class CamHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(self._render_html().encode('utf-8'))
 
-    def _render_html(self, active_cam='astra'):
+    def _render_html(self):
         return """<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JetAuto Vision Controller</title>
+    <title>JetAuto Dual Vision - Mecanum Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -272,7 +465,7 @@ class CamHandler(BaseHTTPRequestHandler):
         .header { text-align: center; margin-bottom: 1rem; max-width: 900px; width: 100%; }
         .header h1 {
             font-weight: 800;
-            font-size: 2.1rem;
+            font-size: 2rem;
             background: linear-gradient(135deg, #00E5FF 0%, #3B82F6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -284,7 +477,7 @@ class CamHandler(BaseHTTPRequestHandler):
             gap: 12px;
             flex-wrap: wrap;
         }
-        .header p { color: #94a3b8; font-size: 0.95rem; margin-top: 0.4rem; }
+        .header p { color: #94a3b8; font-size: 0.92rem; margin-top: 0.4rem; }
         .target-badge {
             background: rgba(0, 229, 255, 0.15);
             border: 1px solid var(--primary);
@@ -311,6 +504,40 @@ class CamHandler(BaseHTTPRequestHandler):
             gap: 1.2rem;
         }
 
+        /* TOOLBAR TOP */
+        .top-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--glass-border);
+            padding: 10px 18px;
+            border-radius: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .group-left, .group-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+        .btn-toggle {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-toggle:hover { background: rgba(255, 255, 255, 0.12); color: white; }
+        .btn-toggle.active {
+            background: linear-gradient(135deg, #00E5FF, #3B82F6);
+            color: #0b1120;
+            border-color: transparent;
+            font-weight: 800;
+        }
+
+        /* CAMERA GRIDS */
         .camera-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -321,216 +548,179 @@ class CamHandler(BaseHTTPRequestHandler):
             .camera-grid { grid-template-columns: 1fr; }
         }
 
-        /* TOOLBAR TOP */
-        .top-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 10px 16px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .group-left, .group-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
-        .btn-toggle {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #cbd5e1;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-toggle:hover { background: rgba(255, 255, 255, 0.12); color: white; }
-        .btn-toggle.active {
-            background: linear-gradient(135deg, #00E5FF, #3B82F6);
-            color: #0b1120;
-            border-color: transparent;
-            font-weight: 800;
-            box-shadow: 0 2px 10px rgba(0, 229, 255, 0.35);
-        }
-
-        /* SINGLE CAMERA CARD */
         .stream-card {
             background: var(--card-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 14px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.4);
         }
         .stream-header {
+            padding: 10px 14px;
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.82rem;
+            font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-            color: #94a3b8;
-            font-weight: 700;
         }
         .stream-box {
             position: relative;
             width: 100%;
-            aspect-ratio: 4/3;
-            max-height: 580px;
             background: #000;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            min-height: 280px;
         }
         .stream-box img {
             width: 100%;
-            height: 100%;
+            height: auto;
+            max-height: 460px;
             object-fit: contain;
             display: block;
         }
 
-        /* CONTROLS */
+        /* QUICK CONTROLS */
         .control-row {
             display: flex;
             gap: 10px;
+            width: 100%;
             flex-wrap: wrap;
         }
-        input[type="text"] {
+        #targetInput {
             flex: 1;
-            min-width: 240px;
-            padding: 12px 18px;
-            border-radius: 12px;
+            min-width: 220px;
+            background: rgba(15, 23, 42, 0.8);
             border: 1px solid var(--glass-border);
-            background: rgba(0,0,0,0.4);
-            color: white;
+            padding: 12px 18px;
+            border-radius: 14px;
+            color: #fff;
             font-size: 0.95rem;
             outline: none;
         }
-        input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(0, 229, 255, 0.2); }
+        #targetInput:focus { border-color: var(--primary); box-shadow: var(--neon-glow); }
 
         .btn-action {
             padding: 12px 20px;
-            border-radius: 12px;
+            border-radius: 14px;
             border: none;
-            font-weight: 800;
-            font-size: 0.95rem;
+            font-weight: 700;
+            font-size: 0.88rem;
             cursor: pointer;
             transition: all 0.2s;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
-        .btn-action:hover { transform: translateY(-2px); }
         .btn-find { background: linear-gradient(135deg, #00E5FF, #3B82F6); color: #0b1120; }
-        .btn-pause { background: linear-gradient(135deg, #EF4444, #DC2626); color: white; }
-        .btn-resume { background: linear-gradient(135deg, #22C55E, #16A34A); color: white; }
-        .btn-test { background: linear-gradient(135deg, #F59E0B, #D97706); color: white; }
+        .btn-pause { background: #F59E0B; color: #000; }
+        .btn-resume { background: #10B981; color: #fff; }
+        .btn-test { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid var(--glass-border); }
 
-        /* QUICK TAGS */
-        .tags-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .tags-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .tag-btn {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #94a3b8;
-            padding: 6px 14px;
-            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            padding: 5px 12px;
+            border-radius: 16px;
             font-size: 0.8rem;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
         }
-        .tag-btn:hover { background: rgba(0, 229, 255, 0.15); color: var(--primary); border-color: var(--primary); }
+        .tag-btn:hover { background: rgba(0, 229, 255, 0.2); border-color: var(--primary); color: #fff; }
 
-        /* BOTTOM GRID: STATUS HUD & D-PAD */
+        /* BOTTOM HUD & D-PAD */
         .bottom-grid {
             display: grid;
-            grid-template-columns: 3fr 2fr;
+            grid-template-columns: 1.4fr 1fr;
             gap: 1.2rem;
+            width: 100%;
         }
-        @media (max-width: 768px) { .bottom-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 980px) {
+            .bottom-grid { grid-template-columns: 1fr; }
+        }
 
         .info-card, .dpad-card {
-            background: rgba(15, 23, 42, 0.65);
+            background: var(--card-bg);
             border: 1px solid var(--glass-border);
             border-radius: 18px;
-            padding: 16px;
+            padding: 18px;
         }
         .card-title {
-            font-size: 0.85rem;
-            font-weight: 700;
+            font-size: 0.95rem;
+            font-weight: 800;
             color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-        }
-
-        .dpad-layout {
-            display: grid;
-            grid-template-columns: 60px 60px 60px;
-            grid-template-rows: 60px 60px 60px;
-            gap: 8px;
-            justify-content: center;
-            margin: 6px auto;
-        }
-        .dpad-btn {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #f8fafc;
-            border-radius: 12px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.15s;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding-bottom: 8px;
         }
-        .dpad-btn:active, .dpad-btn.pressed { background: var(--primary); color: #0b1120; transform: scale(0.94); }
-        .dpad-stop { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4); color: var(--danger); font-size: 0.8rem; }
-
         .hud-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            font-size: 0.85rem;
+            gap: 12px;
         }
         .hud-item {
             background: rgba(0,0,0,0.3);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 10px 14px;
         }
-        .hud-label { color: #64748b; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; }
-        .hud-val { color: #f8fafc; font-weight: 700; margin-top: 4px; font-size: 0.95rem; }
+        .hud-label { font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+        .hud-val { font-size: 0.92rem; font-weight: 700; }
+
+        /* MECANUM D-PAD */
+        .dpad-layout {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+        .dpad-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            padding: 14px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            user-select: none;
+            text-align: center;
+        }
+        .dpad-btn:active { background: var(--primary); color: #000; }
+        .dpad-strafe { background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3); color: #38bdf8; font-size: 0.78rem; }
+        .dpad-stop { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4); color: #ef4444; }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>JetAuto Dual Vision <span class="target-badge" id="targetBadge">🎯 """ + TARGET_CLASS.upper() + """</span></h1>
-        <p>Cam Astra: YOLO AI Detect & Bam Duoi | Cam OAK-D: Live FPV Video (Khong Detect)</p>
+        <p>Cam Astra: YOLO Khóa Mục Tiêu | Cam OAK-D: Stereo Depth & Trượt Ngang Né Vật Cản</p>
     </div>
 
     <div class="container">
         <!-- TOP TOOLBAR -->
         <div class="top-toolbar">
             <div class="group-left">
-                <span style="color: #64748b; font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">Bo cuc:</span>
-                <button class="btn-toggle active" id="btnLayoutDual" onclick="setLayout('dual')">⊞ 2 Cam Song Song (Dual)</button>
-                <button class="btn-toggle" id="btnLayoutAstra" onclick="setLayout('astra')">🔲 Chi Cam Astra (AI)</button>
-                <button class="btn-toggle" id="btnLayoutOakd" onclick="setLayout('oakd')">🔲 Chi Cam OAK-D (FPV)</button>
+                <span style="color: #64748b; font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">Bố cục:</span>
+                <button class="btn-toggle active" id="btnLayoutDual" onclick="setLayout('dual')">⊞ 2 Màn Hình (Cards)</button>
+                <button class="btn-toggle" id="btnLayoutCombined" onclick="setLayout('combined')">🔲 Ghép 1 Luồng (Unified)</button>
+                <button class="btn-toggle" id="btnLayoutAstra" onclick="setLayout('astra')">🔲 Chỉ Cam Astra</button>
+                <button class="btn-toggle" id="btnLayoutOakd" onclick="setLayout('oakd')">🔲 Chỉ Cam OAK-D</button>
             </div>
             <div class="group-right">
-                <span style="color: #64748b; font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">Che do tai:</span>
-                <button class="btn-toggle active" id="btnFeedStream" onclick="setFeedMode('stream')">📡 Stream (MJPEG)</button>
-                <button class="btn-toggle" id="btnFeedSnapshot" onclick="setFeedMode('snapshot')">⚡ Snapshot (Live)</button>
+                <span style="color: #64748b; font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">Chế độ:</span>
+                <button class="btn-toggle active" id="btnFeedStream" onclick="setFeedMode('stream')">📡 Stream Video</button>
+                <button class="btn-toggle" id="btnFeedSnapshot" onclick="setFeedMode('snapshot')">⚡ Snapshot</button>
             </div>
         </div>
 
@@ -539,37 +729,48 @@ class CamHandler(BaseHTTPRequestHandler):
             <!-- CAM 1: ASTRA PRO PLUS (YOLO AI) -->
             <div class="stream-card" id="cardAstra">
                 <div class="stream-header">
-                    <span style="color: var(--primary);">🟢 ASTRA PRO PLUS (YOLO AI & Dieu Khien)</span>
+                    <span style="color: var(--primary);">🟢 ASTRA PRO PLUS (YOLO Khóa Mục Tiêu)</span>
                     <span style="color: var(--success);" id="feedStatusAstra">● AI Active</span>
                 </div>
                 <div class="stream-box">
-                    <img id="feedAstra" src="/cam_astra.mjpg" alt="Astra AI Feed" onerror="handleStreamError('astra')" />
+                    <img id="feedAstra" src="/cam_astra.mjpg" alt="Astra Feed" />
                 </div>
             </div>
 
-            <!-- CAM 2: LUXONIS OAK-D (CLEAN FPV STREAM) -->
+            <!-- CAM 2: LUXONIS OAK-D (OBSTACLE RADAR) -->
             <div class="stream-card" id="cardOakd">
                 <div class="stream-header">
-                    <span style="color: #38bdf8;">🔵 LUXONIS OAK-D (Live FPV Stream - Khong Detect)</span>
-                    <span style="color: var(--success);" id="feedStatusOakd">● Video Sac Net</span>
+                    <span style="color: #38bdf8;">🔵 LUXONIS OAK-D (Stereo Depth & Radar Gầm Xe)</span>
+                    <span style="color: var(--success);" id="feedStatusOakd">● Radar Active</span>
                 </div>
                 <div class="stream-box">
-                    <img id="feedOakd" src="/cam_oakd.mjpg" alt="OAK-D FPV Feed" onerror="handleStreamError('oakd')" />
+                    <img id="feedOakd" src="/cam_oakd.mjpg" alt="OAK-D Feed" />
                 </div>
+            </div>
+        </div>
+
+        <!-- UNIFIED COMBINED VIEW -->
+        <div class="stream-card" id="cardCombined" style="display: none; width: 100%;">
+            <div class="stream-header">
+                <span style="color: var(--primary);">⊞ GHÉP ĐỒNG THỜI 2 CAMERA (Side-by-Side Unified Stream)</span>
+                <span style="color: var(--success);">● 0% Conflict Stream</span>
+            </div>
+            <div class="stream-box">
+                <img id="feedCombined" src="/cam_combined.mjpg" alt="Combined Feed" />
             </div>
         </div>
 
         <!-- QUICK CONTROLS -->
         <div class="control-row">
-            <input type="text" id="targetInput" placeholder="Nhap ten vat the can tim (person, bottle, cup, chair, cell phone...)" onkeypress="if(event.key==='Enter') setTarget()" />
-            <button class="btn-action btn-find" onclick="setTarget()">🔍 TIM KIEM</button>
-            <button id="pauseBtn" class="btn-action btn-pause" onclick="togglePause()">⏸️ TAM DUNG</button>
-            <button class="btn-action btn-test" onclick="testMotors()">🛠️ TEST DONG CO (2S)</button>
+            <input type="text" id="targetInput" placeholder="Nhập tên vật thể cần tìm (person, bottle, cup, chair, cell phone...)" onkeypress="if(event.key==='Enter') setTarget()" />
+            <button class="btn-action btn-find" onclick="setTarget()">🔍 TÌM KIẾM</button>
+            <button id="pauseBtn" class="btn-action btn-pause" onclick="togglePause()">⏸️ TẠM DỪNG</button>
+            <button class="btn-action btn-test" onclick="testMotors()">🛠️ TEST MECANUM 3-DOF</button>
         </div>
 
         <!-- QUICK TAGS -->
         <div class="tags-bar">
-            <span style="font-size: 0.8rem; color: #64748b; font-weight: 700;">Goi y:</span>
+            <span style="font-size: 0.8rem; color: #64748b; font-weight: 700;">Gợi ý:</span>
             <button class="tag-btn" onclick="quickSelect('person')">👤 person</button>
             <button class="tag-btn" onclick="quickSelect('bottle')">🍾 bottle</button>
             <button class="tag-btn" onclick="quickSelect('cup')">☕ cup</button>
@@ -583,46 +784,50 @@ class CamHandler(BaseHTTPRequestHandler):
         <div class="bottom-grid">
             <div class="info-card">
                 <div class="card-title">
-                    <span>Trang thai he thong & Dong co</span>
+                    <span>Trạng thái Hệ thống & Radar Né Vật Cản</span>
                     <span id="aiFpsBadge" style="color: var(--primary);">AI: 0.0 FPS</span>
                 </div>
                 <div class="hud-grid">
-                    <div class="hud-item">
-                        <div class="hud-label">Hanh dong Robot</div>
-                        <div class="hud-val" id="hudAction" style="color: var(--warning);">DANG KHOI TAO...</div>
+                    <div class="hud-item" style="grid-column: span 2;">
+                        <div class="hud-label">Hành động Robot</div>
+                        <div class="hud-val" id="hudAction" style="color: var(--warning);">ĐANG KHỞI TẠO...</div>
                     </div>
                     <div class="hud-item">
-                        <div class="hud-label">Lenh lai 10Hz</div>
-                        <div class="hud-val" id="hudCmdVel">vx: 0.00 | wz: 0.0°</div>
+                        <div class="hud-label">Radar OAK-D (Trái | Giữa | Phải)</div>
+                        <div class="hud-val" id="hudRadar" style="color: var(--success);">L: -- | C: -- | R: --</div>
                     </div>
                     <div class="hud-item">
-                        <div class="hud-label">Cam 1 (AI Detect)</div>
-                        <div class="hud-val" id="hudSourceAstra" style="color: var(--primary);">Astra Pro Plus</div>
+                        <div class="hud-label">Hướng Né Mecanum</div>
+                        <div class="hud-val" id="hudStrafe" style="color: #38bdf8;">ĐƯỜNG THÔNG THOÁNG</div>
                     </div>
                     <div class="hud-item">
-                        <div class="hud-label">Cam 2 (Clean FPV)</div>
-                        <div class="hud-val" id="hudSourceOakd" style="color: #38bdf8;">DepthAI ColorCamera</div>
+                        <div class="hud-label">Lệnh Vận Tốc 3-DOF (10Hz)</div>
+                        <div class="hud-val" id="hudCmdVel">vx: 0.00 | vy: 0.00 | wz: 0.0°</div>
+                    </div>
+                    <div class="hud-item">
+                        <div class="hud-label">Nguồn 2 Camera</div>
+                        <div class="hud-val" id="hudSources" style="font-size: 0.8rem; color: #94a3b8;">Astra Pro + OAK-D</div>
                     </div>
                 </div>
             </div>
 
-            <!-- D-PAD MANUAL DRIVE -->
+            <!-- MECANUM D-PAD MANUAL DRIVE -->
             <div class="dpad-card">
                 <div class="card-title">
-                    <span>Lai thu cong (D-Pad / W,A,S,D)</span>
+                    <span>Lái thủ công Bánh Mecanum (W,A,S,D + Q,E trượt)</span>
                 </div>
                 <div class="dpad-layout">
                     <div></div>
-                    <button class="dpad-btn" onmousedown="drive('forward')" onmouseup="drive('stop')" ontouchstart="drive('forward')" ontouchend="drive('stop')">▲</button>
+                    <button class="dpad-btn" onmousedown="drive('forward')" onmouseup="drive('stop')" ontouchstart="drive('forward')" ontouchend="drive('stop')">▲ TIẾN</button>
                     <div></div>
 
-                    <button class="dpad-btn" onmousedown="drive('left')" onmouseup="drive('stop')" ontouchstart="drive('left')" ontouchend="drive('stop')">◀</button>
-                    <button class="dpad-btn dpad-stop" onclick="drive('stop')">DUNG</button>
-                    <button class="dpad-btn" onmousedown="drive('right')" onmouseup="drive('stop')" ontouchstart="drive('right')" ontouchend="drive('stop')">▶</button>
+                    <button class="dpad-btn dpad-strafe" onmousedown="drive('strafe_left')" onmouseup="drive('stop')" ontouchstart="drive('strafe_left')" ontouchend="drive('stop')">◄◄ TRƯỢT T</button>
+                    <button class="dpad-btn dpad-stop" onclick="drive('stop')">DỪNG</button>
+                    <button class="dpad-btn dpad-strafe" onmousedown="drive('strafe_right')" onmouseup="drive('stop')" ontouchstart="drive('strafe_right')" ontouchend="drive('stop')">TRƯỢT P ►►</button>
 
-                    <div></div>
-                    <button class="dpad-btn" onmousedown="drive('backward')" onmouseup="drive('stop')" ontouchstart="drive('backward')" ontouchend="drive('stop')">▼</button>
-                    <div></div>
+                    <button class="dpad-btn" onmousedown="drive('left')" onmouseup="drive('stop')" ontouchstart="drive('left')" ontouchend="drive('stop')">⟲ XOAY T</button>
+                    <button class="dpad-btn" onmousedown="drive('backward')" onmouseup="drive('stop')" ontouchstart="drive('backward')" ontouchend="drive('stop')">▼ LÙI</button>
+                    <button class="dpad-btn" onmousedown="drive('right')" onmouseup="drive('stop')" ontouchstart="drive('right')" ontouchend="drive('stop')">XOAY P ⟳</button>
                 </div>
             </div>
         </div>
@@ -638,23 +843,34 @@ class CamHandler(BaseHTTPRequestHandler):
             const grid = document.getElementById('cameraGrid');
             const cardAstra = document.getElementById('cardAstra');
             const cardOakd = document.getElementById('cardOakd');
+            const cardCombined = document.getElementById('cardCombined');
 
             document.getElementById('btnLayoutDual').className = 'btn-toggle ' + (mode === 'dual' ? 'active' : '');
+            document.getElementById('btnLayoutCombined').className = 'btn-toggle ' + (mode === 'combined' ? 'active' : '');
             document.getElementById('btnLayoutAstra').className = 'btn-toggle ' + (mode === 'astra' ? 'active' : '');
             document.getElementById('btnLayoutOakd').className = 'btn-toggle ' + (mode === 'oakd' ? 'active' : '');
 
             if (mode === 'dual') {
+                grid.style.display = 'grid';
                 grid.style.gridTemplateColumns = '1fr 1fr';
                 cardAstra.style.display = 'block';
                 cardOakd.style.display = 'block';
+                cardCombined.style.display = 'none';
+            } else if (mode === 'combined') {
+                grid.style.display = 'none';
+                cardCombined.style.display = 'block';
             } else if (mode === 'astra') {
+                grid.style.display = 'grid';
                 grid.style.gridTemplateColumns = '1fr';
                 cardAstra.style.display = 'block';
                 cardOakd.style.display = 'none';
+                cardCombined.style.display = 'none';
             } else if (mode === 'oakd') {
+                grid.style.display = 'grid';
                 grid.style.gridTemplateColumns = '1fr';
                 cardAstra.style.display = 'none';
                 cardOakd.style.display = 'block';
+                cardCombined.style.display = 'none';
             }
         }
 
@@ -665,44 +881,42 @@ class CamHandler(BaseHTTPRequestHandler):
             
             const imgAstra = document.getElementById('feedAstra');
             const imgOakd = document.getElementById('feedOakd');
+            const imgCombined = document.getElementById('feedCombined');
 
             if (mode === 'snapshot') {
-                document.getElementById('feedStatusAstra').innerText = '● Snapshot';
-                document.getElementById('feedStatusOakd').innerText = '● Snapshot';
                 startSnapshotLoop();
             } else {
-                document.getElementById('feedStatusAstra').innerText = '● AI Active';
-                document.getElementById('feedStatusOakd').innerText = '● Video Active';
                 stopSnapshotLoop();
                 imgAstra.src = '/cam_astra.mjpg?t=' + Date.now();
                 imgOakd.src = '/cam_oakd.mjpg?t=' + Date.now();
+                imgCombined.src = '/cam_combined.mjpg?t=' + Date.now();
             }
-        }
-
-        function handleStreamError(cam) {
-            console.warn("MJPEG stream loi hoac bi chan o " + cam + ", chuyen sang Snapshot Polling...");
-            setFeedMode('snapshot');
         }
 
         function startSnapshotLoop() {
             stopSnapshotLoop();
             function poll() {
-                const imgAstra = document.getElementById('feedAstra');
-                const imgOakd = document.getElementById('feedOakd');
-                const cardAstra = document.getElementById('cardAstra');
-                const cardOakd = document.getElementById('cardOakd');
-
-                if (cardAstra && cardAstra.style.display !== 'none') {
-                    const nA = new Image();
-                    nA.onload = () => { imgAstra.src = nA.src; };
-                    nA.src = '/snapshot_astra.jpg?t=' + Date.now();
+                const now = Date.now();
+                if (currentLayout === 'combined') {
+                    const imgCombined = document.getElementById('feedCombined');
+                    const nC = new Image();
+                    nC.onload = () => { imgCombined.src = nC.src; };
+                    nC.src = '/snapshot_combined.jpg?t=' + now;
+                } else {
+                    const imgAstra = document.getElementById('feedAstra');
+                    const imgOakd = document.getElementById('feedOakd');
+                    if (currentLayout === 'dual' || currentLayout === 'astra') {
+                        const nA = new Image();
+                        nA.onload = () => { imgAstra.src = nA.src; };
+                        nA.src = '/snapshot_astra.jpg?t=' + now;
+                    }
+                    if (currentLayout === 'dual' || currentLayout === 'oakd') {
+                        const nO = new Image();
+                        nO.onload = () => { imgOakd.src = nO.src; };
+                        nO.src = '/snapshot_oakd.jpg?t=' + now;
+                    }
                 }
-                if (cardOakd && cardOakd.style.display !== 'none') {
-                    const nO = new Image();
-                    nO.onload = () => { imgOakd.src = nO.src; };
-                    nO.src = '/snapshot_oakd.jpg?t=' + Date.now();
-                }
-                snapshotTimer = setTimeout(poll, 70);
+                snapshotTimer = setTimeout(poll, 120);
             }
             poll();
         }
@@ -744,10 +958,10 @@ class CamHandler(BaseHTTPRequestHandler):
             const btn = document.getElementById('pauseBtn');
             if (paused) {
                 btn.className = 'btn-action btn-resume';
-                btn.innerText = '▶️ TIEP TUC';
+                btn.innerText = '▶️ TIẾP TỤC';
             } else {
                 btn.className = 'btn-action btn-pause';
-                btn.innerText = '⏸️ TAM DUNG';
+                btn.innerText = '⏸️ TẠM DỪNG';
             }
         }
 
@@ -755,7 +969,7 @@ class CamHandler(BaseHTTPRequestHandler):
             fetch('/test_motors', {method: 'POST'})
                 .then(r => r.json())
                 .then(d => alert(">> " + d.msg))
-                .catch(e => alert("Loi ket noi: " + e));
+                .catch(e => alert("Lỗi kết nối: " + e));
         }
 
         function drive(dir) {
@@ -766,11 +980,13 @@ class CamHandler(BaseHTTPRequestHandler):
             }).catch(() => {});
         }
 
-        // Ho tro ban phim W/A/S/D hoac mui ten
+        // Hỗ trợ bàn phím W/A/S/D + Q/E trượt ngang
         window.addEventListener('keydown', e => {
             if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
             if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') drive('forward');
             else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') drive('backward');
+            else if (e.key === 'q' || e.key === 'Q') drive('strafe_left');
+            else if (e.key === 'e' || e.key === 'E') drive('strafe_right');
             else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') drive('left');
             else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') drive('right');
             else if (e.key === ' ') drive('stop');
@@ -778,18 +994,41 @@ class CamHandler(BaseHTTPRequestHandler):
 
         window.addEventListener('keyup', e => {
             if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-            if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','W','A','S','D'].includes(e.key)) {
+            if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','q','e','W','A','S','D','Q','E'].includes(e.key)) {
                 drive('stop');
             }
         });
 
-        // Cap nhat HUD status moi giay
+        // Cập nhật trạng thái HUD mỗi giây
         setInterval(() => {
             fetch('/status').then(r => r.json()).then(d => {
                 document.getElementById('hudAction').innerText = d.action_text;
-                document.getElementById('hudCmdVel').innerText = 'vx: ' + d.linear_x.toFixed(2) + ' | wz: ' + d.angular_z.toFixed(1) + '°';
-                document.getElementById('hudSourceAstra').innerText = d.source_astra;
-                document.getElementById('hudSourceOakd').innerText = d.source_oakd;
+                
+                // Hiển thị radar khoảng cách 3 hướng
+                const dl = d.dist_left < 800 ? d.dist_left.toFixed(0) + 'cm' : 'THOÁNG';
+                const dc = d.dist_center < 800 ? d.dist_center.toFixed(0) + 'cm' : 'THOÁNG';
+                const dr = d.dist_right < 800 ? d.dist_right.toFixed(0) + 'cm' : 'THOÁNG';
+                const radarEl = document.getElementById('hudRadar');
+                radarEl.innerText = 'L: ' + dl + ' | C: ' + dc + ' | R: ' + dr;
+                if (d.obs_status === 'NGUY HIEM') radarEl.style.color = 'var(--danger)';
+                else if (d.obs_status === 'CANH BAO') radarEl.style.color = 'var(--warning)';
+                else radarEl.style.color = 'var(--success)';
+
+                // Hướng né
+                const strafeEl = document.getElementById('hudStrafe');
+                if (d.strafe_dir === 'LEFT') {
+                    strafeEl.innerText = '<<< TRƯỢT TRÁI NÉ';
+                    strafeEl.style.color = 'var(--warning)';
+                } else if (d.strafe_dir === 'RIGHT') {
+                    strafeEl.innerText = 'TRƯỢT PHẢI NÉ >>>';
+                    strafeEl.style.color = 'var(--warning)';
+                } else {
+                    strafeEl.innerText = 'ĐƯỜNG THÔNG THOÁNG';
+                    strafeEl.style.color = 'var(--success)';
+                }
+
+                document.getElementById('hudCmdVel').innerText = 'vx: ' + d.linear_x.toFixed(2) + ' | vy: ' + d.linear_y.toFixed(2) + ' | wz: ' + d.angular_z.toFixed(1) + '°';
+                document.getElementById('hudSources').innerText = d.source_astra + ' + ' + d.source_oakd;
                 document.getElementById('aiFpsBadge').innerText = 'AI: ' + d.ai_fps.toFixed(1) + ' FPS';
                 updatePauseUI(d.paused);
             }).catch(() => {});
@@ -797,11 +1036,6 @@ class CamHandler(BaseHTTPRequestHandler):
     </script>
 </body>
 </html>"""
-
-
-class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
-    daemon_threads = True
-    allow_reuse_address = True
 
 
 def start_web_server():
@@ -822,6 +1056,9 @@ def start_web_server():
         server.serve_forever()
 
 
+# ==========================================================
+# OBJECT SEEKER - BỘ NÃO ĐIỀU PHỐI TRUNG TÂM
+# ==========================================================
 class ObjectSeeker(object):
     def __init__(self):
         global seeker_instance
@@ -834,17 +1071,15 @@ class ObjectSeeker(object):
         for top in CMD_VEL_TOPICS:
             self.cmd_publishers.append(rospy.Publisher(top, Twist, queue_size=1))
 
-        # Bien van toc mong muon (cho Motion Heartbeat Loop 10Hz)
+        # Bien van toc mong muon 3-DOF (cho Motion Heartbeat Loop 10Hz)
         self.motion_lock = threading.Lock()
         self.desired_linear_x = 0.0
+        self.desired_linear_y = 0.0  # MECANUM STRAFE (TRUOT NGANG)
         self.desired_angular_z = 0.0
         self.smooth_x = None
         self.smooth_w = None
 
         self.manual_override_until = 0.0
-
-        # Camera AI mac dinh: Astra Pro Plus
-        self.active_ai_cam = 'astra'
 
         # Load YOLO Model
         self.classes = self.load_classes()
@@ -885,57 +1120,62 @@ class ObjectSeeker(object):
         self.motion_thread = threading.Thread(target=self.motion_heartbeat_loop)
         self.motion_thread.daemon = True
         self.motion_thread.start()
-        rospy.loginfo(">> [JetAuto] Da khoi dong Thread dieu khien Dong Co 10Hz Heartbeat!")
+        rospy.loginfo(">> [JetAuto] Da khoi dong Thread dieu khien Dong Co 10Hz Heartbeat (Mecanum 3-DOF)!")
 
-        # 2. KHOI DONG CAMERA ASTRA (ROS Topic)
+        # 2. KHOI DONG CAMERA ASTRA (ROS Topic /depth_cam/rgb/image_raw)
         self.astra_thread = threading.Thread(target=self.init_astra_capture)
         self.astra_thread.daemon = True
         self.astra_thread.start()
 
-        # 3. KHOI DONG CAMERA OAK-D (DepthAI truc tiep)
+        # 3. KHOI DONG CAMERA OAK-D (Stereo Depth + RGB qua DepthAI)
         self.oakd_thread = threading.Thread(target=self.init_oakd_capture)
         self.oakd_thread.daemon = True
         self.oakd_thread.start()
 
-        # 4. KHOI DONG AI WORKER LOOP
+        # 4. KHOI DONG THREAD NEN JPEG NEN (TIET KIEM CPU & GIL CHO WEB)
+        self.encoder_thread = threading.Thread(target=jpeg_encoder_loop)
+        self.encoder_thread.daemon = True
+        self.encoder_thread.start()
+
+        # 5. KHOI DONG AI CENTRAL ARBITRATION WORKER LOOP
         self.ai_thread = threading.Thread(target=self.ai_worker_loop)
         self.ai_thread.daemon = True
         self.ai_thread.start()
-
-    def switch_camera(self, cam_choice):
-        self.active_ai_cam = 'oakd' if cam_choice == 'oakd' else 'astra'
-        with frame_lock:
-            global display_frame
-            display_frame = None
-        rospy.loginfo(">> [CAMERA] Chuyen camera AI sang: " + self.active_ai_cam.upper())
-        return True, "Da chon " + ("OAK-D" if self.active_ai_cam == 'oakd' else "Astra Pro")
 
     def load_classes(self):
         path = os.path.join(os.path.dirname(__file__), 'coco.names')
         if os.path.exists(path):
             with open(path, 'r') as f:
-                return [x.strip() for x in f if x.strip()]
-        return ['person', 'bottle', 'chair', 'cell phone', 'cup']
+                return [c.strip() for c in f.readlines() if c.strip()]
+        return ['person']
 
-    def set_desired_velocity(self, linear_x=0.0, angular_z_deg=0.0):
+    def set_desired_velocity(self, linear_x=0.0, linear_y=0.0, angular_z_deg=0.0):
         with self.motion_lock:
             self.desired_linear_x = float(linear_x)
+            self.desired_linear_y = float(linear_y)  # MECANUM STRAFE
             self.desired_angular_z = float(angular_z_deg)
 
     def trigger_motor_test(self):
-        """Kiem tra dong co trong 2 giay bang cach gui chuoi lenh di chuyen."""
+        """Kiem tra dong co 3-DOF: Tien -> Truot Trai -> Truot Phai -> Xoay -> Dung!"""
         def run_test():
-            rospy.loginfo(">> [TEST DONG CO] Bat dau test: Tien 0.6s -> Re Trai 0.6s -> Re Phai 0.6s -> Dung!")
+            rospy.loginfo(">> [TEST MECANUM] Tien 0.5s -> Truot Trai 0.5s -> Truot Phai 0.5s -> Xoay 0.5s -> Dung!")
             self.manual_override_until = time.time() + 3.0
-            self.set_desired_velocity(0.18, 0.0)
-            time.sleep(0.6)
-            self.set_desired_velocity(0.0, 35.0)
-            time.sleep(0.6)
-            self.set_desired_velocity(0.0, -35.0)
-            time.sleep(0.6)
-            self.set_desired_velocity(0.0, 0.0)
+            # 1. Tien
+            self.set_desired_velocity(0.18, 0.0, 0.0)
+            time.sleep(0.5)
+            # 2. Truot trai
+            self.set_desired_velocity(0.0, 0.18, 0.0)
+            time.sleep(0.5)
+            # 3. Truot phai
+            self.set_desired_velocity(0.0, -0.18, 0.0)
+            time.sleep(0.5)
+            # 4. Xoay tai cho
+            self.set_desired_velocity(0.0, 0.0, 35.0)
+            time.sleep(0.5)
+            # 5. Dung
+            self.set_desired_velocity(0.0, 0.0, 0.0)
             self.manual_override_until = 0.0
-            rospy.loginfo(">> [TEST DONG CO] Test dong co hoan tat!")
+            rospy.loginfo(">> [TEST MECANUM] Hoan tat test 3-DOF!")
 
         t = threading.Thread(target=run_test)
         t.daemon = True
@@ -944,35 +1184,44 @@ class ObjectSeeker(object):
     def manual_move(self, direction):
         if direction == 'forward':
             self.manual_override_until = time.time() + 0.8
-            self.set_desired_velocity(0.18, 0.0)
+            self.set_desired_velocity(0.18, 0.0, 0.0)
         elif direction == 'backward':
             self.manual_override_until = time.time() + 0.8
-            self.set_desired_velocity(-0.18, 0.0)
+            self.set_desired_velocity(-0.18, 0.0, 0.0)
+        elif direction == 'strafe_left':
+            self.manual_override_until = time.time() + 0.8
+            self.set_desired_velocity(0.0, 0.18, 0.0)  # Truot trai
+        elif direction == 'strafe_right':
+            self.manual_override_until = time.time() + 0.8
+            self.set_desired_velocity(0.0, -0.18, 0.0)  # Truot phai
         elif direction == 'left':
             self.manual_override_until = time.time() + 0.8
-            self.set_desired_velocity(0.0, 35.0)
+            self.set_desired_velocity(0.0, 0.0, 35.0)   # Xoay trai
         elif direction == 'right':
             self.manual_override_until = time.time() + 0.8
-            self.set_desired_velocity(0.0, -35.0)
+            self.set_desired_velocity(0.0, 0.0, -35.0)  # Xoay phai
         else:
             self.manual_override_until = 0.0
-            self.set_desired_velocity(0.0, 0.0)
+            self.set_desired_velocity(0.0, 0.0, 0.0)
 
     def motion_heartbeat_loop(self):
-        """Vong lap 10Hz lien tuc gui Twist lenh dong co de duy tri watchdog STM32."""
+        """Vong lap 10Hz lien tuc gui Twist lenh dong co Mecanum 3-DOF de duy tri watchdog STM32."""
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             with self.motion_lock:
                 vx = self.desired_linear_x
+                vy = self.desired_linear_y
                 wz = self.desired_angular_z
                 paused = IS_PAUSED
 
             if paused:
                 vx = 0.0
+                vy = 0.0
                 wz = 0.0
 
             twist_msg = Twist()
             twist_msg.linear.x = float(vx)
+            twist_msg.linear.y = float(vy)  # MECANUM STRAFING (TRUOT NGANG)
             twist_msg.angular.z = float(math.radians(wz))
 
             for pub in self.cmd_publishers:
@@ -981,13 +1230,13 @@ class ObjectSeeker(object):
                 except Exception:
                     pass
 
-            if abs(vx) > 0.001 or abs(wz) > 0.001:
-                rospy.loginfo_throttle(2.0, ">> [DONG CO] Dang lai 10Hz: vx={:.2f} m/s, wz={:.1f} deg/s".format(vx, wz))
+            if abs(vx) > 0.001 or abs(vy) > 0.001 or abs(wz) > 0.001:
+                rospy.loginfo_throttle(2.5, ">> [MECANUM 3-DOF] vx={:.2f} m/s, vy={:.2f} m/s (strafe), wz={:.1f} deg/s".format(vx, vy, wz))
 
             rate.sleep()
 
     # ==========================================================
-    # MODUL CAMERA 1: ASTRA PRO PLUS (ROS Topic /depth_cam/rgb/image_raw)
+    # MODUL CAMERA 1: ASTRA PRO PLUS (ROS Topic)
     # ==========================================================
     def init_astra_capture(self):
         global cam_source_astra
@@ -1002,35 +1251,61 @@ class ObjectSeeker(object):
         global raw_frame_astra, cam_source_astra
         frame = self._decode_ros_image(msg)
         if frame is not None:
-            cam_source_astra = "Astra Pro (ROS Topic)"
+            cam_source_astra = "Astra Pro (ROS)"
             with frame_lock:
                 raw_frame_astra = frame
 
     # ==========================================================
-    # MODUL CAMERA 2: LUXONIS OAK-D (DepthAI ColorCamera / OpenCV) - CLEAN FPV STREAM
+    # MODUL CAMERA 2: LUXONIS OAK-D (DepthAI Stereo Depth & RGB)
     # ==========================================================
     def init_oakd_capture(self):
-        global raw_frame_oakd, display_frame_oakd, cam_source_oakd
-        rospy.loginfo(">> [OAK-D] Dang kiem tra phan cung Luxonis OAK-D...")
+        global raw_frame_oakd, display_frame_oakd, cam_source_oakd, depth_frame_oakd, obstacle_info
+        rospy.loginfo(">> [OAK-D] Dang khoi dong Luxonis OAK-D (RGB + Stereo Depth)...")
         cam_source_oakd = "Dang ket noi DepthAI..."
 
         if dai is not None:
             try:
                 devices = dai.Device.getAllAvailableDevices()
                 if devices:
-                    rospy.loginfo(">> [OAK-D] Phat hien {} thiet bi OAK-D. Khoi tao ColorCamera pipeline...".format(len(devices)))
+                    rospy.loginfo(">> [OAK-D] Tim thay {} thiet bi OAK-D. Tao Pipeline Stereo Depth...".format(len(devices)))
                     pipeline = dai.Pipeline()
+
+                    # 1. Cam RGB
                     cam_rgb = pipeline.createColorCamera()
                     cam_rgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_1080_P)
                     cam_rgb.setPreviewSize(640, 480)
                     cam_rgb.setInterleaved(False)
                     cam_rgb.setColorOrder(dai.ColorCameraProperties.ColorOrder.BGR)
-                    cam_rgb.setFps(30)
+                    cam_rgb.setFps(25)
+                    xout_rgb = pipeline.createXLinkOut()
+                    xout_rgb.setStreamName("rgb")
+                    cam_rgb.preview.link(xout_rgb.input)
 
-                    xout = pipeline.createXLinkOut()
-                    xout.setStreamName("rgb")
-                    cam_rgb.preview.link(xout.input)
+                    # 2. Stereo Depth
+                    has_stereo = False
+                    try:
+                        mono_left = pipeline.createMonoCamera()
+                        mono_left.setBoardSocket(dai.CameraBoardSocket.LEFT)
+                        mono_left.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
 
+                        mono_right = pipeline.createMonoCamera()
+                        mono_right.setBoardSocket(dai.CameraBoardSocket.RIGHT)
+                        mono_right.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+
+                        stereo = pipeline.createStereoDepth()
+                        stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.HIGH_DENSITY)
+                        stereo.initialConfig.setMedianFilter(dai.MedianFilter.KERNEL_7x7)
+                        mono_left.out.link(stereo.left)
+                        mono_right.out.link(stereo.right)
+
+                        xout_depth = pipeline.createXLinkOut()
+                        xout_depth.setStreamName("depth")
+                        stereo.depth.link(xout_depth.input)
+                        has_stereo = True
+                    except Exception as stereo_err:
+                        rospy.logwarn(">> [OAK-D] Setup Stereo Depth gap loi (chay che do RGB don): " + str(stereo_err))
+
+                    # 3. Ket noi Device
                     device = None
                     try:
                         device = dai.Device(pipeline)
@@ -1038,24 +1313,49 @@ class ObjectSeeker(object):
                         time.sleep(2)
                         device = dai.Device(pipeline, maxUsbSpeed=dai.UsbSpeed.HIGH)
 
-                    q = device.getOutputQueue(name="rgb", maxSize=4, blocking=False)
-                    cam_source_oakd = "DepthAI ColorCamera ({})".format(device.getUsbSpeed().name)
-                    rospy.loginfo(">> [OAK-D] Da ket noi thanh cong DepthAI ColorCamera (Clean FPV)!")
+                    q_rgb = device.getOutputQueue(name="rgb", maxSize=4, blocking=False)
+                    q_depth = device.getOutputQueue(name="depth", maxSize=4, blocking=False) if has_stereo else None
+
+                    cam_source_oakd = "OAK-D Spatial ({})".format(device.getUsbSpeed().name)
+                    rospy.loginfo(">> [OAK-D] Da ket noi thanh cong OAK-D Spatial Radar!")
+
+                    cur_dl, cur_dc, cur_dr = 999.0, 999.0, 999.0
 
                     while not rospy.is_shutdown():
-                        in_rgb = q.tryGet()
-                        if in_rgb is not None:
-                            f = in_rgb.getCvFrame()
-                            if f is not None:
-                                f_clean = f.copy()
-                                cv2.putText(f_clean, "LUXONIS OAK-D (LIVE FPV)", (20, 35), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 229, 255), 2)
-                                with frame_lock:
-                                    raw_frame_oakd = f
-                                    display_frame_oakd = f_clean
+                        # Doc Depth de cap nhat khoang cach vat can
+                        if q_depth is not None:
+                            in_depth = q_depth.tryGet()
+                            if in_depth is not None:
+                                d_frame = in_depth.getFrame()
+                                cur_dl, cur_dc, cur_dr = process_obstacle_depth(d_frame)
+                                with obstacle_lock:
+                                    obstacle_info['dist_l'] = cur_dl
+                                    obstacle_info['dist_c'] = cur_dc
+                                    obstacle_info['dist_r'] = cur_dr
+                                    if cur_dc < 30.0:
+                                        obstacle_info['status'] = 'NGUY HIEM'
+                                    elif cur_dc < 60.0:
+                                        obstacle_info['status'] = 'CANH BAO'
+                                    else:
+                                        obstacle_info['status'] = 'AN TOAN'
+
+                        # Doc RGB de hien thi len Web
+                        if q_rgb is not None:
+                            in_rgb = q_rgb.tryGet()
+                            if in_rgb is not None:
+                                frame = in_rgb.getCvFrame()
+                                if frame is not None:
+                                    with obstacle_lock:
+                                        s_dir = obstacle_info.get('strafe_dir', 'NONE')
+                                    rendered_oakd = render_oakd_hud(frame, cur_dl, cur_dc, cur_dr, s_dir)
+                                    with frame_lock:
+                                        raw_frame_oakd = frame
+                                        display_frame_oakd = rendered_oakd
+
                         time.sleep(0.01)
                     return
             except Exception as e:
-                rospy.logwarn(">> [OAK-D] DepthAI gap su co: {}. Fallback ROS Topic...".format(e))
+                rospy.logwarn(">> [OAK-D] DepthAI gap su co: {}. Thu fallback ROS Topic...".format(e))
 
         cam_source_oakd = "Fallback ROS Topic"
         if RosImage is not None:
@@ -1065,12 +1365,11 @@ class ObjectSeeker(object):
         global raw_frame_oakd, display_frame_oakd, cam_source_oakd
         frame = self._decode_ros_image(msg)
         if frame is not None:
-            cam_source_oakd = "ROS Topic"
-            f_clean = frame.copy()
-            cv2.putText(f_clean, "LUXONIS OAK-D (LIVE FPV)", (20, 35), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 229, 255), 2)
+            cam_source_oakd = "OAK-D (ROS Topic)"
+            rendered = render_oakd_hud(frame, 999.0, 999.0, 999.0, "NONE")
             with frame_lock:
                 raw_frame_oakd = frame
-                display_frame_oakd = f_clean
+                display_frame_oakd = rendered
 
     def _decode_ros_image(self, msg):
         try:
@@ -1094,7 +1393,7 @@ class ObjectSeeker(object):
         x_scale = w / float(INPUT_SIZE)
         y_scale = h / float(INPUT_SIZE)
 
-        blob = cv2.dnn.blobFromImage(frame, 1.0/255.0, (INPUT_SIZE, INPUT_SIZE), swapRB=True, crop=False)
+        blob = cv2.dnn.blobFromImage(frame, 1.0 / 255.0, (INPUT_SIZE, INPUT_SIZE), swapRB=True, crop=False)
 
         if self.use_ort:
             outputs = self.session.run(None, {self.input_name: blob})
@@ -1170,8 +1469,8 @@ class ObjectSeeker(object):
         for det in detections:
             bx, by, bw, bh = det['box']
             color = (0, 255, 0) if det['class_name'] == TARGET_CLASS else (100, 100, 100)
-            cv2.rectangle(frame, (bx, by), (bx+bw, by+bh), color, 2)
-            cv2.putText(frame, "{} {:.0f}%".format(det['class_name'], det['conf']*100), (bx, by-8), cv2.FONT_HERSHEY_SIMPLEX, 0.55, color, 1)
+            cv2.rectangle(frame, (bx, by), (bx + bw, by + bh), color, 2)
+            cv2.putText(frame, "{} {:.0f}%".format(det['class_name'], det['conf'] * 100), (bx, by - 8), cv2.FONT_HERSHEY_SIMPLEX, 0.55, color, 1)
 
         if target_center is not None:
             cv2.circle(frame, target_center, 6, (0, 0, 255), -1)
@@ -1181,22 +1480,24 @@ class ObjectSeeker(object):
         cv2.putText(frame, "AI FPS: {:.1f}".format(self.ai_fps), (w - 140, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
         return frame
 
+    # ==========================================================
+    # CENTRAL ARBITRATION: DUNG HỢP ASTRA + OAK-D (MECANUM STRAFING)
+    # ==========================================================
     def ai_worker_loop(self):
-        global raw_frame_astra, display_frame_astra
+        global raw_frame_astra, display_frame_astra, obstacle_info
         frame_counter = 0
         last_fps_time = time.time()
         current_ai_fps = 0.0
 
         while not rospy.is_shutdown():
             raw_frame = None
-
             with frame_lock:
                 if raw_frame_astra is not None:
                     raw_frame = raw_frame_astra.copy()
 
             if raw_frame is None:
                 if not IS_PAUSED and time.time() >= self.manual_override_until:
-                    self.set_desired_velocity(0.0, 18.0)
+                    self.set_desired_velocity(0.0, 0.0, 18.0)
                 time.sleep(0.04)
                 continue
 
@@ -1214,18 +1515,14 @@ class ObjectSeeker(object):
             target_detections = [d for d in detections if d['class_name'] == TARGET_CLASS]
             target_found = len(target_detections) > 0
 
-            action_text = "TIM {}".format(TARGET_CLASS.upper())
-            status_color = (0, 0, 255)
             target_center = None
+            width_ratio = 0.0
 
-            if time.time() < self.manual_override_until:
-                action_text = "LAI THU CONG (MANUAL)"
-                status_color = (0, 229, 255)
-            elif IS_PAUSED:
-                action_text = "TAM DUNG THEO LENH"
-                status_color = (0, 165, 255)
-                self.set_desired_velocity(0.0, 0.0)
-            elif target_found:
+            # 1. TÍNH TOÁN HƯỚNG QUAY KHÓA MỤC TIÊU TỪ CAMERA ASTRA
+            base_vx = 0.0
+            heading_wz = 0.0
+
+            if target_found:
                 best = max(target_detections, key=lambda d: d['conf'])
                 bx, by, bw, bh = best['box']
                 target_center = (bx + bw // 2, by + bh // 2)
@@ -1241,29 +1538,92 @@ class ObjectSeeker(object):
                 width_ratio = self.smooth_w / float(w)
 
                 if width_ratio > 0.45:
-                    action_text = "DA DEN GAN! DUNG LAI"
-                    status_color = (255, 0, 0)
-                    self.set_desired_velocity(0.0, 0.0)
+                    base_vx = 0.0
+                    heading_wz = 0.0
                 else:
-                    if error_x < -40:
-                        action_text = "LECH TRAI -> RE TRAI"
-                        status_color = (0, 255, 255)
-                        self.set_desired_velocity(0.08, 15.0)
-                    elif error_x > 40:
-                        action_text = "LECH PHAI -> RE PHAI"
-                        status_color = (0, 255, 255)
-                        self.set_desired_velocity(0.08, -15.0)
-                    else:
-                        action_text = "CHINH GIUA -> TIEN THANG!"
-                        status_color = (0, 255, 0)
-                        self.set_desired_velocity(0.15, 0.0)
+                    # Bộ điều khiển P tinh chỉnh góc quay để mục tiêu luôn ở giữa màn hình
+                    heading_wz = float(-error_x * 0.07)
+                    heading_wz = max(min(heading_wz, 25.0), -25.0)
+                    base_vx = 0.15 if abs(error_x) < 80 else 0.08
             else:
                 self.smooth_x = None
-                action_text = "TIM {}".format(TARGET_CLASS.upper())
-                status_color = (0, 0, 255)
-                self.set_desired_velocity(0.0, 20.0)
+                base_vx = 0.0
+                heading_wz = 20.0  # Xoay tìm kiếm nếu chưa thấy
 
-            cam_label = "[AI DETECT & TRACK] ASTRA PRO PLUS"
+            # 2. ĐỌC THÔNG SỐ VẬT CẢN TỪ CAMERA OAK-D
+            with obstacle_lock:
+                d_l = obstacle_info['dist_l']
+                d_c = obstacle_info['dist_c']
+                d_r = obstacle_info['dist_r']
+
+            # 3. BỘ NÃO ĐIỀU PHỐI (CENTRAL ARBITRATION VOI BÁNH MECANUM)
+            cmd_vx = 0.0
+            cmd_vy = 0.0  # Mecanum Strafe
+            cmd_wz = 0.0
+            strafe_name = "NONE"
+            action_text = ""
+            status_color = (0, 255, 0)
+
+            if time.time() < self.manual_override_until:
+                action_text = "LAI THU CONG (MANUAL)"
+                status_color = (0, 229, 255)
+            elif IS_PAUSED:
+                action_text = "TAM DUNG THEO LENH"
+                status_color = (0, 165, 255)
+                self.set_desired_velocity(0.0, 0.0, 0.0)
+            else:
+                if d_c < 30.0:
+                    # CẤP 3: VẬT CẢN QUÁ GẦN (< 30cm) -> PHANH KHẨN CẤP TIẾN THẲNG, TRƯỢT NGANG NÉ
+                    cmd_vx = 0.0
+                    if d_l > d_r:
+                        cmd_vy = 0.15  # Trượt sang trái
+                        strafe_name = "LEFT"
+                        action_text = "PHANH! TRUOT TRAI NE VAT CAN ({:.0f}cm)".format(d_c)
+                    else:
+                        cmd_vy = -0.15  # Trượt sang phải
+                        strafe_name = "RIGHT"
+                        action_text = "PHANH! TRUOT PHAI NE VAT CAN ({:.0f}cm)".format(d_c)
+                    cmd_wz = heading_wz if target_found else 0.0
+                    status_color = (0, 0, 255)
+
+                elif d_c < 60.0:
+                    # CẤP 2: VẬT CẢN CHẮN ĐƯỜNG TIẾN (30cm - 60cm) -> TRƯỢT NGANG MECANUM LÁCH VÒNG
+                    cmd_vx = 0.04  # Bò chậm tới trước
+                    if d_l > d_r:
+                        cmd_vy = 0.13  # Trượt sang trái
+                        strafe_name = "LEFT"
+                        action_text = "LACH TRUOT TRAI NE VAT CAN ({:.0f}cm)".format(d_c)
+                    else:
+                        cmd_vy = -0.13  # Trượt sang phải
+                        strafe_name = "RIGHT"
+                        action_text = "LACH TRUOT PHAI NE VAT CAN ({:.0f}cm)".format(d_c)
+                    cmd_wz = heading_wz  # Luôn giữ đầu xe nhìn thẳng vào target!
+                    status_color = (0, 215, 255)
+
+                else:
+                    # CẤP 1: ĐƯỜNG THÔNG THOÁNG HOÀN TOÀN (> 60cm)
+                    cmd_vx = base_vx
+                    cmd_vy = 0.0
+                    strafe_name = "NONE"
+                    cmd_wz = heading_wz
+
+                    if target_found:
+                        if width_ratio > 0.45:
+                            action_text = "DA DEN GAN MUC TIEU! DUNG LAI"
+                            status_color = (0, 255, 0)
+                        else:
+                            action_text = "BAM THEO {} (THOANG: {:.0f}cm)".format(TARGET_CLASS.upper(), d_c)
+                            status_color = (0, 255, 0)
+                    else:
+                        action_text = "DANG TIM KIEM: {}".format(TARGET_CLASS.upper())
+                        status_color = (0, 0, 255)
+
+                with obstacle_lock:
+                    obstacle_info['strafe_dir'] = strafe_name
+
+                self.set_desired_velocity(cmd_vx, cmd_vy, cmd_wz)
+
+            cam_label = "[AI TRACK] ASTRA PRO PLUS"
             rendered = self._render_ai_overlay(raw_frame, cam_label, detections, action_text, status_color, target_center)
 
             with frame_lock:
@@ -1280,10 +1640,25 @@ class ObjectSeeker(object):
 
     def stop(self):
         rospy.loginfo(">> [JetAuto Pro] Dang tat va dung robot an toan...")
-        self.set_desired_velocity(0.0, 0.0)
+        self.set_desired_velocity(0.0, 0.0, 0.0)
+
+
+# ==========================================================
+# MAIN ENTRY POINT
+# ==========================================================
+def sigint_handler(signum, frame):
+    print("\n>> Nhan tin hieu Ctrl+C! Dang dung dong co va thoat an toan...", flush=True)
+    if seeker_instance:
+        seeker_instance.set_desired_velocity(0.0, 0.0, 0.0)
+    try:
+        rospy.signal_shutdown("Ctrl+C pressed")
+    except Exception:
+        pass
+    os._exit(0)
 
 
 if __name__ == '__main__':
+    signal.signal(signal.SIGINT, sigint_handler)
     try:
         web_thread = threading.Thread(target=start_web_server)
         web_thread.daemon = True
@@ -1292,3 +1667,5 @@ if __name__ == '__main__':
         rospy.spin()
     except rospy.ROSInterruptException:
         pass
+    except KeyboardInterrupt:
+        sigint_handler(None, None)
