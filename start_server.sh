@@ -14,7 +14,10 @@ for ws in /home/jetauto/jetauto_ws/devel/setup.bash \
 done
 
 [ -f /home/jetauto/.bashrc ] && source /home/jetauto/.bashrc 2>/dev/null || true
+[ -f /home/jetauto/jetauto_ws/.jetautorc ] && source /home/jetauto/jetauto_ws/.jetautorc 2>/dev/null || true
 [ -f /home/jetauto/jetauto_ws/.typerc ] && source /home/jetauto/jetauto_ws/.typerc 2>/dev/null || true
+export DEPTH_CAMERA_TYPE=${DEPTH_CAMERA_TYPE:-AstraProPlus}
+export LIDAR_TYPE=${LIDAR_TYPE:-G4}
 export ROS_MASTER_URI=http://192.168.149.1:11311
 export ROS_HOSTNAME=192.168.149.1
 export ROS_IP=192.168.149.1
@@ -37,6 +40,21 @@ export PY3_PYTHONPATH="/home/jetauto/.local/lib/python3.6/site-packages:$SYSTEM_
 echo "========================================"
 echo "   HE THONG JETAUTO AI VISION SERVER    "
 echo "========================================"
+
+# A ROS master can retain a topic name after its camera node has died.  Test
+# for an actual publisher, rather than only testing `rostopic list`, before
+# deciding that a device is already running.
+topic_has_publisher() {
+    rostopic info "$1" 2>/dev/null | awk '
+        /^Publishers:/{publishers=1; next}
+        /^Subscribers:/{publishers=0}
+        publishers && /^[[:space:]]*\*/ {found=1}
+        END {exit !found}'
+}
+
+scan_has_data() {
+    topic_has_publisher /scan && timeout 4 rostopic echo -n 1 /scan >/dev/null 2>&1
+}
 
 # Giai phong conflict tu app mac dinh cua Hiwonder va cap quyen thiet bi
 sudo systemctl stop start_app_node.service 2>/dev/null || true
@@ -69,8 +87,8 @@ fi
 # BUOC 2: Kiem tra va khoi dong LiDAR G4
 # ================================================================
 echo ">> [2/4] Kiem tra va khoi dong LiDAR G4..."
-if rostopic list 2>/dev/null | grep -q "/scan" && pgrep -f "ydlidar|rplidar|lidar" > /dev/null 2>&1; then
-    echo "   LiDAR G4 dang hoat dong tot (topic /scan)!"
+if scan_has_data; then
+    echo "   LiDAR G4 dang phat ban quet /scan!"
 else
     echo "   Dang khoi dong LiDAR G4..."
     pkill -9 -f "ydlidar" 2>/dev/null || true
@@ -81,57 +99,58 @@ else
     LIDAR_STARTED=false
     for i in 1 2 3 4 5; do
         sleep 1
-        if rostopic list 2>/dev/null | grep -q "/scan"; then
+        if scan_has_data; then
             LIDAR_STARTED=true
-            echo "   LiDAR G4 da khoi dong thanh cong (topic /scan)!"
+            echo "   LiDAR G4 da khoi dong thanh cong (co du lieu /scan)!"
             break
         fi
     done
     if [ "$LIDAR_STARTED" = false ]; then
-        echo "   [CANH BAO] LiDAR chua tao topic /scan! Log /tmp/lidar.log:"
+        echo "   [CANH BAO] LiDAR khong phat du lieu /scan; robot se khong tu chay! Log /tmp/lidar.log:"
         cat /tmp/lidar.log 2>/dev/null | tail -10
     fi
 fi
 
 # ================================================================
-# BUOC 2.5: Kiem tra va khoi dong Bo dieu khien Dong co Khung gam (bringup.launch)
 # ================================================================
-echo ">> [2.5/5] Kiem tra va khoi dong Bo dieu khien Khung gam (jetauto_bringup)..."
-if rostopic list 2>/dev/null | grep -q "/jetauto_controller/cmd_vel\|/ros_robot_controller/cmd_vel" || \
-   pgrep -f "bringup.launch|ros_robot_controller" > /dev/null 2>&1; then
-    echo "   Bo dieu khien khung gam (jetauto_bringup) dang hoat dong san!"
+# BUOC 2.5: Kiem tra va khoi dong Bo dieu khien Dong co Khung gam (jetauto_controller)
+# ================================================================
+echo ">> [2.5/5] Kiem tra va khoi dong Bo dieu khien Dong co Khung gam..."
+if rostopic list 2>/dev/null | grep -q "/jetauto_controller/cmd_vel\|/cmd_vel" && pgrep -f "odom_publisher" > /dev/null 2>&1; then
+    echo "   Bo dieu khien khung gam (jetauto_controller) dang hoat dong san!"
 else
-    echo "   Dang khoi dong jetauto_bringup bringup.launch..."
+    echo "   Dang khoi dong jetauto_controller jetauto_controller.launch..."
+    pkill -9 -f "jetauto_controller.launch" 2>/dev/null || true
+    pkill -9 -f "odom_publisher" 2>/dev/null || true
     pkill -9 -f "ros_robot_controller" 2>/dev/null || true
     sleep 1
-    nohup roslaunch jetauto_bringup bringup.launch > /tmp/bringup.log 2>&1 &
+    nohup roslaunch jetauto_controller jetauto_controller.launch > /tmp/controller.log 2>&1 &
     
     CHASSIS_STARTED=false
     for i in 1 2 3 4 5 6 7 8 9 10; do
         sleep 1
-        if rostopic list 2>/dev/null | grep -q "/jetauto_controller/cmd_vel\|/cmd_vel" || \
-           pgrep -f "ros_robot_controller" > /dev/null 2>&1; then
+        if rostopic list 2>/dev/null | grep -q "/jetauto_controller/cmd_vel\|/cmd_vel"; then
             CHASSIS_STARTED=true
-            echo "   >> Bo dieu khien khung gam da khoi dong thanh cong! (Log: /tmp/bringup.log)"
+            echo "   >> Bo dieu khien khung gam da khoi dong thanh cong! (Log: /tmp/controller.log)"
             break
         fi
     done
     if [ "$CHASSIS_STARTED" = false ]; then
-        echo "   [CANH BAO] jetauto_bringup chua len hoan toan! Kiem tra log /tmp/bringup.log:"
-        cat /tmp/bringup.log 2>/dev/null | tail -15
+        echo "   [CANH BAO] Chassis Controller chua len hoan toan! Kiem tra log /tmp/controller.log:"
+        cat /tmp/controller.log 2>/dev/null | tail -15
     fi
 fi
 
-# ================================================================
 # BUOC 3: Kiem tra va khoi dong Camera Astra Pro Plus & OAK-D
 # ================================================================
 echo ">> [3/5] Kiem tra va khoi dong Camera Astra Pro Plus..."
 
 # Khoi dong Camera Astra bang depth_cam.launch cua JetAuto
-if rostopic list 2>/dev/null | grep -q "/depth_cam/rgb/image_raw\|/camera/rgb/image_raw"; then
+if topic_has_publisher /depth_cam/rgb/image_raw || topic_has_publisher /camera/rgb/image_raw; then
     echo "   Camera Astra dang hoat dong san (topic RGB da co)!"
 else
     echo "   Dang giai phong va khoi dong driver camera Astra..."
+    export DEPTH_CAMERA_TYPE=AstraProPlus
     pkill -9 -f "depth_cam" 2>/dev/null || true
     pkill -9 -f "orbbec" 2>/dev/null || true
     pkill -9 -f "usb_cam" 2>/dev/null || true
@@ -165,11 +184,16 @@ fi
 APP_SCRIPT="${1:-jetauto_find_object.py}"
 echo ">> [4/5] Khoi chay AI Server ($APP_SCRIPT)..."
 
-# Giai phong cong 5000-5005 de server luon nhan cong 5000
-fuser -k 5000/tcp 5001/tcp 5002/tcp 2>/dev/null || true
-pkill -9 -f "jetauto_find_object.py" 2>/dev/null || true
-pkill -9 -f "jetauto_smart_search.py" 2>/dev/null || true
-sleep 1
+# Tell an existing server to stop the chassis before replacing it.  SIGTERM
+# lets rospy run the shutdown callback that publishes a zero Twist.
+if command -v curl >/dev/null 2>&1; then
+    for port in 5005; do
+        curl --silent --max-time 1 -X POST "http://127.0.0.1:$port/pause" >/dev/null 2>&1 || true
+    done
+fi
+pkill -TERM -f "python3.*jetauto_find_object" 2>/dev/null || true
+pkill -TERM -f "python3.*jetauto_smart_search" 2>/dev/null || true
+sleep 2
 
 LOG_FILE="/tmp/jetauto_ai.log"
 nohup env PYTHONPATH="$PY3_PYTHONPATH" \
