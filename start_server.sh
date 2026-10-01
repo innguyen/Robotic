@@ -182,6 +182,11 @@ fi
 # ================================================================
 # BUOC 4: Setup Python 3 va chay AI YOLO Server
 APP_SCRIPT="${1:-jetauto_find_object.py}"
+if [ "$APP_SCRIPT" = "jetauto_smart_search.py" ]; then
+    if ! command -v espeak-ng >/dev/null 2>&1 && ! command -v espeak >/dev/null 2>&1; then
+        echo "[LOA] Thieu giong noi offline. Cai mot lan: sudo apt-get install espeak"
+    fi
+fi
 echo ">> [4/5] Khoi chay AI Server ($APP_SCRIPT)..."
 
 # Tell an existing server to stop the chassis before replacing it.  SIGTERM

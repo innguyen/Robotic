@@ -17,14 +17,18 @@ import time
 import math
 import signal
 import threading
+from robot_voice import RobotVoice, TargetAnnouncement
 from collections import deque
+from navigation_safety import (load_config, PoseHistory, scan_geometry,
+                               ScanRecovery, FootprintSafety, DepthClearance, discover_footprint, same_planar_frame)
 import numpy as np
 import cv2
 
 import rospy
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
-from sensor_msgs.msg import LaserScan
+from sensor_msgs.msg import LaserScan, CameraInfo
+from std_msgs.msg import UInt16
 
 try:
     from sensor_msgs.msg import Image as RosImage
@@ -59,10 +63,13 @@ CMD_VEL_TOPICS = [
     '/controller/cmd_vel',
     '/hiwonder_controller/cmd_vel'
 ]
-ROBOT_CLEARANCE_M = 0.20  # Tune to the measured half-width of the robot plus margin.
-TURN_CLEARANCE_CM = 40.0  # Keep the visible swept area clear while scanning.
+NAV_CONFIG = load_config(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'navigation_config.json'))
+FOOTPRINT = FootprintSafety(NAV_CONFIG)
+ROBOT_CLEARANCE_M = FOOTPRINT.radius + FOOTPRINT.margin
 AI_COMMAND_TIMEOUT_S = 2.0  # CPU inference can take about one second per frame.
-LIDAR_YAW_OFFSET_RAD = 0.0  # Set if the LiDAR's zero angle is not robot-forward.
+PERSON_STOP_CM = 80.0
+TARGET_REACQUIRE_S = 1.5
+LIDAR_YAW_OFFSET_RAD = math.radians(NAV_CONFIG['lidar_yaw_deg'])
 # The low-mounted OAK-D sees the floor as a nearby obstacle on this robot.
 # Keep its RGB feed, but use LiDAR alone for autonomous collision decisions.
 USE_OAKD_FOR_AVOIDANCE = False
@@ -112,6 +119,8 @@ lidar_lock = threading.Lock()
 # Tọa độ Robot từ Odometry (x, y mét, yaw rad)
 robot_pose = {'x': 0.0, 'y': 0.0, 'yaw': 0.0, 'last_update': 0.0}
 pose_lock = threading.Lock()
+battery_state = {'voltage': None, 'percent': None, 'last_update': 0.0}
+battery_lock = threading.Lock()
 
 # Bộ nhớ vị trí mục tiêu (Object Permanence)
 target_memory = {
@@ -144,44 +153,46 @@ class OccupancyGridMapper(object):
         self.grid = np.full((size, size), 127, dtype=np.uint8)
         self.map_lock = threading.Lock()
         self.last_update = 0.0
+        self.evidence = np.zeros((size, size), dtype=np.float32)
+        self.observed_at = np.zeros((size, size), dtype=np.float64)
 
     def world_to_grid(self, wx, wy):
         gx = int(self.center + wx / self.res)
         gy = int(self.center - wy / self.res)  # Trục Y đảo ngược cho ảnh
         return gx, gy
 
-    def update_scan(self, rx, ry, ryaw, ranges, angle_min, angle_inc,
-                    range_min=0.12, range_max=8.0):
-        now = time.time()
-        if now - self.last_update < 0.18:  # Mapping ~5 Hz leaves CPU for camera and YOLO.
-            return
-        self.last_update = now
-
-        rgx, rgy = self.world_to_grid(rx, ry)
-        if not (0 <= rgx < self.size and 0 <= rgy < self.size):
-            return
-
+    def clear(self):
         with self.map_lock:
-            # Clear observed free space even when a LiDAR beam has no return.
-            # Without this, an open room stays unknown and has no frontier.
-            num_points = len(ranges)
-            usable_range = min(4.0, range_max)
-            hit_points = []
-            for i in range(0, num_points, 2):
-                dist = ranges[i]
-                if math.isnan(dist) or dist < max(0.12, range_min):
-                    continue
-                hit = math.isfinite(dist) and dist <= usable_range
-                ray_length = dist if hit else usable_range
-                angle = ryaw + LIDAR_YAW_OFFSET_RAD + angle_min + i * angle_inc
-                ox = rx + ray_length * math.cos(angle)
-                oy = ry + ray_length * math.sin(angle)
-                ogx, ogy = self.world_to_grid(ox, oy)
-                cv2.line(self.grid, (rgx, rgy), (ogx, ogy), 20, 2)
-                if hit and 0 <= ogx < self.size and 0 <= ogy < self.size:
-                    hit_points.append((ogx, ogy))
-            for ogx, ogy in hit_points:
-                self.grid[ogy, ogx] = 255
+            self.grid.fill(127)
+            self.evidence.fill(0)
+            self.observed_at.fill(0)
+            self.last_update = 0.0
+
+    def update_world_scan(self, origins, ends, hits):
+        now = time.monotonic()
+        if now - self.last_update < 0.18:
+            return
+        with self.map_lock:
+            self.last_update = now
+            free_mask = np.zeros_like(self.grid)
+            hit_mask = np.zeros_like(self.grid)
+            for origin, end, hit in zip(origins[::2], ends[::2], hits[::2]):
+                start_cell = self.world_to_grid(*origin)
+                end_cell = self.world_to_grid(*end)
+                cv2.line(free_mask, start_cell, end_cell, 1, 1)
+                if hit and 0 <= end_cell[0] < self.size and 0 <= end_cell[1] < self.size:
+                    hit_mask[end_cell[1], end_cell[0]] = 1
+            free = (free_mask > 0) & (hit_mask == 0)
+            occupied = hit_mask > 0
+            self.evidence[free] -= 0.7
+            self.evidence[occupied] += 1.5
+            np.clip(self.evidence, -4.0, 4.0, out=self.evidence)
+            self.observed_at[free | occupied] = now
+            stale = now - self.observed_at > 30.0
+            self.evidence[stale] = 0.0
+            self.grid.fill(127)
+            self.grid[self.evidence <= -0.6] = 20
+            self.grid[self.evidence >= 1.0] = 255
 
     def plan_frontier(self, rx, ry, visited, preferred=None):
         """Find a reachable free cell near unknown space and a path to it."""
@@ -334,6 +345,7 @@ class FrontierExplorer(object):
     def reset_scan(self, clear_visited=False):
         if clear_visited:
             self.visited = []
+        self.scan_recovery = ScanRecovery()
         self.phase = 'SCAN'
         self.goal = None
         self.path = []
@@ -345,23 +357,16 @@ class FrontierExplorer(object):
         self.best_remaining = float('inf')
 
     def step(self, rx, ry, yaw, now):
-        if self.phase == 'SCAN':
-            if not self.scan_started:
-                self.scan_started = now
-                self.previous_yaw = yaw
-            delta = (yaw - self.previous_yaw + math.pi) % (2 * math.pi) - math.pi
-            self.swept_angle += max(0.0, delta)
-            self.previous_yaw = yaw
-            if self.swept_angle >= 2 * math.pi - 0.20:
+        if self.phase in ('SCAN', 'RECOVER'):
+            phase, turn = self.scan_recovery.step(yaw, now)
+            self.swept_angle = abs(self.scan_recovery.net_angle)
+            self.scan_started = self.scan_recovery.started
+            if phase in ('PLAN', 'PLAN_PARTIAL'):
                 self.phase = 'PLAN'
-            elif now - self.scan_started > 30.0:
-                self.phase = 'BLOCKED'
-                return 0.0, 0.0, 'DUNG: KHONG THE QUET 360 DO'
             else:
-                return 0.0, 18.0, 'QUET XUNG QUANH TIM MUC TIEU'
-
-        if self.phase == 'BLOCKED':
-            return 0.0, 0.0, 'DUNG: KHONG THE QUET 360 DO'
+                self.phase = phase
+                return 0.0, turn, ('CHO THU HUONG QUET KHAC' if phase == 'RECOVER'
+                                   else 'QUET TIM MUC TIEU')
 
         if self.phase == 'PLAN' or (self.phase == 'WAIT' and now - self.last_plan >= 5.0):
             self.last_plan = now
@@ -769,9 +774,18 @@ class CamHandler(BaseHTTPRequestHandler):
                 obs_copy = dict(obstacle_info)
             with pose_lock:
                 p_copy = dict(robot_pose)
+            with battery_lock:
+                b_copy = dict(battery_state)
+            if b_copy['last_update'] and time.time() - b_copy['last_update'] > 5.0:
+                b_copy.update(voltage=None, percent=None)
             with target_lock:
                 t_copy = dict(target_memory)
-            explore_goal = seeker_instance.explorer.goal if seeker_instance else None
+            with lidar_lock:
+                scan_copy = dict(lidar_info)
+            seeker = seeker_instance
+            explorer = getattr(seeker, 'explorer', None) if seeker else None
+            explore_goal = getattr(explorer, 'goal', None)
+            ai_thread = getattr(seeker, 'ai_thread', None) if seeker else None
 
             status_data = {
                 'target': TARGET_CLASS,
@@ -783,7 +797,25 @@ class CamHandler(BaseHTTPRequestHandler):
                 'odom_age': round(time.time() - p_copy['last_update'], 1) if p_copy['last_update'] else None,
                 'search_goal_x': round(explore_goal[0], 2) if explore_goal else None,
                 'search_goal_y': round(explore_goal[1], 2) if explore_goal else None,
-                'ai_alive': bool(seeker_instance and seeker_instance.ai_thread.is_alive()),
+                'mapping_status': getattr(seeker, 'mapping_status', 'INIT'),
+                'mapping_wait_reason': getattr(seeker, 'mapping_wait_reason', ''),
+                'map_age': round(time.monotonic() - grid_mapper.last_update, 2) if grid_mapper.last_update else None,
+                'footprint_radius_cm': round((FOOTPRINT.radius + FOOTPRINT.margin) * 100, 1),
+                'body_length_cm': NAV_CONFIG['body_length_m'] * 100 if NAV_CONFIG['body_length_m'] else None,
+                'body_width_cm': NAV_CONFIG['body_width_m'] * 100 if NAV_CONFIG['body_width_m'] else None,
+                'footprint_calibrated': FOOTPRINT.calibrated,
+                'footprint_source': getattr(seeker, 'footprint_source', 'UNCONFIGURED'),
+                'depth_clearance': seeker.depth_guard.status,
+                'depth_clearance_enabled': seeker.depth_guard.enabled,
+                'explorer_phase': getattr(explorer, 'phase', 'INIT'),
+                'scan_swept_deg': round(math.degrees(getattr(explorer, 'swept_angle', 0.0)), 1),
+                'lidar_front_cm': round(scan_copy['front'], 1),
+                'lidar_left_cm': round(scan_copy['left'], 1),
+                'lidar_right_cm': round(scan_copy['right'], 1),
+                'lidar_rear_cm': round(scan_copy['rear'], 1),
+                'astra_depth_age': round(time.time() - astra_depth_time, 2) if astra_depth_time else None,
+                'astra_depth_registered': astra_depth_registered,
+                'ai_alive': bool(ai_thread and ai_thread.is_alive()),
                 'ai_fps': round(seeker_instance.ai_fps, 1) if seeker_instance else 0.0,
                 'camera_fps': round(seeker_instance.camera_fps, 1) if seeker_instance else 0.0,
                 'inference_ms': round(seeker_instance.inference_ms, 0) if seeker_instance else 0.0,
@@ -802,10 +834,18 @@ class CamHandler(BaseHTTPRequestHandler):
                 'pose_x': round(p_copy['x'], 2),
                 'pose_y': round(p_copy['y'], 2),
                 'pose_yaw': round(math.degrees(p_copy['yaw']), 1),
+                'battery_voltage': b_copy['voltage'],
+                'battery_percent': b_copy['percent'],
+                'battery_age': round(time.time() - b_copy['last_update'], 1) if b_copy['last_update'] else None,
                 'target_x': round(t_copy['x'], 2) if t_copy['x'] is not None else None,
                 'target_y': round(t_copy['y'], 2) if t_copy['y'] is not None else None,
                 'target_seen': t_copy['seen']
             }
+            status_data.update({
+                'announcement': seeker.target_announcement.message,
+                'greeting_event_id': getattr(seeker, 'greeting_event_id', 0),
+                'voice_error': getattr(getattr(seeker, 'robot_voice', None), 'error', ''),
+            })
             self.wfile.write(json.dumps(status_data).encode())
         else:
             self.send_response(200)
@@ -839,15 +879,21 @@ def start_web_server():
         server.serve_forever()
 
 
-# ==========================================================
-# 5. SMART OBJECT SEEKER - BỘ NÃO TÌM KIẾM ĐÓN ĐẦU & NÉ MECANUM
-# ==========================================================
 class SmartObjectSeeker(object):
     def __init__(self):
-        global seeker_instance
+        global seeker_instance, NAV_CONFIG, FOOTPRINT, ROBOT_CLEARANCE_M
         seeker_instance = self
 
         rospy.init_node('jetauto_smart_seeker', anonymous=True)
+        NAV_CONFIG, self.footprint_source = discover_footprint(NAV_CONFIG, rospy.get_param)
+        FOOTPRINT = FootprintSafety(NAV_CONFIG)
+        ROBOT_CLEARANCE_M = FOOTPRINT.radius + FOOTPRINT.margin
+        self.footprint_frame_valid = not bool(NAV_CONFIG.get('footprint_frame'))
+        description = rospy.get_param('/robot_description', '')
+        self.accepted_footprint_frames = set(frame for frame in ('base_link', 'base_footprint')
+                                             if same_planar_frame(NAV_CONFIG.get('footprint_frame', ''), frame, description))
+        rospy.loginfo('Navigation body: length=%s width=%s source=%s',
+                      NAV_CONFIG['body_length_m'], NAV_CONFIG['body_width_m'], self.footprint_source)
 
         self.cmd_publishers = []
         for top in CMD_VEL_TOPICS:
@@ -867,6 +913,15 @@ class SmartObjectSeeker(object):
         self.last_motion_update = 0.0
         self._last_map_render = 0.0
         self._astra_registered_depth_time = 0.0
+        self.pose_history = PoseHistory()
+        self.pending_scans = deque(maxlen=6)
+        self.scan_processing_lock = threading.Lock()
+        self.mapping_status = 'WAITING FOR SYNC'
+        self.mapping_wait_reason = ''
+        self.scan_stamp = 0.0
+        self.depth_guard = DepthClearance(NAV_CONFIG, FOOTPRINT)
+        self.depth_camera_info = None
+        self.depth_info_lock = threading.Lock()
         # Retain all Subscriber objects.  Otherwise some rospy versions may
         # unregister them before an image/scan callback is received.
         self.astra_subscribers = []
@@ -908,6 +963,9 @@ class SmartObjectSeeker(object):
         self.inference_ms = 0.0
         self._camera_frame_count = 0
         self._camera_fps_start = time.time()
+        self.greeting_event_id = 0
+        self.robot_voice = RobotVoice(rospy.logwarn)
+        self.target_announcement = TargetAnnouncement(self.robot_voice)
 
         rospy.on_shutdown(self.stop)
 
@@ -930,6 +988,8 @@ class SmartObjectSeeker(object):
         self.navigation_subscribers = [
             rospy.Subscriber('/scan', LaserScan, self._callback_scan, queue_size=1),
             rospy.Subscriber('/odom', Odometry, self._callback_odom, queue_size=1),
+            rospy.Subscriber('/ros_robot_controller/battery', UInt16,
+                             self._callback_battery, queue_size=1),
         ]
 
         # 5. Thread nén JPEG cache
@@ -992,6 +1052,9 @@ class SmartObjectSeeker(object):
                 manual_command = (self.manual_override_until > 0.0 and
                                   self.last_motion_update <= self.manual_override_until)
             block_reason = ''
+            if not self.footprint_frame_valid:
+                vx, vy, wz = 0.0, 0.0, 0.0
+                block_reason = 'FOOTPRINT FRAME DOES NOT MATCH ODOM BASE'
 
             # A dead AI thread, stalled camera or released manual key must not
             # leave the chassis repeating its last nonzero velocity.
@@ -1006,27 +1069,20 @@ class SmartObjectSeeker(object):
             if time.time() - robot_pose['last_update'] > 1.5 and not manual_active:
                 vx, vy, wz = 0.0, 0.0, 0.0
                 block_reason = 'MẤT ODOMETRY'
+            if (not manual_active and self.search_mode == 'EXPLORE'
+                    and time.monotonic() - grid_mapper.last_update > 1.5):
+                vx, vy, wz = 0.0, 0.0, 0.0
+                block_reason = 'CHO BAN DO DONG BO'
             if time.time() - lidar_info['last_update'] > 1.5:
                 vx, vy, wz = 0.0, 0.0, 0.0
                 block_reason = 'MẤT LIDAR'
             else:
-                with lidar_lock:
-                    safety = dict(lidar_info)
-                if vx > 0 and safety['front'] < 35.0:
-                    vx = 0.0
-                    block_reason = 'LIDAR CHẶN TIẾN: {:.0f}CM'.format(safety['front'])
-                if vx < 0 and safety['rear'] < 35.0:
-                    vx = 0.0
-                    block_reason = 'LIDAR CHẶN LÙI: {:.0f}CM'.format(safety['rear'])
-                if vy > 0 and safety['left'] < 35.0:
-                    vy = 0.0
-                    block_reason = 'LIDAR CHẶN TRÁI: {:.0f}CM'.format(safety['left'])
-                if vy < 0 and safety['right'] < 35.0:
-                    vy = 0.0
-                    block_reason = 'LIDAR CHẶN PHẢI: {:.0f}CM'.format(safety['right'])
-                if abs(wz) > 0.0 and safety['turn_clearance'] < TURN_CLEARANCE_CM:
-                    wz = 0.0
-                    block_reason = 'LIDAR CHẶN XOAY: {:.0f}CM'.format(safety['turn_clearance'])
+                allowed, reason = FOOTPRINT.check(vx, vy, wz, time.monotonic())
+                if allowed and abs(vx) + abs(vy) + abs(wz) > 0:
+                    allowed, reason = self.depth_guard.check(vx, vy, wz, time.monotonic())
+                if not allowed:
+                    vx, vy, wz = 0.0, 0.0, 0.0
+                    block_reason = reason
 
             self.published_linear_x = vx
             self.published_linear_y = vy
@@ -1051,6 +1107,10 @@ class SmartObjectSeeker(object):
     # ==========================================================
     def _callback_odom(self, msg):
         global robot_pose
+        footprint_frame = NAV_CONFIG.get('footprint_frame')
+        if footprint_frame:
+            # A polygon in a different frame must not silently change the collision geometry.
+            self.footprint_frame_valid = msg.child_frame_id.lstrip('/') in self.accepted_footprint_frames
         px = msg.pose.pose.position.x
         py = msg.pose.pose.position.y
         # Quaternion to Yaw
@@ -1059,11 +1119,66 @@ class SmartObjectSeeker(object):
         cosy_cosp = 1.0 - 2.0 * (q.y * q.y + q.z * q.z)
         yaw = math.atan2(siny_cosp, cosy_cosp)
 
+        generation = self.pose_history.generation
+        stamp = msg.header.stamp.to_sec()
+        age = rospy.Time.now().to_sec() - stamp
+        if age > 0.5 or age < -0.05:
+            return
+        if not self.pose_history.add(stamp, px, py, yaw):
+            return
+        if self.pose_history.generation != generation:
+            with self.scan_processing_lock:
+                grid_mapper.clear()
+                self.pending_scans.clear()
+            self.scan_stamp = 0.0
+            self.explorer.reset_scan(clear_visited=True)
+            self.set_desired_velocity(0.0, 0.0, 0.0)
+            with target_lock:
+                target_memory.update(seen=False, x=None, y=None, last_seen_time=0.0)
         with pose_lock:
             robot_pose['x'] = px
             robot_pose['y'] = py
             robot_pose['yaw'] = yaw
             robot_pose['last_update'] = time.time()
+        self._process_pending_scans()
+
+    @staticmethod
+    def _callback_battery(msg):
+        # Hiwonder publishes this 3-cell pack voltage in millivolts (UInt16).
+        millivolts = int(msg.data)
+        if millivolts < 6000 or millivolts > 15000:
+            return
+        voltage = millivolts / 1000.0
+        # Approximate display: vendor's 10.0 V warning to 12.6 V full charge.
+        percent = int(round(max(0.0, min(100.0, (voltage - 10.0) / 2.6 * 100.0))))
+        with battery_lock:
+            battery_state.update(voltage=voltage, percent=percent, last_update=time.time())
+
+    def _process_pending_scans(self):
+        if not self.scan_processing_lock.acquire(False):
+            return
+        try:
+            while self.pending_scans:
+                msg, queued = self.pending_scans[0]
+                stamps = msg.header.stamp.to_sec() + np.arange(len(msg.ranges)) * msg.time_increment
+                poses = self.pose_history.interpolate(stamps)
+                if poses is None:
+                    self.mapping_wait_reason = self.pose_history.describe_wait(stamps)
+                    if time.monotonic() - grid_mapper.last_update > 1.5:
+                        self.mapping_status = 'WAITING FOR STAMPED ODOMETRY'
+                    if time.monotonic() - queued > 0.5:
+                        self.pending_scans.popleft()
+                        continue
+                    break
+                self.pending_scans.popleft()
+                self.mapping_wait_reason = ''
+                origins, ends, hits = scan_geometry(msg.ranges, msg.angle_min, msg.angle_increment,
+                                                  poses, NAV_CONFIG, max(0.12, msg.range_min), msg.range_max)
+                grid_mapper.update_world_scan(origins, ends, hits)
+                self.mapping_status = ('SYNCED' if NAV_CONFIG['lidar_extrinsics_calibrated']
+                                       else 'SYNCED; LIDAR EXTRINSICS UNCALIBRATED')
+        finally:
+            self.scan_processing_lock.release()
 
     def _callback_scan(self, msg):
         global display_frame_map, lidar_info
@@ -1071,7 +1186,21 @@ class SmartObjectSeeker(object):
             rx = robot_pose['x']
             ry = robot_pose['y']
             ryaw = robot_pose['yaw']
-            pose_time = robot_pose['last_update']
+
+        stamp = msg.header.stamp.to_sec()
+        age = rospy.Time.now().to_sec() - stamp
+        if (stamp <= self.scan_stamp or stamp <= 0 or age > 0.5 or age < -0.05
+                or not math.isfinite(msg.time_increment) or msg.time_increment < 0
+                or len(msg.ranges) < 10 or not math.isfinite(msg.angle_increment)
+                or msg.angle_increment == 0):
+            self.mapping_status = 'STALE OR OUT OF ORDER SCAN'
+            return
+        self.scan_stamp = stamp
+        FOOTPRINT.update(msg.ranges, msg.angle_min, msg.angle_increment,
+                         msg.range_min, msg.range_max, time.monotonic() - max(0, age))
+        with self.scan_processing_lock:
+            self.pending_scans.append((msg, time.monotonic()))
+        self._process_pending_scans()
 
         # Split the 360° scan into safety sectors.  Use a low percentile
         # instead of one noisy beam, but retain genuinely close obstacles.
@@ -1117,11 +1246,6 @@ class SmartObjectSeeker(object):
                 lidar_info['turn_clearance'] = min(4.0, msg.range_max) * 100.0
             lidar_info['last_update'] = time.time()
 
-        # Keep collision data fresh even if drawing the map takes longer.
-        if time.time() - pose_time < 1.5:
-            grid_mapper.update_scan(rx, ry, ryaw, msg.ranges, msg.angle_min,
-                                    msg.angle_increment, msg.range_min, msg.range_max)
-
         # A map is useful at 2 FPS; camera and YOLO get the saved CPU time.
         now = time.time()
         if now - self._last_map_render >= 0.50:
@@ -1141,6 +1265,8 @@ class SmartObjectSeeker(object):
         cam_source_astra = "Dang cho Astra..."
         if RosImage is not None:
             self.astra_subscribers = [
+                rospy.Subscriber(NAV_CONFIG['depth_info_topic'], CameraInfo, self._cb_clearance_info, queue_size=1),
+                rospy.Subscriber(NAV_CONFIG['depth_topic'], RosImage, self._cb_clearance_depth, queue_size=1, buff_size=2**24),
                 rospy.Subscriber('/depth_cam/rgb/image_raw', RosImage,
                                  self._cb_astra, queue_size=1, buff_size=2**24),
                 rospy.Subscriber('/camera/rgb/image_raw', RosImage,
@@ -1156,6 +1282,37 @@ class SmartObjectSeeker(object):
         else:
             cam_source_astra = "Khong co sensor_msgs/Image"
             rospy.logerr(">> [ASTRA] Khong import duoc sensor_msgs/Image")
+
+    def _cb_clearance_info(self, msg):
+        with self.depth_info_lock:
+            self.depth_camera_info = msg
+
+    def _cb_clearance_depth(self, msg):
+        if not self.depth_guard.enabled:
+            return
+        with self.depth_info_lock:
+            info = self.depth_camera_info
+        if (info is None or info.header.frame_id != msg.header.frame_id
+                or info.width != msg.width or info.height != msg.height
+                or msg.encoding not in ('16UC1', 'mono16', '32FC1')
+                or info.K[0] <= 0 or info.K[4] <= 0
+                or any(abs(v) > 1e-6 for v in info.D)):
+            self.depth_guard.status = 'DEPTH NEED MATCHING RECTIFIED CAMERA INFO'
+            return
+        age = rospy.Time.now().to_sec() - msg.header.stamp.to_sec()
+        if age < -0.05 or age > 0.4:
+            return
+        try:
+            is_float = msg.encoding == '32FC1'
+            dtype = np.dtype(('>' if msg.is_bigendian else '<') + ('f4' if is_float else 'u2'))
+            row = msg.step // dtype.itemsize
+            depth = np.frombuffer(msg.data, dtype=dtype).reshape(msg.height, row)[:, :msg.width].astype(np.float32)
+            if is_float:
+                depth *= 1000.0
+            self.depth_guard.update(depth, (info.K[0], info.K[4], info.K[2], info.K[5]),
+                                    time.monotonic() - max(0, age))
+        except (ValueError, TypeError) as error:
+            self.depth_guard.status = 'DEPTH DECODE ERROR: ' + str(error)
 
     def _cb_astra(self, msg):
         global raw_frame_astra, display_frame_astra, cam_source_astra, astra_frame_time, astra_frame_seq
@@ -1443,8 +1600,13 @@ class SmartObjectSeeker(object):
             inference_started = time.time()
             detections = self.run_yolo(raw_frame)
             self.inference_ms = (time.time() - inference_started) * 1000.0
-            target_detections = [d for d in detections if d['class_name'] == TARGET_CLASS]
+            target_detections = [d for d in detections if d['class_name'] == search_target]
             target_found = len(target_detections) > 0
+            now = time.time()
+            if self.target_announcement.update(
+                    search_target, target_found, time.monotonic(),
+                    enabled=not IS_PAUSED and now >= self.manual_override_until):
+                self.greeting_event_id += 1
 
             with pose_lock:
                 cur_rx = robot_pose['x']
@@ -1523,7 +1685,7 @@ class SmartObjectSeeker(object):
                 error_x = target_center[0] - center_screen_x
                 heading_wz = max(min(float(-error_x * 0.07), 25.0), -25.0)
 
-                if ((astra_distance_cm is not None and astra_distance_cm < 55.0) or
+                if ((astra_distance_cm is not None and astra_distance_cm < (PERSON_STOP_CM if TARGET_CLASS == 'person' else 55.0)) or
                         (astra_distance_cm is None and width_ratio > 0.45)):
                     base_vx = 0.0
                     heading_wz = 0.0
@@ -1532,27 +1694,14 @@ class SmartObjectSeeker(object):
                     base_vx = 0.15 if abs(error_x) < 80 else 0.08
                     action_text = "BÁM MỤC TIÊU {} (Cách {:.1f}m)".format(TARGET_CLASS.upper(), est_dist)
 
-            elif has_last_pos and time_since_seen < 12.0:
-                # CHẾ ĐỘ 2: ĐÓN ĐẦU VỊ TRÍ CUỐI (INTERCEPT) - KHÔNG XOAY TẠI CHỖ!
-                self.search_mode = "INTERCEPT"
-                dx = last_tx - cur_rx
-                dy = last_ty - cur_ry
-                dist_to_last = math.sqrt(dx * dx + dy * dy)
-                target_heading = math.atan2(dy, dx)
-                yaw_diff = (target_heading - cur_yaw + math.pi) % (2.0 * math.pi) - math.pi
-
-                if dist_to_last > 0.5:
-                    # Lái xe tiến tới vị trí thấy lần cuối để nhìn ra sau vật cản
-                    heading_wz = max(min(math.degrees(yaw_diff) * 0.8, 30.0), -30.0)
-                    base_vx = 0.14 if abs(yaw_diff) < math.radians(35) else 0.05
-                    action_text = "MẤT DẤU -> ĐANG LÁI ĐÓN ĐẦU ({:.1f}m)".format(dist_to_last)
-                    status_color = (0, 215, 255)
-                else:
-                    # Đã tới nơi, xoay nhẹ quét tìm
-                    heading_wz = 20.0
-                    base_vx = 0.0
-                    action_text = "ĐÃ TỚI VỊ TRÍ CŨ -> QUÉT XUNG QUANH"
-                    status_color = (0, 215, 255)
+            elif has_last_pos and time_since_seen < TARGET_REACQUIRE_S:
+                self.search_mode = "REACQUIRE"
+                dx, dy = last_tx - cur_rx, last_ty - cur_ry
+                yaw_diff = (math.atan2(dy, dx) - cur_yaw + math.pi) % (2 * math.pi) - math.pi
+                heading_wz = 18.0 if yaw_diff >= 0 else -18.0
+                base_vx = 0.0
+                action_text = "MAT DAU -> QUET TIM LAI (1.5s)"
+                status_color = (0, 215, 255)
 
             else:
                 # CHẾ ĐỘ 3: Quét 360 độ rồi đi đến rìa vùng chưa biết có
@@ -1580,7 +1729,6 @@ class SmartObjectSeeker(object):
                 d_l, d_c, d_r = active_oakd_distances(obstacle_info, time.time())
             with lidar_lock:
                 lidar = dict(lidar_info)
-            lidar_fresh = (time.time() - lidar['last_update']) < 1.0
 
             cmd_vx = 0.0
             cmd_vy = 0.0
@@ -1628,28 +1776,20 @@ class SmartObjectSeeker(object):
                     cmd_vy = 0.0
                     cmd_wz = heading_wz
 
-                # LiDAR has full side coverage, so it vetoes unsafe forward
-                # or strafe commands selected from OAK-D's forward view.
-                if lidar_fresh:
-                    if lidar['front'] < 35.0 and cmd_vx > 0.0:
-                        cmd_vx = 0.0
-                        if self.search_mode == "EXPLORE":
-                            cmd_vy = 0.0
-                            cmd_wz = 0.0
-                        elif lidar['left'] > lidar['right'] and lidar['left'] > 50.0:
-                            cmd_vy, strafe_name = 0.12, "LEFT"
-                        elif lidar['right'] > 50.0:
-                            cmd_vy, strafe_name = -0.12, "RIGHT"
-                        else:
-                            cmd_vy = 0.0
-                            cmd_wz = 18.0 if lidar['left'] >= lidar['right'] else -18.0
-                        action_text = "LIDAR SAFETY: FRONT {:.0f}cm".format(lidar['front'])
-                    if cmd_vy > 0.0 and lidar['left'] < 35.0:
-                        cmd_vy, strafe_name = 0.0, "NONE"
-                        action_text = "LIDAR SAFETY: LEFT {:.0f}cm".format(lidar['left'])
-                    elif cmd_vy < 0.0 and lidar['right'] < 35.0:
-                        cmd_vy, strafe_name = 0.0, "NONE"
-                        action_text = "LIDAR SAFETY: RIGHT {:.0f}cm".format(lidar['right'])
+                allowed, reason = FOOTPRINT.check(cmd_vx, cmd_vy, cmd_wz, time.monotonic())
+                if not allowed:
+                    original_turn = cmd_wz
+                    cmd_vx = cmd_vy = cmd_wz = 0.0
+                    action_text = reason
+                    # Reactive target following may select a verified turn. Exploration
+                    # recovery owns its own retries; do not bypass its trajectory.
+                    if self.search_mode in ('TRACKING', 'REACQUIRE'):
+                        preferred = 18.0 if original_turn >= 0 else -18.0
+                        for candidate in (preferred, -preferred):
+                            if FOOTPRINT.check(0.0, 0.0, candidate, time.monotonic())[0]:
+                                cmd_wz = candidate
+                                action_text = 'XOAY NE THEO VUNG THAN XE'
+                                break
 
                 with obstacle_lock:
                     obstacle_info['strafe_dir'] = strafe_name
@@ -1714,10 +1854,10 @@ def sigint_handler(signum, frame):
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, sigint_handler)
     try:
+        seeker = SmartObjectSeeker()
         web_thread = threading.Thread(target=start_web_server)
         web_thread.daemon = True
         web_thread.start()
-        seeker = SmartObjectSeeker()
         rospy.spin()
     except rospy.ROSInterruptException:
         pass
