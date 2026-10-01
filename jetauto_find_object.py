@@ -46,8 +46,14 @@ TARGET_CLASS = 'person'
 if len(sys.argv) > 1:
     TARGET_CLASS = sys.argv[1].strip().lower()
 
-IS_PAUSED = False
+# Safety first: starting this service must never make the robot move by
+# itself.  The operator explicitly enables AI motion from the web UI.
+IS_PAUSED = True
 CMD_VEL_TOPICS = [
+    # JetAuto bringup publishes the chassis controller on this topic.  It was
+    # checked by start_server.sh but accidentally omitted here, so a robot
+    # using the standard ros_robot_controller never received drive commands.
+    '/ros_robot_controller/cmd_vel',
     '/jetauto_controller/cmd_vel',
     '/cmd_vel',
     '/controller/cmd_vel',
@@ -350,6 +356,26 @@ class CamHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(b'{"status": "ok"}')
                 return
+
+        elif self.path in ('/pause', '/stop'):
+            IS_PAUSED = True
+            if seeker_instance:
+                seeker_instance.set_desired_velocity(0.0, 0.0, 0.0)
+            rospy.loginfo(">> [WEB] Dung robot theo lenh operator")
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(b'{"paused": true}')
+            return
+
+        elif self.path == '/resume':
+            IS_PAUSED = False
+            rospy.loginfo(">> [WEB] Operator bat che do AI")
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(b'{"paused": false}')
+            return
 
         elif self.path == '/toggle_pause':
             IS_PAUSED = not IS_PAUSED
@@ -949,7 +975,10 @@ class CamHandler(BaseHTTPRequestHandler):
         }
 
         function togglePause() {
-            fetch('/toggle_pause', {method: 'POST'})
+            // Use explicit state-changing endpoints.  A delayed/doubled
+            // toggle request must never turn a requested stop into resume.
+            const paused = document.getElementById('pauseBtn').innerText.includes('TIẾP TỤC');
+            fetch(paused ? '/resume' : '/pause', {method: 'POST'})
                 .then(r => r.json())
                 .then(d => updatePauseUI(d.paused));
         }
@@ -1080,6 +1109,12 @@ class ObjectSeeker(object):
         self.smooth_w = None
 
         self.manual_override_until = 0.0
+        # Keep ROS subscriber handles alive for the lifetime of this node.
+        # This is especially important for the Astra driver: subscriptions
+        # created only as temporary values can be garbage-collected on some
+        # rospy versions before the first image arrives.
+        self.astra_subscribers = []
+        self.oakd_subscribers = []
 
         # Load YOLO Model
         self.classes = self.load_classes()
@@ -1113,6 +1148,7 @@ class ObjectSeeker(object):
         self.last_status_color = (0, 165, 255)
         self.best_target_center = None
         self.ai_fps = 0.0
+        self.lost_target_count = 0  # Thêm biến đếm số frame bị mất target
 
         rospy.on_shutdown(self.stop)
 
@@ -1244,8 +1280,15 @@ class ObjectSeeker(object):
         cam_source_astra = "Dang cho tin hieu Astra..."
 
         if RosImage is not None:
-            rospy.Subscriber('/depth_cam/rgb/image_raw', RosImage, self._callback_ros_astra, queue_size=1, buff_size=2**24)
-            rospy.Subscriber('/camera/rgb/image_raw', RosImage, self._callback_ros_astra, queue_size=1, buff_size=2**24)
+            self.astra_subscribers = [
+                rospy.Subscriber('/depth_cam/rgb/image_raw', RosImage,
+                                 self._callback_ros_astra, queue_size=1, buff_size=2**24),
+                rospy.Subscriber('/camera/rgb/image_raw', RosImage,
+                                 self._callback_ros_astra, queue_size=1, buff_size=2**24),
+            ]
+        else:
+            cam_source_astra = "Khong co sensor_msgs/Image"
+            rospy.logerr(">> [ASTRA] Khong import duoc sensor_msgs/Image")
 
     def _callback_ros_astra(self, msg):
         global raw_frame_astra, cam_source_astra
@@ -1359,7 +1402,12 @@ class ObjectSeeker(object):
 
         cam_source_oakd = "Fallback ROS Topic"
         if RosImage is not None:
-            rospy.Subscriber('/oakd/rgb/image_raw', RosImage, self._callback_ros_oakd, queue_size=1, buff_size=2**24)
+            self.oakd_subscribers = [
+                rospy.Subscriber('/oakd/rgb/image_raw', RosImage,
+                                 self._callback_ros_oakd, queue_size=1, buff_size=2**24)
+            ]
+        else:
+            cam_source_oakd = "Khong co sensor_msgs/Image"
 
     def _callback_ros_oakd(self, msg):
         global raw_frame_oakd, display_frame_oakd, cam_source_oakd
@@ -1523,6 +1571,7 @@ class ObjectSeeker(object):
             heading_wz = 0.0
 
             if target_found:
+                self.lost_target_count = 0  # Reset bộ đếm khi tìm thấy
                 best = max(target_detections, key=lambda d: d['conf'])
                 bx, by, bw, bh = best['box']
                 target_center = (bx + bw // 2, by + bh // 2)
@@ -1531,7 +1580,7 @@ class ObjectSeeker(object):
                     self.smooth_x = float(target_center[0])
                     self.smooth_w = float(bw)
                 else:
-                    self.smooth_x = 0.7 * self.smooth_x + 0.3 * float(target_center[0])
+                    self.smooth_x = 0.6 * self.smooth_x + 0.4 * float(target_center[0])
                     self.smooth_w = 0.7 * self.smooth_w + 0.3 * float(bw)
 
                 error_x = self.smooth_x - center_screen_x
@@ -1542,13 +1591,22 @@ class ObjectSeeker(object):
                     heading_wz = 0.0
                 else:
                     # Bộ điều khiển P tinh chỉnh góc quay để mục tiêu luôn ở giữa màn hình
-                    heading_wz = float(-error_x * 0.07)
-                    heading_wz = max(min(heading_wz, 25.0), -25.0)
+                    # Giảm gain từ 0.07 xuống 0.05 để tránh over-rotate khi quay nhanh
+                    heading_wz = float(-error_x * 0.05)
+                    heading_wz = max(min(heading_wz, 20.0), -20.0)
                     base_vx = 0.15 if abs(error_x) < 80 else 0.08
             else:
-                self.smooth_x = None
-                base_vx = 0.0
-                heading_wz = 20.0  # Xoay tìm kiếm nếu chưa thấy
+                self.lost_target_count += 1
+                if self.lost_target_count < 15:
+                    # Mất target tạm thời (dưới 15 frames ~ 1 giây), giữ nguyên hoặc đứng yên
+                    # Không xoay ngay lập tức để tránh mất phương hướng
+                    base_vx = 0.0
+                    heading_wz = 0.0
+                else:
+                    # Mất target hoàn toàn -> Bắt đầu xoay tìm kiếm
+                    self.smooth_x = None
+                    base_vx = 0.0
+                    heading_wz = 20.0  # Xoay tìm kiếm nếu chưa thấy
 
             # 2. ĐỌC THÔNG SỐ VẬT CẢN TỪ CAMERA OAK-D
             with obstacle_lock:
