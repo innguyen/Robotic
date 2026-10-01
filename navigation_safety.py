@@ -253,6 +253,10 @@ class ScanRecovery(object):
             return 'RECOVER', 0.0
         return 'SCAN', self.direction * 18.0
 
+    def partial_probe_due(self, threshold=math.pi / 2.0):
+        """Allow a short safe translation before the full rotation completes."""
+        return abs(self.net_angle) >= threshold
+
 
 class FootprintSafety(object):
     def __init__(self, cfg):
@@ -266,6 +270,7 @@ class FootprintSafety(object):
         self.radius = math.hypot(self.hx + abs(self.cx), self.hy + abs(self.cy)) if self.rectangular else self.hx
         self.margin = cfg['horizontal_margin_m']
         self.snapshot = None
+        self.coverage_lookup = None
         self.lock = threading.Lock()
 
     def update(self, ranges, amin, inc, rmin, rmax, received):
@@ -318,12 +323,28 @@ class FootprintSafety(object):
             return False, 'LIDAR INVALID'
         speed = math.hypot(vx, vy)
         rotation_only = speed < 1e-8 and abs(wz_deg) > 1e-8
+        if rotation_only and not self.rectangular:
+            # A centered circular body occupies the same space at every yaw.
+            # Turning needs neither rear coverage nor a simulated trajectory.
+            occupied = self.inside(points, margin=0.0)
+            if np.any(occupied):
+                return False, 'FOOTPRINT COLLISION: PHYSICAL BODY'
+            return True, ''
         omega = math.radians(wz_deg)
         edge_speed = speed + abs(omega) * self.radius
         # Constant commanded speed throughout reaction + full braking time is conservative.
         horizon = self.cfg['reaction_time_s'] + edge_speed / self.cfg['braking_accel_mps2'] + max(0, now - received)
         samples = max(3, int(math.ceil(edge_speed * horizon / 0.02)) + 1)
         boundary = self.perimeter()
+        # A return inside the safety margin can be escaped, but a return
+        # inside the measured physical body or a move deeper into the margin
+        # must still stop the chassis.
+        initially_close = self.inside(points, margin=self.margin)
+        if not rotation_only and not self.rectangular:
+            initial_distance = np.linalg.norm(points - [self.cx, self.cy], axis=1)
+            if np.any(initial_distance <= self.radius):
+                return False, 'FOOTPRINT COLLISION: PHYSICAL BODY'
+            previous_distance = initial_distance.copy()
         for t in np.linspace(0, horizon, samples):
             theta = omega * t
             if abs(omega) > 1e-7:
@@ -331,7 +352,17 @@ class FootprintSafety(object):
                 y = (vx * (1 - math.cos(theta)) + vy * math.sin(theta)) / omega
             else:
                 x, y = vx * t, vy * t
-            blocked = self.inside(points, x, y, theta, self.margin)
+            collision_margin = 0.0 if rotation_only and not self.rectangular else self.margin
+            blocked = self.inside(points, x, y, theta, collision_margin)
+            if not rotation_only and not self.rectangular:
+                center = [x + self.cx * math.cos(theta) - self.cy * math.sin(theta),
+                          y + self.cx * math.sin(theta) + self.cy * math.cos(theta)]
+                distance = np.linalg.norm(points - center, axis=1)
+                # Existing safety-margin overlap is acceptable only while
+                # the commanded movement increases clearance monotonically.
+                recovering = initially_close & (distance >= previous_distance - 1e-6)
+                blocked &= ~recovering
+                previous_distance = distance
             if np.any(blocked):
                 obstacle = points[blocked][0]
                 shape = ('BODY' if self.calibrated else
@@ -344,7 +375,17 @@ class FootprintSafety(object):
                 continue
             c, s = math.cos(theta), math.sin(theta)
             perimeter = boundary.dot(np.array([[c, s], [-s, c]])) + [x, y]
-            # Translation (including curved travel) requires measured coverage.
+            # Only the advancing half enters new space. Missing rays behind
+            # the chassis cannot veto a forward or sideways translation.
+            moving = np.array([c * vx - s * vy, s * vx + c * vy])
+            advancing = np.sum((perimeter - [x, y]) * moving, axis=1) > 0
+            perimeter = perimeter[advancing]
+            # Coverage is needed only for newly entered space. Testing the
+            # original footprint also vetoed valid moves away from a margin
+            # overlap that the collision test above explicitly allows.
+            perimeter = perimeter[~self.inside(perimeter, margin=self.margin + 1e-6)]
+            if not len(perimeter):
+                continue
             rel = perimeter - [self.cfg['lidar_x_m'], self.cfg['lidar_y_m']]
             bearing = np.arctan2(rel[:, 1], rel[:, 0]) - math.radians(self.cfg['lidar_yaw_deg'])
             bearing = (bearing + math.pi) % (2 * math.pi) - math.pi
@@ -354,8 +395,43 @@ class FootprintSafety(object):
             idx = lookup_idx[nearest]
             covered = np.abs(lookup_angles[nearest] - bearing) <= min(0.025, inc * 1.6)
             measured = np.where(np.isposinf(values[idx]), rmax, values[idx])
-            if not np.all(covered & valid[idx] & (measured >= np.linalg.norm(rel, axis=1))):
-                return False, 'SWEPT AREA UNKNOWN OR BLOCKED'
+            known = covered & valid[idx]
+            # Bridge only sub-degree dropouts bracketed by real valid rays.
+            # Use the smaller range; never extend across an unobserved sector.
+            valid_lookup = valid[lookup_idx]
+            va = lookup_angles[valid_lookup]
+            vi = lookup_idx[valid_lookup]
+            if len(va) >= 2 and np.any(~known):
+                hi = np.clip(np.searchsorted(va, bearing), 1, len(va) - 1)
+                lo = hi - 1
+                bracketed = ((va[lo] <= bearing) & (bearing <= va[hi]) &
+                             (va[hi] - va[lo] <= math.radians(1.0) + 1e-9))
+                conservative = np.minimum(np.where(np.isposinf(values[vi[lo]]), rmax, values[vi[lo]]),
+                                          np.where(np.isposinf(values[vi[hi]]), rmax, values[vi[hi]]))
+                fill = ~known & bracketed & (np.isnan(values[idx]) | (values[idx] == 0))
+                measured = np.where(fill, conservative, measured)
+                known |= fill
+            clear = known & (measured >= np.linalg.norm(rel, axis=1))
+            # Use recently measured free cells to cover intermittent missing
+            # rays, never to override a current measured obstruction.
+            missing = ~known & (np.isnan(values[idx]) | (values[idx] == 0))
+            if np.any(missing) and self.coverage_lookup is not None:
+                try:
+                    recent = np.asarray(self.coverage_lookup(perimeter[missing], now), dtype=bool)
+                    if recent.shape == (int(np.count_nonzero(missing)),):
+                        if np.any(recent) and speed > .081:
+                            return False, 'RECENT COVERAGE: SLOW TO 8CM/S'
+                        clear[missing] = recent
+                except Exception:
+                    pass  # Failure to obtain evidence never authorizes motion.
+            if not np.all(clear):
+                failure = int(np.flatnonzero(~clear)[0])
+                kind = 'UNKNOWN' if not known[failure] else 'BLOCKED'
+                return False, 'SWEPT AREA {}: BEARING={:.1f} DEG'.format(
+                    kind, math.degrees(bearing[failure]))
+        if not rotation_only and not self.rectangular and np.any(initially_close):
+            if np.any(previous_distance[initially_close] < initial_distance[initially_close] + 0.005):
+                return False, 'FOOTPRINT COLLISION: NO CLEARANCE GAIN'
         return True, ''
 
 

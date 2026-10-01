@@ -18,6 +18,9 @@ import math
 import signal
 import threading
 from robot_voice import RobotVoice, TargetAnnouncement
+from target_selection import (choose_target, TargetAvoidance, TargetSteering,
+                              normalize_target, approach_command,
+                              estimate_target_distance, target_standoff_cm)
 from collections import deque
 from navigation_safety import (load_config, PoseHistory, scan_geometry,
                                ScanRecovery, FootprintSafety, DepthClearance, discover_footprint, same_planar_frame)
@@ -50,9 +53,9 @@ else:
 # ==========================================================
 # CẤU HÌNH HỆ THỐNG
 # ==========================================================
-TARGET_CLASS = 'person'
+TARGET_CLASS = normalize_target(os.environ.get('JETAUTO_TARGET', 'person'))
 if len(sys.argv) > 1:
-    TARGET_CLASS = sys.argv[1].strip().lower()
+    TARGET_CLASS = normalize_target(sys.argv[1])
 
 # Never move autonomously after startup.  The operator must explicitly resume
 # AI from the dashboard after checking the surroundings.
@@ -69,6 +72,7 @@ ROBOT_CLEARANCE_M = FOOTPRINT.radius + FOOTPRINT.margin
 AI_COMMAND_TIMEOUT_S = 2.0  # CPU inference can take about one second per frame.
 PERSON_STOP_CM = 80.0
 TARGET_REACQUIRE_S = 1.5
+NAVIGATION_BUILD = '2026-10-01-safe-probe-8'
 LIDAR_YAW_OFFSET_RAD = math.radians(NAV_CONFIG['lidar_yaw_deg'])
 # The low-mounted OAK-D sees the floor as a nearby obstacle on this robot.
 # Keep its RGB feed, but use LiDAR alone for autonomous collision decisions.
@@ -153,8 +157,10 @@ class OccupancyGridMapper(object):
         self.grid = np.full((size, size), 127, dtype=np.uint8)
         self.map_lock = threading.Lock()
         self.last_update = 0.0
+        self.last_plan_reason = 'NOT_PLANNED'
         self.evidence = np.zeros((size, size), dtype=np.float32)
         self.observed_at = np.zeros((size, size), dtype=np.float64)
+        self.free_observed_at = np.zeros((size, size), dtype=np.float64)
 
     def world_to_grid(self, wx, wy):
         gx = int(self.center + wx / self.res)
@@ -166,10 +172,12 @@ class OccupancyGridMapper(object):
             self.grid.fill(127)
             self.evidence.fill(0)
             self.observed_at.fill(0)
+            self.free_observed_at.fill(0)
             self.last_update = 0.0
 
-    def update_world_scan(self, origins, ends, hits):
+    def update_world_scan(self, origins, ends, hits, observed_time=None):
         now = time.monotonic()
+        observed_time = now if observed_time is None else min(now, observed_time)
         if now - self.last_update < 0.18:
             return
         with self.map_lock:
@@ -188,11 +196,26 @@ class OccupancyGridMapper(object):
             self.evidence[occupied] += 1.5
             np.clip(self.evidence, -4.0, 4.0, out=self.evidence)
             self.observed_at[free | occupied] = now
+            self.free_observed_at[free] = observed_time
+            self.free_observed_at[occupied] = 0.0
             stale = now - self.observed_at > 30.0
             self.evidence[stale] = 0.0
             self.grid.fill(127)
             self.grid[self.evidence <= -0.6] = 20
             self.grid[self.evidence >= 1.0] = 255
+
+    def recent_free(self, world_points, now):
+        """Only actual free ray cells younger than 0.75s; no map closing."""
+        cells = np.column_stack((self.center + world_points[:, 0] / self.res,
+                                 self.center - world_points[:, 1] / self.res)).astype(int)
+        inside = np.all((cells >= 0) & (cells < self.size), axis=1)
+        result = np.zeros(len(cells), dtype=bool)
+        x, y = cells[inside, 0], cells[inside, 1]
+        with self.map_lock:
+            stamp = self.free_observed_at[y, x]
+            result[inside] = ((stamp > 0) & (now >= stamp) & (now - stamp <= .75) &
+                              (self.grid[y, x] < 60))
+        return result
 
     def plan_frontier(self, rx, ry, visited, preferred=None):
         """Find a reachable free cell near unknown space and a path to it."""
@@ -211,6 +234,7 @@ class OccupancyGridMapper(object):
         frontier = safe & near_unknown
         sx, sy = self.world_to_grid(rx, ry)
         if not (0 <= sx < self.size and 0 <= sy < self.size):
+            self.last_plan_reason = 'ROBOT_OUTSIDE_MAP'
             return None
         if not safe[sy, sx]:
             # Allow a small odometry/grid rounding error, never a distant jump.
@@ -218,6 +242,7 @@ class OccupancyGridMapper(object):
                        for x in range(max(0, sx - 3), min(self.size, sx + 4))
                        if safe[y, x]]
             if not options:
+                self.last_plan_reason = 'NO_SAFE_START_CELL'
                 return None
             sx, sy = min(options, key=lambda p: (p[0] - sx) ** 2 + (p[1] - sy) ** 2)
 
@@ -252,6 +277,7 @@ class OccupancyGridMapper(object):
         if chosen is None:
             chosen = first_frontier
         if chosen is None:
+            self.last_plan_reason = 'NO_REACHABLE_FRONTIER'
             return None
         path = []
         current = chosen
@@ -261,6 +287,7 @@ class OccupancyGridMapper(object):
                          (self.center - cy) * self.res))
             current = int(parents[current])
         path.reverse()
+        self.last_plan_reason = 'PATH_READY'
         return path[-1], path
 
     def render_map_image(self, rx, ry, ryaw, target_info=None, search_state="",
@@ -337,14 +364,18 @@ grid_mapper = OccupancyGridMapper()
 
 class FrontierExplorer(object):
     """Scan for the object, then visit reachable boundaries of known space."""
+    PROBE_COMMANDS = ((0.08, 0.0), (0.04, 0.0), (0.05, -0.05), (0.05, 0.05),
+                      (0.0, -0.08), (0.0, 0.08), (-0.06, 0.0))
     def __init__(self, mapper):
         self.mapper = mapper
         self.visited = []
+        self.blocked_goals = []
         self.reset_scan()
 
     def reset_scan(self, clear_visited=False):
         if clear_visited:
             self.visited = []
+            self.blocked_goals = []
         self.scan_recovery = ScanRecovery()
         self.phase = 'SCAN'
         self.goal = None
@@ -355,8 +386,45 @@ class FrontierExplorer(object):
         self.last_plan = 0.0
         self.last_progress = 0.0
         self.best_remaining = float('inf')
+        self.probe_index = 0
+        self.probe_start = None
+        self.probe_command = (0.0, 0.0)
+        self.probe_started = 0.0
+        self.probe_block = ''
+
+    def _start_local_probe(self, rx, ry, now):
+        # The stamped map can lack a frontier even when fresh LiDAR shows
+        # a short traversable direction. Probe at most 25 cm before replanning.
+        commands = self.PROBE_COMMANDS
+        self.probe_block = ""
+        for offset in range(len(commands)):
+            index = (self.probe_index + offset) % len(commands)
+            vx, vy = commands[index]
+            allowed, reason = FOOTPRINT.check(vx, vy, 0.0, time.monotonic())
+            if offset == 0:
+                self.probe_block = reason
+            if allowed:
+                self.probe_block = ""
+                self.probe_index = (index + 1) % len(commands)
+                self.probe_start = (rx, ry)
+                self.probe_command = (vx, vy)
+                self.probe_started = now
+                self.phase = 'PROBE'
+                return vx, vy, 0.0, 'DO THAM LOI DI NGAN'
+        return None
 
     def step(self, rx, ry, yaw, now):
+        self.blocked_goals = [(p, stamp) for p, stamp in self.blocked_goals
+                              if now - stamp < 15.0]
+        excluded = self.visited + [p for p, stamp in self.blocked_goals]
+        if self.phase == 'PROBE':
+            moved = math.hypot(rx - self.probe_start[0], ry - self.probe_start[1])
+            vx, vy = self.probe_command
+            if (moved >= 0.25 or now - self.probe_started > 4.0 or
+                    not FOOTPRINT.check(vx, vy, 0.0, time.monotonic())[0]):
+                self.reset_scan()
+                return 0.0, 0.0, 0.0, 'QUET LAI SAU DO THAM'
+            return vx, vy, 0.0, 'DO THAM LOI DI NGAN'
         if self.phase in ('SCAN', 'RECOVER'):
             phase, turn = self.scan_recovery.step(yaw, now)
             self.swept_angle = abs(self.scan_recovery.net_angle)
@@ -364,52 +432,66 @@ class FrontierExplorer(object):
             if phase in ('PLAN', 'PLAN_PARTIAL'):
                 self.phase = 'PLAN'
             else:
+                if (phase == 'SCAN' and
+                        self.scan_recovery.partial_probe_due()):
+                    probe = self._start_local_probe(rx, ry, now)
+                    if probe is not None:
+                        return probe
                 self.phase = phase
-                return 0.0, turn, ('CHO THU HUONG QUET KHAC' if phase == 'RECOVER'
+                return 0.0, 0.0, turn, ('CHO THU HUONG QUET KHAC' if phase == 'RECOVER'
                                    else 'QUET TIM MUC TIEU')
 
         if self.phase == 'PLAN' or (self.phase == 'WAIT' and now - self.last_plan >= 5.0):
             self.last_plan = now
-            result = self.mapper.plan_frontier(rx, ry, self.visited)
-            if result is None:
+            mobility = [FOOTPRINT.check(vx, vy, 0.0, time.monotonic())
+                        for vx, vy in self.PROBE_COMMANDS]
+            if not any(allowed for allowed, reason in mobility):
+                self.probe_block = mobility[0][1]
                 self.phase = 'WAIT'
                 self.goal = None
-                return 0.0, 0.0, 'KHONG CO VUNG CHUA QUET CO DUONG AN TOAN'
+                return 0.0, 0.0, 0.0, 'KHONG THE TINH TIEN: ' + self.probe_block
+            result = self.mapper.plan_frontier(rx, ry, excluded)
+            if result is None:
+                probe = self._start_local_probe(rx, ry, now)
+                if probe is not None:
+                    return probe
+                self.phase = 'WAIT'
+                self.goal = None
+                return 0.0, 0.0, 0.0, 'CHUA TIM THAY LOI DI AN TOAN'
             self.goal, self.path = result
             self.phase = 'MOVE'
             self.last_progress = now
             self.best_remaining = math.hypot(self.goal[0] - rx, self.goal[1] - ry)
 
         if self.phase == 'WAIT':
-            return 0.0, 0.0, 'DA QUET HET VUNG CO THE TIEP CAN'
+            return 0.0, 0.0, 0.0, 'CHO LOI DI: ' + getattr(self, 'probe_block', '')
 
         remaining = math.hypot(self.goal[0] - rx, self.goal[1] - ry)
         if remaining < 0.35:
             self.visited.append(self.goal)
             self.reset_scan()
-            return 0.0, 0.0, 'TOI DIEM TIM KIEM, QUET LAI'
+            return 0.0, 0.0, 0.0, 'TOI DIEM TIM KIEM, QUET LAI'
         if remaining < self.best_remaining - 0.08:
             self.best_remaining = remaining
             self.last_progress = now
         elif now - self.last_progress > 8.0:
-            self.visited.append(self.goal)
+            self.blocked_goals.append((self.goal, now))
             self.phase = 'PLAN'
             self.goal = None
-            return 0.0, 0.0, 'DUONG BI CHAN, CHON HUONG KHAC'
+            return 0.0, 0.0, 0.0, 'DUONG BI CHAN, CHON HUONG KHAC'
 
         if now - self.last_plan > 2.0:
             self.last_plan = now
-            result = self.mapper.plan_frontier(rx, ry, self.visited, self.goal)
+            result = self.mapper.plan_frontier(rx, ry, excluded, self.goal)
             if result is None or result[0] != self.goal:
-                self.visited.append(self.goal)
                 self.phase = 'PLAN'
                 self.goal = None
-                return 0.0, 0.0, 'DUONG THAY DOI, LAP KE HOACH LAI'
+                return 0.0, 0.0, 0.0, 'DUONG THAY DOI, LAP KE HOACH LAI'
             self.path = result[1]
 
         if not self.path:
             self.phase = 'PLAN'
-            return 0.0, 0.0, 'DANG LAP KE HOACH'
+            return 0.0, 0.0, 0.0, 'DANG LAP KE HOACH'
         nearest = min(range(len(self.path)),
                       key=lambda i: math.hypot(self.path[i][0] - rx, self.path[i][1] - ry))
         waypoint = self.path[-1]
@@ -421,7 +503,15 @@ class FrontierExplorer(object):
         heading_error = (heading - yaw + math.pi) % (2 * math.pi) - math.pi
         turn = max(-22.0, min(22.0, math.degrees(heading_error) * 0.8))
         speed = 0.10 if abs(heading_error) < math.radians(25) else 0.0
-        return speed, turn, 'TIM VUNG CHUA QUET ({:.1f}m)'.format(remaining)
+        if speed and not FOOTPRINT.check(speed, 0.0, turn, time.monotonic())[0]:
+            probe = self._start_local_probe(rx, ry, now)
+            if probe is not None:
+                return probe
+            self.phase = 'WAIT'
+            self.last_plan = now
+            self.goal = None
+            return 0.0, 0.0, 0.0, 'KHONG THE TINH TIEN: ' + self.probe_block
+        return speed, 0.0, turn, 'TIM VUNG CHUA QUET ({:.1f}m)'.format(remaining)
 
 
 # ==========================================================
@@ -695,7 +785,13 @@ class CamHandler(BaseHTTPRequestHandler):
             data = {}
 
         if self.path == '/set_target':
-            new_target = data.get('target', '').strip().lower()
+            new_target = normalize_target(data.get('target', ''))
+            if new_target and seeker_instance and new_target not in seeker_instance.classes:
+                self.send_response(400)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'status': 'error', 'message': 'Unknown YOLO class: ' + new_target}).encode())
+                return
             if new_target:
                 TARGET_CLASS = new_target
                 with target_lock:
@@ -707,7 +803,7 @@ class CamHandler(BaseHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                self.wfile.write(b'{"status": "ok"}')
+                self.wfile.write(json.dumps({'status': 'ok', 'target': TARGET_CLASS}).encode())
                 return
 
         elif self.path in ('/pause', '/stop'):
@@ -788,6 +884,7 @@ class CamHandler(BaseHTTPRequestHandler):
             ai_thread = getattr(seeker, 'ai_thread', None) if seeker else None
 
             status_data = {
+                'build': NAVIGATION_BUILD,
                 'target': TARGET_CLASS,
                 'paused': IS_PAUSED,
                 'camera_age': round(time.time() - astra_frame_time, 1) if astra_frame_time else None,
@@ -808,6 +905,7 @@ class CamHandler(BaseHTTPRequestHandler):
                 'depth_clearance': seeker.depth_guard.status,
                 'depth_clearance_enabled': seeker.depth_guard.enabled,
                 'explorer_phase': getattr(explorer, 'phase', 'INIT'),
+                'plan_reason': grid_mapper.last_plan_reason,
                 'scan_swept_deg': round(math.degrees(getattr(explorer, 'swept_angle', 0.0)), 1),
                 'lidar_front_cm': round(scan_copy['front'], 1),
                 'lidar_left_cm': round(scan_copy['left'], 1),
@@ -821,10 +919,15 @@ class CamHandler(BaseHTTPRequestHandler):
                 'inference_ms': round(seeker_instance.inference_ms, 0) if seeker_instance else 0.0,
                 'action_text': seeker_instance.last_action_text if seeker_instance else "CHO KHOI DONG",
                 'search_mode': seeker_instance.search_mode if seeker_instance else "INIT",
+                'target_avoidance_phase': seeker.target_avoidance.phase if seeker else 'INIT',
+                'target_avoidance_direction': seeker.target_avoidance.direction if seeker else 0,
+                'target_avoidance_attempts': seeker.target_avoidance.attempts if seeker else 0,
                 'linear_x': round(seeker_instance.published_linear_x, 2) if seeker_instance else 0.0,
                 'linear_y': round(seeker_instance.published_linear_y, 2) if seeker_instance else 0.0,
                 'angular_z': round(seeker_instance.published_angular_z, 1) if seeker_instance else 0.0,
                 'motion_block': seeker_instance.motion_block_reason if seeker_instance else '',
+                'navigation_block': seeker_instance.navigation_block_reason if seeker_instance else '',
+                'probe_block': getattr(explorer, 'probe_block', '') if seeker and seeker.search_mode == 'EXPLORE' else '',
                 'dist_left': round(obs_copy['dist_l'], 1),
                 'dist_center': round(obs_copy['dist_c'], 1),
                 'dist_right': round(obs_copy['dist_r'], 1),
@@ -907,6 +1010,7 @@ class SmartObjectSeeker(object):
         self.published_linear_y = 0.0
         self.published_angular_z = 0.0
         self.motion_block_reason = ''
+        self.navigation_block_reason = ''
         self.manual_override_until = 0.0
         self.explorer = FrontierExplorer(grid_mapper)
         self.last_ai_update = 0.0
@@ -918,6 +1022,7 @@ class SmartObjectSeeker(object):
         self.scan_processing_lock = threading.Lock()
         self.mapping_status = 'WAITING FOR SYNC'
         self.mapping_wait_reason = ''
+        FOOTPRINT.coverage_lookup = self._recent_free_coverage
         self.scan_stamp = 0.0
         self.depth_guard = DepthClearance(NAV_CONFIG, FOOTPRINT)
         self.depth_camera_info = None
@@ -930,6 +1035,8 @@ class SmartObjectSeeker(object):
 
         # Chế độ tìm kiếm: 'TRACKING' (Bám đuổi), 'INTERCEPT' (Đón đầu), 'EXPLORE' (Khám phá)
         self.search_mode = "EXPLORE"
+        self.target_avoidance = TargetAvoidance()
+        self.target_steering = TargetSteering()
 
         # YOLO Model
         self.classes = self.load_classes()
@@ -1154,6 +1261,15 @@ class SmartObjectSeeker(object):
         with battery_lock:
             battery_state.update(voltage=voltage, percent=percent, last_update=time.time())
 
+    def _recent_free_coverage(self, body_points, now):
+        with pose_lock:
+            p = dict(robot_pose)
+        if time.time() - p['last_update'] > .2 or not self.footprint_frame_valid:
+            return np.zeros(len(body_points), dtype=bool)
+        c, s = math.cos(p['yaw']), math.sin(p['yaw'])
+        world = body_points.dot(np.array([[c, s], [-s, c]])) + [p['x'], p['y']]
+        return grid_mapper.recent_free(world, now)
+
     def _process_pending_scans(self):
         if not self.scan_processing_lock.acquire(False):
             return
@@ -1174,7 +1290,8 @@ class SmartObjectSeeker(object):
                 self.mapping_wait_reason = ''
                 origins, ends, hits = scan_geometry(msg.ranges, msg.angle_min, msg.angle_increment,
                                                   poses, NAV_CONFIG, max(0.12, msg.range_min), msg.range_max)
-                grid_mapper.update_world_scan(origins, ends, hits)
+                observed = time.monotonic() - max(0.0, rospy.Time.now().to_sec() - msg.header.stamp.to_sec())
+                grid_mapper.update_world_scan(origins, ends, hits, observed_time=observed)
                 self.mapping_status = ('SYNCED' if NAV_CONFIG['lidar_extrinsics_calibrated']
                                        else 'SYNCED; LIDAR EXTRINSICS UNCALIBRATED')
         finally:
@@ -1538,7 +1655,13 @@ class SmartObjectSeeker(object):
         cid_list = class_ids.tolist()
 
         try:
-            indices = cv2.dnn.NMSBoxes(boxes, conf_list, 0.25, 0.45)
+            # A chair/person overlap must not suppress the requested class.
+            indices = []
+            for class_id in sorted(set(cid_list)):
+                group = [i for i, cid in enumerate(cid_list) if cid == class_id]
+                kept = cv2.dnn.NMSBoxes([boxes[i] for i in group],
+                                        [conf_list[i] for i in group], 0.25, 0.45)
+                indices.extend(group[int(i)] for i in np.asarray(kept).flatten())
         except Exception:
             indices = list(range(len(boxes)))
 
@@ -1587,6 +1710,8 @@ class SmartObjectSeeker(object):
                 search_target = TARGET_CLASS
                 last_target_center = None
                 last_target_time = 0.0
+                self.target_avoidance.reset()
+                self.target_steering.reset()
                 self.explorer.reset_scan(clear_visited=True)
             if now - last_fps_time >= 1.0:
                 self.ai_fps = frame_counter / (now - last_fps_time)
@@ -1601,8 +1726,10 @@ class SmartObjectSeeker(object):
             detections = self.run_yolo(raw_frame)
             self.inference_ms = (time.time() - inference_started) * 1000.0
             target_detections = [d for d in detections if d['class_name'] == search_target]
-            target_found = len(target_detections) > 0
             now = time.time()
+            recent_center = last_target_center if now - last_target_time < 2.0 else None
+            best = choose_target(target_detections, (w, h), recent_center, search_target)
+            target_found = best is not None
             if self.target_announcement.update(
                     search_target, target_found, time.monotonic(),
                     enabled=not IS_PAUSED and now >= self.manual_override_until):
@@ -1620,17 +1747,6 @@ class SmartObjectSeeker(object):
 
             # 2. CẬP NHẬT BỘ NHỚ KHÔNG GIAN (OBJECT PERMANENCE)
             if target_found:
-                # Keep following the same image location when several objects
-                # of the selected class are visible.
-                if last_target_center is not None and now - last_target_time < 1.0:
-                    def target_score(det):
-                        x, y, bw, bh = det['box']
-                        dx = x + bw * 0.5 - last_target_center[0]
-                        dy = y + bh * 0.5 - last_target_center[1]
-                        return det['conf'] - 0.5 * math.hypot(dx, dy) / max(w, h)
-                    best = max(target_detections, key=target_score)
-                else:
-                    best = max(target_detections, key=lambda d: d['conf'])
                 bx, by, bw, bh = best['box']
                 target_center = (bx + bw // 2, by + bh // 2)
                 last_target_center = target_center
@@ -1647,7 +1763,7 @@ class SmartObjectSeeker(object):
                                    abs(astra_depth_time - astra_frame_time) < 0.25 else None)
                 astra_distance_cm = estimate_astra_distance_cm(astra_depth, raw_frame.shape, best['box'])
                 est_dist = (astra_distance_cm / 100.0 if astra_distance_cm is not None
-                            else max(0.4, min(5.0, 0.45 / max(width_ratio, 0.08))))
+                            else estimate_target_distance(bw, w, TARGET_CLASS))
 
                 # Tính góc lệch theo FOV ngang của camera Astra (~60 độ)
                 error_x = target_center[0] - center_screen_x
@@ -1674,7 +1790,9 @@ class SmartObjectSeeker(object):
                 last_tx = target_memory['x']
                 last_ty = target_memory['y']
 
+            self.navigation_block_reason = ""
             base_vx = 0.0
+            explore_vy = 0.0
             heading_wz = 0.0
             action_text = ""
             status_color = (0, 255, 0)
@@ -1683,27 +1801,31 @@ class SmartObjectSeeker(object):
                 # CHẾ ĐỘ 1: BÁM ĐUỔI TRỰC DIỆN (TRACKING)
                 self.search_mode = "TRACKING"
                 error_x = target_center[0] - center_screen_x
-                heading_wz = max(min(float(-error_x * 0.07), 25.0), -25.0)
+                heading_wz = self.target_steering.update(error_x)
 
-                if ((astra_distance_cm is not None and astra_distance_cm < (PERSON_STOP_CM if TARGET_CLASS == 'person' else 55.0)) or
-                        (astra_distance_cm is None and width_ratio > 0.45)):
+                stand_off_cm = target_standoff_cm(TARGET_CLASS)
+                if est_dist * 100.0 <= stand_off_cm:
                     base_vx = 0.0
                     heading_wz = 0.0
                     action_text = "ĐÃ ĐẾN GẦN MỤC TIÊU! DỪNG LẠI"
                 else:
-                    base_vx = 0.15 if abs(error_x) < 80 else 0.08
+                    base_vx = 0.15 if abs(self.target_steering.filtered_error) < 80 else 0.08
                     action_text = "BÁM MỤC TIÊU {} (Cách {:.1f}m)".format(TARGET_CLASS.upper(), est_dist)
 
             elif has_last_pos and time_since_seen < TARGET_REACQUIRE_S:
                 self.search_mode = "REACQUIRE"
                 dx, dy = last_tx - cur_rx, last_ty - cur_ry
                 yaw_diff = (math.atan2(dy, dx) - cur_yaw + math.pi) % (2 * math.pi) - math.pi
-                heading_wz = 18.0 if yaw_diff >= 0 else -18.0
+                heading_wz = max(-12.0, min(12.0, math.degrees(yaw_diff) * .6))
+                if time_since_seen < 0.45 or abs(yaw_diff) < math.radians(4):
+                    heading_wz = 0.0
                 base_vx = 0.0
                 action_text = "MAT DAU -> QUET TIM LAI (1.5s)"
                 status_color = (0, 215, 255)
 
             else:
+                self.target_avoidance.reset()
+                self.target_steering.reset()
                 # CHẾ ĐỘ 3: Quét 360 độ rồi đi đến rìa vùng chưa biết có
                 # đường đi qua các ô đã đo là trống.
                 if self.search_mode != "EXPLORE":
@@ -1720,7 +1842,7 @@ class SmartObjectSeeker(object):
                                    else "CHO DU LIEU LIDAR")
                     status_color = (0, 0, 255)
                 else:
-                    base_vx, heading_wz, action_text = self.explorer.step(
+                    base_vx, explore_vy, heading_wz, action_text = self.explorer.step(
                         cur_rx, cur_ry, cur_yaw, now)
                     status_color = (148, 163, 184)
 
@@ -1773,23 +1895,45 @@ class SmartObjectSeeker(object):
                     status_color = (0, 215, 255)
                 else:
                     cmd_vx = base_vx
-                    cmd_vy = 0.0
+                    cmd_vy = explore_vy if self.search_mode == 'EXPLORE' else 0.0
                     cmd_wz = heading_wz
 
                 allowed, reason = FOOTPRINT.check(cmd_vx, cmd_vy, cmd_wz, time.monotonic())
-                if not allowed:
-                    original_turn = cmd_wz
+                if self.search_mode == 'TRACKING' and base_vx > 0:
+                    side = -1 if target_center[0] > center_screen_x else 1
+                    def safe_command(vx, vy, wz):
+                        return FOOTPRINT.check(vx, vy, wz, time.monotonic())[0]
+                    self.navigation_block_reason = reason if not allowed else ''
+                    local = None
+                    if not allowed:
+                        local = approach_command(base_vx, heading_wz,
+                                                 self.target_avoidance.direction or side,
+                                                 safe_command)
+                    if local is not None:
+                        cmd_vx, cmd_vy, cmd_wz = local
+                        self.target_avoidance.reset()
+                        self.target_avoidance.direction = (1 if cmd_vy > 0 else -1) if cmd_vy else side
+                        action_text = 'TIEN CHAM VA LACH THEO LIDAR'
+                        override = None
+                        allowed = True
+                    else:
+                        override = self.target_avoidance.command(
+                            allowed, (cur_rx, cur_ry, cur_yaw), side,
+                            safe_command, time.monotonic(), align_turn=heading_wz)
+                    if override is not None:
+                        cmd_vx, cmd_vy, cmd_wz, action_text = override
+                        if not (cmd_vx or cmd_vy or cmd_wz) and reason:
+                            action_text = 'DUNG: ' + reason
+                            status_color = (0, 165, 255)
+                    elif not allowed:
+                        cmd_vx = cmd_vy = cmd_wz = 0.0
+                        action_text = reason
+                elif not allowed:
+                    self.navigation_block_reason = reason
                     cmd_vx = cmd_vy = cmd_wz = 0.0
                     action_text = reason
-                    # Reactive target following may select a verified turn. Exploration
-                    # recovery owns its own retries; do not bypass its trajectory.
-                    if self.search_mode in ('TRACKING', 'REACQUIRE'):
-                        preferred = 18.0 if original_turn >= 0 else -18.0
-                        for candidate in (preferred, -preferred):
-                            if FOOTPRINT.check(0.0, 0.0, candidate, time.monotonic())[0]:
-                                cmd_wz = candidate
-                                action_text = 'XOAY NE THEO VUNG THAN XE'
-                                break
+                elif self.search_mode == 'TRACKING':
+                    self.target_avoidance.reset()
 
                 with obstacle_lock:
                     obstacle_info['strafe_dir'] = strafe_name

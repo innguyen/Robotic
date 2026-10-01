@@ -29,8 +29,8 @@ class PoseTests(unittest.TestCase):
         guard = FootprintSafety(cfg)
         self.assertTrue(guard.calibrated)
         self.assertFalse(guard.rectangular)
-        self.assertAlmostEqual(guard.radius + guard.margin, .28)
-        for distance, allowed in ((.462, True), (.27, False)):
+        self.assertAlmostEqual(guard.radius + guard.margin, .25)
+        for distance, allowed in ((.462, True), (.27, True), (.19, False)):
             ranges = np.full(720, 3.)
             ranges[540] = distance
             guard.update(ranges, -math.pi, math.pi / 360, .12, 8, 100)
@@ -123,6 +123,15 @@ class RecoveryTests(unittest.TestCase):
                     break
             self.assertEqual(phase, 'PLAN')
 
+    def test_safe_probe_can_start_after_quarter_turn(self):
+        recovery = ScanRecovery()
+        recovery.step(0.0, 0.0)
+        recovery.step(math.radians(80), 1.0)
+        self.assertFalse(recovery.partial_probe_due())
+        recovery.step(math.radians(92), 1.2)
+        self.assertTrue(recovery.partial_probe_due())
+        self.assertFalse(recovery.partial_probe_due(math.radians(100)))
+
 
 class FootprintTests(unittest.TestCase):
     def guard(self, ranges=None, cfg=None, amin=-math.pi, inc=None):
@@ -160,7 +169,7 @@ class FootprintTests(unittest.TestCase):
         cfg['body_width_m'] = .3
         ranges = np.full(720, 3.)
         # Point just outside current upper-right corner but inside rotated body.
-        x, y = .41, .28
+        x, y = .36, .27
         idx = round((math.atan2(y, x) + math.pi) / (2 * math.pi / 720))
         ranges[idx] = math.hypot(x, y)
         g = self.guard(ranges, cfg)
@@ -177,6 +186,44 @@ class FootprintTests(unittest.TestCase):
         ranges = np.full(720, 3.)
         ranges[350:370] = np.nan
         self.assertFalse(self.guard(ranges).check(.1, 0, 0, 100)[0])
+
+    def test_isolated_dropout_does_not_close_clear_corridor(self):
+        ranges = np.full(720, 3.)
+        ranges[360] = np.nan
+        self.assertTrue(self.guard(ranges).check(.1, 0, 0, 100)[0])
+        ranges[360] = 0.
+        self.assertTrue(self.guard(ranges).check(.1, 0, 0, 100)[0])
+
+    def test_close_positive_return_is_never_filled_as_dropout(self):
+        ranges = np.full(720, 3.)
+        ranges[360] = .05
+        self.assertFalse(self.guard(ranges).check(.1, 0, 0, 100)[0])
+
+    def test_real_obstacle_survives_neighbor_dropout(self):
+        ranges = np.full(720, 3.)
+        ranges[359] = np.nan
+        ranges[360] = .35
+        self.assertFalse(self.guard(ranges).check(.1, 0, 0, 100)[0])
+
+    def test_missing_rear_does_not_block_forward(self):
+        ranges = np.full(720, 3.)
+        ranges[:55] = np.nan
+        ranges[-55:] = np.nan
+        g = self.guard(ranges, cfg=load_config(str(ROOT / 'navigation_config.json')))
+        self.assertTrue(g.check(.08, 0, 0, 100)[0])
+        self.assertFalse(g.check(-.08, 0, 0, 100)[0])
+
+    def test_side_obstacle_can_be_escaped_but_not_approached(self):
+        cfg = load_config(str(ROOT / 'navigation_config.json'))
+        ranges = np.full(720, 3.)
+        x, y = .13, .245
+        idx = round((math.atan2(y, x) + math.pi) / (math.pi / 360))
+        ranges[idx] = math.hypot(x, y)
+        g = self.guard(ranges, cfg=cfg)
+        self.assertFalse(g.check(.15, 0, 0, 100)[0])
+        self.assertTrue(g.check(0, -.08, 0, 100)[0])
+        self.assertFalse(g.check(0, .08, 0, 100)[0])
+        self.assertTrue(g.check(0, 0, 18, 100)[0])
 
 
 class DepthTests(unittest.TestCase):
@@ -231,6 +278,89 @@ class DepthTests(unittest.TestCase):
 
 
 class IntegrationTests(unittest.TestCase):
+    def test_recent_free_cells_expire_and_new_hit_revokes_free(self):
+        import cv2, threading, time
+        from unittest.mock import patch
+        tree = ast.parse((ROOT / 'jetauto_smart_search.py').read_text(encoding='utf-8'))
+        node = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'OccupancyGridMapper')
+        env = dict(np=np, cv2=cv2, threading=threading, time=time, math=math)
+        exec(compile(ast.Module(body=[node], type_ignores=[]), '<mapper>', 'exec'), env)
+        m = env['OccupancyGridMapper']()
+        origin = np.array([[0., 0.]])
+        for stamp in (100., 100.2, 100.4, 100.6, 100.8, 101.):
+            with patch.object(time, 'monotonic', return_value=stamp):
+                m.update_world_scan(origin, np.array([[1., 0.]]), np.array([True]))
+        points = np.array([[.5, 0.], [.5, .5]])
+        self.assertEqual(m.recent_free(points, 101.1).tolist(), [True, False])
+        self.assertFalse(m.recent_free(points, 102.).any())
+        with patch.object(time, 'monotonic', return_value=101.3):
+            m.update_world_scan(origin, np.array([[.5, 0.]]), np.array([True]))
+        self.assertFalse(m.recent_free(points, 101.3).any())
+
+    def test_no_translation_does_not_cycle_frontier_turns(self):
+        import time
+        from unittest.mock import Mock
+        tree = ast.parse((ROOT / 'jetauto_smart_search.py').read_text(encoding='utf-8'))
+        node = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'FrontierExplorer')
+        guard = Mock()
+        guard.check.return_value = (False, 'SWEPT AREA UNKNOWN')
+        env = dict(time=time, math=math, FOOTPRINT=guard, ScanRecovery=ScanRecovery)
+        exec(compile(ast.Module(body=[node], type_ignores=[]), '<explorer>', 'exec'), env)
+        mapper = Mock()
+        explorer = env['FrontierExplorer'](mapper)
+        explorer.phase = 'PLAN'
+        for stamp in (100., 106., 112.):
+            self.assertEqual(explorer.step(0, 0, 0, stamp)[:3], (0., 0., 0.))
+        self.assertEqual(explorer.phase, 'WAIT')
+        mapper.plan_frontier.assert_not_called()
+
+    def test_yolo_keeps_target_under_different_class_overlap(self):
+        import cv2
+        from types import SimpleNamespace
+        from unittest.mock import Mock
+        tree = ast.parse((ROOT / 'jetauto_smart_search.py').read_text(encoding='utf-8'))
+        cls = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'SmartObjectSeeker')
+        method = next(n for n in cls.body if isinstance(n, ast.FunctionDef) and n.name == 'run_yolo')
+        env = dict(np=np, cv2=cv2)
+        exec(compile(ast.Module(body=[method], type_ignores=[]), '<yolo>', 'exec'), env)
+        output = np.zeros((1, 84, 100), dtype=np.float32)
+        output[0, :4, :3] = np.array([[320], [320], [160], [240]])
+        output[0, 4, 0] = .9
+        output[0, 4 + 56, 1] = .8
+        output[0, 4 + 56, 2] = .6
+        net = Mock()
+        net.forward.return_value = output
+        seeker = SimpleNamespace(use_ort=False, net=net, classes=list(range(80)))
+        result = env['run_yolo'](seeker, np.zeros((640, 640, 3), dtype=np.uint8))
+        self.assertEqual(sorted(d['class_id'] for d in result), [0, 56])
+
+    def test_explorer_tries_diagonal_and_revisits_failed_goal(self):
+        import time
+        from unittest.mock import Mock
+        tree = ast.parse((ROOT / 'jetauto_smart_search.py').read_text(encoding='utf-8'))
+        node = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'FrontierExplorer')
+        guard = Mock()
+        guard.check.side_effect = lambda vx, vy, wz, now: (vx > 0 and vy > 0, 'blocked')
+        env = dict(time=time, math=math, FOOTPRINT=guard, ScanRecovery=ScanRecovery)
+        exec(compile(ast.Module(body=[node], type_ignores=[]), '<explorer>', 'exec'), env)
+        mapper = Mock()
+        mapper.plan_frontier.return_value = None
+        explorer = env['FrontierExplorer'](mapper)
+        explorer.phase = 'PLAN'
+        result = explorer.step(0, 0, 0, 100)
+        self.assertEqual(explorer.phase, 'PROBE')
+        self.assertGreater(result[0], 0)
+        self.assertGreater(result[1], 0)
+        explorer.phase = 'MOVE'
+        explorer.goal = (2., 0.)
+        explorer.best_remaining = 2.
+        explorer.last_progress = 90.
+        explorer.step(0, 0, 0, 100)
+        self.assertEqual(explorer.visited, [])
+        self.assertEqual(explorer.blocked_goals, [((2., 0.), 100)])
+        explorer.step(0, 0, 0, 116)
+        self.assertEqual(explorer.blocked_goals, [])
+
     def test_final_heartbeat_depth_veto_stops_every_axis(self):
         import threading
         import time

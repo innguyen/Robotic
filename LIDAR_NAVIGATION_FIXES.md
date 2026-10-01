@@ -170,3 +170,18 @@ Trình tự thử phần cứng:
 | `DEPTH VOLUME OUTSIDE VIEW` | Camera không thấy đủ thể tích cần đi qua |
 | `DEPTH BODY VOLUME BLOCKED` | Có bề mặt trước hoặc trong thể tích cần trống |
 | `DEPTH CLEAR TO 60CM HEIGHT` | Kiểm tra thể tích phía trước đạt; vẫn phải qua kiểm tra LiDAR |
+
+## Cập nhật sau video ngày 01-10-2026
+
+- Bán kính thân đo được là 20 cm, cộng biên an toàn 8 cm. Với thân tròn, quay tại chỗ không cần đủ tia LiDAR phía sau; điểm đo trong thân thực 20 cm hoặc bản quét quá cũ vẫn chặn quay.
+- Khi dịch chuyển, chỉ yêu cầu dữ liệu LiDAR ở nửa đường bao đang tiến vào vùng mới. Điểm đang nằm trong biên an toàn được phép rời xa nếu khoảng cách tăng liên tục; đi sâu hơn về phía điểm vẫn bị chặn.
+- Nếu bản đồ chưa tìm được đường tới vùng chưa biết, robot thử một đoạn tối đa 25 cm theo hướng được LiDAR xác nhận, rồi lập đường lại. Nếu không có hướng an toàn, robot chờ và thử lại. `/status.plan_reason` cho biết vì sao không có đường.
+- Với nhiều chai/cốc/vật nhỏ cùng lớp, chọn mục tiêu theo độ tin cậy và vị trí thấp trong ảnh. Khi tiến bị chặn, thử đi ngang tối đa 30 cm theo hướng được kiểm tra an toàn, sau đó quay tìm hướng khác nếu vẫn không tiến được.
+
+Các thay đổi đã qua kiểm thử mô phỏng, chưa được xác minh trên robot sau video này. Cần kiểm tra vị trí tâm LiDAR so với thân và các phản xạ ở gần thân khi thử phần cứng.
+
+### Chống đổi hướng liên tục khi bám mục tiêu
+
+Khi đang bám một chai/người, khung nhận diện chỉ được ghép với vị trí cũ nếu tâm của nó di chuyển trong giới hạn hợp lý. Một khung khác ở xa không được chiếm quyền bám ngay sau một lần YOLO bỏ sót. Góc lái lấy từ tâm khung nhận diện được lọc EMA, dùng vùng chết 24 px để bắt đầu chỉnh và 12 px để ngừng chỉnh; lệnh quay giới hạn 18°/s. Khi đường tiến bị chặn, robot chọn một hướng né và giữ hướng đó tối đa 30 cm hoặc 4 giây, sau đó quay cùng chiều tối đa 45°. Robot chỉ trở lại tiến sau ba lần kiểm tra liên tiếp cho thấy đường tiến an toàn. Nếu cả lách và quay đều bị chặn, bản cũ giữ `BLOCKED` vô thời hạn; bản `2026-10-01-target-retry-4` chờ ngắn rồi thử phía đối diện, và mọi lệnh vẫn phải qua `FootprintSafety`. Trạng thái nằm trong `/status.target_avoidance_phase`, `target_avoidance_direction`, `target_avoidance_attempts` và `motion_block`.
+
+Âm thanh “đã tìm thấy …” được phát sau hai khung nhận diện liên tiếp; nó chỉ xác nhận phát hiện, không xác nhận đã tới gần. Nếu hình ảnh hiện “CHUA CO LOI DI AN TOAN TOI MUC TIEU”, lệnh tiến đã bị kiểm tra footprint/LiDAR chặn. Mục tiêu như ghế cũng phản hồi LiDAR như vật cản, nên bộ an toàn có thể buộc robot dừng hoặc tìm hướng lách; cần dùng `/status.motion_block` và các trường `target_avoidance_*` để xem nguyên nhân cụ thể. Bản retry mới chưa được xác minh chuyển động trên robot thật.
