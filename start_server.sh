@@ -162,18 +162,24 @@ fi
 
 # ================================================================
 # BUOC 4: Setup Python 3 va chay AI YOLO Server
-APP_SCRIPT="${1:-jetauto_find_object.py}"
-echo ">> [4/5] Khoi chay AI Server ($APP_SCRIPT)..."
+# ================================================================
+echo ">> [4/5] Khoi chay AI YOLO Server..."
 
-# Giai phong cong 5000-5005 de server luon nhan cong 5000
-fuser -k 5000/tcp 5001/tcp 5002/tcp 2>/dev/null || true
+# Dung server cu AN TOAN: SIGTERM de no kip gui van toc 0 cho dong co truoc khi thoat
+# (driver khung gam KHONG tu dung khi mat lenh, kill -9 ngay co the de xe chay tiep lenh cu)
+pkill -TERM -f "jetauto_find_object.py" 2>/dev/null || true
+for i in 1 2 3 4 5; do
+    pgrep -f "jetauto_find_object.py" > /dev/null 2>&1 || break
+    sleep 1
+done
 pkill -9 -f "jetauto_find_object.py" 2>/dev/null || true
-pkill -9 -f "jetauto_smart_search.py" 2>/dev/null || true
+# Giai phong cong 5000-5002 de server luon nhan cong 5000
+fuser -k 5000/tcp 5001/tcp 5002/tcp 2>/dev/null || true
 sleep 1
 
 LOG_FILE="/tmp/jetauto_ai.log"
 nohup env PYTHONPATH="$PY3_PYTHONPATH" \
-    python3 -u "/home/jetauto/$APP_SCRIPT" \
+    python3 -u /home/jetauto/jetauto_find_object.py \
     > "$LOG_FILE" 2>&1 &
 
 AI_PID=$!
