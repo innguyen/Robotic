@@ -380,6 +380,24 @@ class AstraTest(unittest.TestCase):
         self.assertAlmostEqual(astra.height, 0.47, delta=0.01)
         self.assertAlmostEqual(astra.pitch_deg, 11.0, delta=0.5)
 
+    def test_rejects_dominant_plane_far_from_measured_mount(self):
+        # Mặt ghế/bàn lớn trong ảnh có thể thắng RANSAC khi camera chỉ thấy rất ít sàn.
+        depth, intr = self.synthetic_depth(0.28, 33.0)
+        astra = self.make(depth, intr)
+        self.assertFalse(astra.calibrate(depth))
+        self.assertAlmostEqual(astra.height, CFG.astra_height)
+        self.assertAlmostEqual(astra.pitch_deg, CFG.astra_pitch_deg)
+
+    def test_floor_tracking_cannot_accumulate_past_mount_limits(self):
+        # Một bước nhỏ vẫn có thể dẫn tới trôi lớn nếu cứ lấy mặt phẳng trước làm mốc.
+        depth, intr = self.synthetic_depth(0.53, 14.0)
+        astra = self.make(depth, intr)
+        p = math.radians(11.9)
+        astra.set_plane(np.array([0.0, -math.cos(p), -math.sin(p)]), 0.50)
+        astra.process(depth, 1.0)
+        self.assertAlmostEqual(astra.height, 0.50)
+        self.assertAlmostEqual(astra.pitch_deg, 11.9)
+
     def test_detects_box_and_ignores_floor(self):
         depth, intr = self.synthetic_depth(0.462, 7.9, box=(1.2, 1.4, -0.15, 0.15, 0.25))
         astra = self.make(depth, intr)

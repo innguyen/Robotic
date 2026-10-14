@@ -68,6 +68,13 @@ class AvoidanceConfig(object):
         self.astra_height = 0.462
         self.astra_pitch_deg = 7.9
         self.astra_roll_deg = 0.0
+        # RANSAC chỉ được tinh chỉnh quanh tư thế gá đã đo. Nếu camera nhìn ít sàn,
+        # mặt ghế/bàn có thể chiếm đa số ảnh và bị nhận nhầm là sàn; không có giới
+        # hạn tuyệt đối thì bộ bám mặt phẳng còn tích lũy sai số qua từng frame.
+        self.astra_calib_tilt_tolerance_deg = 10.0
+        self.astra_calib_height_tolerance = 0.10
+        self.astra_track_tilt_tolerance_deg = 5.0
+        self.astra_track_height_tolerance = 0.05
         self.astra_stride = 4
         self.astra_min_depth = 0.30
         self.astra_max_range = 3.2
@@ -339,6 +346,8 @@ class AstraDepth(object):
         roll = math.radians(cfg.astra_roll_deg)
         # Vector "lên trên" trong khung quang học (x phải, y xuống, z tới trước)
         up = np.array([math.cos(pitch) * math.sin(roll), -math.cos(pitch) * math.cos(roll), -math.sin(pitch)])
+        self.nominal_up = up.copy()
+        self.nominal_height = float(cfg.astra_height)
         self.set_plane(up, cfg.astra_height)
         self.quality = 0.0
         self.source = 'MAC DINH'
@@ -353,6 +362,21 @@ class AstraDepth(object):
         forward /= np.linalg.norm(forward)
         self.forward = forward
         self.left = np.cross(up, forward)
+
+    def _plane_is_plausible(self, up, height, tracking=False):
+        """Giữ hiệu chuẩn gần tư thế gá thật, không bám nhầm mặt ghế/bàn."""
+        up = np.asarray(up, dtype=float)
+        norm = np.linalg.norm(up)
+        if norm < 1e-9 or not np.isfinite(height):
+            return False
+        dot = float(np.dot(up / norm, self.nominal_up))
+        tilt = math.degrees(math.acos(max(-1.0, min(1.0, dot))))
+        tilt_limit = (self.cfg.astra_track_tilt_tolerance_deg if tracking
+                      else self.cfg.astra_calib_tilt_tolerance_deg)
+        height_limit = (self.cfg.astra_track_height_tolerance if tracking
+                        else self.cfg.astra_calib_height_tolerance)
+        return (tilt <= tilt_limit
+                and abs(float(height) - self.nominal_height) <= height_limit)
 
     @property
     def pitch_deg(self):
@@ -396,7 +420,7 @@ class AstraDepth(object):
         return pts
 
     def calibrate(self, depth_mm, now=0.0, iterations=300):
-        """Tìm mặt sàn bằng RANSAC (giới hạn: nghiêng < 35°, cao 0.25..0.8 m). Trả về True nếu thành công."""
+        """Tìm sàn bằng RANSAC, chỉ tinh chỉnh quanh tư thế gá đã đo. Trả về True nếu thành công."""
         if self._rays is None:
             return False
         pts = self._points(depth_mm)
@@ -415,7 +439,8 @@ class AstraDepth(object):
             h = -float(n.dot(a))
             if h < 0:
                 n, h = -n, -h
-            if -n[1] < math.cos(math.radians(35)) or not 0.25 <= h <= 0.8:
+            if (-n[1] < math.cos(math.radians(35)) or not 0.25 <= h <= 0.8
+                    or not self._plane_is_plausible(n, h)):
                 continue
             count = int((np.abs(sample.dot(n) + h) < 0.02).sum())
             if count > best_count:
@@ -425,6 +450,8 @@ class AstraDepth(object):
         n, h = best
         inl = sample[np.abs(sample.dot(n) + h) < 0.02]
         n, h = self._fit_plane(inl, n)
+        if not self._plane_is_plausible(n, h):
+            return False
         self.set_plane(n, h)
         self.quality = best_count / float(len(sample))
         self.source = 'RANSAC'
@@ -461,7 +488,8 @@ class AstraDepth(object):
                 sel = sel[np.random.RandomState(int(now * 10) % 1000).choice(len(sel), 3000, replace=False)]
             n, h = self._fit_plane(sel, self.up)
             angle = math.degrees(math.acos(max(-1.0, min(1.0, float(n.dot(self.up))))))
-            if angle < 4.0 and abs(h - self.height) < 0.05:
+            if (angle < 4.0 and abs(h - self.height) < 0.05
+                    and self._plane_is_plausible(n, h, tracking=True)):
                 up = 0.8 * self.up + 0.2 * n
                 self.set_plane(up, 0.8 * self.height + 0.2 * h)
                 self.quality = 0.9 * self.quality + 0.1 * (cand.sum() / float(len(pts)))
