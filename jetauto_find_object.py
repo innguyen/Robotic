@@ -18,6 +18,7 @@ import time
 import math
 import signal
 import threading
+from collections import deque
 import numpy as np
 import cv2
 
@@ -67,6 +68,16 @@ AVOID_CFG = oa.AvoidanceConfig()
 NAV_RATE_HZ = 10.0
 COMMAND_TIMEOUT_S = 0.4      # lệnh né vật cản cũ hơn mức này -> động cơ dừng
 SENSOR_TIMEOUT_S = 0.5       # LiDAR / odom mất tín hiệu quá mức này -> coi như mất
+DETECTION_CONFIDENCE = 0.35  # Vẫn vẽ detection yếu để chẩn đoán, nhưng chưa dùng để lái.
+TARGET_CONFIDENCE_DEFAULT = 0.45
+TARGET_CONFIDENCE = {
+    'person': 0.40,
+    'bottle': 0.45,
+    'cup': 0.45,
+    'cell phone': 0.50,
+    'remote': 0.50,
+}
+DEPTH_SYNC_TOLERANCE_S = 0.08
 # Lệnh lái tay (vx m/s, vy m/s, wz độ/s). Lùi chậm vì phía sau LiDAR bị khung xe che.
 MANUAL_COMMANDS = {
     'forward': (0.15, 0.0, 0.0),
@@ -1288,9 +1299,11 @@ class ObjectSeeker(object):
         self.astra_processed = 0.0
         self.depth_frame = None
         self.depth_time = 0.0
+        self.depth_buffer = deque(maxlen=12)
         self.depth_intrinsics = None
         self.rgb_intrinsics = None
         self.rgb_distortion = None
+        self.rgb_stamp = None
         self.odom_pose = None
         self.odom_time = 0.0
         self.camera_time = 0.0
@@ -1310,6 +1323,9 @@ class ObjectSeeker(object):
         self.last_action_text = "DANG KHOI DONG..."
         self.last_status_color = (0, 165, 255)
         self.best_target_center = None
+        self.last_target_confidence = None
+        self.last_target_box = None
+        self.last_depth_sync_ms = None
         self.ai_fps = 0.0
 
         # Load YOLO Model
@@ -1479,7 +1495,6 @@ class ObjectSeeker(object):
         if RosImage is not None:
             self.ros_subscribers += [
                 rospy.Subscriber('/depth_cam/rgb/image_raw', RosImage, self._callback_ros_astra, queue_size=1, buff_size=2**24),
-                rospy.Subscriber('/camera/rgb/image_raw', RosImage, self._callback_ros_astra, queue_size=1, buff_size=2**24),
                 rospy.Subscriber('/depth_cam/depth/image_raw', RosImage, self._callback_depth, queue_size=1, buff_size=2**24),
                 rospy.Subscriber('/depth_cam/depth/camera_info', CameraInfo, self._callback_depth_info, queue_size=1),
                 rospy.Subscriber('/depth_cam/rgb/camera_info', CameraInfo, self._callback_rgb_info, queue_size=1),
@@ -1490,8 +1505,10 @@ class ObjectSeeker(object):
         frame = self._decode_ros_image(msg)
         if frame is not None:
             cam_source_astra = "Astra Pro (ROS)"
+            stamp = msg.header.stamp.to_sec() if msg.header.stamp else 0.0
             with frame_lock:
                 raw_frame_astra = frame
+                self.rgb_stamp = stamp
                 self.frame_seq += 1
             self.camera_time = time.monotonic()
 
@@ -1526,9 +1543,11 @@ class ObjectSeeker(object):
         depth = self._decode_depth(msg)
         if depth is None:
             return
+        stamp = msg.header.stamp.to_sec() if msg.header.stamp else 0.0
         with self.sensor_lock:
             self.depth_frame = depth
             self.depth_time = now
+            self.depth_buffer.append((stamp, depth))
         # Tach vat can tu do sau ~6 lan/giay (du cho xe 0.18 m/s, tiet kiem CPU Jetson)
         if now - self.astra_processed < 0.16 or self.depth_intrinsics is None:
             return
@@ -1732,7 +1751,7 @@ class ObjectSeeker(object):
             return []
 
         if arr.shape[1] == 85:
-            obj_mask = arr[:, 4] > 0.35
+            obj_mask = arr[:, 4] > DETECTION_CONFIDENCE
             arr = arr[obj_mask]
             if len(arr) == 0:
                 return []
@@ -1744,7 +1763,7 @@ class ObjectSeeker(object):
             class_ids = np.argmax(scores, axis=1)
             confidences = np.max(scores, axis=1)
 
-        conf_mask = confidences > 0.35
+        conf_mask = confidences > DETECTION_CONFIDENCE
         if not np.any(conf_mask):
             return []
 
@@ -1770,7 +1789,8 @@ class ObjectSeeker(object):
             indices = []
             for class_id in sorted(set(cid_list)):
                 group = [i for i, cid in enumerate(cid_list) if cid == class_id]
-                kept = cv2.dnn.NMSBoxes([boxes[i] for i in group], [conf_list[i] for i in group], 0.35, 0.45)
+                kept = cv2.dnn.NMSBoxes([boxes[i] for i in group], [conf_list[i] for i in group],
+                                        DETECTION_CONFIDENCE, 0.45)
                 indices.extend(group[int(k)] for k in np.array(kept).flatten())
         except Exception:
             indices = list(range(len(boxes)))
@@ -1841,9 +1861,11 @@ class ObjectSeeker(object):
 
         while not rospy.is_shutdown():
             raw_frame = None
+            rgb_stamp = None
             with frame_lock:
                 if raw_frame_astra is not None and self.frame_seq != last_seq:
                     raw_frame = raw_frame_astra.copy()
+                    rgb_stamp = self.rgb_stamp
                     last_seq = self.frame_seq
 
             if raw_frame is None:
@@ -1860,14 +1882,31 @@ class ObjectSeeker(object):
             label = TARGET_CLASS
             detections = self.run_yolo(raw_frame)
             now = time.monotonic()
-            targets = [d for d in detections if d['class_name'] == label]
+            raw_targets = [d for d in detections if d['class_name'] == label]
+            min_confidence = TARGET_CONFIDENCE.get(label, TARGET_CONFIDENCE_DEFAULT)
+            targets = [d for d in raw_targets if d['conf'] >= min_confidence]
             best = self._pick_target(targets, raw_frame.shape) if targets else None
+
+            # Ghép depth gần nhất với đúng frame RGB. YOLO trên Jetson mất khoảng 250 ms,
+            # nên lấy "depth mới nhất" sau inference sẽ đo một thời điểm khác khi xe đang chạy.
+            matched_depth = None
+            depth_sync_ms = None
+            if rgb_stamp:
+                with self.sensor_lock:
+                    if self.depth_buffer:
+                        depth_stamp, candidate = min(self.depth_buffer,
+                                                     key=lambda item: abs(item[0] - rgb_stamp))
+                        delta = abs(depth_stamp - rgb_stamp)
+                        depth_sync_ms = 1000.0 * delta
+                        if depth_stamp and delta <= DEPTH_SYNC_TOLERANCE_S:
+                            matched_depth = candidate
 
             target_center = None
             target_info = None
             if best is not None:
                 # Hướng + khoảng cách tới tâm xe (đo bằng độ sâu Astra, không có thì ước lượng theo kích thước)
-                bearing, distance, source = self._locate_target(best['box'], raw_frame.shape)
+                bearing, distance, source = self._locate_target(best['box'], raw_frame.shape,
+                                                                 depth_frame=matched_depth)
                 with self.sensor_lock:
                     pose = self.odom_pose if (self.odom_pose is not None and now - self.odom_time < SENSOR_TIMEOUT_S) else None
                 with self.target_lock:
@@ -1892,6 +1931,10 @@ class ObjectSeeker(object):
             with self.state_lock:
                 self.last_detections = detections
                 self.best_target_center = target_center
+                candidate = max(raw_targets, key=lambda d: d['conf']) if raw_targets else None
+                self.last_target_confidence = candidate['conf'] if candidate is not None else None
+                self.last_target_box = candidate['box'] if candidate is not None else None
+                self.last_depth_sync_ms = depth_sync_ms
                 self.ai_fps = current_ai_fps
 
     def _rgb_intrinsics(self, shape):
@@ -1903,12 +1946,8 @@ class ObjectSeeker(object):
         scale = w / (2.0 * cx) if cx > 0 and abs(w - 2.0 * cx) > 40 else 1.0   # ảnh khác cỡ camera_info
         return (fx * scale, fy * scale, cx * scale, cy * scale)
 
-    def _locate_target(self, box, shape, with_depth=True):
-        depth = None
-        if with_depth:
-            with self.sensor_lock:
-                if self.depth_frame is not None and time.monotonic() - self.depth_time < 0.3:
-                    depth = self.depth_frame
+    def _locate_target(self, box, shape, with_depth=True, depth_frame=None):
+        depth = depth_frame if with_depth else None
         with self.astra_lock:
             return oa.locate_target(box, self._rgb_intrinsics(shape), self.astra, depth, self.depth_intrinsics,
                                     self.avoid, TARGET_CLASS, self.rgb_distortion)
@@ -2078,6 +2117,18 @@ class ObjectSeeker(object):
                      'astra_calib': self.astra.source,
                      'astra_quality': round(float(self.astra.quality), 2)}
         scan = self.latest_scan
+        with self.state_lock:
+            detections = [
+                {'class_name': d['class_name'], 'confidence': round(float(d['conf']), 3),
+                 'box': [int(v) for v in d['box']]}
+                for d in sorted(self.last_detections, key=lambda d: d['conf'], reverse=True)[:8]
+            ]
+            candidate_confidence = self.last_target_confidence
+            candidate_box = list(self.last_target_box) if self.last_target_box is not None else None
+            depth_sync_ms = self.last_depth_sync_ms
+        with self.target_lock:
+            tracker_hits = self.tracker.hits
+            tracker_confirmed = self.tracker.confirmed
         status = {
             'nav_state': cmd.state,
             'nav_reason': cmd.reason,
@@ -2095,6 +2146,14 @@ class ObjectSeeker(object):
             'lidar_valid_pct': round(100 * scan.valid_fraction) if scan is not None else None,
             'nav_loop_ms': round(self.nav_loop_ms, 1),
             'manual_active': now < self.manual_override_until,
+            'detections': detections,
+            'target_candidate_confidence': (round(float(candidate_confidence), 3)
+                                            if candidate_confidence is not None else None),
+            'target_candidate_box': candidate_box,
+            'target_confidence_required': TARGET_CONFIDENCE.get(TARGET_CLASS, TARGET_CONFIDENCE_DEFAULT),
+            'tracker_hits': tracker_hits,
+            'tracker_confirmed': bool(tracker_confirmed),
+            'depth_sync_ms': round(float(depth_sync_ms), 1) if depth_sync_ms is not None else None,
         }
         status.update(astra)
         return status

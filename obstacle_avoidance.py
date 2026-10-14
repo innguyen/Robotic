@@ -101,6 +101,12 @@ class AvoidanceConfig(object):
         self.astra_memory_s = 60.0
         self.free_memory_s = 30.0
         self.target_memory_s = 5.0
+        self.target_memory_small_s = 1.2
+        self.target_confirm_hits = 2
+        self.target_confirm_hits_small = 3
+        self.target_max_bearing_jump_deg = 18.0
+        self.target_max_distance_jump = 0.60
+        self.target_max_distance_ratio = 0.45
         # Khoảng dừng trước mục tiêu: tính từ mép trước xe tới bề mặt mục tiêu (m)
         self.standoff = {'person': 0.55, 'chair': 0.40, 'couch': 0.45, 'bed': 0.45,
                          'dining table': 0.40, 'tv': 0.50, 'refrigerator': 0.40}
@@ -125,6 +131,19 @@ class AvoidanceConfig(object):
 
     def standoff_for(self, label):
         return self.standoff.get(label, self.default_standoff)
+
+    def target_memory_for(self, label):
+        if label in ('bottle', 'cup', 'cell phone', 'remote', 'book'):
+            return self.target_memory_small_s
+        return self.target_memory_s
+
+    def target_confirm_hits_for(self, label):
+        if label in ('bottle', 'cup', 'cell phone', 'remote', 'book'):
+            return self.target_confirm_hits_small
+        return self.target_confirm_hits
+
+    def strict_target_tracking_for(self, label):
+        return label in ('bottle', 'cup', 'cell phone', 'remote', 'book')
 
 
 # ==========================================================
@@ -722,7 +741,7 @@ class TargetEstimate(object):
 
 
 class TargetTracker(object):
-    """Cần 2 lần thấy liên tiếp mới coi là tìm thấy; mất dấu thì nhớ vị trí trong khung odom vài giây."""
+    """Chỉ khóa các quan sát liên tiếp, nhất quán; mất dấu thì nhớ vị trí ngắn hạn trong odom."""
 
     def __init__(self, cfg):
         self.cfg = cfg
@@ -744,18 +763,39 @@ class TargetTracker(object):
         if label != self.label:
             self.reset(label)
         recent = self.last_time is not None and now - self.last_time <= 0.8
-        self.hits = self.hits + 1 if recent else 1
-        if self.hits >= 2:
-            self.confirmed = True
-        if self.bearing is None or not recent:
+        strict = self.cfg.strict_target_tracking_for(label)
+        expected_bearing, expected_distance = self.bearing, self.distance
+        if strict and recent and pose is not None and self.anchor is not None:
+            x, y, yaw = pose
+            dx, dy = self.anchor[0] - x, self.anchor[1] - y
+            expected_bearing = wrap_scalar(math.atan2(dy, dx) - yaw)
+            expected_distance = math.hypot(dx, dy)
+        consistent = recent and expected_bearing is not None
+        if strict and consistent:
+            jump = abs(wrap_scalar(bearing - expected_bearing))
+            consistent = jump <= math.radians(self.cfg.target_max_bearing_jump_deg)
+        if strict and consistent and distance is not None and expected_distance is not None:
+            limit = max(self.cfg.target_max_distance_jump,
+                        self.cfg.target_max_distance_ratio * max(expected_distance, 0.1))
+            consistent = abs(distance - expected_distance) <= limit
+        if not consistent:
+            self.hits = 1
+            if strict:
+                self.confirmed = False
             self.bearing = bearing
+            self.distance = distance
         else:
-            self.bearing = wrap_scalar(self.bearing + 0.6 * wrap_scalar(bearing - self.bearing))
+            self.hits += 1
+            self.bearing = wrap_scalar(expected_bearing + 0.6 * wrap_scalar(bearing - expected_bearing))
+            if distance is None:
+                self.distance = expected_distance
+        if self.hits >= self.cfg.target_confirm_hits_for(label):
+            self.confirmed = True
         if distance is not None:
-            if self.distance is None or self.distance_time is None or now - self.distance_time > 1.0:
+            if not consistent or self.distance is None or self.distance_time is None or now - self.distance_time > 1.0:
                 self.distance = distance
             else:
-                self.distance += 0.5 * (distance - self.distance)
+                self.distance = expected_distance + 0.5 * (distance - expected_distance)
             self.distance_time = now
         elif self.distance_time is not None and now - self.distance_time > 1.0:
             self.distance = None
@@ -779,7 +819,7 @@ class TargetTracker(object):
         if not self.confirmed or self.last_time is None:
             return est
         age = now - self.last_time
-        if age > self.cfg.target_memory_s:
+        if age > self.cfg.target_memory_for(self.label):
             self.confirmed = False
             return est
         bearing, distance = self.bearing, self.distance
@@ -818,6 +858,10 @@ def locate_target(box, rgb_intrinsics, astra, depth_mm, depth_intrinsics, cfg, l
             xn, yn = float(und[0, 0, 0]), float(und[0, 0, 1])
         except Exception:
             pass
+    width = cfg.target_width.get(label)
+    size_distance = None
+    if width is not None and bw >= 2:
+        size_distance = max(0.3, min(6.0, fx * width / bw))
     if depth_mm is not None and depth_intrinsics is not None:
         dfx, dfy, dcx, dcy = depth_intrinsics
         h, w = depth_mm.shape[:2]
@@ -831,16 +875,21 @@ def locate_target(box, rgb_intrinsics, astra, depth_mm, depth_intrinsics, cfg, l
             roi = roi[(roi >= 300) & (roi <= 6000)]
             if roi.size >= 8:
                 z = float(np.percentile(roi, 25)) / 1000.0
-                p = astra.to_base([[xn * z, yn * z, z]])[0]
-                return math.atan2(p[1], p[0]), math.hypot(p[0], p[1]), 'DO SAU'
+                # Vật nhỏ/trong suốt thường không có depth; ROI khi đó trả về tường phía sau.
+                # Chỉ tin depth nếu nó còn tương thích với khoảng cách ước lượng từ bề rộng box.
+                rigid_small = label in ('bottle', 'cup', 'cell phone', 'remote', 'book')
+                depth_matches_box = (not rigid_small or size_distance is None
+                                     or 0.5 * size_distance <= z <= 1.8 * size_distance)
+                if depth_matches_box:
+                    p = astra.to_base([[xn * z, yn * z, z]])[0]
+                    return math.atan2(p[1], p[0]), math.hypot(p[0], p[1]), 'DO SAU'
     # Không có độ sâu: hướng theo tia camera, khoảng cách theo bề rộng vật
     ray = np.array([xn, yn, 1.0])
     fwd, lft = float(ray.dot(astra.forward)), float(ray.dot(astra.left))
     cam_bearing = math.atan2(lft, fwd)
-    width = cfg.target_width.get(label)
-    if width is None or bw < 2:
+    if size_distance is None:
         return cam_bearing, None, 'HUONG'
-    dist_cam = max(0.3, min(6.0, fx * width / bw))
+    dist_cam = size_distance
     px = cfg.astra_x + dist_cam * math.cos(cam_bearing)
     py = cfg.astra_y + dist_cam * math.sin(cam_bearing)
     return math.atan2(py, px), math.hypot(px, py), 'KICH THUOC'

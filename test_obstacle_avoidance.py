@@ -432,6 +432,25 @@ class AstraTest(unittest.TestCase):
         self.assertAlmostEqual(math.degrees(bearing), math.degrees(math.atan2(0.45, 1.8)), delta=2.0)
         del cam
 
+    def test_transparent_small_target_rejects_background_depth(self):
+        intr = (546.2, 546.2, 318.6, 238.1)
+        depth_intr = (574.1, 574.1, 320.0, 237.9)
+        depth = np.full((480, 640), 3000, dtype=np.uint16)
+        astra = self.make(depth, depth_intr)
+        _, distance, source = oa.locate_target((280, 180, 80, 160), intr, astra, depth,
+                                                depth_intr, CFG, 'bottle')
+        self.assertEqual(source, 'KICH THUOC')
+        self.assertLess(distance, 1.0)
+
+    def test_small_target_accepts_compatible_depth(self):
+        intr = (546.2, 546.2, 318.6, 238.1)
+        depth_intr = (574.1, 574.1, 320.0, 237.9)
+        depth = np.full((480, 640), 900, dtype=np.uint16)
+        astra = self.make(depth, depth_intr)
+        _, _, source = oa.locate_target((300, 190, 42, 120), intr, astra, depth,
+                                         depth_intr, CFG, 'bottle')
+        self.assertEqual(source, 'DO SAU')
+
 
 class RenderTest(unittest.TestCase):
     def test_radar_places_obstacle_correctly(self):
@@ -449,7 +468,7 @@ class RenderTest(unittest.TestCase):
 
 
 class TrackerTest(unittest.TestCase):
-    def test_needs_two_hits_and_remembers(self):
+    def test_person_needs_two_consistent_hits_and_remembers(self):
         tracker = oa.TargetTracker(CFG)
         tracker.observe('person', 0.2, 2.0, 1.0, (0.0, 0.0, 0.0))
         self.assertFalse(tracker.estimate(1.0).valid)
@@ -461,6 +480,32 @@ class TrackerTest(unittest.TestCase):
         self.assertTrue(est.valid and not est.visible)
         self.assertAlmostEqual(math.degrees(est.bearing), math.degrees(0.2) - 90.0, delta=1.0)
         self.assertFalse(tracker.estimate(1.2 + CFG.target_memory_s + 0.5).valid)
+
+    def test_small_target_needs_three_consistent_hits(self):
+        tracker = oa.TargetTracker(CFG)
+        tracker.observe('bottle', 0.0, 1.5, 1.0, (0.0, 0.0, 0.0))
+        tracker.observe('bottle', 0.0, 1.5, 1.2, (0.0, 0.0, 0.0))
+        self.assertFalse(tracker.estimate(1.2).valid)
+        tracker.observe('bottle', 0.0, 1.5, 1.4, (0.0, 0.0, 0.0))
+        self.assertTrue(tracker.estimate(1.4).valid)
+
+    def test_jump_requires_a_new_confirmation_sequence(self):
+        tracker = oa.TargetTracker(CFG)
+        for now in (1.0, 1.2, 1.4):
+            tracker.observe('bottle', 0.0, 2.0, now, (0.0, 0.0, 0.0), 'DO SAU')
+        self.assertTrue(tracker.estimate(1.4).valid)
+        tracker.observe('bottle', math.radians(45), 0.7, 1.6, (0.0, 0.0, 0.0), 'DO SAU')
+        self.assertFalse(tracker.estimate(1.6).valid)
+        tracker.observe('bottle', math.radians(45), 0.7, 1.8, (0.0, 0.0, 0.0), 'DO SAU')
+        tracker.observe('bottle', math.radians(45), 0.7, 2.0, (0.0, 0.0, 0.0), 'DO SAU')
+        self.assertTrue(tracker.estimate(2.0).valid)
+
+    def test_small_target_memory_is_short(self):
+        tracker = oa.TargetTracker(CFG)
+        for now in (1.0, 1.2, 1.4):
+            tracker.observe('bottle', 0.0, 1.5, now, (0.0, 0.0, 0.0))
+        self.assertTrue(tracker.estimate(1.4 + CFG.target_memory_small_s - 0.1).valid)
+        self.assertFalse(tracker.estimate(1.4 + CFG.target_memory_small_s + 0.1).valid)
 
 
 class PlannerTest(unittest.TestCase):
