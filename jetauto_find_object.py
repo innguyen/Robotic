@@ -26,6 +26,7 @@ import rospy
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan, CameraInfo
+from std_msgs.msg import Bool, String
 
 import obstacle_avoidance as oa
 
@@ -53,7 +54,8 @@ TARGET_CLASS = 'person'
 if len(sys.argv) > 1:
     TARGET_CLASS = sys.argv[1].strip().lower()
 
-IS_PAUSED = False
+# Fail-safe: sau mọi lần khởi động/restart phải có thao tác Resume rõ ràng từ người vận hành.
+IS_PAUSED = True
 # Chạy khô: vẫn tính toán và hiển thị lệnh nhưng KHÔNG gửi ra động cơ
 # (bật bằng biến môi trường JETAUTO_DRY_RUN=1 hoặc nút trên web)
 DRY_RUN = os.environ.get('JETAUTO_DRY_RUN', '0') == '1'
@@ -61,13 +63,15 @@ DRY_RUN = os.environ.get('JETAUTO_DRY_RUN', '0') == '1'
 USE_OAKD = False
 # Node khung gầm (jetauto_odom_publisher) nghe cả /jetauto_controller/cmd_vel lẫn /cmd_vel; gửi cả hai
 # làm động cơ nhận mỗi lệnh 2 lần (nhánh /cmd_vel còn bị kẹp tốc độ khác) -> chỉ gửi một topic.
-CMD_VEL_TOPICS = [
-    '/jetauto_controller/cmd_vel',
-]
+CMD_VEL_TOPICS = ['/jetauto_ai/cmd_vel_desired']
+SAFETY_ENABLE_TOPIC = '/jetauto_ai/safety_enable'
+SAFETY_STATUS_TOPIC = '/jetauto_safety/status'
 AVOID_CFG = oa.AvoidanceConfig()
 NAV_RATE_HZ = 10.0
 COMMAND_TIMEOUT_S = 0.4      # lệnh né vật cản cũ hơn mức này -> động cơ dừng
 SENSOR_TIMEOUT_S = 0.5       # LiDAR / odom mất tín hiệu quá mức này -> coi như mất
+DEPTH_TIMEOUT_S = 0.55
+LIDAR_MIN_VALID_FRACTION = 0.10
 DETECTION_CONFIDENCE = 0.35  # Vẫn vẽ detection yếu để chẩn đoán, nhưng chưa dùng để lái.
 TARGET_CONFIDENCE_DEFAULT = 0.45
 TARGET_CONFIDENCE = {
@@ -436,8 +440,11 @@ class CamHandler(BaseHTTPRequestHandler):
 
         elif self.path == '/toggle_dry_run':
             DRY_RUN = not DRY_RUN
+            if not DRY_RUN:
+                # Rời chạy khô không được tự cấp quyền động cơ; cần Resume riêng.
+                IS_PAUSED = True
             rospy.loginfo(">> [WEB] Chay kho (khong gui lenh dong co): " + str(DRY_RUN))
-            self._send_json({'dry_run': DRY_RUN})
+            self._send_json({'dry_run': DRY_RUN, 'paused': IS_PAUSED})
             return
 
         elif self.path == '/calibrate_astra':
@@ -921,6 +928,10 @@ class CamHandler(BaseHTTPRequestHandler):
                         <div class="hud-label">Hiệu chuẩn Astra (mặt sàn)</div>
                         <div class="hud-val" id="hudCalib" style="font-size: 0.8rem; color: #94a3b8;">--</div>
                     </div>
+                    <div class="hud-item" style="grid-column: span 2;">
+                        <div class="hud-label">Safety Supervisor độc lập</div>
+                        <div class="hud-val" id="hudSafety" style="font-size: 0.8rem; color: var(--danger);">CHƯA KẾT NỐI</div>
+                    </div>
                 </div>
             </div>
 
@@ -1177,7 +1188,10 @@ class CamHandler(BaseHTTPRequestHandler):
             LAI_TAY: ['LÁI TAY', 'var(--primary)'],
             LAI_TAY_CHAN: ['LÁI TAY BỊ CHẶN (vật cản)', 'var(--danger)'],
             MAT_LIDAR: ['MẤT LIDAR · DỪNG XE', 'var(--danger)'],
+            LOI_LIDAR: ['LIDAR LỖI DỮ LIỆU · DỪNG XE', 'var(--danger)'],
+            MAT_DEPTH: ['MẤT DEPTH · DỪNG XE', 'var(--danger)'],
             MAT_CAMERA: ['MẤT CAMERA · DỪNG XE', 'var(--danger)'],
+            TIM_DUNG: ['HẾT GIỚI HẠN TÌM · ĐỨNG CHỜ', 'var(--warning)'],
             KHOI_DONG: ['ĐANG KHỞI ĐỘNG', 'var(--warning)']
         };
         const age = v => (v === null || v === undefined) ? 'MẤT' : (v < 1.0 ? 'OK' : v.toFixed(1) + 's');
@@ -1226,6 +1240,13 @@ class CamHandler(BaseHTTPRequestHandler):
                     ' · LiDAR ' + age(d.lidar_age) + ' · Odom ' + age(d.odom_age) + ' · Vòng né ' + (d.nav_loop_ms || 0).toFixed(0) + ' ms';
                 document.getElementById('hudCalib').innerText = d.astra_height_cm !== undefined ?
                     'Cao ' + d.astra_height_cm.toFixed(1) + ' cm · chúi ' + d.astra_pitch_deg.toFixed(1) + '° · ' + d.astra_calib : '--';
+                const safety = document.getElementById('hudSafety');
+                safety.innerText = (d.safety_armed ? 'ĐÃ CẤP QUYỀN · ' : 'ĐANG CHẶN · ') +
+                    (d.safety_reason || 'CHƯA CÓ TRẠNG THÁI') +
+                    (d.safety_lidar_quality !== null && d.safety_lidar_quality !== undefined ?
+                        ' · LiDAR ' + (100 * d.safety_lidar_quality).toFixed(0) + '% · Depth ' +
+                        (100 * (d.safety_depth_quality || 0)).toFixed(0) + '%' : '');
+                safety.style.color = d.safety_armed ? 'var(--success)' : 'var(--danger)';
                 document.getElementById('aiFpsBadge').innerText = 'AI: ' + d.ai_fps.toFixed(1) + ' FPS';
                 updatePauseUI(d.paused);
                 updateDryRunUI(d.dry_run);
@@ -1264,10 +1285,18 @@ class ObjectSeeker(object):
 
         rospy.init_node('jetauto_object_seeker', anonymous=True)
 
-        # Publisher cho topic cmd_vel cua khung gam JetAuto
+        # Chỉ gửi yêu cầu tới Safety Supervisor. Supervisor là node duy nhất được phép
+        # publish /jetauto_controller/cmd_vel xuống khung gầm.
         self.cmd_publishers = []
         for top in CMD_VEL_TOPICS:
             self.cmd_publishers.append(rospy.Publisher(top, Twist, queue_size=1))
+        self.safety_enable_pub = rospy.Publisher(SAFETY_ENABLE_TOPIC, Bool, queue_size=1)
+        self.safety_status = {'armed': False, 'reason': 'CHO SAFETY SUPERVISOR',
+                              'output': [0.0, 0.0, 0.0]}
+        self.safety_status_time = 0.0
+        self.safety_status_lock = threading.Lock()
+        self.safety_status_sub = rospy.Subscriber(SAFETY_STATUS_TOPIC, String,
+                                                  self._callback_safety_status, queue_size=1)
 
         # Bien van toc mong muon 3-DOF (vong ne vat can dat, Heartbeat 10Hz gui di)
         self.motion_lock = threading.Lock()
@@ -1433,8 +1462,7 @@ class ObjectSeeker(object):
         self.manual_override_until = time.monotonic() + 0.5   # web gui lai moi 150 ms khi dang giu
 
     def motion_heartbeat_loop(self):
-        """Vong lap 10Hz gui Twist Mecanum 3-DOF. Driver khung gam KHONG tu dung khi mat lenh, nen o day:
-        lenh cu / tam dung / chay kho / sap va cham -> gui van toc 0."""
+        """Vòng 10Hz gửi yêu cầu vận tốc + heartbeat sang Safety Supervisor độc lập."""
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             now = time.monotonic()
@@ -1476,13 +1504,39 @@ class ObjectSeeker(object):
                     pub.publish(twist_msg)
                 except Exception:
                     pass
-            self.published = send
+            try:
+                self.safety_enable_pub.publish(Bool(data=not IS_PAUSED and not DRY_RUN))
+            except Exception:
+                pass
+            with self.safety_status_lock:
+                safety = dict(self.safety_status)
+                safety_age = now - self.safety_status_time if self.safety_status_time else float('inf')
+            if safety_age <= 0.6:
+                actual = safety.get('output', [0.0, 0.0, 0.0])
+                self.published = (float(actual[0]), float(actual[1]),
+                                  math.degrees(float(actual[2])))
+                if not safety.get('armed'):
+                    reason = safety.get('reason') or reason
+            else:
+                self.published = (0.0, 0.0, 0.0)
+                reason = 'MAT SAFETY SUPERVISOR'
             self.block_reason = reason
 
             if abs(send[0]) > 0.001 or abs(send[1]) > 0.001 or abs(send[2]) > 0.001:
                 rospy.loginfo_throttle(2.5, ">> [MECANUM 3-DOF] vx={:.2f} m/s, vy={:.2f} m/s (strafe), wz={:.1f} deg/s".format(*send))
 
             rate.sleep()
+
+    def _callback_safety_status(self, msg):
+        import json
+        try:
+            status = json.loads(msg.data)
+            if isinstance(status, dict):
+                with self.safety_status_lock:
+                    self.safety_status = status
+                    self.safety_status_time = time.monotonic()
+        except Exception:
+            pass
 
     # ==========================================================
     # MODUL CAMERA 1: ASTRA PRO PLUS (ROS Topic: RGB + DO SAU)
@@ -2004,7 +2058,10 @@ class ObjectSeeker(object):
             # Mất odom mà xe đang chạy -> bản đồ nhớ sẽ lệch: chỉ dùng dữ liệu cảm biến hiện tại
             if any(abs(v) > 1e-3 for v in self.published):
                 self.grid.clear()
-        scan_ok = scan is not None and now - scan_time < SENSOR_TIMEOUT_S
+        scan_fresh = scan is not None and now - scan_time < SENSOR_TIMEOUT_S
+        scan_quality_ok = bool(scan is not None and scan.valid_fraction >= LIDAR_MIN_VALID_FRACTION)
+        scan_ok = scan_fresh and scan_quality_ok
+        depth_ok = self.depth_time > 0.0 and now - self.depth_time < DEPTH_TIMEOUT_S
 
         grid = self.grid
         grid.recenter(pose[0], pose[1])
@@ -2027,9 +2084,15 @@ class ObjectSeeker(object):
         elif now < self.manual_override_until:
             self.planner.reset()
             cmd = self._manual_command(obstacles, blind, scan_ok)
-        elif not scan_ok:
+        elif not scan_fresh:
             self.planner.reset()
             cmd = oa.NavCommand(state='MAT_LIDAR', reason='MAT TIN HIEU LIDAR /scan - DUNG XE')
+        elif not scan_quality_ok:
+            self.planner.reset()
+            cmd = oa.NavCommand(state='LOI_LIDAR', reason='LIDAR CON TOPIC NHUNG DU LIEU KHONG HOP LE - DUNG XE')
+        elif not depth_ok:
+            self.planner.reset()
+            cmd = oa.NavCommand(state='MAT_DEPTH', reason='MAT DO SAU ASTRA - KHONG THAY VAT THAP / MEP HUT')
         elif now - self.camera_time > 2.0:
             self.planner.reset()
             cmd = oa.NavCommand(state='MAT_CAMERA', reason='MAT CAMERA ASTRA - DUNG XE')
@@ -2129,6 +2192,9 @@ class ObjectSeeker(object):
         with self.target_lock:
             tracker_hits = self.tracker.hits
             tracker_confirmed = self.tracker.confirmed
+        with self.safety_status_lock:
+            safety = dict(self.safety_status)
+            safety_age = age(self.safety_status_time)
         status = {
             'nav_state': cmd.state,
             'nav_reason': cmd.reason,
@@ -2146,6 +2212,15 @@ class ObjectSeeker(object):
             'lidar_valid_pct': round(100 * scan.valid_fraction) if scan is not None else None,
             'nav_loop_ms': round(self.nav_loop_ms, 1),
             'manual_active': now < self.manual_override_until,
+            'safety_armed': bool(safety.get('armed', False)),
+            'safety_reason': safety.get('reason', 'CHO SAFETY SUPERVISOR'),
+            'safety_fault_latched': bool(safety.get('fault_latched', False)),
+            'safety_age': safety_age,
+            'safety_lidar_quality': safety.get('lidar_quality'),
+            'safety_depth_quality': safety.get('depth_quality'),
+            'requested_velocity': [round(float(self.desired_linear_x), 3),
+                                   round(float(self.desired_linear_y), 3),
+                                   round(float(self.desired_angular_z), 3)],
             'detections': detections,
             'target_candidate_confidence': (round(float(candidate_confidence), 3)
                                             if candidate_confidence is not None else None),
@@ -2162,6 +2237,10 @@ class ObjectSeeker(object):
         rospy.loginfo(">> [JetAuto Pro] Dang tat va dung robot an toan...")
         self.manual_override_until = 0.0
         self.set_desired_velocity(0.0, 0.0, 0.0)
+        try:
+            self.safety_enable_pub.publish(Bool(data=False))
+        except Exception:
+            pass
         # Driver khung gầm KHÔNG tự dừng khi mất lệnh -> chủ động gửi vận tốc 0 vài lần trước khi thoát
         zero = Twist()
         for _ in range(3):

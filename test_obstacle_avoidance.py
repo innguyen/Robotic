@@ -564,6 +564,27 @@ class PlannerTest(unittest.TestCase):
         self.assertGreater(abs(cmd.wz), 0.0)
         self.assertTrue(oa.motion_is_safe(front, 0.0, 0.0, cmd.wz, CFG)[0])
 
+    def test_search_stops_after_time_budget(self):
+        cfg = oa.AvoidanceConfig(search_max_time_s=1.0)
+        search = oa.SearchBehavior(cfg)
+        dirs = np.radians(np.arange(-180.0, 180.0, 5.0))
+        clear = np.full(len(dirs), 2.0)
+        allowed = np.full(len(dirs), 0.15)
+        search.step(dirs, clear, allowed, lambda _wz: True, 10.0, 0.0, (0.0, 0.0))
+        result = search.step(dirs, clear, allowed, lambda _wz: True, 11.1, 0.0, (0.0, 0.0))
+        self.assertEqual(result[3], 'TIM_DUNG')
+        self.assertEqual(result[:3], (0.0, 0.0, 0.0))
+
+    def test_search_stops_outside_radius(self):
+        cfg = oa.AvoidanceConfig(search_max_radius=0.5)
+        search = oa.SearchBehavior(cfg)
+        dirs = np.radians(np.arange(-180.0, 180.0, 5.0))
+        clear = np.full(len(dirs), 2.0)
+        allowed = np.full(len(dirs), 0.15)
+        search.step(dirs, clear, allowed, lambda _wz: True, 10.0, 0.0, (0.0, 0.0))
+        result = search.step(dirs, clear, allowed, lambda _wz: True, 10.2, 0.0, (0.6, 0.0))
+        self.assertEqual(result[3], 'TIM_DUNG')
+
 
 # ==========================================================
 # MÔ PHỎNG VÒNG KÍN

@@ -107,6 +107,11 @@ class AvoidanceConfig(object):
         self.target_max_bearing_jump_deg = 18.0
         self.target_max_distance_jump = 0.60
         self.target_max_distance_ratio = 0.45
+        # Không thấy mục tiêu thì chỉ tìm trong một vùng/thời gian hữu hạn. Hết ngân sách
+        # phải đứng chờ người vận hành, không tiếp tục lang thang qua nhiều phòng.
+        self.search_max_radius = 2.0
+        self.search_max_time_s = 120.0
+        self.search_max_legs = 6
         # Khoảng dừng trước mục tiêu: tính từ mép trước xe tới bề mặt mục tiêu (m)
         self.standoff = {'person': 0.55, 'chair': 0.40, 'couch': 0.45, 'bed': 0.45,
                          'dining table': 0.40, 'tv': 0.50, 'refrigerator': 0.40}
@@ -937,6 +942,10 @@ class SearchBehavior(object):
         self.move_from = None
         self.moved = 0.0
         self.last_dirs = []
+        self.search_started = None
+        self.search_origin = None
+        self.legs = 0
+        self.exhausted = False
 
     def _start_spin(self, now):
         self.phase = 'XOAY'
@@ -946,6 +955,17 @@ class SearchBehavior(object):
 
     def step(self, dirs, clear, v_allow, can_turn, now, yaw=None, xy=None):
         cfg = self.cfg
+        if self.search_started is None:
+            self.search_started = now
+            self.search_origin = xy
+        if self.exhausted:
+            return 0.0, 0.0, 0.0, 'TIM_DUNG', 'HET GIOI HAN TIM KIEM - CHO LENH MOI'
+        radius = (math.hypot(xy[0] - self.search_origin[0], xy[1] - self.search_origin[1])
+                  if xy is not None and self.search_origin is not None else 0.0)
+        if (now - self.search_started >= cfg.search_max_time_s
+                or radius >= cfg.search_max_radius or self.legs >= cfg.search_max_legs):
+            self.exhausted = True
+            return 0.0, 0.0, 0.0, 'TIM_DUNG', 'HET GIOI HAN TIM KIEM - CHO LENH MOI'
         if self.phase_start is None:
             self.phase_start = now
         dt = 0.0 if self.last_time is None else min(0.5, now - self.last_time)
@@ -979,6 +999,7 @@ class SearchBehavior(object):
             self.move_index = int(np.argmax(score))
             self.move_from = xy
             self.moved = 0.0
+            self.legs += 1
             self.phase_start = now
         idx = self.move_index
         if xy is not None and self.move_from is not None:

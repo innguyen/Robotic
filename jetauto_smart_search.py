@@ -28,7 +28,7 @@ import rospy
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan, CameraInfo
-from std_msgs.msg import UInt16
+from std_msgs.msg import Bool, String, UInt16
 
 try:
     from sensor_msgs.msg import Image as RosImage
@@ -58,11 +58,10 @@ if len(sys.argv) > 1:
 # AI from the dashboard after checking the surroundings.
 IS_PAUSED = True
 CMD_VEL_TOPICS = [
-    '/jetauto_controller/cmd_vel',
-    '/cmd_vel',
-    '/controller/cmd_vel',
-    '/hiwonder_controller/cmd_vel'
+    '/jetauto_ai/cmd_vel_desired',
 ]
+SAFETY_ENABLE_TOPIC = '/jetauto_ai/safety_enable'
+SAFETY_STATUS_TOPIC = '/jetauto_safety/status'
 NAV_CONFIG = load_config(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'navigation_config.json'))
 FOOTPRINT = FootprintSafety(NAV_CONFIG)
 ROBOT_CLEARANCE_M = FOOTPRINT.radius + FOOTPRINT.margin
@@ -786,6 +785,13 @@ class CamHandler(BaseHTTPRequestHandler):
             explorer = getattr(seeker, 'explorer', None) if seeker else None
             explore_goal = getattr(explorer, 'goal', None)
             ai_thread = getattr(seeker, 'ai_thread', None) if seeker else None
+            if seeker:
+                with seeker.safety_status_lock:
+                    safety_copy = dict(seeker.safety_status)
+                    safety_age = (time.monotonic() - seeker.safety_status_time
+                                  if seeker.safety_status_time else None)
+            else:
+                safety_copy, safety_age = {}, None
 
             status_data = {
                 'target': TARGET_CLASS,
@@ -825,6 +831,10 @@ class CamHandler(BaseHTTPRequestHandler):
                 'linear_y': round(seeker_instance.published_linear_y, 2) if seeker_instance else 0.0,
                 'angular_z': round(seeker_instance.published_angular_z, 1) if seeker_instance else 0.0,
                 'motion_block': seeker_instance.motion_block_reason if seeker_instance else '',
+                'safety_armed': bool(safety_copy.get('armed', False)),
+                'safety_reason': safety_copy.get('reason', 'CHO SAFETY SUPERVISOR'),
+                'safety_fault_latched': bool(safety_copy.get('fault_latched', False)),
+                'safety_age': round(safety_age, 2) if safety_age is not None else None,
                 'dist_left': round(obs_copy['dist_l'], 1),
                 'dist_center': round(obs_copy['dist_c'], 1),
                 'dist_right': round(obs_copy['dist_r'], 1),
@@ -898,6 +908,13 @@ class SmartObjectSeeker(object):
         self.cmd_publishers = []
         for top in CMD_VEL_TOPICS:
             self.cmd_publishers.append(rospy.Publisher(top, Twist, queue_size=1))
+        self.safety_enable_pub = rospy.Publisher(SAFETY_ENABLE_TOPIC, Bool, queue_size=1)
+        self.safety_status = {'armed': False, 'reason': 'CHO SAFETY SUPERVISOR',
+                              'output': [0.0, 0.0, 0.0]}
+        self.safety_status_time = 0.0
+        self.safety_status_lock = threading.Lock()
+        self.safety_status_sub = rospy.Subscriber(SAFETY_STATUS_TOPIC, String,
+                                                  self._callback_safety_status, queue_size=1)
 
         self.motion_lock = threading.Lock()
         self.desired_linear_x = 0.0
@@ -1084,11 +1101,6 @@ class SmartObjectSeeker(object):
                     vx, vy, wz = 0.0, 0.0, 0.0
                     block_reason = reason
 
-            self.published_linear_x = vx
-            self.published_linear_y = vy
-            self.published_angular_z = wz
-            self.motion_block_reason = block_reason
-
             twist_msg = Twist()
             twist_msg.linear.x = float(vx)
             twist_msg.linear.y = float(vy)
@@ -1099,8 +1111,37 @@ class SmartObjectSeeker(object):
                     pub.publish(twist_msg)
                 except Exception:
                     pass
+            try:
+                self.safety_enable_pub.publish(Bool(data=not IS_PAUSED))
+            except Exception:
+                pass
+            with self.safety_status_lock:
+                safety = dict(self.safety_status)
+                safety_age = time.monotonic() - self.safety_status_time if self.safety_status_time else float('inf')
+            if safety_age <= 0.6:
+                actual = safety.get('output', [0.0, 0.0, 0.0])
+                self.published_linear_x = float(actual[0])
+                self.published_linear_y = float(actual[1])
+                self.published_angular_z = math.degrees(float(actual[2]))
+                if not safety.get('armed'):
+                    block_reason = safety.get('reason') or block_reason
+            else:
+                self.published_linear_x = self.published_linear_y = self.published_angular_z = 0.0
+                block_reason = 'MAT SAFETY SUPERVISOR'
+            self.motion_block_reason = block_reason
 
             rate.sleep()
+
+    def _callback_safety_status(self, msg):
+        import json
+        try:
+            status = json.loads(msg.data)
+            if isinstance(status, dict):
+                with self.safety_status_lock:
+                    self.safety_status = status
+                    self.safety_status_time = time.monotonic()
+        except Exception:
+            pass
 
     # ==========================================================
     # LIDAR & ODOMETRY CALLBACKS
@@ -1830,6 +1871,10 @@ class SmartObjectSeeker(object):
 
     def stop(self):
         self.set_desired_velocity(0.0, 0.0, 0.0)
+        try:
+            self.safety_enable_pub.publish(Bool(data=False))
+        except Exception:
+            pass
         zero = Twist()
         for pub in self.cmd_publishers:
             try:

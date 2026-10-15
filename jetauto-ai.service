@@ -1,0 +1,22 @@
+[Unit]
+Description=JetAuto AI navigation with independent motion safety supervisor
+After=network-online.target
+Wants=network-online.target jetauto-safety.service
+Before=jetauto-safety.service
+
+[Service]
+Type=simple
+User=jetauto
+WorkingDirectory=/home/jetauto
+Environment=PYTHONUNBUFFERED=1
+Environment=JETAUTO_DRY_RUN=0
+Environment=JETAUTO_MANAGE_SAFETY=0
+ExecStart=/home/jetauto/start_server.sh jetauto_find_object.py --service
+Restart=always
+RestartSec=3
+TimeoutStopSec=10
+KillSignal=SIGTERM
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target

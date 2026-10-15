@@ -3,8 +3,10 @@
 set -o pipefail
 APP_SCRIPT="${1:-jetauto_find_object.py}"
 MODE="${2:-run}"
+MANAGE_SAFETY="${JETAUTO_MANAGE_SAFETY:-1}"
 case "$APP_SCRIPT" in jetauto_find_object.py|jetauto_smart_search.py) ;; *) exit 1 ;; esac
-case "$MODE" in run|--check-only|--no-tail) ;; *) exit 1 ;; esac
+case "$MODE" in run|--check-only|--no-tail|--service) ;; *) exit 1 ;; esac
+case "$MANAGE_SAFETY" in 0|1) ;; *) echo '[ERROR] JETAUTO_MANAGE_SAFETY must be 0 or 1.'; exit 1 ;; esac
 exec 9>/tmp/jetauto_start_server.lock
 flock -n 9 || { echo '[ERROR] Another startup is in progress.'; exit 1; }
 
@@ -96,6 +98,7 @@ if ! message_ready /depth_cam/rgb/image_raw; then
     start_launch /tmp/depth_cam.log jetauto_peripherals depth_cam.launch
     wait_message /depth_cam/rgb/image_raw /tmp/depth_cam.log
 fi
+wait_message /depth_cam/depth/image_raw /tmp/depth_cam.log
 # Verify again after all launches, detecting any driver shutdown during startup.
 wait_message /scan /tmp/lidar.log
 wait_message /odom /tmp/bringup.log
@@ -112,6 +115,7 @@ for candidate in /home/jetauto/.virtualenvs/mediapipe/lib/python3.6/site-package
 done
 export PY3_PYTHONPATH="/home/jetauto/.local/lib/python3.6/site-packages:$SYSTEM_CV2_DIR:$PYTHONPATH"
 [ -f "/home/jetauto/$APP_SCRIPT" ] || fail "Missing app: $APP_SCRIPT"
+[ -f /home/jetauto/motion_safety_supervisor.py ] || fail 'Missing motion_safety_supervisor.py'
 # Match only app Python processes, allow graceful motor stop, never kill sensors.
 APP_PATTERN='^([^ ]*/)?python[23]?([.][0-9]+)?[ ]+(-u[ ]+)?([^ ]*/)?jetauto_(find_object|smart_search)[.]py([ ]|$)'
 pkill -TERM -f "$APP_PATTERN" 2>/dev/null || true
@@ -120,6 +124,37 @@ for attempt in 1 2 3 4 5; do
     sleep 1
 done
 pgrep -f "$APP_PATTERN" >/dev/null && fail 'Old AI app did not stop cleanly.'
+
+# Safety Supervisor owns the real chassis topic. In manual mode this script
+# starts it. In production, systemd owns it and this script only waits for it.
+SAFETY_PATTERN='^([^ ]*/)?python[23]?([.][0-9]+)?[ ]+(-u[ ]+)?/home/jetauto/motion_safety_supervisor[.]py([ ]|$)'
+SAFETY_LOG=/tmp/jetauto_safety.log
+if [ "$MANAGE_SAFETY" = 1 ]; then
+    if command -v systemctl >/dev/null 2>&1 && systemctl is-active --quiet jetauto-safety.service; then
+        fail 'jetauto-safety.service is active; stop systemd services before manual startup.'
+    fi
+    pkill -TERM -f "$SAFETY_PATTERN" 2>/dev/null || true
+    for attempt in 1 2 3 4 5; do
+        pgrep -f "$SAFETY_PATTERN" >/dev/null || break
+        sleep 1
+    done
+    pgrep -f "$SAFETY_PATTERN" >/dev/null && fail 'Old Safety Supervisor did not stop cleanly.'
+    nohup env PYTHONPATH="$PY3_PYTHONPATH" python3 -u /home/jetauto/motion_safety_supervisor.py >"$SAFETY_LOG" 2>&1 < /dev/null 9>&- &
+fi
+SAFETY_READY=false
+for attempt in $(seq 1 40); do
+    sleep 0.5
+    if node_alive /jetauto_motion_safety; then SAFETY_READY=true; break; fi
+done
+if [ "$SAFETY_READY" != true ]; then
+    [ "$MANAGE_SAFETY" = 1 ] && tail -30 "$SAFETY_LOG"
+    fail 'Safety Supervisor unavailable.'
+fi
+timeout 5 rostopic info /jetauto_controller/cmd_vel | grep -q '/jetauto_motion_safety' \
+    || fail 'Safety Supervisor does not own chassis velocity output.'
+timeout 5 rostopic info /jetauto_ai/cmd_vel_desired | grep -q '/jetauto_motion_safety' \
+    || fail 'Safety Supervisor is not listening for AI heartbeat.'
+
 LOG_FILE=/tmp/jetauto_ai.log
 nohup env PYTHONPATH="$PY3_PYTHONPATH" python3 -u "/home/jetauto/$APP_SCRIPT" >"$LOG_FILE" 2>&1 < /dev/null 9>&- &
 AI_PID=$!
@@ -129,4 +164,8 @@ pause_app
 echo "Drivers verified; AI app started (PID $AI_PID). See $LOG_FILE."
 flock -u 9
 exec 9>&-
+if [ "$MODE" = --service ]; then
+    wait "$AI_PID"
+    exit $?
+fi
 [ "$MODE" = --no-tail ] || tail -f "$LOG_FILE"

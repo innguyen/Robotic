@@ -1,0 +1,23 @@
+[Unit]
+Description=JetAuto independent motion safety watchdog
+After=network-online.target jetauto-ai.service
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=notify
+NotifyAccess=main
+User=jetauto
+WorkingDirectory=/home/jetauto
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/jetauto/run_motion_safety.sh
+Restart=always
+RestartSec=50ms
+WatchdogSec=600ms
+TimeoutStartSec=20
+TimeoutStopSec=2
+KillSignal=SIGTERM
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
