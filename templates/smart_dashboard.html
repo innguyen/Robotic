@@ -22,9 +22,9 @@
 
     <div class="section-head"><h2>Giám sát trực tiếp</h2><span>Hình ảnh cập nhật theo dữ liệu cảm biến mới nhất</span></div>
     <section class="feeds" aria-label="Luồng camera và bản đồ">
-      <article class="card"><div class="feed-head"><div class="feed-name"><i class="feed-icon"></i>Astra · Nhận diện mục tiêu</div><span class="feed-meta" id="aiFpsBadge">AI — FPS</span></div><div class="feed-body"><img id="feedAstra" src="/cam_astra.mjpg" alt="Luồng camera Astra với lớp phủ nhận diện"></div></article>
+      <article class="card"><div class="feed-head"><div class="feed-name"><i class="feed-icon"></i>OAK-D · Nhận diện mục tiêu</div><span class="feed-meta" id="aiFpsBadge">AI — FPS</span></div><div class="feed-body"><img id="feedOAK-D" src="/cam_primary.mjpg" alt="Luồng camera OAK-D với lớp phủ nhận diện"></div></article>
       <article class="card"><div class="feed-head"><div class="feed-name"><i class="feed-icon" style="background:var(--amber)"></i>Bản đồ LiDAR</div><span class="feed-meta" id="searchModeBadge">ĐANG KHỞI TẠO</span></div><div class="feed-body map-feed"><img id="feedMap" src="/map_feed.mjpg" alt="Bản đồ lưới LiDAR"></div></article>
-      <article class="card oakd-card"><div class="feed-head"><div class="feed-name"><i class="feed-icon" style="background:var(--blue)"></i>OAK-D · Camera phụ</div><span class="feed-meta" id="feedStatusOakd">Chỉ quan sát</span></div><div class="feed-body"><img id="feedOakd" src="/cam_oakd.mjpg" alt="Luồng camera OAK-D"></div></article>
+      <article class="card oakd-card"><div class="feed-head"><div class="feed-name"><i class="feed-icon" style="background:var(--blue)"></i>Astra · Camera phụ</div><span class="feed-meta" id="feedStatusOakd">Chỉ quan sát</span></div><div class="feed-body"><img id="feedOakd" src="/cam_secondary.mjpg" alt="Luồng camera Astra"></div></article>
     </section>
 
     <section class="card controls" aria-label="Tìm kiếm và dừng robot">
@@ -43,7 +43,7 @@
           <div class="metric"><div class="metric-label">Góc quay</div><div class="metric-value" id="metricWz">0.0 <small>°/s</small></div></div>
           <div class="metric"><div class="metric-label">Vị trí mục tiêu</div><div class="metric-value target-pos" id="hudTargetPos">Chưa phát hiện</div></div>
         </div>
-        <div class="sensor-row"><div class="sensor" id="sensorLidar"><span>LiDAR</span><b id="lidarState">Đang chờ</b></div><div class="sensor" id="sensorOdom"><span>Odometry</span><b id="odomState">Đang chờ</b></div><div class="sensor" id="sensorCamera"><span>Astra</span><b id="cameraState">Đang chờ</b></div><div class="sensor"><span>Lời chào</span><b id="faceState">Đang chờ</b></div><div class="sensor"><span>OAK-D</span><b id="hudRadar">Chỉ quan sát</b></div><div class="sensor"><span>Né ngang</span><b id="hudStrafe">Không</b></div></div>
+        <div class="sensor-row"><div class="sensor" id="sensorLidar"><span>LiDAR</span><b id="lidarState">Đang chờ</b></div><div class="sensor" id="sensorOdom"><span>Odometry</span><b id="odomState">Đang chờ</b></div><div class="sensor" id="sensorCamera"><span>OAK-D ch?nh</span><b id="cameraState">Đang chờ</b></div><div class="sensor"><span>Lời chào</span><b id="faceState">Đang chờ</b></div><div class="sensor"><span>OAK-D</span><b id="hudRadar">Chỉ quan sát</b></div><div class="sensor"><span>Né ngang</span><b id="hudStrafe">Không</b></div></div>
       </article>
       <article class="card panel">
         <div class="panel-title"><h2>Điều khiển thủ công</h2><span>Mecanum · 3 trục</span></div>
@@ -93,6 +93,11 @@
       $('faceState').title=d.voice_error||'Thông báo mục tiêu qua loa USB';
       $('navigationState').textContent=`Quét: ${d.explorer_phase||'—'} · ${Number(d.scan_swept_deg||0).toFixed(0)}° | Bản đồ: ${d.mapping_status||'—'} | Thân xe: ${d.footprint_calibrated?'đã cấu hình':'chưa đo, dùng vùng dự phòng'} | Chiều cao: ${d.depth_clearance||'chưa cấu hình'}`;
       $('navigationState').textContent += ` | Lý do: ${d.navigation_block||d.probe_block||d.plan_reason||'—'} | Bản ${d.build||'—'}`;
+      if(!d.paused && d.avoidance_checks_age!==null && d.avoidance_checks_age<=1.5 && d.target_avoidance_phase!=='IDLE'){
+        const checks=d.avoidance_checks||{};
+        const sideLabel=c=>!c?'chưa kiểm tra':c.allowed?'có lối':c.reason.includes('UNKNOWN')?'chưa đo đủ đường lách':c.reason.includes('STALE')?'LiDAR chậm':'vật cản';
+        $('navigationState').textContent+=` | Né trái: ${sideLabel(checks.left)} · Né phải: ${sideLabel(checks.right)}`;
+      }
       $('navigationState').title=`Nguồn kích thước: ${d.footprint_source||'chưa có'} · ${d.body_length_cm||'?'} × ${d.body_width_cm||'?'} cm`;
       $('faceState').textContent=d.voice_error?('Lỗi loa: '+d.voice_error):(d.announcement||'Chờ tìm thấy mục tiêu');
     }).catch(()=>{$('connectionState').textContent='Mất kết nối';setSensor('sensorLidar','lidarState','Lỗi');setSensor('sensorOdom','odomState','Lỗi');setSensor('sensorCamera','cameraState','Lỗi');});}

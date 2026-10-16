@@ -19,7 +19,8 @@ import signal
 import threading
 from robot_voice import RobotVoice, TargetAnnouncement
 from target_selection import (choose_target, TargetAvoidance, TargetSteering,
-                              normalize_target, approach_command,
+                              TargetConfirmation,
+                              normalize_target, tracking_command,
                               estimate_target_distance, target_standoff_cm)
 from collections import deque
 from navigation_safety import (load_config, PoseHistory, scan_geometry,
@@ -72,7 +73,7 @@ ROBOT_CLEARANCE_M = FOOTPRINT.radius + FOOTPRINT.margin
 AI_COMMAND_TIMEOUT_S = 2.0  # CPU inference can take about one second per frame.
 PERSON_STOP_CM = 80.0
 TARGET_REACQUIRE_S = 1.5
-NAVIGATION_BUILD = '2026-10-01-safe-probe-8'
+NAVIGATION_BUILD = '2026-10-01-five-cm-sidestep-11'
 LIDAR_YAW_OFFSET_RAD = math.radians(NAV_CONFIG['lidar_yaw_deg'])
 # The low-mounted OAK-D sees the floor as a nearby obstacle on this robot.
 # Keep its RGB feed, but use LiDAR alone for autonomous collision decisions.
@@ -205,7 +206,7 @@ class OccupancyGridMapper(object):
             self.grid[self.evidence >= 1.0] = 255
 
     def recent_free(self, world_points, now):
-        """Only actual free ray cells younger than 0.75s; no map closing."""
+        """Use recent measured free cells to bridge intermittent missing rays."""
         cells = np.column_stack((self.center + world_points[:, 0] / self.res,
                                  self.center - world_points[:, 1] / self.res)).astype(int)
         inside = np.all((cells >= 0) & (cells < self.size), axis=1)
@@ -213,7 +214,7 @@ class OccupancyGridMapper(object):
         x, y = cells[inside, 0], cells[inside, 1]
         with self.map_lock:
             stamp = self.free_observed_at[y, x]
-            result[inside] = ((stamp > 0) & (now >= stamp) & (now - stamp <= .75) &
+            result[inside] = ((stamp > 0) & (now >= stamp) & (now - stamp <= 2.0) &
                               (self.grid[y, x] < 60))
         return result
 
@@ -422,8 +423,12 @@ class FrontierExplorer(object):
             vx, vy = self.probe_command
             if (moved >= 0.25 or now - self.probe_started > 4.0 or
                     not FOOTPRINT.check(vx, vy, 0.0, time.monotonic())[0]):
-                self.reset_scan()
-                return 0.0, 0.0, 0.0, 'QUET LAI SAU DO THAM'
+                if moved >= 0.10:
+                    self.reset_scan()
+                    return 0.0, 0.0, 0.0, 'QUET LAI SAU DO THAM'
+                self.phase = 'PLAN'
+                self.probe_block = 'DO THAM KHONG DI CHUYEN'
+                return 0.0, 0.0, 0.0, self.probe_block
             return vx, vy, 0.0, 'DO THAM LOI DI NGAN'
         if self.phase in ('SCAN', 'RECOVER'):
             phase, turn = self.scan_recovery.step(yaw, now)
@@ -432,24 +437,15 @@ class FrontierExplorer(object):
             if phase in ('PLAN', 'PLAN_PARTIAL'):
                 self.phase = 'PLAN'
             else:
-                if (phase == 'SCAN' and
-                        self.scan_recovery.partial_probe_due()):
-                    probe = self._start_local_probe(rx, ry, now)
-                    if probe is not None:
-                        return probe
                 self.phase = phase
                 return 0.0, 0.0, turn, ('CHO THU HUONG QUET KHAC' if phase == 'RECOVER'
                                    else 'QUET TIM MUC TIEU')
 
         if self.phase == 'PLAN' or (self.phase == 'WAIT' and now - self.last_plan >= 5.0):
             self.last_plan = now
-            mobility = [FOOTPRINT.check(vx, vy, 0.0, time.monotonic())
-                        for vx, vy in self.PROBE_COMMANDS]
-            if not any(allowed for allowed, reason in mobility):
-                self.probe_block = mobility[0][1]
-                self.phase = 'WAIT'
-                self.goal = None
-                return 0.0, 0.0, 0.0, 'KHONG THE TINH TIEN: ' + self.probe_block
+            # Plan in world coordinates before checking local translation.
+            # The current heading may be blocked even when a route exists
+            # after turning toward a different frontier.
             result = self.mapper.plan_frontier(rx, ry, excluded)
             if result is None:
                 probe = self._start_local_probe(rx, ry, now)
@@ -535,15 +531,15 @@ def get_frame_for_cam(cam_name='astra'):
                 return display_frame_astra.copy()
             if raw_frame_astra is not None:
                 return raw_frame_astra.copy()
-            title = "ASTRA PRO PLUS (AI TRACKER)"
+            title = "OAK-D (AI TRACKER)"
             status = cam_source_astra
         else:
             if display_frame_oakd is not None:
                 return display_frame_oakd.copy()
             if raw_frame_oakd is not None:
                 return raw_frame_oakd.copy()
-            title = "LUXONIS OAK-D (RADAR NE VAT CAN)"
-            status = cam_source_oakd
+            title = "ASTRA (SECONDARY CAMERA)"
+            status = "Dang cho Astra ROS..."
 
     f = np.zeros((480, 640, 3), dtype=np.uint8)
     cv2.rectangle(f, (0, 0), (640, 480), (15, 23, 42), -1)
@@ -800,6 +796,7 @@ class CamHandler(BaseHTTPRequestHandler):
                 if seeker_instance:
                     seeker_instance.set_desired_velocity(0.0, 0.0, 0.0)
                     seeker_instance.explorer.reset_scan(clear_visited=True)
+                    seeker_instance.target_avoidance.reset()
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
@@ -810,6 +807,7 @@ class CamHandler(BaseHTTPRequestHandler):
             IS_PAUSED = True
             if seeker_instance:
                 seeker_instance.set_desired_velocity(0.0, 0.0, 0.0)
+                seeker_instance.target_avoidance.reset()
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
@@ -856,9 +854,9 @@ class CamHandler(BaseHTTPRequestHandler):
             self._stream_mjpeg('map')
         elif self.path.startswith('/cam_combined'):
             self._stream_mjpeg('combined')
-        elif self.path.startswith('/cam_oakd'):
+        elif self.path.startswith('/cam_secondary') or self.path.startswith('/cam_oakd'):
             self._stream_mjpeg('oakd')
-        elif self.path.startswith('/cam_astra') or self.path.startswith('/cam.mjpg'):
+        elif self.path.startswith('/cam_primary') or self.path.startswith('/cam_astra') or self.path.startswith('/cam.mjpg'):
             self._stream_mjpeg('astra')
         elif self.path.startswith('/status'):
             self.send_response(200)
@@ -887,6 +885,7 @@ class CamHandler(BaseHTTPRequestHandler):
                 'build': NAVIGATION_BUILD,
                 'target': TARGET_CLASS,
                 'paused': IS_PAUSED,
+                'primary_camera': 'oakd',
                 'camera_age': round(time.time() - astra_frame_time, 1) if astra_frame_time else None,
                 'lidar_age': round(time.time() - lidar_info['last_update'], 1) if lidar_info['last_update'] else None,
                 'lidar_scan_span_deg': round(lidar_info['scan_span_deg'], 0),
@@ -922,6 +921,9 @@ class CamHandler(BaseHTTPRequestHandler):
                 'target_avoidance_phase': seeker.target_avoidance.phase if seeker else 'INIT',
                 'target_avoidance_direction': seeker.target_avoidance.direction if seeker else 0,
                 'target_avoidance_attempts': seeker.target_avoidance.attempts if seeker else 0,
+                'avoidance_checks': getattr(seeker, 'avoidance_checks', {}),
+                'avoidance_checks_age': round(time.monotonic() - seeker.avoidance_checks_time, 1) if seeker and seeker.avoidance_checks_time else None,
+                'target_distance_cm': round(t_copy['distance'] * 100, 1) if t_copy.get('distance') else None,
                 'linear_x': round(seeker_instance.published_linear_x, 2) if seeker_instance else 0.0,
                 'linear_y': round(seeker_instance.published_linear_y, 2) if seeker_instance else 0.0,
                 'angular_z': round(seeker_instance.published_angular_z, 1) if seeker_instance else 0.0,
@@ -931,7 +933,8 @@ class CamHandler(BaseHTTPRequestHandler):
                 'dist_left': round(obs_copy['dist_l'], 1),
                 'dist_center': round(obs_copy['dist_c'], 1),
                 'dist_right': round(obs_copy['dist_r'], 1),
-                'strafe_dir': obs_copy['strafe_dir'],
+                'strafe_dir': ('LEFT' if seeker and seeker.published_linear_y > 0 else
+                               'RIGHT' if seeker and seeker.published_linear_y < 0 else 'NONE'),
                 'obs_status': obs_copy['status'],
                 'oakd_avoidance_enabled': USE_OAKD_FOR_AVOIDANCE,
                 'pose_x': round(p_copy['x'], 2),
@@ -1037,6 +1040,9 @@ class SmartObjectSeeker(object):
         self.search_mode = "EXPLORE"
         self.target_avoidance = TargetAvoidance()
         self.target_steering = TargetSteering()
+        self.target_confirmation = TargetConfirmation()
+        self.avoidance_checks = {}
+        self.avoidance_checks_time = 0.0
 
         # YOLO Model
         self.classes = self.load_classes()
@@ -1172,7 +1178,7 @@ class SmartObjectSeeker(object):
                 block_reason = 'TẠM DỪNG' if paused else 'LỆNH ĐIỀU KHIỂN HẾT HẠN'
             if time.time() - astra_frame_time > 1.5 and not manual_active:
                 vx, vy, wz = 0.0, 0.0, 0.0
-                block_reason = 'MẤT CAMERA ASTRA'
+                block_reason = 'MẤT CAMERA OAK-D'
             if time.time() - robot_pose['last_update'] > 1.5 and not manual_active:
                 vx, vy, wz = 0.0, 0.0, 0.0
                 block_reason = 'MẤT ODOMETRY'
@@ -1432,17 +1438,24 @@ class SmartObjectSeeker(object):
             self.depth_guard.status = 'DEPTH DECODE ERROR: ' + str(error)
 
     def _cb_astra(self, msg):
-        global raw_frame_astra, display_frame_astra, cam_source_astra, astra_frame_time, astra_frame_seq
+        global raw_frame_oakd, display_frame_oakd
         frame = self._decode_ros_image(msg)
         if frame is not None:
-            cam_source_astra = "Astra Pro (ROS)"
+            with frame_lock:
+                raw_frame_oakd = frame
+                display_frame_oakd = frame
+
+    def _publish_primary_frame(self, frame):
+        global raw_frame_astra, display_frame_astra, cam_source_astra, astra_frame_time, astra_frame_seq
+        if frame is not None:
+            cam_source_astra = "OAK-D (AI primary)"
             self._camera_frame_count += 1
             frame_time = time.time()
             if frame_time - self._camera_fps_start >= 1.0:
                 self.camera_fps = self._camera_frame_count / (frame_time - self._camera_fps_start)
                 self._camera_frame_count = 0
                 self._camera_fps_start = frame_time
-            # Render the newest known inference result on each arriving Astra
+            # Render the newest known inference result on each arriving OAK-D
             # frame.  Camera/web FPS is no longer limited by YOLO FPS.
             with self.state_lock:
                 detections = list(self.latest_detections)
@@ -1554,10 +1567,7 @@ class SmartObjectSeeker(object):
                                 if f is not None:
                                     with obstacle_lock:
                                         s_dir = obstacle_info.get('strafe_dir', 'NONE')
-                                    rendered = render_oakd_hud(f, cur_dl, cur_dc, cur_dr, s_dir)
-                                    with frame_lock:
-                                        raw_frame_oakd = f
-                                        display_frame_oakd = rendered
+                                    self._publish_primary_frame(f)
                         time.sleep(0.01)
                     return
             except Exception as oakd_err:
@@ -1573,13 +1583,9 @@ class SmartObjectSeeker(object):
             cam_source_oakd = "Khong co sensor_msgs/Image"
 
     def _cb_oakd_ros(self, msg):
-        global raw_frame_oakd, display_frame_oakd
         frame = self._decode_ros_image(msg)
         if frame is not None:
-            rendered = render_oakd_hud(frame, 999.0, 999.0, 999.0, "NONE")
-            with frame_lock:
-                raw_frame_oakd = frame
-                display_frame_oakd = rendered
+            self._publish_primary_frame(frame)
 
     def _decode_ros_image(self, msg):
         try:
@@ -1698,7 +1704,7 @@ class SmartObjectSeeker(object):
             if raw_frame is None:
                 if time.time() - astra_frame_time > 1.5:
                     with self.state_lock:
-                        self.last_action_text = "CHO CAMERA ASTRA"
+                        self.last_action_text = "CHO CAMERA OAK-D"
                 time.sleep(0.04)
                 continue
             last_frame_seq = frame_seq
@@ -1710,6 +1716,7 @@ class SmartObjectSeeker(object):
                 search_target = TARGET_CLASS
                 last_target_center = None
                 last_target_time = 0.0
+                self.target_confirmation.reset()
                 self.target_avoidance.reset()
                 self.target_steering.reset()
                 self.explorer.reset_scan(clear_visited=True)
@@ -1729,7 +1736,8 @@ class SmartObjectSeeker(object):
             now = time.time()
             recent_center = last_target_center if now - last_target_time < 2.0 else None
             best = choose_target(target_detections, (w, h), recent_center, search_target)
-            target_found = best is not None
+            confirmed = self.target_confirmation.update(best, (w, h), now)
+            target_found = best is not None and (confirmed or self.search_mode in ('TRACKING', 'REACQUIRE'))
             if self.target_announcement.update(
                     search_target, target_found, time.monotonic(),
                     enabled=not IS_PAUSED and now >= self.manual_override_until):
@@ -1755,13 +1763,9 @@ class SmartObjectSeeker(object):
                 # Ước lượng khoảng cách từ kích thước Bounding Box
                 # Đối với người/vật thể, tỉ lệ width_ratio nghịch với khoảng cách
                 width_ratio = bw / float(w)
-                # Target detection and range use the same Astra camera.  The
-                # box-size formula below is only a fallback for invalid depth.
-                with frame_lock:
-                    astra_depth = (raw_depth_astra.copy() if raw_depth_astra is not None
-                                   and astra_depth_registered and
-                                   abs(astra_depth_time - astra_frame_time) < 0.25 else None)
-                astra_distance_cm = estimate_astra_distance_cm(astra_depth, raw_frame.shape, best['box'])
+                # Astra depth belongs to a different camera and cannot range
+                # OAK-D detection boxes. Use the existing box-size estimate.
+                astra_distance_cm = None
                 est_dist = (astra_distance_cm / 100.0 if astra_distance_cm is not None
                             else estimate_target_distance(bw, w, TARGET_CLASS))
 
@@ -1812,7 +1816,7 @@ class SmartObjectSeeker(object):
                     base_vx = 0.15 if abs(self.target_steering.filtered_error) < 80 else 0.08
                     action_text = "BÁM MỤC TIÊU {} (Cách {:.1f}m)".format(TARGET_CLASS.upper(), est_dist)
 
-            elif has_last_pos and time_since_seen < TARGET_REACQUIRE_S:
+            elif has_last_pos and time_since_seen < (3.0 if self.target_avoidance.phase in ('STRAFE', 'TURN') else TARGET_REACQUIRE_S):
                 self.search_mode = "REACQUIRE"
                 dx, dy = last_tx - cur_rx, last_ty - cur_ry
                 yaw_diff = (math.atan2(dy, dx) - cur_yaw + math.pi) % (2 * math.pi) - math.pi
@@ -1820,7 +1824,7 @@ class SmartObjectSeeker(object):
                 if time_since_seen < 0.45 or abs(yaw_diff) < math.radians(4):
                     heading_wz = 0.0
                 base_vx = 0.0
-                action_text = "MAT DAU -> QUET TIM LAI (1.5s)"
+                action_text = "MAT DAU -> CAN LAI HUONG MUC TIEU"
                 status_color = (0, 215, 255)
 
             else:
@@ -1828,8 +1832,8 @@ class SmartObjectSeeker(object):
                 self.target_steering.reset()
                 # CHẾ ĐỘ 3: Quét 360 độ rồi đi đến rìa vùng chưa biết có
                 # đường đi qua các ô đã đo là trống.
-                if self.search_mode != "EXPLORE":
-                    self.explorer.reset_scan()
+                # A brief detection must not discard the current scan or path.
+                # The explorer resumes from its saved phase after reacquisition.
                 self.search_mode = "EXPLORE"
                 with lidar_lock:
                     scan_fresh = now - lidar_info['last_update'] < 1.5
@@ -1901,33 +1905,40 @@ class SmartObjectSeeker(object):
                 allowed, reason = FOOTPRINT.check(cmd_vx, cmd_vy, cmd_wz, time.monotonic())
                 if self.search_mode == 'TRACKING' and base_vx > 0:
                     side = -1 if target_center[0] > center_screen_x else 1
+                    if lidar['left'] > 0 and lidar['right'] > 0:
+                        side = 1 if lidar['left'] >= lidar['right'] else -1
+                    checks = {}
+                    checked_at = time.monotonic()
                     def safe_command(vx, vy, wz):
-                        return FOOTPRINT.check(vx, vy, wz, time.monotonic())[0]
-                    self.navigation_block_reason = reason if not allowed else ''
-                    local = None
-                    if not allowed:
-                        local = approach_command(base_vx, heading_wz,
-                                                 self.target_avoidance.direction or side,
-                                                 safe_command)
-                    if local is not None:
-                        cmd_vx, cmd_vy, cmd_wz = local
-                        self.target_avoidance.reset()
-                        self.target_avoidance.direction = (1 if cmd_vy > 0 else -1) if cmd_vy else side
-                        action_text = 'TIEN CHAM VA LACH THEO LIDAR'
-                        override = None
-                        allowed = True
-                    else:
-                        override = self.target_avoidance.command(
-                            allowed, (cur_rx, cur_ry, cur_yaw), side,
-                            safe_command, time.monotonic(), align_turn=heading_wz)
-                    if override is not None:
-                        cmd_vx, cmd_vy, cmd_wz, action_text = override
-                        if not (cmd_vx or cmd_vy or cmd_wz) and reason:
-                            action_text = 'DUNG: ' + reason
-                            status_color = (0, 165, 255)
-                    elif not allowed:
-                        cmd_vx = cmd_vy = cmd_wz = 0.0
-                        action_text = reason
+                        key = (vx, vy, wz)
+                        if key not in checks:
+                            checks[key] = FOOTPRINT.check(vx, vy, wz, time.monotonic())
+                        return checks[key][0]
+                    cmd_vx, cmd_vy, cmd_wz, action_text = tracking_command(
+                        self.target_avoidance, base_vx, heading_wz,
+                        (cur_rx, cur_ry, cur_yaw), side, safe_command, checked_at)
+                    diagnostics = {}
+                    for name, command in (('forward', (base_vx, 0.0, heading_wz)),
+                                          ('left', (0.0, .08, 0.0)),
+                                          ('right', (0.0, -.08, 0.0))):
+                        safe_command(*command)
+                        ok, why = checks[command]
+                        speed = .08
+                        if name != 'forward' and not ok:
+                            slower = (0.0, .04 if name == 'left' else -.04, 0.0)
+                            if safe_command(*slower):
+                                ok, why = checks[slower]
+                                speed = .04
+                        diagnostics[name] = {'allowed': bool(ok), 'reason': why,
+                                             'speed_mps': speed if name != 'forward' else base_vx}
+                    self.avoidance_checks = diagnostics
+                    self.avoidance_checks_time = checked_at
+                    self.navigation_block_reason = ''
+                    if not (cmd_vx or cmd_vy or cmd_wz) and self.target_avoidance.phase == 'BLOCKED':
+                        self.navigation_block_reason = 'TRAI: {} | PHAI: {}'.format(
+                            diagnostics['left']['reason'] or 'CO LOI DI',
+                            diagnostics['right']['reason'] or 'CO LOI DI')
+                        status_color = (0, 165, 255)
                 elif not allowed:
                     self.navigation_block_reason = reason
                     cmd_vx = cmd_vy = cmd_wz = 0.0
@@ -1936,6 +1947,7 @@ class SmartObjectSeeker(object):
                     self.target_avoidance.reset()
 
                 with obstacle_lock:
+                    strafe_name = 'LEFT' if cmd_vy > 0 else 'RIGHT' if cmd_vy < 0 else 'NONE'
                     obstacle_info['strafe_dir'] = strafe_name
 
                 self.set_desired_velocity(cmd_vx, cmd_vy, cmd_wz)
@@ -1968,7 +1980,7 @@ class SmartObjectSeeker(object):
             cv2.circle(frame, target_center, 6, (0, 0, 255), -1)
 
         cv2.putText(frame, action_text, (20, 35), cv2.FONT_HERSHEY_SIMPLEX, 0.75, status_color, 2)
-        cv2.putText(frame, "[SMART SEEKER] ASTRA AI", (20, 65), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 229, 255), 2)
+        cv2.putText(frame, "[SMART SEEKER] OAK-D AI", (20, 65), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 229, 255), 2)
         cv2.putText(frame, "AI FPS: {:.1f}".format(self.ai_fps), (w - 140, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
         return frame
 

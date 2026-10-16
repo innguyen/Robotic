@@ -46,3 +46,10 @@ Quét bị kẹt sẽ thử đổi chiều có giới hạn, sau đó lập đư
 Kích thước thân, vị trí LiDAR và camera đặt trong `navigation_config.json`. Bản đồ ghép từng tia theo timestamp odometry và giữ bằng chứng có tuổi thọ, nhưng chưa phải SLAM hiệu chỉnh trôi. Kiểm tra khoảng trống cao 60 cm bằng Astra đã có mã, mặc định chưa bật vì chưa có kích thước thân và hiệu chỉnh camera. Khi bật, phiên bản này chỉ xác nhận thể tích cho đi thẳng phía trước; không tự cấp quyền đi vào vùng mù. Xem tài liệu trước khi cấu hình và thử trên phần cứng.
 
 OAK-D hiện mặc định chỉ phát ảnh phụ (`USE_OAKD_FOR_AVOIDANCE = False`), vì góc lắp thấp khiến mặt sàn bị báo là vật cản gần. Robot dùng LiDAR để chặn lệnh di chuyển. Trên dashboard, `Cam FPS` là tốc độ nhận ảnh Astra, còn `AI FPS` là số lần YOLO xử lý mỗi giây; model `yolov5n.onnx` trong dự án có đầu vào cố định 640 × 640 nên giảm kích thước đầu vào trực tiếp sẽ làm lỗi model. Sau khi chép code, server khởi động ở trạng thái tạm dừng; chỉ bấm Tìm kiếm khi vùng quanh robot đã được kiểm tra.
+
+
+Smart Search: OAK-D is now the primary YOLO camera; Astra is secondary.
+Camera FPS and freshness checks follow OAK-D. Streams: `/cam_primary.mjpg`
+and `/cam_secondary.mjpg`. Old URLs remain aliases for their stream slots.
+Target distance uses the bounding-box estimate, never Astra depth with OAK-D
+boxes. LiDAR still gates motion. Run `run_smart_search.bat` to upload/restart.

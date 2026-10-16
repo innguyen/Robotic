@@ -210,7 +210,7 @@ def scan_geometry(ranges, angle_min, angle_increment, poses, cfg, range_min, ran
 
 
 class ScanRecovery(object):
-    """Count net actual rotation, retry twice, then try planning in observed space."""
+    """Count actual rotation, then plan from observed space if the turn stalls."""
     def __init__(self):
         self.reset()
 
@@ -218,11 +218,9 @@ class ScanRecovery(object):
         self.previous_yaw = None
         self.net_angle = 0.0
         self.direction = 1
-        self.attempt = 0
         self.started = None
         self.progress_time = None
         self.best = 0.0
-        self.wait_until = None
 
     def step(self, yaw, now):
         if self.started is None:
@@ -234,28 +232,15 @@ class ScanRecovery(object):
         progress = abs(self.net_angle)
         if progress >= 2 * math.pi - 0.20:
             return 'PLAN', 0.0
-        if self.wait_until is not None:
-            if now < self.wait_until:
-                return 'RECOVER', 0.0
-            self.wait_until = None
-            self.progress_time = now
         if progress > self.best + math.radians(3):
             self.best = progress
             self.progress_time = now
-        if now - self.progress_time > 4.0 or now - self.started > 40.0:
-            if self.attempt >= 2:
-                return 'PLAN_PARTIAL', 0.0
-            self.attempt += 1
-            self.direction *= -1
-            self.started = self.progress_time = now
-            self.net_angle = self.best = 0.0
-            self.wait_until = now + 2.0
-            return 'RECOVER', 0.0
+        # The LiDAR itself has a 360-degree scan. If chassis rotation is
+        # blocked, plan from the rays already observed instead of reversing
+        # indefinitely at the same pose.
+        if now - self.progress_time > 2.5 or now - self.started > 30.0:
+            return 'PLAN_PARTIAL', 0.0
         return 'SCAN', self.direction * 18.0
-
-    def partial_probe_due(self, threshold=math.pi / 2.0):
-        """Allow a short safe translation before the full rotation completes."""
-        return abs(self.net_angle) >= threshold
 
 
 class FootprintSafety(object):
@@ -299,6 +284,16 @@ class FootprintSafety(object):
             return (np.abs(bx) <= self.hx + margin) & (np.abs(by) <= self.hy + margin)
         return bx * bx + by * by <= (self.radius + margin) ** 2
 
+    def body_clearance(self, points, x=0.0, y=0.0, yaw=0.0):
+        """Distance to the physical outline, zero for points inside it."""
+        dx, dy = points[:, 0] - x, points[:, 1] - y
+        c, s = math.cos(yaw), math.sin(yaw)
+        bx, by = c * dx + s * dy - self.cx, -s * dx + c * dy - self.cy
+        if self.rectangular:
+            return np.hypot(np.maximum(np.abs(bx) - self.hx, 0.0),
+                            np.maximum(np.abs(by) - self.hy, 0.0))
+        return np.maximum(np.hypot(bx, by) - self.radius, 0.0)
+
     def perimeter(self):
         if not self.rectangular:
             a = np.linspace(-math.pi, math.pi, 100, endpoint=False)
@@ -340,10 +335,12 @@ class FootprintSafety(object):
         # inside the measured physical body or a move deeper into the margin
         # must still stop the chassis.
         initially_close = self.inside(points, margin=self.margin)
-        if not rotation_only and not self.rectangular:
-            initial_distance = np.linalg.norm(points - [self.cx, self.cy], axis=1)
-            if np.any(initial_distance <= self.radius):
+        if not rotation_only:
+            if np.any(self.inside(points, margin=0.0)):
                 return False, 'FOOTPRINT COLLISION: PHYSICAL BODY'
+            if self.rectangular and np.any(initially_close) and speed > .081:
+                return False, 'ESCAPE: SLOW TO 8CM/S'
+            initial_distance = self.body_clearance(points)
             previous_distance = initial_distance.copy()
         for t in np.linspace(0, horizon, samples):
             theta = omega * t
@@ -354,10 +351,10 @@ class FootprintSafety(object):
                 x, y = vx * t, vy * t
             collision_margin = 0.0 if rotation_only and not self.rectangular else self.margin
             blocked = self.inside(points, x, y, theta, collision_margin)
-            if not rotation_only and not self.rectangular:
-                center = [x + self.cx * math.cos(theta) - self.cy * math.sin(theta),
-                          y + self.cx * math.sin(theta) + self.cy * math.cos(theta)]
-                distance = np.linalg.norm(points - center, axis=1)
+            if not rotation_only:
+                if np.any(self.inside(points, x, y, theta, margin=0.0)):
+                    return False, 'FOOTPRINT COLLISION: PHYSICAL BODY'
+                distance = self.body_clearance(points, x, y, theta)
                 # Existing safety-margin overlap is acceptable only while
                 # the commanded movement increases clearance monotonically.
                 recovering = initially_close & (distance >= previous_distance - 1e-6)

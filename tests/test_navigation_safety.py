@@ -23,6 +23,7 @@ def config():
 class PoseTests(unittest.TestCase):
     def test_measured_circle_rotation_clearance(self):
         cfg = load_config(str(ROOT / 'navigation_config.json'))
+        cfg.update(body_length_m=None, body_width_m=None)
         def unexpected_lookup(*args):
             self.fail('Measured radius must take precedence over auto discovery')
         cfg, source = discover_footprint(cfg, unexpected_lookup)
@@ -42,7 +43,7 @@ class PoseTests(unittest.TestCase):
 
     def test_ros_body_geometry_replaces_unknown_circle(self):
         cfg = load_config(str(ROOT / 'navigation_config.json'))
-        cfg['body_radius_m'] = None
+        cfg.update(body_length_m=None, body_width_m=None, body_radius_m=None)
         params = {'/move_base/local_costmap/footprint': '[[-0.2,-0.15],[0.2,-0.15],[0.2,0.15],[-0.2,0.15]]',
                   '/move_base/local_costmap/robot_base_frame': 'base_footprint'}
         result, source = discover_footprint(cfg, params.get)
@@ -102,7 +103,6 @@ class RecoveryTests(unittest.TestCase):
     def test_stuck_eventually_plans_without_permanent_block(self):
         recovery = ScanRecovery()
         phases = [recovery.step(0, float(t))[0] for t in range(30)]
-        self.assertIn('RECOVER', phases)
         self.assertIn('PLAN_PARTIAL', phases)
         self.assertNotIn('BLOCKED', phases)
 
@@ -122,15 +122,6 @@ class RecoveryTests(unittest.TestCase):
                 if phase == 'PLAN':
                     break
             self.assertEqual(phase, 'PLAN')
-
-    def test_safe_probe_can_start_after_quarter_turn(self):
-        recovery = ScanRecovery()
-        recovery.step(0.0, 0.0)
-        recovery.step(math.radians(80), 1.0)
-        self.assertFalse(recovery.partial_probe_due())
-        recovery.step(math.radians(92), 1.2)
-        self.assertTrue(recovery.partial_probe_due())
-        self.assertFalse(recovery.partial_probe_due(math.radians(100)))
 
 
 class FootprintTests(unittest.TestCase):
@@ -215,6 +206,7 @@ class FootprintTests(unittest.TestCase):
 
     def test_side_obstacle_can_be_escaped_but_not_approached(self):
         cfg = load_config(str(ROOT / 'navigation_config.json'))
+        cfg.update(body_length_m=None, body_width_m=None)
         ranges = np.full(720, 3.)
         x, y = .13, .245
         idx = round((math.atan2(y, x) + math.pi) / (math.pi / 360))
@@ -224,6 +216,26 @@ class FootprintTests(unittest.TestCase):
         self.assertTrue(g.check(0, -.08, 0, 100)[0])
         self.assertFalse(g.check(0, .08, 0, 100)[0])
         self.assertTrue(g.check(0, 0, 18, 100)[0])
+
+    def test_stock_rectangular_body_can_slide_past_close_front_return(self):
+        cfg = load_config(str(ROOT / 'navigation_config.json'))
+        self.assertAlmostEqual(cfg['body_length_m'], .324)
+        self.assertAlmostEqual(cfg['body_width_m'], .260)
+        ranges = np.full(720, 3.)
+        ranges[360] = .18  # Outside the 16.2 cm front edge, within 5 cm margin.
+        g = self.guard(ranges, cfg=cfg)
+        self.assertFalse(g.check(.08, 0, 0, 100)[0])
+        self.assertTrue(g.check(0, -.08, 0, 100)[0])
+        self.assertTrue(g.check(0, .08, 0, 100)[0])
+        self.assertFalse(g.check(0, .15, 0, 100)[0])
+
+    def test_rectangular_body_still_rejects_actual_collision(self):
+        cfg = load_config(str(ROOT / 'navigation_config.json'))
+        ranges = np.full(720, 3.)
+        ranges[360] = .15  # Inside the 16.2 cm physical front edge.
+        g = self.guard(ranges, cfg=cfg)
+        self.assertFalse(g.check(0, -.08, 0, 100)[0])
+        self.assertFalse(g.check(0, .08, 0, 100)[0])
 
 
 class DepthTests(unittest.TestCase):
@@ -292,7 +304,8 @@ class IntegrationTests(unittest.TestCase):
                 m.update_world_scan(origin, np.array([[1., 0.]]), np.array([True]))
         points = np.array([[.5, 0.], [.5, .5]])
         self.assertEqual(m.recent_free(points, 101.1).tolist(), [True, False])
-        self.assertFalse(m.recent_free(points, 102.).any())
+        self.assertTrue(m.recent_free(points, 102.).any())
+        self.assertFalse(m.recent_free(points, 103.2).any())
         with patch.object(time, 'monotonic', return_value=101.3):
             m.update_world_scan(origin, np.array([[.5, 0.]]), np.array([True]))
         self.assertFalse(m.recent_free(points, 101.3).any())
@@ -307,12 +320,64 @@ class IntegrationTests(unittest.TestCase):
         env = dict(time=time, math=math, FOOTPRINT=guard, ScanRecovery=ScanRecovery)
         exec(compile(ast.Module(body=[node], type_ignores=[]), '<explorer>', 'exec'), env)
         mapper = Mock()
+        mapper.plan_frontier.return_value = None
         explorer = env['FrontierExplorer'](mapper)
         explorer.phase = 'PLAN'
         for stamp in (100., 106., 112.):
             self.assertEqual(explorer.step(0, 0, 0, stamp)[:3], (0., 0., 0.))
         self.assertEqual(explorer.phase, 'WAIT')
-        mapper.plan_frontier.assert_not_called()
+        self.assertEqual(mapper.plan_frontier.call_count, 3)
+
+    def test_full_scan_plans_route_even_if_current_translation_is_blocked(self):
+        import time
+        from unittest.mock import Mock
+        tree = ast.parse((ROOT / 'jetauto_smart_search.py').read_text(encoding='utf-8'))
+        node = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'FrontierExplorer')
+        guard = Mock()
+        guard.check.side_effect = lambda vx, vy, wz, now: (not (vx or vy), 'SWEPT AREA UNKNOWN')
+        env = dict(time=time, math=math, FOOTPRINT=guard, ScanRecovery=ScanRecovery)
+        exec(compile(ast.Module(body=[node], type_ignores=[]), '<explorer>', 'exec'), env)
+        mapper = Mock()
+        mapper.plan_frontier.return_value = ((0., 1.), [(0., .2), (0., 1.)])
+        explorer = env['FrontierExplorer'](mapper)
+        for degrees in range(0, 361, 10):
+            yaw = (math.radians(degrees) + math.pi) % (2 * math.pi) - math.pi
+            command = explorer.step(0., 0., yaw, degrees / 18.)
+        self.assertEqual(explorer.phase, 'MOVE')
+        self.assertEqual(command[:2], (0., 0.))
+        self.assertGreater(command[2], 0.)
+        mapper.plan_frontier.assert_called_once()
+
+    def test_short_probe_scans_again_from_new_position(self):
+        import time
+        from unittest.mock import Mock
+        tree = ast.parse((ROOT / 'jetauto_smart_search.py').read_text(encoding='utf-8'))
+        node = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'FrontierExplorer')
+        env = dict(time=time, math=math, FOOTPRINT=Mock(), ScanRecovery=ScanRecovery)
+        exec(compile(ast.Module(body=[node], type_ignores=[]), '<explorer>', 'exec'), env)
+        explorer = env['FrontierExplorer'](Mock())
+        explorer.phase = 'PROBE'
+        explorer.probe_start = (0., 0.)
+        explorer.probe_command = (.08, 0.)
+        explorer.probe_started = 100.
+        self.assertEqual(explorer.step(.25, 0., 0., 101.)[:3], (0., 0., 0.))
+        self.assertEqual(explorer.phase, 'SCAN')
+        self.assertEqual(explorer.swept_angle, 0.)
+
+    def test_probe_without_odom_progress_chooses_another_plan(self):
+        import time
+        from unittest.mock import Mock
+        tree = ast.parse((ROOT / 'jetauto_smart_search.py').read_text(encoding='utf-8'))
+        node = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'FrontierExplorer')
+        env = dict(time=time, math=math, FOOTPRINT=Mock(), ScanRecovery=ScanRecovery)
+        exec(compile(ast.Module(body=[node], type_ignores=[]), '<explorer>', 'exec'), env)
+        explorer = env['FrontierExplorer'](Mock())
+        explorer.phase = 'PROBE'
+        explorer.probe_start = (0., 0.)
+        explorer.probe_command = (.08, 0.)
+        explorer.probe_started = 100.
+        self.assertEqual(explorer.step(0., 0., 0., 105.)[:3], (0., 0., 0.))
+        self.assertEqual(explorer.phase, 'PLAN')
 
     def test_yolo_keeps_target_under_different_class_overlap(self):
         import cv2
