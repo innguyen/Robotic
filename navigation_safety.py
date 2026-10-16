@@ -210,7 +210,7 @@ def scan_geometry(ranges, angle_min, angle_increment, poses, cfg, range_min, ran
 
 
 class ScanRecovery(object):
-    """Count actual rotation, then plan from observed space if the turn stalls."""
+    """Count net actual rotation, retry twice, then try planning in observed space."""
     def __init__(self):
         self.reset()
 
@@ -218,9 +218,11 @@ class ScanRecovery(object):
         self.previous_yaw = None
         self.net_angle = 0.0
         self.direction = 1
+        self.attempt = 0
         self.started = None
         self.progress_time = None
         self.best = 0.0
+        self.wait_until = None
 
     def step(self, yaw, now):
         if self.started is None:
@@ -232,14 +234,23 @@ class ScanRecovery(object):
         progress = abs(self.net_angle)
         if progress >= 2 * math.pi - 0.20:
             return 'PLAN', 0.0
+        if self.wait_until is not None:
+            if now < self.wait_until:
+                return 'RECOVER', 0.0
+            self.wait_until = None
+            self.progress_time = now
         if progress > self.best + math.radians(3):
             self.best = progress
             self.progress_time = now
-        # The LiDAR itself has a 360-degree scan. If chassis rotation is
-        # blocked, plan from the rays already observed instead of reversing
-        # indefinitely at the same pose.
-        if now - self.progress_time > 2.5 or now - self.started > 30.0:
-            return 'PLAN_PARTIAL', 0.0
+        if now - self.progress_time > 4.0 or now - self.started > 40.0:
+            if self.attempt >= 2:
+                return 'PLAN_PARTIAL', 0.0
+            self.attempt += 1
+            self.direction *= -1
+            self.started = self.progress_time = now
+            self.net_angle = self.best = 0.0
+            self.wait_until = now + 2.0
+            return 'RECOVER', 0.0
         return 'SCAN', self.direction * 18.0
 
 
@@ -255,7 +266,6 @@ class FootprintSafety(object):
         self.radius = math.hypot(self.hx + abs(self.cx), self.hy + abs(self.cy)) if self.rectangular else self.hx
         self.margin = cfg['horizontal_margin_m']
         self.snapshot = None
-        self.coverage_lookup = None
         self.lock = threading.Lock()
 
     def update(self, ranges, amin, inc, rmin, rmax, received):
@@ -284,16 +294,6 @@ class FootprintSafety(object):
             return (np.abs(bx) <= self.hx + margin) & (np.abs(by) <= self.hy + margin)
         return bx * bx + by * by <= (self.radius + margin) ** 2
 
-    def body_clearance(self, points, x=0.0, y=0.0, yaw=0.0):
-        """Distance to the physical outline, zero for points inside it."""
-        dx, dy = points[:, 0] - x, points[:, 1] - y
-        c, s = math.cos(yaw), math.sin(yaw)
-        bx, by = c * dx + s * dy - self.cx, -s * dx + c * dy - self.cy
-        if self.rectangular:
-            return np.hypot(np.maximum(np.abs(bx) - self.hx, 0.0),
-                            np.maximum(np.abs(by) - self.hy, 0.0))
-        return np.maximum(np.hypot(bx, by) - self.radius, 0.0)
-
     def perimeter(self):
         if not self.rectangular:
             a = np.linspace(-math.pi, math.pi, 100, endpoint=False)
@@ -318,30 +318,12 @@ class FootprintSafety(object):
             return False, 'LIDAR INVALID'
         speed = math.hypot(vx, vy)
         rotation_only = speed < 1e-8 and abs(wz_deg) > 1e-8
-        if rotation_only and not self.rectangular:
-            # A centered circular body occupies the same space at every yaw.
-            # Turning needs neither rear coverage nor a simulated trajectory.
-            occupied = self.inside(points, margin=0.0)
-            if np.any(occupied):
-                return False, 'FOOTPRINT COLLISION: PHYSICAL BODY'
-            return True, ''
         omega = math.radians(wz_deg)
         edge_speed = speed + abs(omega) * self.radius
         # Constant commanded speed throughout reaction + full braking time is conservative.
         horizon = self.cfg['reaction_time_s'] + edge_speed / self.cfg['braking_accel_mps2'] + max(0, now - received)
         samples = max(3, int(math.ceil(edge_speed * horizon / 0.02)) + 1)
         boundary = self.perimeter()
-        # A return inside the safety margin can be escaped, but a return
-        # inside the measured physical body or a move deeper into the margin
-        # must still stop the chassis.
-        initially_close = self.inside(points, margin=self.margin)
-        if not rotation_only:
-            if np.any(self.inside(points, margin=0.0)):
-                return False, 'FOOTPRINT COLLISION: PHYSICAL BODY'
-            if self.rectangular and np.any(initially_close) and speed > .081:
-                return False, 'ESCAPE: SLOW TO 8CM/S'
-            initial_distance = self.body_clearance(points)
-            previous_distance = initial_distance.copy()
         for t in np.linspace(0, horizon, samples):
             theta = omega * t
             if abs(omega) > 1e-7:
@@ -349,17 +331,7 @@ class FootprintSafety(object):
                 y = (vx * (1 - math.cos(theta)) + vy * math.sin(theta)) / omega
             else:
                 x, y = vx * t, vy * t
-            collision_margin = 0.0 if rotation_only and not self.rectangular else self.margin
-            blocked = self.inside(points, x, y, theta, collision_margin)
-            if not rotation_only:
-                if np.any(self.inside(points, x, y, theta, margin=0.0)):
-                    return False, 'FOOTPRINT COLLISION: PHYSICAL BODY'
-                distance = self.body_clearance(points, x, y, theta)
-                # Existing safety-margin overlap is acceptable only while
-                # the commanded movement increases clearance monotonically.
-                recovering = initially_close & (distance >= previous_distance - 1e-6)
-                blocked &= ~recovering
-                previous_distance = distance
+            blocked = self.inside(points, x, y, theta, self.margin)
             if np.any(blocked):
                 obstacle = points[blocked][0]
                 shape = ('BODY' if self.calibrated else
@@ -372,17 +344,7 @@ class FootprintSafety(object):
                 continue
             c, s = math.cos(theta), math.sin(theta)
             perimeter = boundary.dot(np.array([[c, s], [-s, c]])) + [x, y]
-            # Only the advancing half enters new space. Missing rays behind
-            # the chassis cannot veto a forward or sideways translation.
-            moving = np.array([c * vx - s * vy, s * vx + c * vy])
-            advancing = np.sum((perimeter - [x, y]) * moving, axis=1) > 0
-            perimeter = perimeter[advancing]
-            # Coverage is needed only for newly entered space. Testing the
-            # original footprint also vetoed valid moves away from a margin
-            # overlap that the collision test above explicitly allows.
-            perimeter = perimeter[~self.inside(perimeter, margin=self.margin + 1e-6)]
-            if not len(perimeter):
-                continue
+            # Translation (including curved travel) requires measured coverage.
             rel = perimeter - [self.cfg['lidar_x_m'], self.cfg['lidar_y_m']]
             bearing = np.arctan2(rel[:, 1], rel[:, 0]) - math.radians(self.cfg['lidar_yaw_deg'])
             bearing = (bearing + math.pi) % (2 * math.pi) - math.pi
@@ -392,43 +354,8 @@ class FootprintSafety(object):
             idx = lookup_idx[nearest]
             covered = np.abs(lookup_angles[nearest] - bearing) <= min(0.025, inc * 1.6)
             measured = np.where(np.isposinf(values[idx]), rmax, values[idx])
-            known = covered & valid[idx]
-            # Bridge only sub-degree dropouts bracketed by real valid rays.
-            # Use the smaller range; never extend across an unobserved sector.
-            valid_lookup = valid[lookup_idx]
-            va = lookup_angles[valid_lookup]
-            vi = lookup_idx[valid_lookup]
-            if len(va) >= 2 and np.any(~known):
-                hi = np.clip(np.searchsorted(va, bearing), 1, len(va) - 1)
-                lo = hi - 1
-                bracketed = ((va[lo] <= bearing) & (bearing <= va[hi]) &
-                             (va[hi] - va[lo] <= math.radians(1.0) + 1e-9))
-                conservative = np.minimum(np.where(np.isposinf(values[vi[lo]]), rmax, values[vi[lo]]),
-                                          np.where(np.isposinf(values[vi[hi]]), rmax, values[vi[hi]]))
-                fill = ~known & bracketed & (np.isnan(values[idx]) | (values[idx] == 0))
-                measured = np.where(fill, conservative, measured)
-                known |= fill
-            clear = known & (measured >= np.linalg.norm(rel, axis=1))
-            # Use recently measured free cells to cover intermittent missing
-            # rays, never to override a current measured obstruction.
-            missing = ~known & (np.isnan(values[idx]) | (values[idx] == 0))
-            if np.any(missing) and self.coverage_lookup is not None:
-                try:
-                    recent = np.asarray(self.coverage_lookup(perimeter[missing], now), dtype=bool)
-                    if recent.shape == (int(np.count_nonzero(missing)),):
-                        if np.any(recent) and speed > .081:
-                            return False, 'RECENT COVERAGE: SLOW TO 8CM/S'
-                        clear[missing] = recent
-                except Exception:
-                    pass  # Failure to obtain evidence never authorizes motion.
-            if not np.all(clear):
-                failure = int(np.flatnonzero(~clear)[0])
-                kind = 'UNKNOWN' if not known[failure] else 'BLOCKED'
-                return False, 'SWEPT AREA {}: BEARING={:.1f} DEG'.format(
-                    kind, math.degrees(bearing[failure]))
-        if not rotation_only and not self.rectangular and np.any(initially_close):
-            if np.any(previous_distance[initially_close] < initial_distance[initially_close] + 0.005):
-                return False, 'FOOTPRINT COLLISION: NO CLEARANCE GAIN'
+            if not np.all(covered & valid[idx] & (measured >= np.linalg.norm(rel, axis=1))):
+                return False, 'SWEPT AREA UNKNOWN OR BLOCKED'
         return True, ''
 
 

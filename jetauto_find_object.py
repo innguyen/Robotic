@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-JetAuto Pro - Dual Vision AI Tracker & Mecanum Obstacle Avoidance Controller
-- Mắt 1 (Astra Pro Plus): Chạy YOLOv5 AI nhận diện và khóa mục tiêu (Heading lock).
-- Mắt 2 (Luxonis OAK-D): Quét độ sâu Stereo Depth gầm xe, tính khoảng cách vật cản 3 hướng (Trái / Giữa / Phải).
-- Chiến thuật Mecanum Strafing: Tự động trượt ngang (linear.y) luồn lách qua chướng ngại vật mà ĐẦU XE KHÔNG QUAY ĐI, giữ mục tiêu 100% trong khung hình!
-- Bộ đệm nén JPEG nền (Background JPEG Cache): Stream 2 camera đồng thời mượt mà không khóa GIL hay ngốn CPU.
-- Giao diện Web: Xem độc lập 2 Card hoặc xem Ghép 1 luồng Unified Side-by-Side.
+JetAuto Pro - AI Tracker & Mecanum Obstacle Avoidance Controller
+- Mắt chính (Astra Pro Plus): YOLOv5 nhận diện + khóa mục tiêu; ảnh độ sâu đo khoảng cách tới mục tiêu
+  và phát hiện vật cản 3D (mặt bàn, vật thấp dưới tầm LiDAR, mép bàn / bậc thang).
+- LiDAR G4: radar né vật cản 360° (góc phía sau bị khung xe che đã được tính tới).
+- Bộ né vật cản (obstacle_avoidance.py): bản đồ nhớ ngắn hạn + chọn hướng kiểu VFH cho bánh Mecanum,
+  trượt ngang / chéo luồn lách mà ĐẦU XE VẪN NHÌN MỤC TIÊU, chốt bên né để không lắc trái-phải.
+- OAK-D: tạm tắt (USE_OAKD = False), đổi True để bật lại.
+- Bộ đệm nén JPEG nền + giao diện Web: camera Astra, radar né vật cản, lái tay an toàn, chạy khô.
 """
 
 from __future__ import print_function
@@ -16,11 +18,16 @@ import time
 import math
 import signal
 import threading
+from collections import deque
 import numpy as np
 import cv2
 
 import rospy
 from geometry_msgs.msg import Twist
+from nav_msgs.msg import Odometry
+from sensor_msgs.msg import LaserScan, CameraInfo
+
+import obstacle_avoidance as oa
 
 try:
     from sensor_msgs.msg import Image as RosImage
@@ -46,26 +53,47 @@ TARGET_CLASS = 'person'
 if len(sys.argv) > 1:
     TARGET_CLASS = sys.argv[1].strip().lower()
 
-# Safety first: starting this service must never make the robot move by
-# itself.  The operator explicitly enables AI motion from the web UI.
-IS_PAUSED = True
+IS_PAUSED = False
+# Chạy khô: vẫn tính toán và hiển thị lệnh nhưng KHÔNG gửi ra động cơ
+# (bật bằng biến môi trường JETAUTO_DRY_RUN=1 hoặc nút trên web)
+DRY_RUN = os.environ.get('JETAUTO_DRY_RUN', '0') == '1'
+# OAK-D tạm tắt: né vật cản dùng LiDAR + độ sâu Astra. Đổi True để bật lại camera OAK-D.
+USE_OAKD = False
+# Node khung gầm (jetauto_odom_publisher) nghe cả /jetauto_controller/cmd_vel lẫn /cmd_vel; gửi cả hai
+# làm động cơ nhận mỗi lệnh 2 lần (nhánh /cmd_vel còn bị kẹp tốc độ khác) -> chỉ gửi một topic.
 CMD_VEL_TOPICS = [
-    # JetAuto bringup publishes the chassis controller on this topic.  It was
-    # checked by start_server.sh but accidentally omitted here, so a robot
-    # using the standard ros_robot_controller never received drive commands.
-    '/ros_robot_controller/cmd_vel',
     '/jetauto_controller/cmd_vel',
-    '/cmd_vel',
-    '/controller/cmd_vel',
-    '/hiwonder_controller/cmd_vel'
 ]
+AVOID_CFG = oa.AvoidanceConfig()
+NAV_RATE_HZ = 10.0
+COMMAND_TIMEOUT_S = 0.4      # lệnh né vật cản cũ hơn mức này -> động cơ dừng
+SENSOR_TIMEOUT_S = 0.5       # LiDAR / odom mất tín hiệu quá mức này -> coi như mất
+DETECTION_CONFIDENCE = 0.35  # Vẫn vẽ detection yếu để chẩn đoán, nhưng chưa dùng để lái.
+TARGET_CONFIDENCE_DEFAULT = 0.45
+TARGET_CONFIDENCE = {
+    'person': 0.40,
+    'bottle': 0.45,
+    'cup': 0.45,
+    'cell phone': 0.50,
+    'remote': 0.50,
+}
+DEPTH_SYNC_TOLERANCE_S = 0.08
+# Lệnh lái tay (vx m/s, vy m/s, wz độ/s). Lùi chậm vì phía sau LiDAR bị khung xe che.
+MANUAL_COMMANDS = {
+    'forward': (0.15, 0.0, 0.0),
+    'backward': (-0.08, 0.0, 0.0),
+    'strafe_left': (0.0, 0.12, 0.0),
+    'strafe_right': (0.0, -0.12, 0.0),
+    'left': (0.0, 0.0, 35.0),
+    'right': (0.0, 0.0, -35.0),
+}
 
 # Khung hình toàn cục cho cả 2 Camera
 raw_frame_astra = None
 raw_frame_oakd = None
 depth_frame_oakd = None
 display_frame_astra = None  # Astra: Bounding Box AI & Khóa mục tiêu
-display_frame_oakd = None   # OAK-D: FPV Gầm xe + Thước đo Radar vật cản
+display_frame_oakd = None   # Khung thứ 2: radar né vật cản (hoặc OAK-D nếu USE_OAKD)
 frame_lock = threading.Lock()
 
 # Bộ đệm JPEG cache nén sẵn trên RAM (chống nghẽn socket và khóa GIL của Python)
@@ -73,13 +101,14 @@ cached_jpeg_astra = None
 cached_jpeg_oakd = None
 cached_jpeg_combined = None
 jpeg_lock = threading.Lock()
+combined_last_request = 0.0  # chỉ nén khung ghép khi có người đang xem
 
-# Thông số vật cản từ OAK-D (Khoảng cách cm)
+# Khoảng trống quanh xe (cm) từ bộ né vật cản LiDAR + Astra (giữ tên cũ cho giao diện)
 obstacle_info = {
     'dist_l': 999.0,
     'dist_c': 999.0,
     'dist_r': 999.0,
-    'status': 'AN TOAN',
+    'status': 'CHO LIDAR',
     'strafe_dir': 'NONE'
 }
 obstacle_lock = threading.Lock()
@@ -110,7 +139,7 @@ def get_frame_for_cam(cam_name='astra'):
                 return display_frame_oakd.copy()
             if raw_frame_oakd is not None:
                 return raw_frame_oakd.copy()
-            title = "LUXONIS OAK-D (OBSTACLE RADAR)"
+            title = "LUXONIS OAK-D (OBSTACLE RADAR)" if USE_OAKD else "RADAR NE VAT CAN (LIDAR + ASTRA)"
             status = cam_source_oakd
 
     f = np.zeros((480, 640, 3), dtype=np.uint8)
@@ -134,8 +163,9 @@ def get_combined_frame():
 
 
 def jpeg_encoder_loop():
-    """Thread chuyên trách nén JPEG sẵn vào RAM ở tốc độ ~22 FPS."""
+    """Thread chuyên trách nén JPEG sẵn vào RAM ở tốc độ ~22 FPS (chỉ nén lại khi ảnh đổi)."""
     global cached_jpeg_astra, cached_jpeg_oakd, cached_jpeg_combined
+    last_astra = last_oakd = None
     while not rospy.is_shutdown():
         try:
             # 1. Nén ảnh Astra
@@ -146,14 +176,15 @@ def jpeg_encoder_loop():
                 elif raw_frame_astra is not None:
                     f_astra = raw_frame_astra
 
-            if f_astra is not None:
+            if f_astra is not None and f_astra is not last_astra:
                 ret, jpg = cv2.imencode('.jpg', f_astra, [int(cv2.IMWRITE_JPEG_QUALITY), 65])
                 if ret:
                     raw_bytes = jpg.tobytes() if sys.version_info[0] == 3 else jpg.tostring()
                     with jpeg_lock:
                         cached_jpeg_astra = raw_bytes
+                    last_astra = f_astra
 
-            # 2. Nén ảnh OAK-D
+            # 2. Nén ảnh khung thứ 2 (radar né vật cản / OAK-D)
             f_oakd = None
             with frame_lock:
                 if display_frame_oakd is not None:
@@ -161,15 +192,16 @@ def jpeg_encoder_loop():
                 elif raw_frame_oakd is not None:
                     f_oakd = raw_frame_oakd
 
-            if f_oakd is not None:
+            if f_oakd is not None and f_oakd is not last_oakd:
                 ret, jpg = cv2.imencode('.jpg', f_oakd, [int(cv2.IMWRITE_JPEG_QUALITY), 65])
                 if ret:
                     raw_bytes = jpg.tobytes() if sys.version_info[0] == 3 else jpg.tostring()
                     with jpeg_lock:
                         cached_jpeg_oakd = raw_bytes
+                    last_oakd = f_oakd
 
-            # 3. Nén ảnh Ghép Side-by-Side
-            if f_astra is not None or f_oakd is not None:
+            # 3. Nén ảnh Ghép Side-by-Side (chỉ khi có người xem trong 5 giây gần đây)
+            if (f_astra is not None or f_oakd is not None) and time.time() - combined_last_request < 5.0:
                 comb = get_combined_frame()
                 ret, jpg = cv2.imencode('.jpg', comb, [int(cv2.IMWRITE_JPEG_QUALITY), 60])
                 if ret:
@@ -270,12 +302,19 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
     allow_reuse_address = True
 
+    def handle_error(self, request, client_address):
+        # Trình duyệt đóng tab / đổi luồng giữa chừng là chuyện bình thường, không in traceback
+        if isinstance(sys.exc_info()[1], (BrokenPipeError, ConnectionResetError)):
+            return
+        HTTPServer.handle_error(self, request, client_address)
+
 
 class CamHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
     def _stream_mjpeg(self, cam_name='astra'):
+        global combined_last_request
         self.send_response(200)
         self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=frame')
         self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
@@ -284,6 +323,8 @@ class CamHandler(BaseHTTPRequestHandler):
         self.end_headers()
         try:
             while True:
+                if cam_name == 'combined':
+                    combined_last_request = time.time()
                 raw = None
                 with jpeg_lock:
                     if cam_name == 'astra' and cached_jpeg_astra is not None:
@@ -308,6 +349,9 @@ class CamHandler(BaseHTTPRequestHandler):
             pass
 
     def _serve_snapshot(self, cam_name='astra'):
+        global combined_last_request
+        if cam_name == 'combined':
+            combined_last_request = time.time()
         raw = None
         with jpeg_lock:
             if cam_name == 'astra' and cached_jpeg_astra is not None:
@@ -336,8 +380,15 @@ class CamHandler(BaseHTTPRequestHandler):
             self.send_response(500)
             self.end_headers()
 
+    def _send_json(self, data):
+        import json
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+        self.wfile.write(json.dumps(data).encode())
+
     def do_POST(self):
-        global TARGET_CLASS, IS_PAUSED, seeker_instance
+        global TARGET_CLASS, IS_PAUSED, DRY_RUN, seeker_instance
         content_length = int(self.headers.get('Content-Length', 0))
         post_data = self.rfile.read(content_length) if content_length > 0 else b'{}'
         import json
@@ -350,32 +401,14 @@ class CamHandler(BaseHTTPRequestHandler):
             new_target = data.get('target', '').strip().lower()
             if new_target:
                 TARGET_CLASS = new_target
+                if seeker_instance:
+                    seeker_instance.reset_target(new_target)
                 rospy.loginfo(">> [WEB] Doi muc tieu sang: " + TARGET_CLASS)
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(b'{"status": "ok"}')
                 return
-
-        elif self.path in ('/pause', '/stop'):
-            IS_PAUSED = True
-            if seeker_instance:
-                seeker_instance.set_desired_velocity(0.0, 0.0, 0.0)
-            rospy.loginfo(">> [WEB] Dung robot theo lenh operator")
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            self.wfile.write(b'{"paused": true}')
-            return
-
-        elif self.path == '/resume':
-            IS_PAUSED = False
-            rospy.loginfo(">> [WEB] Operator bat che do AI")
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            self.wfile.write(b'{"paused": false}')
-            return
 
         elif self.path == '/toggle_pause':
             IS_PAUSED = not IS_PAUSED
@@ -384,6 +417,33 @@ class CamHandler(BaseHTTPRequestHandler):
             self.send_header('Content-type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({'paused': IS_PAUSED}).encode())
+            return
+
+        # Lệnh trạng thái rõ ràng: gửi trùng hay trễ vẫn không biến "dừng" thành "chạy"
+        elif self.path in ('/pause', '/stop'):
+            IS_PAUSED = True
+            if seeker_instance:
+                seeker_instance.manual_move('stop')
+            rospy.loginfo(">> [WEB] Dung robot theo lenh")
+            self._send_json({'paused': True})
+            return
+
+        elif self.path == '/resume':
+            IS_PAUSED = False
+            rospy.loginfo(">> [WEB] Tiep tuc tu dong")
+            self._send_json({'paused': False})
+            return
+
+        elif self.path == '/toggle_dry_run':
+            DRY_RUN = not DRY_RUN
+            rospy.loginfo(">> [WEB] Chay kho (khong gui lenh dong co): " + str(DRY_RUN))
+            self._send_json({'dry_run': DRY_RUN})
+            return
+
+        elif self.path == '/calibrate_astra':
+            if seeker_instance:
+                seeker_instance.request_astra_calibration()
+            self._send_json({'status': 'ok', 'msg': 'Dang hieu chuan mat san Astra - de robot nhin thay san truoc mat'})
             return
 
         elif self.path == '/test_motors':
@@ -445,8 +505,11 @@ class CamHandler(BaseHTTPRequestHandler):
                 'dist_center': round(obs_copy['dist_c'], 1),
                 'dist_right': round(obs_copy['dist_r'], 1),
                 'strafe_dir': obs_copy['strafe_dir'],
-                'obs_status': obs_copy['status']
+                'obs_status': obs_copy['status'],
+                'dry_run': DRY_RUN,
             }
+            if seeker_instance:
+                status_data.update(seeker_instance.nav_status())
             self.wfile.write(json.dumps(status_data).encode())
         else:
             self.send_response(200)
@@ -646,6 +709,10 @@ class CamHandler(BaseHTTPRequestHandler):
         .btn-pause { background: #F59E0B; color: #000; }
         .btn-resume { background: #10B981; color: #fff; }
         .btn-test { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid var(--glass-border); }
+        .btn-stop { background: #EF4444; color: #fff; }
+        .btn-dry-on { background: #F59E0B; color: #000; }
+        .legend { display: flex; flex-wrap: wrap; gap: 10px; padding: 8px 12px; font-size: 0.72rem; color: #94a3b8; border-top: 1px solid var(--glass-border); }
+        .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
 
         .tags-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .tag-btn {
@@ -720,6 +787,7 @@ class CamHandler(BaseHTTPRequestHandler):
             cursor: pointer;
             transition: all 0.15s;
             user-select: none;
+            touch-action: none;
             text-align: center;
         }
         .dpad-btn:active { background: var(--primary); color: #000; }
@@ -730,7 +798,7 @@ class CamHandler(BaseHTTPRequestHandler):
 <body>
     <div class="header">
         <h1>JetAuto Dual Vision <span class="target-badge" id="targetBadge">🎯 """ + TARGET_CLASS.upper() + """</span></h1>
-        <p>Cam Astra: YOLO Khóa Mục Tiêu | Cam OAK-D: Stereo Depth & Trượt Ngang Né Vật Cản</p>
+        <p>Cam Astra: YOLO Khóa Mục Tiêu + Độ Sâu | LiDAR G4 + Astra: Né Vật Cản Mecanum (đầu xe vẫn nhìn mục tiêu)</p>
     </div>
 
     <div class="container">
@@ -741,7 +809,7 @@ class CamHandler(BaseHTTPRequestHandler):
                 <button class="btn-toggle active" id="btnLayoutDual" onclick="setLayout('dual')">⊞ 2 Màn Hình (Cards)</button>
                 <button class="btn-toggle" id="btnLayoutCombined" onclick="setLayout('combined')">🔲 Ghép 1 Luồng (Unified)</button>
                 <button class="btn-toggle" id="btnLayoutAstra" onclick="setLayout('astra')">🔲 Chỉ Cam Astra</button>
-                <button class="btn-toggle" id="btnLayoutOakd" onclick="setLayout('oakd')">🔲 Chỉ Cam OAK-D</button>
+                <button class="btn-toggle" id="btnLayoutOakd" onclick="setLayout('oakd')">🔲 Chỉ Radar</button>
             </div>
             <div class="group-right">
                 <span style="color: #64748b; font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">Chế độ:</span>
@@ -763,14 +831,22 @@ class CamHandler(BaseHTTPRequestHandler):
                 </div>
             </div>
 
-            <!-- CAM 2: LUXONIS OAK-D (OBSTACLE RADAR) -->
+            <!-- KHUNG 2: RADAR NÉ VẬT CẢN (LiDAR + Astra, nhìn từ trên xuống, đầu xe hướng lên) -->
             <div class="stream-card" id="cardOakd">
                 <div class="stream-header">
-                    <span style="color: #38bdf8;">🔵 LUXONIS OAK-D (Stereo Depth & Radar Gầm Xe)</span>
-                    <span style="color: var(--success);" id="feedStatusOakd">● Radar Active</span>
+                    <span style="color: #38bdf8;">🧭 RADAR NÉ VẬT CẢN (LiDAR + Astra)</span>
+                    <span style="color: var(--success);" id="feedStatusOakd">● Đang khởi động</span>
                 </div>
                 <div class="stream-box">
-                    <img id="feedOakd" src="/cam_oakd.mjpg" alt="OAK-D Feed" />
+                    <img id="feedOakd" src="/cam_oakd.mjpg" alt="Radar ne vat can" />
+                </div>
+                <div class="legend">
+                    <span><i style="background:#00dcff"></i>LiDAR</span>
+                    <span><i style="background:#ff8c00"></i>Astra</span>
+                    <span><i style="background:#ff00ff"></i>Mép / hố</span>
+                    <span><i style="background:#20283a"></i>Đã thấy trống</span>
+                    <span><i style="background:#6e2828"></i>Góc mù LiDAR</span>
+                    <span><i style="background:#ffff00"></i>Hướng đi</span>
                 </div>
             </div>
         </div>
@@ -778,7 +854,7 @@ class CamHandler(BaseHTTPRequestHandler):
         <!-- UNIFIED COMBINED VIEW -->
         <div class="stream-card" id="cardCombined" style="display: none; width: 100%;">
             <div class="stream-header">
-                <span style="color: var(--primary);">⊞ GHÉP ĐỒNG THỜI 2 CAMERA (Side-by-Side Unified Stream)</span>
+                <span style="color: var(--primary);">⊞ GHÉP CAMERA ASTRA + RADAR NÉ VẬT CẢN</span>
                 <span style="color: var(--success);">● 0% Conflict Stream</span>
             </div>
             <div class="stream-box">
@@ -791,6 +867,9 @@ class CamHandler(BaseHTTPRequestHandler):
             <input type="text" id="targetInput" placeholder="Nhập tên vật thể cần tìm (person, bottle, cup, chair, cell phone...)" onkeypress="if(event.key==='Enter') setTarget()" />
             <button class="btn-action btn-find" onclick="setTarget()">🔍 TÌM KIẾM</button>
             <button id="pauseBtn" class="btn-action btn-pause" onclick="togglePause()">⏸️ TẠM DỪNG</button>
+            <button class="btn-action btn-stop" onclick="emergencyStop()">🛑 DỪNG KHẨN</button>
+            <button id="dryRunBtn" class="btn-action btn-test" onclick="toggleDryRun()" title="Tính toán và hiển thị lệnh nhưng không gửi ra động cơ">🧪 CHẠY KHÔ: TẮT</button>
+            <button class="btn-action btn-test" onclick="calibrateAstra()" title="Đặt robot nhìn thấy sàn trống phía trước rồi bấm">📐 HIỆU CHUẨN SÀN</button>
             <button class="btn-action btn-test" onclick="testMotors()">🛠️ TEST MECANUM 3-DOF</button>
         </div>
 
@@ -810,7 +889,7 @@ class CamHandler(BaseHTTPRequestHandler):
         <div class="bottom-grid">
             <div class="info-card">
                 <div class="card-title">
-                    <span>Trạng thái Hệ thống & Radar Né Vật Cản</span>
+                    <span>Trạng thái Hệ thống & Né Vật Cản</span>
                     <span id="aiFpsBadge" style="color: var(--primary);">AI: 0.0 FPS</span>
                 </div>
                 <div class="hud-grid">
@@ -819,20 +898,28 @@ class CamHandler(BaseHTTPRequestHandler):
                         <div class="hud-val" id="hudAction" style="color: var(--warning);">ĐANG KHỞI TẠO...</div>
                     </div>
                     <div class="hud-item">
-                        <div class="hud-label">Radar OAK-D (Trái | Giữa | Phải)</div>
+                        <div class="hud-label">Khoảng trống quanh xe (Trái | Trước | Phải)</div>
                         <div class="hud-val" id="hudRadar" style="color: var(--success);">L: -- | C: -- | R: --</div>
                     </div>
                     <div class="hud-item">
-                        <div class="hud-label">Hướng Né Mecanum</div>
-                        <div class="hud-val" id="hudStrafe" style="color: #38bdf8;">ĐƯỜNG THÔNG THOÁNG</div>
+                        <div class="hud-label">Chiến thuật Mecanum</div>
+                        <div class="hud-val" id="hudStrafe" style="color: #38bdf8;">--</div>
                     </div>
                     <div class="hud-item">
                         <div class="hud-label">Lệnh Vận Tốc 3-DOF (10Hz)</div>
                         <div class="hud-val" id="hudCmdVel">vx: 0.00 | vy: 0.00 | wz: 0.0°</div>
                     </div>
                     <div class="hud-item">
-                        <div class="hud-label">Nguồn 2 Camera</div>
-                        <div class="hud-val" id="hudSources" style="font-size: 0.8rem; color: #94a3b8;">Astra Pro + OAK-D</div>
+                        <div class="hud-label">Mục tiêu</div>
+                        <div class="hud-val" id="hudTarget" style="color: #94a3b8;">Chưa thấy</div>
+                    </div>
+                    <div class="hud-item">
+                        <div class="hud-label">Cảm biến</div>
+                        <div class="hud-val" id="hudSources" style="font-size: 0.8rem; color: #94a3b8;">--</div>
+                    </div>
+                    <div class="hud-item">
+                        <div class="hud-label">Hiệu chuẩn Astra (mặt sàn)</div>
+                        <div class="hud-val" id="hudCalib" style="font-size: 0.8rem; color: #94a3b8;">--</div>
                     </div>
                 </div>
             </div>
@@ -844,17 +931,18 @@ class CamHandler(BaseHTTPRequestHandler):
                 </div>
                 <div class="dpad-layout">
                     <div></div>
-                    <button class="dpad-btn" onmousedown="drive('forward')" onmouseup="drive('stop')" ontouchstart="drive('forward')" ontouchend="drive('stop')">▲ TIẾN</button>
+                    <button class="dpad-btn" data-drive="forward">▲ TIẾN</button>
                     <div></div>
 
-                    <button class="dpad-btn dpad-strafe" onmousedown="drive('strafe_left')" onmouseup="drive('stop')" ontouchstart="drive('strafe_left')" ontouchend="drive('stop')">◄◄ TRƯỢT T</button>
-                    <button class="dpad-btn dpad-stop" onclick="drive('stop')">DỪNG</button>
-                    <button class="dpad-btn dpad-strafe" onmousedown="drive('strafe_right')" onmouseup="drive('stop')" ontouchstart="drive('strafe_right')" ontouchend="drive('stop')">TRƯỢT P ►►</button>
+                    <button class="dpad-btn dpad-strafe" data-drive="strafe_left">◄◄ TRƯỢT T</button>
+                    <button class="dpad-btn dpad-stop" data-drive="stop">DỪNG</button>
+                    <button class="dpad-btn dpad-strafe" data-drive="strafe_right">TRƯỢT P ►►</button>
 
-                    <button class="dpad-btn" onmousedown="drive('left')" onmouseup="drive('stop')" ontouchstart="drive('left')" ontouchend="drive('stop')">⟲ XOAY T</button>
-                    <button class="dpad-btn" onmousedown="drive('backward')" onmouseup="drive('stop')" ontouchstart="drive('backward')" ontouchend="drive('stop')">▼ LÙI</button>
-                    <button class="dpad-btn" onmousedown="drive('right')" onmouseup="drive('stop')" ontouchstart="drive('right')" ontouchend="drive('stop')">XOAY P ⟳</button>
+                    <button class="dpad-btn" data-drive="left">⟲ XOAY T</button>
+                    <button class="dpad-btn" data-drive="backward">▼ LÙI</button>
+                    <button class="dpad-btn" data-drive="right">XOAY P ⟳</button>
                 </div>
+                <p style="font-size: 0.72rem; color: #64748b; text-align: center; margin-top: 10px;">Nhấn giữ để chạy, nhả ra là dừng. Lệnh lái tay vẫn được kiểm tra va chạm.</p>
             </div>
         </div>
     </div>
@@ -974,16 +1062,38 @@ class CamHandler(BaseHTTPRequestHandler):
             setTarget();
         }
 
+        let lastPaused = false;
         function togglePause() {
-            // Use explicit state-changing endpoints.  A delayed/doubled
-            // toggle request must never turn a requested stop into resume.
-            const paused = document.getElementById('pauseBtn').innerText.includes('TIẾP TỤC');
-            fetch(paused ? '/resume' : '/pause', {method: 'POST'})
+            // Gửi trạng thái rõ ràng: bấm đúp hay mạng trễ cũng không biến "dừng" thành "chạy"
+            fetch(lastPaused ? '/resume' : '/pause', {method: 'POST'})
                 .then(r => r.json())
                 .then(d => updatePauseUI(d.paused));
         }
 
+        function emergencyStop() {
+            stopDrive();
+            fetch('/pause', {method: 'POST'}).then(r => r.json()).then(d => updatePauseUI(d.paused)).catch(() => {});
+        }
+
+        function updateDryRunUI(dry) {
+            const btn = document.getElementById('dryRunBtn');
+            btn.className = 'btn-action ' + (dry ? 'btn-dry-on' : 'btn-test');
+            btn.innerText = dry ? '🧪 CHẠY KHÔ: BẬT (động cơ đứng yên)' : '🧪 CHẠY KHÔ: TẮT';
+        }
+
+        function toggleDryRun() {
+            fetch('/toggle_dry_run', {method: 'POST'}).then(r => r.json()).then(d => updateDryRunUI(d.dry_run)).catch(() => {});
+        }
+
+        function calibrateAstra() {
+            fetch('/calibrate_astra', {method: 'POST'})
+                .then(r => r.json())
+                .then(d => alert(">> " + d.msg))
+                .catch(e => alert("Lỗi kết nối: " + e));
+        }
+
         function updatePauseUI(paused) {
+            lastPaused = paused;
             const btn = document.getElementById('pauseBtn');
             if (paused) {
                 btn.className = 'btn-action btn-resume';
@@ -1001,65 +1111,124 @@ class CamHandler(BaseHTTPRequestHandler):
                 .catch(e => alert("Lỗi kết nối: " + e));
         }
 
-        function drive(dir) {
-            fetch('/manual_move', {
+        // Lái tay: giữ nút / phím thì gửi lặp lại mỗi 150 ms, nhả ra là dừng ngay
+        // (robot tự dừng nếu 0.5 s không nhận lệnh, nên rớt mạng cũng không chạy mãi)
+        let driveTimer = null, driveDir = null;
+        function sendDrive(dir) {
+            return fetch('/manual_move', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({direction: dir})
             }).catch(() => {});
         }
+        function startDrive(dir) {
+            if (dir === 'stop') { stopDrive(); return; }
+            if (driveDir === dir) return;
+            if (driveTimer) clearInterval(driveTimer);
+            driveDir = dir;
+            sendDrive(dir);
+            driveTimer = setInterval(() => sendDrive(dir), 150);
+        }
+        function stopDrive() {
+            if (driveTimer) clearInterval(driveTimer);
+            driveTimer = null;
+            driveDir = null;
+            sendDrive('stop');
+        }
+        document.querySelectorAll('[data-drive]').forEach(btn => {
+            const dir = btn.dataset.drive;
+            btn.addEventListener('pointerdown', e => { e.preventDefault(); btn.setPointerCapture(e.pointerId); startDrive(dir); });
+            ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev =>
+                btn.addEventListener(ev, () => { if (dir !== 'stop' && driveDir === dir) stopDrive(); }));
+            btn.addEventListener('contextmenu', e => e.preventDefault());
+        });
 
-        // Hỗ trợ bàn phím W/A/S/D + Q/E trượt ngang
+        // Bàn phím: W/S tiến lùi, A/D xoay, Q/E trượt ngang, Space dừng
+        const KEYS = {ArrowUp: 'forward', w: 'forward', W: 'forward', ArrowDown: 'backward', s: 'backward', S: 'backward',
+                      q: 'strafe_left', Q: 'strafe_left', e: 'strafe_right', E: 'strafe_right',
+                      ArrowLeft: 'left', a: 'left', A: 'left', ArrowRight: 'right', d: 'right', D: 'right'};
         window.addEventListener('keydown', e => {
             if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') drive('forward');
-            else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') drive('backward');
-            else if (e.key === 'q' || e.key === 'Q') drive('strafe_left');
-            else if (e.key === 'e' || e.key === 'E') drive('strafe_right');
-            else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') drive('left');
-            else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') drive('right');
-            else if (e.key === ' ') drive('stop');
+            if (e.key === ' ') { e.preventDefault(); stopDrive(); return; }
+            const dir = KEYS[e.key];
+            if (dir) { e.preventDefault(); startDrive(dir); }
         });
-
         window.addEventListener('keyup', e => {
             if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
-            if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','q','e','W','A','S','D','Q','E'].includes(e.key)) {
-                drive('stop');
-            }
+            if (KEYS[e.key] && KEYS[e.key] === driveDir) stopDrive();
         });
+        window.addEventListener('blur', () => { if (driveDir) stopDrive(); });
+
+        const NAV_TEXT = {
+            BAM: ['BÁM THẲNG MỤC TIÊU', 'var(--success)'],
+            NE_TRAI: ['<<< LÁCH TRÁI (đầu vẫn nhìn mục tiêu)', 'var(--warning)'],
+            NE_PHAI: ['LÁCH PHẢI >>> (đầu vẫn nhìn mục tiêu)', 'var(--warning)'],
+            NHO_BAM: ['MỤC TIÊU BỊ CHE · ĐI THEO VỊ TRÍ NHỚ', '#38bdf8'],
+            NHO_NE_TRAI: ['BỊ CHE · LÁCH TRÁI THEO VỊ TRÍ NHỚ', '#38bdf8'],
+            NHO_NE_PHAI: ['BỊ CHE · LÁCH PHẢI THEO VỊ TRÍ NHỚ', '#38bdf8'],
+            DA_TOI: ['ĐÃ TỚI GẦN MỤC TIÊU · DỪNG', 'var(--success)'],
+            BI_CHAN: ['BỊ CHẶN · CHỜ LỐI ĐI AN TOÀN', 'var(--danger)'],
+            NHIN_QUANH: ['XOAY NHÌN VÙNG LIDAR CHƯA THẤY', '#38bdf8'],
+            DUNG_AN_TOAN: ['DỪNG AN TOÀN (sắp va chạm)', 'var(--danger)'],
+            TIM_XOAY: ['QUAY QUÉT TÌM MỤC TIÊU', '#94a3b8'],
+            TIM_DI: ['ĐI TỚI CHỖ THOÁNG ĐỂ TÌM', '#94a3b8'],
+            TIM_CHO: ['CHỜ LỐI ĐI ĐỂ TÌM TIẾP', 'var(--warning)'],
+            TAM_DUNG: ['TẠM DỪNG', 'var(--warning)'],
+            LAI_TAY: ['LÁI TAY', 'var(--primary)'],
+            LAI_TAY_CHAN: ['LÁI TAY BỊ CHẶN (vật cản)', 'var(--danger)'],
+            MAT_LIDAR: ['MẤT LIDAR · DỪNG XE', 'var(--danger)'],
+            MAT_CAMERA: ['MẤT CAMERA · DỪNG XE', 'var(--danger)'],
+            KHOI_DONG: ['ĐANG KHỞI ĐỘNG', 'var(--warning)']
+        };
+        const age = v => (v === null || v === undefined) ? 'MẤT' : (v < 1.0 ? 'OK' : v.toFixed(1) + 's');
 
         // Cập nhật trạng thái HUD mỗi giây
         setInterval(() => {
             fetch('/status').then(r => r.json()).then(d => {
                 document.getElementById('hudAction').innerText = d.action_text;
-                
-                // Hiển thị radar khoảng cách 3 hướng
+
+                // Khoảng trống quanh xe theo 3 hướng
                 const dl = d.dist_left < 800 ? d.dist_left.toFixed(0) + 'cm' : 'THOÁNG';
                 const dc = d.dist_center < 800 ? d.dist_center.toFixed(0) + 'cm' : 'THOÁNG';
                 const dr = d.dist_right < 800 ? d.dist_right.toFixed(0) + 'cm' : 'THOÁNG';
                 const radarEl = document.getElementById('hudRadar');
                 radarEl.innerText = 'L: ' + dl + ' | C: ' + dc + ' | R: ' + dr;
-                if (d.obs_status === 'NGUY HIEM') radarEl.style.color = 'var(--danger)';
+                if (d.obs_status === 'NGUY HIEM' || d.obs_status === 'MAT LIDAR') radarEl.style.color = 'var(--danger)';
                 else if (d.obs_status === 'CANH BAO') radarEl.style.color = 'var(--warning)';
                 else radarEl.style.color = 'var(--success)';
 
-                // Hướng né
+                // Chiến thuật né
+                const nav = NAV_TEXT[d.nav_state] || [d.nav_state || '--', '#94a3b8'];
                 const strafeEl = document.getElementById('hudStrafe');
-                if (d.strafe_dir === 'LEFT') {
-                    strafeEl.innerText = '<<< TRƯỢT TRÁI NÉ';
-                    strafeEl.style.color = 'var(--warning)';
-                } else if (d.strafe_dir === 'RIGHT') {
-                    strafeEl.innerText = 'TRƯỢT PHẢI NÉ >>>';
-                    strafeEl.style.color = 'var(--warning)';
+                strafeEl.innerText = nav[0];
+                strafeEl.style.color = nav[1];
+                const feedEl = document.getElementById('feedStatusOakd');
+                feedEl.innerText = '● ' + nav[0];
+                feedEl.style.color = nav[1];
+
+                document.getElementById('hudCmdVel').innerText = 'vx: ' + d.linear_x.toFixed(2) + ' | vy: ' + d.linear_y.toFixed(2) +
+                    ' | wz: ' + d.angular_z.toFixed(1) + '°' + (d.dry_run ? '  (CHẠY KHÔ)' : '');
+
+                const tgt = document.getElementById('hudTarget');
+                if (d.target_visible) {
+                    tgt.innerText = 'Đang thấy · lệch ' + d.target_bearing_deg.toFixed(0) + '°' +
+                        (d.target_distance_m !== null ? ' · cách ' + d.target_distance_m.toFixed(2) + ' m (' + d.target_source + ')' : '');
+                    tgt.style.color = 'var(--success)';
+                } else if (d.target_remembered) {
+                    tgt.innerText = 'Bị che · nhớ hướng ' + d.target_bearing_deg.toFixed(0) + '°';
+                    tgt.style.color = '#38bdf8';
                 } else {
-                    strafeEl.innerText = 'ĐƯỜNG THÔNG THOÁNG';
-                    strafeEl.style.color = 'var(--success)';
+                    tgt.innerText = 'Chưa thấy';
+                    tgt.style.color = '#94a3b8';
                 }
 
-                document.getElementById('hudCmdVel').innerText = 'vx: ' + d.linear_x.toFixed(2) + ' | vy: ' + d.linear_y.toFixed(2) + ' | wz: ' + d.angular_z.toFixed(1) + '°';
-                document.getElementById('hudSources').innerText = d.source_astra + ' + ' + d.source_oakd;
+                document.getElementById('hudSources').innerText = 'Astra ' + age(d.camera_age) + ' · Độ sâu ' + age(d.depth_age) +
+                    ' · LiDAR ' + age(d.lidar_age) + ' · Odom ' + age(d.odom_age) + ' · Vòng né ' + (d.nav_loop_ms || 0).toFixed(0) + ' ms';
+                document.getElementById('hudCalib').innerText = d.astra_height_cm !== undefined ?
+                    'Cao ' + d.astra_height_cm.toFixed(1) + ' cm · chúi ' + d.astra_pitch_deg.toFixed(1) + '° · ' + d.astra_calib : '--';
                 document.getElementById('aiFpsBadge').innerText = 'AI: ' + d.ai_fps.toFixed(1) + ' FPS';
                 updatePauseUI(d.paused);
+                updateDryRunUI(d.dry_run);
             }).catch(() => {});
         }, 1000);
     </script>
@@ -1090,31 +1259,74 @@ def start_web_server():
 # ==========================================================
 class ObjectSeeker(object):
     def __init__(self):
-        global seeker_instance
+        global seeker_instance, cam_source_oakd
         seeker_instance = self
 
         rospy.init_node('jetauto_object_seeker', anonymous=True)
 
-        # Publishers cho tat ca cac topic cmd_vel cua JetAuto
+        # Publisher cho topic cmd_vel cua khung gam JetAuto
         self.cmd_publishers = []
         for top in CMD_VEL_TOPICS:
             self.cmd_publishers.append(rospy.Publisher(top, Twist, queue_size=1))
 
-        # Bien van toc mong muon 3-DOF (cho Motion Heartbeat Loop 10Hz)
+        # Bien van toc mong muon 3-DOF (vong ne vat can dat, Heartbeat 10Hz gui di)
         self.motion_lock = threading.Lock()
         self.desired_linear_x = 0.0
         self.desired_linear_y = 0.0  # MECANUM STRAFE (TRUOT NGANG)
         self.desired_angular_z = 0.0
-        self.smooth_x = None
-        self.smooth_w = None
+        self.desired_time = 0.0
+        self.published = (0.0, 0.0, 0.0)
+        self.block_reason = ''
 
+        # Lai tay: lenh dang giu + han dung (web gui lap lai moi 150 ms khi giu nut)
         self.manual_override_until = 0.0
-        # Keep ROS subscriber handles alive for the lifetime of this node.
-        # This is especially important for the Astra driver: subscriptions
-        # created only as temporary values can be garbage-collected on some
-        # rospy versions before the first image arrives.
-        self.astra_subscribers = []
-        self.oakd_subscribers = []
+        self.manual_command = (0.0, 0.0, 0.0)
+
+        # Bo ne vat can LiDAR + do sau Astra (obstacle_avoidance.py)
+        self.avoid = AVOID_CFG
+        self.lidar_model = oa.LidarModel(self.avoid)
+        self.grid = oa.LocalGrid(self.avoid)
+        self.planner = oa.MotionPlanner(self.avoid)
+        self.tracker = oa.TargetTracker(self.avoid)
+        self.astra = oa.AstraDepth(self.avoid)
+        self.sensor_lock = threading.Lock()
+        self.target_lock = threading.Lock()
+        self.astra_lock = threading.Lock()
+        self.latest_scan = None
+        self.scan_time = 0.0
+        self.astra_result = None
+        self.astra_time = 0.0
+        self.astra_processed = 0.0
+        self.depth_frame = None
+        self.depth_time = 0.0
+        self.depth_buffer = deque(maxlen=12)
+        self.depth_intrinsics = None
+        self.rgb_intrinsics = None
+        self.rgb_distortion = None
+        self.rgb_stamp = None
+        self.odom_pose = None
+        self.odom_time = 0.0
+        self.camera_time = 0.0
+        self.frame_seq = 0
+        self.calibrate_attempts = 0
+        self.calibrate_next = 0.0
+        self.nav_cmd = oa.NavCommand(state='KHOI_DONG', reason='DANG KHOI DONG')
+        self.nav_target = oa.TargetEstimate()
+        self.safety_snapshot = (np.zeros((0, 2)), np.zeros((0, 2)), 0.0)
+        self.nav_loop_ms = 0.0
+        self.planner_reset_request = False
+        self.ros_subscribers = []   # giu handle de rospy khong huy Subscriber som
+
+        # Trang thai AI (khai bao truoc khi tai model: web /status co the hoi ngay luc khoi dong)
+        self.state_lock = threading.Lock()
+        self.last_detections = []
+        self.last_action_text = "DANG KHOI DONG..."
+        self.last_status_color = (0, 165, 255)
+        self.best_target_center = None
+        self.last_target_confidence = None
+        self.last_target_box = None
+        self.last_depth_sync_ms = None
+        self.ai_fps = 0.0
 
         # Load YOLO Model
         self.classes = self.load_classes()
@@ -1141,15 +1353,6 @@ class ObjectSeeker(object):
             self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
             self.use_ort = False
 
-        # Trang thai AI
-        self.state_lock = threading.Lock()
-        self.last_detections = []
-        self.last_action_text = "DANG KHOI DONG..."
-        self.last_status_color = (0, 165, 255)
-        self.best_target_center = None
-        self.ai_fps = 0.0
-        self.lost_target_count = 0  # Thêm biến đếm số frame bị mất target
-
         rospy.on_shutdown(self.stop)
 
         # 1. KHOI DONG DONG CO HEARTBEAT LOOP (10Hz)
@@ -1158,25 +1361,34 @@ class ObjectSeeker(object):
         self.motion_thread.start()
         rospy.loginfo(">> [JetAuto] Da khoi dong Thread dieu khien Dong Co 10Hz Heartbeat (Mecanum 3-DOF)!")
 
-        # 2. KHOI DONG CAMERA ASTRA (ROS Topic /depth_cam/rgb/image_raw)
-        self.astra_thread = threading.Thread(target=self.init_astra_capture)
-        self.astra_thread.daemon = True
-        self.astra_thread.start()
+        # 2. KHOI DONG CAMERA ASTRA (RGB + DO SAU) VA LIDAR / ODOMETRY
+        self.init_astra_capture()
+        self.init_navigation_inputs()
 
-        # 3. KHOI DONG CAMERA OAK-D (Stereo Depth + RGB qua DepthAI)
-        self.oakd_thread = threading.Thread(target=self.init_oakd_capture)
-        self.oakd_thread.daemon = True
-        self.oakd_thread.start()
+        # 3. CAMERA OAK-D (dang tat: USE_OAKD = False)
+        if USE_OAKD:
+            self.oakd_thread = threading.Thread(target=self.init_oakd_capture)
+            self.oakd_thread.daemon = True
+            self.oakd_thread.start()
+        else:
+            cam_source_oakd = "Radar LiDAR + Astra"
 
         # 4. KHOI DONG THREAD NEN JPEG NEN (TIET KIEM CPU & GIL CHO WEB)
         self.encoder_thread = threading.Thread(target=jpeg_encoder_loop)
         self.encoder_thread.daemon = True
         self.encoder_thread.start()
 
-        # 5. KHOI DONG AI CENTRAL ARBITRATION WORKER LOOP
+        # 5. KHOI DONG AI YOLO (chi nhan dien + dinh vi muc tieu)
         self.ai_thread = threading.Thread(target=self.ai_worker_loop)
         self.ai_thread.daemon = True
         self.ai_thread.start()
+
+        # 6. KHOI DONG VONG NE VAT CAN 10Hz (ra quyet dinh van toc)
+        self.nav_thread = threading.Thread(target=self.navigation_loop)
+        self.nav_thread.daemon = True
+        self.nav_thread.start()
+        rospy.loginfo(">> [JetAuto] Ne vat can: LiDAR + do sau Astra | OAK-D: {} | Chay kho: {}".format(
+            'BAT' if USE_OAKD else 'TAT', 'BAT' if DRY_RUN else 'TAT'))
 
     def load_classes(self):
         path = os.path.join(os.path.dirname(__file__), 'coco.names')
@@ -1190,27 +1402,19 @@ class ObjectSeeker(object):
             self.desired_linear_x = float(linear_x)
             self.desired_linear_y = float(linear_y)  # MECANUM STRAFE
             self.desired_angular_z = float(angular_z_deg)
+            self.desired_time = time.monotonic()
 
     def trigger_motor_test(self):
-        """Kiem tra dong co 3-DOF: Tien -> Truot Trai -> Truot Phai -> Xoay -> Dung!"""
+        """Kiem tra dong co 3-DOF: Tien -> Truot Trai -> Truot Phai -> Xoay -> Dung (van kiem tra va cham)."""
         def run_test():
             rospy.loginfo(">> [TEST MECANUM] Tien 0.5s -> Truot Trai 0.5s -> Truot Phai 0.5s -> Xoay 0.5s -> Dung!")
-            self.manual_override_until = time.time() + 3.0
-            # 1. Tien
-            self.set_desired_velocity(0.18, 0.0, 0.0)
-            time.sleep(0.5)
-            # 2. Truot trai
-            self.set_desired_velocity(0.0, 0.18, 0.0)
-            time.sleep(0.5)
-            # 3. Truot phai
-            self.set_desired_velocity(0.0, -0.18, 0.0)
-            time.sleep(0.5)
-            # 4. Xoay tai cho
-            self.set_desired_velocity(0.0, 0.0, 35.0)
-            time.sleep(0.5)
-            # 5. Dung
-            self.set_desired_velocity(0.0, 0.0, 0.0)
-            self.manual_override_until = 0.0
+            for command in ((0.15, 0.0, 0.0), (0.0, 0.12, 0.0), (0.0, -0.12, 0.0), (0.0, 0.0, 35.0)):
+                end = time.monotonic() + 0.5
+                while time.monotonic() < end and not rospy.is_shutdown():
+                    self.manual_command = command
+                    self.manual_override_until = time.monotonic() + 0.3
+                    time.sleep(0.1)
+            self.manual_move('stop')
             rospy.loginfo(">> [TEST MECANUM] Hoan tat test 3-DOF!")
 
         t = threading.Thread(target=run_test)
@@ -1218,61 +1422,70 @@ class ObjectSeeker(object):
         t.start()
 
     def manual_move(self, direction):
-        if direction == 'forward':
-            self.manual_override_until = time.time() + 0.8
-            self.set_desired_velocity(0.18, 0.0, 0.0)
-        elif direction == 'backward':
-            self.manual_override_until = time.time() + 0.8
-            self.set_desired_velocity(-0.18, 0.0, 0.0)
-        elif direction == 'strafe_left':
-            self.manual_override_until = time.time() + 0.8
-            self.set_desired_velocity(0.0, 0.18, 0.0)  # Truot trai
-        elif direction == 'strafe_right':
-            self.manual_override_until = time.time() + 0.8
-            self.set_desired_velocity(0.0, -0.18, 0.0)  # Truot phai
-        elif direction == 'left':
-            self.manual_override_until = time.time() + 0.8
-            self.set_desired_velocity(0.0, 0.0, 35.0)   # Xoay trai
-        elif direction == 'right':
-            self.manual_override_until = time.time() + 0.8
-            self.set_desired_velocity(0.0, 0.0, -35.0)  # Xoay phai
-        else:
+        """Lenh lai tay tu web; vong ne vat can van kiem tra va cham truoc khi cho chay."""
+        command = MANUAL_COMMANDS.get(direction)
+        if command is None:
+            self.manual_command = (0.0, 0.0, 0.0)
             self.manual_override_until = 0.0
             self.set_desired_velocity(0.0, 0.0, 0.0)
+            return
+        self.manual_command = command
+        self.manual_override_until = time.monotonic() + 0.5   # web gui lai moi 150 ms khi dang giu
 
     def motion_heartbeat_loop(self):
-        """Vong lap 10Hz lien tuc gui Twist lenh dong co Mecanum 3-DOF de duy tri watchdog STM32."""
+        """Vong lap 10Hz gui Twist Mecanum 3-DOF. Driver khung gam KHONG tu dung khi mat lenh, nen o day:
+        lenh cu / tam dung / chay kho / sap va cham -> gui van toc 0."""
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
+            now = time.monotonic()
             with self.motion_lock:
                 vx = self.desired_linear_x
                 vy = self.desired_linear_y
                 wz = self.desired_angular_z
-                paused = IS_PAUSED
-
-            if paused:
-                vx = 0.0
-                vy = 0.0
-                wz = 0.0
+                age = now - self.desired_time
+                obstacles, _, snap_time = self.safety_snapshot
+            reason = ''
+            if IS_PAUSED:
+                vx = vy = wz = 0.0
+                reason = 'TAM DUNG'
+            elif age > COMMAND_TIMEOUT_S:
+                vx = vy = wz = 0.0
+                reason = 'LENH HET HAN'
+            elif abs(vx) + abs(vy) + abs(wz) > 1e-6:
+                if now - snap_time > COMMAND_TIMEOUT_S:
+                    vx = vy = wz = 0.0
+                    reason = 'DU LIEU VAT CAN CU'
+                else:
+                    ok, why = oa.motion_is_safe(obstacles, vx, vy, wz, self.avoid)
+                    if not ok:
+                        vx = vy = wz = 0.0
+                        reason = why
+            if DRY_RUN:
+                send = (0.0, 0.0, 0.0)
+                reason = reason or 'CHAY KHO'
+            else:
+                send = (vx, vy, wz)
 
             twist_msg = Twist()
-            twist_msg.linear.x = float(vx)
-            twist_msg.linear.y = float(vy)  # MECANUM STRAFING (TRUOT NGANG)
-            twist_msg.angular.z = float(math.radians(wz))
+            twist_msg.linear.x = float(send[0])
+            twist_msg.linear.y = float(send[1])  # MECANUM STRAFING (TRUOT NGANG)
+            twist_msg.angular.z = float(math.radians(send[2]))
 
             for pub in self.cmd_publishers:
                 try:
                     pub.publish(twist_msg)
                 except Exception:
                     pass
+            self.published = send
+            self.block_reason = reason
 
-            if abs(vx) > 0.001 or abs(vy) > 0.001 or abs(wz) > 0.001:
-                rospy.loginfo_throttle(2.5, ">> [MECANUM 3-DOF] vx={:.2f} m/s, vy={:.2f} m/s (strafe), wz={:.1f} deg/s".format(vx, vy, wz))
+            if abs(send[0]) > 0.001 or abs(send[1]) > 0.001 or abs(send[2]) > 0.001:
+                rospy.loginfo_throttle(2.5, ">> [MECANUM 3-DOF] vx={:.2f} m/s, vy={:.2f} m/s (strafe), wz={:.1f} deg/s".format(*send))
 
             rate.sleep()
 
     # ==========================================================
-    # MODUL CAMERA 1: ASTRA PRO PLUS (ROS Topic)
+    # MODUL CAMERA 1: ASTRA PRO PLUS (ROS Topic: RGB + DO SAU)
     # ==========================================================
     def init_astra_capture(self):
         global cam_source_astra
@@ -1280,23 +1493,106 @@ class ObjectSeeker(object):
         cam_source_astra = "Dang cho tin hieu Astra..."
 
         if RosImage is not None:
-            self.astra_subscribers = [
-                rospy.Subscriber('/depth_cam/rgb/image_raw', RosImage,
-                                 self._callback_ros_astra, queue_size=1, buff_size=2**24),
-                rospy.Subscriber('/camera/rgb/image_raw', RosImage,
-                                 self._callback_ros_astra, queue_size=1, buff_size=2**24),
+            self.ros_subscribers += [
+                rospy.Subscriber('/depth_cam/rgb/image_raw', RosImage, self._callback_ros_astra, queue_size=1, buff_size=2**24),
+                rospy.Subscriber('/depth_cam/depth/image_raw', RosImage, self._callback_depth, queue_size=1, buff_size=2**24),
+                rospy.Subscriber('/depth_cam/depth/camera_info', CameraInfo, self._callback_depth_info, queue_size=1),
+                rospy.Subscriber('/depth_cam/rgb/camera_info', CameraInfo, self._callback_rgb_info, queue_size=1),
             ]
-        else:
-            cam_source_astra = "Khong co sensor_msgs/Image"
-            rospy.logerr(">> [ASTRA] Khong import duoc sensor_msgs/Image")
 
     def _callback_ros_astra(self, msg):
         global raw_frame_astra, cam_source_astra
         frame = self._decode_ros_image(msg)
         if frame is not None:
             cam_source_astra = "Astra Pro (ROS)"
+            stamp = msg.header.stamp.to_sec() if msg.header.stamp else 0.0
             with frame_lock:
                 raw_frame_astra = frame
+                self.rgb_stamp = stamp
+                self.frame_seq += 1
+            self.camera_time = time.monotonic()
+
+    def _callback_depth_info(self, msg):
+        with self.astra_lock:
+            self.astra.set_intrinsics(msg.K[0], msg.K[4], msg.K[2], msg.K[5], msg.width, msg.height)
+        self.depth_intrinsics = (msg.K[0], msg.K[4], msg.K[2], msg.K[5])
+
+    def _callback_rgb_info(self, msg):
+        self.rgb_intrinsics = (msg.K[0], msg.K[4], msg.K[2], msg.K[5])
+        self.rgb_distortion = list(msg.D)[:5]
+
+    @staticmethod
+    def _decode_depth(msg):
+        """Anh do sau ROS -> mang uint16 (mm), khong copy du lieu."""
+        try:
+            if msg.encoding in ('16UC1', 'mono16'):
+                dtype = np.dtype('>u2' if msg.is_bigendian else '<u2')
+                row = msg.step // 2 if msg.step else msg.width
+                return np.frombuffer(msg.data, dtype=dtype).reshape(msg.height, row)[:, :msg.width]
+            if msg.encoding == '32FC1':
+                dtype = np.dtype('>f4' if msg.is_bigendian else '<f4')
+                row = msg.step // 4 if msg.step else msg.width
+                depth = np.frombuffer(msg.data, dtype=dtype).reshape(msg.height, row)[:, :msg.width]
+                return np.clip(np.nan_to_num(depth) * 1000.0, 0, 65535).astype(np.uint16)
+        except (ValueError, TypeError):
+            pass
+        return None
+
+    def _callback_depth(self, msg):
+        now = time.monotonic()
+        depth = self._decode_depth(msg)
+        if depth is None:
+            return
+        stamp = msg.header.stamp.to_sec() if msg.header.stamp else 0.0
+        with self.sensor_lock:
+            self.depth_frame = depth
+            self.depth_time = now
+            self.depth_buffer.append((stamp, depth))
+        # Tach vat can tu do sau ~6 lan/giay (du cho xe 0.18 m/s, tiet kiem CPU Jetson)
+        if now - self.astra_processed < 0.16 or self.depth_intrinsics is None:
+            return
+        self.astra_processed = now
+        with self.astra_lock:
+            if self.calibrate_attempts < 15 and now >= self.calibrate_next and self.astra.source != 'RANSAC':
+                # Hieu chuan mat san (do cao + goc chui) ngay khi thay san; that bai thi thu lai sau 2 s
+                self.calibrate_attempts += 1
+                self.calibrate_next = now + 2.0
+                if self.astra.calibrate(depth, now):
+                    rospy.loginfo(">> [ASTRA] Hieu chuan mat san: cao {:.1f} cm, chui {:.1f} do".format(
+                        100 * self.astra.height, self.astra.pitch_deg))
+            result = self.astra.process(depth, now)
+        with self.sensor_lock:
+            self.astra_result = result
+            self.astra_time = now
+
+    def request_astra_calibration(self):
+        with self.astra_lock:
+            self.astra.source = 'CHO HIEU CHUAN'
+            self.calibrate_attempts = 0
+            self.calibrate_next = 0.0
+
+    # ==========================================================
+    # LIDAR + ODOMETRY CHO BO NE VAT CAN
+    # ==========================================================
+    def init_navigation_inputs(self):
+        self.ros_subscribers += [
+            rospy.Subscriber('/scan', LaserScan, self._callback_scan, queue_size=1),
+            rospy.Subscriber('/odom', Odometry, self._callback_odom, queue_size=1),
+        ]
+
+    def _callback_scan(self, msg):
+        scan = self.lidar_model.process(msg.ranges, msg.angle_min, msg.angle_increment,
+                                        msg.range_min, msg.range_max, time.monotonic())
+        with self.sensor_lock:
+            self.latest_scan = scan
+            self.scan_time = scan.stamp
+
+    def _callback_odom(self, msg):
+        q = msg.pose.pose.orientation
+        yaw = math.atan2(2.0 * (q.w * q.z + q.x * q.y), 1.0 - 2.0 * (q.y * q.y + q.z * q.z))
+        with self.sensor_lock:
+            self.odom_pose = (msg.pose.pose.position.x, msg.pose.pose.position.y, yaw)
+            self.odom_time = time.monotonic()
 
     # ==========================================================
     # MODUL CAMERA 2: LUXONIS OAK-D (DepthAI Stereo Depth & RGB)
@@ -1402,12 +1698,7 @@ class ObjectSeeker(object):
 
         cam_source_oakd = "Fallback ROS Topic"
         if RosImage is not None:
-            self.oakd_subscribers = [
-                rospy.Subscriber('/oakd/rgb/image_raw', RosImage,
-                                 self._callback_ros_oakd, queue_size=1, buff_size=2**24)
-            ]
-        else:
-            cam_source_oakd = "Khong co sensor_msgs/Image"
+            rospy.Subscriber('/oakd/rgb/image_raw', RosImage, self._callback_ros_oakd, queue_size=1, buff_size=2**24)
 
     def _callback_ros_oakd(self, msg):
         global raw_frame_oakd, display_frame_oakd, cam_source_oakd
@@ -1460,7 +1751,7 @@ class ObjectSeeker(object):
             return []
 
         if arr.shape[1] == 85:
-            obj_mask = arr[:, 4] > 0.35
+            obj_mask = arr[:, 4] > DETECTION_CONFIDENCE
             arr = arr[obj_mask]
             if len(arr) == 0:
                 return []
@@ -1472,7 +1763,7 @@ class ObjectSeeker(object):
             class_ids = np.argmax(scores, axis=1)
             confidences = np.max(scores, axis=1)
 
-        conf_mask = confidences > 0.35
+        conf_mask = confidences > DETECTION_CONFIDENCE
         if not np.any(conf_mask):
             return []
 
@@ -1494,7 +1785,13 @@ class ObjectSeeker(object):
         cid_list = class_ids.tolist()
 
         try:
-            indices = cv2.dnn.NMSBoxes(boxes, conf_list, 0.35, 0.45)
+            # NMS theo từng lớp: người đứng sát ghế không bị khung ghế "nuốt" mất
+            indices = []
+            for class_id in sorted(set(cid_list)):
+                group = [i for i, cid in enumerate(cid_list) if cid == class_id]
+                kept = cv2.dnn.NMSBoxes([boxes[i] for i in group], [conf_list[i] for i in group],
+                                        DETECTION_CONFIDENCE, 0.45)
+                indices.extend(group[int(k)] for k in np.array(kept).flatten())
         except Exception:
             indices = list(range(len(boxes)))
 
@@ -1509,7 +1806,22 @@ class ObjectSeeker(object):
                 })
         return results
 
-    def _render_ai_overlay(self, frame, cam_name, detections, action_text, status_color, target_center):
+    # Màu chữ trạng thái điều hướng trên ảnh camera (BGR)
+    STATE_COLORS = {
+        'BAM': (0, 255, 0), 'DA_TOI': (0, 255, 0), 'NE_TRAI': (0, 215, 255), 'NE_PHAI': (0, 215, 255),
+        'BI_CHAN': (0, 0, 255), 'DUNG_AN_TOAN': (0, 0, 255), 'MAT_LIDAR': (0, 0, 255), 'MAT_CAMERA': (0, 0, 255),
+        'LAI_TAY': (255, 229, 0), 'LAI_TAY_CHAN': (0, 0, 255), 'TAM_DUNG': (0, 165, 255),
+        'NHIN_QUANH': (255, 200, 80),
+    }
+
+    def _state_color(self, state):
+        if state.startswith('NHO_'):
+            return (255, 200, 80)
+        if state.startswith('TIM'):
+            return (200, 180, 150)
+        return self.STATE_COLORS.get(state, (0, 165, 255))
+
+    def _render_ai_overlay(self, frame, cam_name, detections, action_text, status_color, target_center, target_info=None):
         h, w = frame.shape[:2]
         center_screen_x = w // 2
         cv2.line(frame, (center_screen_x, 0), (center_screen_x, h), (255, 255, 255), 1)
@@ -1522,183 +1834,343 @@ class ObjectSeeker(object):
 
         if target_center is not None:
             cv2.circle(frame, target_center, 6, (0, 0, 255), -1)
+            if target_info and target_info.get('distance') is not None:
+                cv2.putText(frame, "{:.2f} m ({})".format(target_info['distance'], target_info['source']),
+                            (target_center[0] + 10, target_center[1] + 5), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 0, 255), 2)
 
-        cv2.putText(frame, action_text, (20, 35), cv2.FONT_HERSHEY_SIMPLEX, 0.75, status_color, 2)
+        # Dải nền tối phía trên để chữ trạng thái đọc được cả khi ảnh sáng
+        band = frame[0:78, :]
+        band[:] = (band * 0.35).astype(np.uint8)
+        cv2.putText(frame, action_text[:46], (20, 35), cv2.FONT_HERSHEY_SIMPLEX, 0.65, status_color, 2)
         cv2.putText(frame, cam_name, (20, 65), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 229, 255), 2)
         cv2.putText(frame, "AI FPS: {:.1f}".format(self.ai_fps), (w - 140, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 255), 2)
+        if DRY_RUN:
+            cv2.putText(frame, "CHAY KHO - DONG CO KHONG CHAY", (20, h - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 165, 255), 2)
         return frame
 
     # ==========================================================
-    # CENTRAL ARBITRATION: DUNG HỢP ASTRA + OAK-D (MECANUM STRAFING)
+    # AI YOLO: NHẬN DIỆN + ĐỊNH VỊ MỤC TIÊU
+    # (vận tốc do vòng né vật cản 10Hz quyết định, không phụ thuộc tốc độ YOLO)
     # ==========================================================
     def ai_worker_loop(self):
-        global raw_frame_astra, display_frame_astra, obstacle_info
+        global display_frame_astra
         frame_counter = 0
         last_fps_time = time.time()
         current_ai_fps = 0.0
+        last_seq = -1
 
         while not rospy.is_shutdown():
             raw_frame = None
+            rgb_stamp = None
             with frame_lock:
-                if raw_frame_astra is not None:
+                if raw_frame_astra is not None and self.frame_seq != last_seq:
                     raw_frame = raw_frame_astra.copy()
+                    rgb_stamp = self.rgb_stamp
+                    last_seq = self.frame_seq
 
             if raw_frame is None:
-                if not IS_PAUSED and time.time() >= self.manual_override_until:
-                    self.set_desired_velocity(0.0, 0.0, 18.0)
-                time.sleep(0.04)
+                time.sleep(0.01)
                 continue
 
             frame_counter += 1
-            now = time.time()
-            if now - last_fps_time >= 1.0:
-                current_ai_fps = frame_counter / (now - last_fps_time)
+            now_wall = time.time()
+            if now_wall - last_fps_time >= 1.0:
+                current_ai_fps = frame_counter / (now_wall - last_fps_time)
                 frame_counter = 0
-                last_fps_time = now
+                last_fps_time = now_wall
 
-            h, w = raw_frame.shape[:2]
-            center_screen_x = w // 2
-
+            label = TARGET_CLASS
             detections = self.run_yolo(raw_frame)
-            target_detections = [d for d in detections if d['class_name'] == TARGET_CLASS]
-            target_found = len(target_detections) > 0
+            now = time.monotonic()
+            raw_targets = [d for d in detections if d['class_name'] == label]
+            min_confidence = TARGET_CONFIDENCE.get(label, TARGET_CONFIDENCE_DEFAULT)
+            targets = [d for d in raw_targets if d['conf'] >= min_confidence]
+            best = self._pick_target(targets, raw_frame.shape) if targets else None
+
+            # Ghép depth gần nhất với đúng frame RGB. YOLO trên Jetson mất khoảng 250 ms,
+            # nên lấy "depth mới nhất" sau inference sẽ đo một thời điểm khác khi xe đang chạy.
+            matched_depth = None
+            depth_sync_ms = None
+            if rgb_stamp:
+                with self.sensor_lock:
+                    if self.depth_buffer:
+                        depth_stamp, candidate = min(self.depth_buffer,
+                                                     key=lambda item: abs(item[0] - rgb_stamp))
+                        delta = abs(depth_stamp - rgb_stamp)
+                        depth_sync_ms = 1000.0 * delta
+                        if depth_stamp and delta <= DEPTH_SYNC_TOLERANCE_S:
+                            matched_depth = candidate
 
             target_center = None
-            width_ratio = 0.0
-
-            # 1. TÍNH TOÁN HƯỚNG QUAY KHÓA MỤC TIÊU TỪ CAMERA ASTRA
-            base_vx = 0.0
-            heading_wz = 0.0
-
-            if target_found:
-                self.lost_target_count = 0  # Reset bộ đếm khi tìm thấy
-                best = max(target_detections, key=lambda d: d['conf'])
+            target_info = None
+            if best is not None:
+                # Hướng + khoảng cách tới tâm xe (đo bằng độ sâu Astra, không có thì ước lượng theo kích thước)
+                bearing, distance, source = self._locate_target(best['box'], raw_frame.shape,
+                                                                 depth_frame=matched_depth)
+                with self.sensor_lock:
+                    pose = self.odom_pose if (self.odom_pose is not None and now - self.odom_time < SENSOR_TIMEOUT_S) else None
+                with self.target_lock:
+                    if self.tracker.label != label:
+                        self.tracker.reset(label)
+                    self.tracker.observe(label, bearing, distance, now, pose, source)
                 bx, by, bw, bh = best['box']
                 target_center = (bx + bw // 2, by + bh // 2)
-
-                if self.smooth_x is None:
-                    self.smooth_x = float(target_center[0])
-                    self.smooth_w = float(bw)
-                else:
-                    self.smooth_x = 0.6 * self.smooth_x + 0.4 * float(target_center[0])
-                    self.smooth_w = 0.7 * self.smooth_w + 0.3 * float(bw)
-
-                error_x = self.smooth_x - center_screen_x
-                width_ratio = self.smooth_w / float(w)
-
-                if width_ratio > 0.45:
-                    base_vx = 0.0
-                    heading_wz = 0.0
-                else:
-                    # Bộ điều khiển P tinh chỉnh góc quay để mục tiêu luôn ở giữa màn hình
-                    # Giảm gain từ 0.07 xuống 0.05 để tránh over-rotate khi quay nhanh
-                    heading_wz = float(-error_x * 0.05)
-                    heading_wz = max(min(heading_wz, 20.0), -20.0)
-                    base_vx = 0.15 if abs(error_x) < 80 else 0.08
+                target_info = {'distance': distance, 'source': source}
             else:
-                self.lost_target_count += 1
-                if self.lost_target_count < 15:
-                    # Mất target tạm thời (dưới 15 frames ~ 1 giây), giữ nguyên hoặc đứng yên
-                    # Không xoay ngay lập tức để tránh mất phương hướng
-                    base_vx = 0.0
-                    heading_wz = 0.0
-                else:
-                    # Mất target hoàn toàn -> Bắt đầu xoay tìm kiếm
-                    self.smooth_x = None
-                    base_vx = 0.0
-                    heading_wz = 20.0  # Xoay tìm kiếm nếu chưa thấy
+                with self.target_lock:
+                    self.tracker.missed(now)
 
-            # 2. ĐỌC THÔNG SỐ VẬT CẢN TỪ CAMERA OAK-D
-            with obstacle_lock:
-                d_l = obstacle_info['dist_l']
-                d_c = obstacle_info['dist_c']
-                d_r = obstacle_info['dist_r']
-
-            # 3. BỘ NÃO ĐIỀU PHỐI (CENTRAL ARBITRATION VOI BÁNH MECANUM)
-            cmd_vx = 0.0
-            cmd_vy = 0.0  # Mecanum Strafe
-            cmd_wz = 0.0
-            strafe_name = "NONE"
-            action_text = ""
-            status_color = (0, 255, 0)
-
-            if time.time() < self.manual_override_until:
-                action_text = "LAI THU CONG (MANUAL)"
-                status_color = (0, 229, 255)
-            elif IS_PAUSED:
-                action_text = "TAM DUNG THEO LENH"
-                status_color = (0, 165, 255)
-                self.set_desired_velocity(0.0, 0.0, 0.0)
-            else:
-                if d_c < 30.0:
-                    # CẤP 3: VẬT CẢN QUÁ GẦN (< 30cm) -> PHANH KHẨN CẤP TIẾN THẲNG, TRƯỢT NGANG NÉ
-                    cmd_vx = 0.0
-                    if d_l > d_r:
-                        cmd_vy = 0.15  # Trượt sang trái
-                        strafe_name = "LEFT"
-                        action_text = "PHANH! TRUOT TRAI NE VAT CAN ({:.0f}cm)".format(d_c)
-                    else:
-                        cmd_vy = -0.15  # Trượt sang phải
-                        strafe_name = "RIGHT"
-                        action_text = "PHANH! TRUOT PHAI NE VAT CAN ({:.0f}cm)".format(d_c)
-                    cmd_wz = heading_wz if target_found else 0.0
-                    status_color = (0, 0, 255)
-
-                elif d_c < 60.0:
-                    # CẤP 2: VẬT CẢN CHẮN ĐƯỜNG TIẾN (30cm - 60cm) -> TRƯỢT NGANG MECANUM LÁCH VÒNG
-                    cmd_vx = 0.04  # Bò chậm tới trước
-                    if d_l > d_r:
-                        cmd_vy = 0.13  # Trượt sang trái
-                        strafe_name = "LEFT"
-                        action_text = "LACH TRUOT TRAI NE VAT CAN ({:.0f}cm)".format(d_c)
-                    else:
-                        cmd_vy = -0.13  # Trượt sang phải
-                        strafe_name = "RIGHT"
-                        action_text = "LACH TRUOT PHAI NE VAT CAN ({:.0f}cm)".format(d_c)
-                    cmd_wz = heading_wz  # Luôn giữ đầu xe nhìn thẳng vào target!
-                    status_color = (0, 215, 255)
-
-                else:
-                    # CẤP 1: ĐƯỜNG THÔNG THOÁNG HOÀN TOÀN (> 60cm)
-                    cmd_vx = base_vx
-                    cmd_vy = 0.0
-                    strafe_name = "NONE"
-                    cmd_wz = heading_wz
-
-                    if target_found:
-                        if width_ratio > 0.45:
-                            action_text = "DA DEN GAN MUC TIEU! DUNG LAI"
-                            status_color = (0, 255, 0)
-                        else:
-                            action_text = "BAM THEO {} (THOANG: {:.0f}cm)".format(TARGET_CLASS.upper(), d_c)
-                            status_color = (0, 255, 0)
-                    else:
-                        action_text = "DANG TIM KIEM: {}".format(TARGET_CLASS.upper())
-                        status_color = (0, 0, 255)
-
-                with obstacle_lock:
-                    obstacle_info['strafe_dir'] = strafe_name
-
-                self.set_desired_velocity(cmd_vx, cmd_vy, cmd_wz)
-
-            cam_label = "[AI TRACK] ASTRA PRO PLUS"
-            rendered = self._render_ai_overlay(raw_frame, cam_label, detections, action_text, status_color, target_center)
+            cmd = self.nav_cmd
+            rendered = self._render_ai_overlay(raw_frame, "[AI TRACK] ASTRA | " + label.upper(), detections,
+                                               cmd.reason or cmd.state, self._state_color(cmd.state),
+                                               target_center, target_info)
 
             with frame_lock:
                 display_frame_astra = rendered
 
             with self.state_lock:
                 self.last_detections = detections
-                self.last_action_text = action_text
-                self.last_status_color = status_color
                 self.best_target_center = target_center
+                candidate = max(raw_targets, key=lambda d: d['conf']) if raw_targets else None
+                self.last_target_confidence = candidate['conf'] if candidate is not None else None
+                self.last_target_box = candidate['box'] if candidate is not None else None
+                self.last_depth_sync_ms = depth_sync_ms
                 self.ai_fps = current_ai_fps
 
-            time.sleep(0.015)
+    def _rgb_intrinsics(self, shape):
+        h, w = shape[:2]
+        if self.rgb_intrinsics is None:
+            f = w / (2.0 * math.tan(math.radians(30.5)))   # Astra RGB nhìn ngang ~61 độ
+            return (f, f, w / 2.0, h / 2.0)
+        fx, fy, cx, cy = self.rgb_intrinsics
+        scale = w / (2.0 * cx) if cx > 0 and abs(w - 2.0 * cx) > 40 else 1.0   # ảnh khác cỡ camera_info
+        return (fx * scale, fy * scale, cx * scale, cy * scale)
+
+    def _locate_target(self, box, shape, with_depth=True, depth_frame=None):
+        depth = depth_frame if with_depth else None
+        with self.astra_lock:
+            return oa.locate_target(box, self._rgb_intrinsics(shape), self.astra, depth, self.depth_intrinsics,
+                                    self.avoid, TARGET_CLASS, self.rgb_distortion)
+
+    def _pick_target(self, targets, shape):
+        """Nhiều vật cùng lớp: ưu tiên vật gần hướng đang bám (không nhảy qua lại), rồi tới độ tin cậy."""
+        with self.target_lock:
+            recent = self.tracker.last_time is not None and time.monotonic() - self.tracker.last_time < 1.5
+            last = self.tracker.bearing if recent else None
+        if last is None or len(targets) == 1:
+            return max(targets, key=lambda d: d['conf'])
+        return max(targets, key=lambda d: d['conf'] - 0.8 * abs(oa.wrap_scalar(
+            self._locate_target(d['box'], shape, with_depth=False)[0] - last)))
+
+    def reset_target(self, label):
+        """Đổi mục tiêu từ web: quên mục tiêu cũ, vòng né vật cản tự reset bộ lập đường."""
+        with self.target_lock:
+            self.tracker.reset(label)
+        self.planner_reset_request = True
+
+    # ==========================================================
+    # VÒNG NÉ VẬT CẢN 10Hz: BẢN ĐỒ NHỚ -> LẬP ĐƯỜNG -> VẬN TỐC MONG MUỐN
+    # ==========================================================
+    def navigation_loop(self):
+        period = 1.0 / NAV_RATE_HZ
+        cycle = 0
+        state = {'pose': (0.0, 0.0, 0.0), 'scan_used': 0.0, 'astra_used': 0.0}
+        while not rospy.is_shutdown():
+            started = time.monotonic()
+            try:
+                self._navigation_step(started, state, cycle)
+            except Exception as error:
+                # Lỗi bất ngờ: dừng xe (Heartbeat cũng tự dừng khi lệnh hết hạn) và ghi log
+                rospy.logerr_throttle(5.0, ">> [NE VAT CAN] Loi: {}".format(error))
+                self.set_desired_velocity(0.0, 0.0, 0.0)
+            cycle += 1
+            self.nav_loop_ms = 1000.0 * (time.monotonic() - started)
+            time.sleep(max(0.0, period - (time.monotonic() - started)))
+
+    def _navigation_step(self, now, state, cycle):
+        with self.sensor_lock:
+            scan, scan_time = self.latest_scan, self.scan_time
+            astra, astra_time = self.astra_result, self.astra_time
+            odom, odom_time = self.odom_pose, self.odom_time
+        if getattr(self, 'planner_reset_request', False):
+            self.planner_reset_request = False
+            self.planner.reset()
+
+        odom_ok = odom is not None and now - odom_time < SENSOR_TIMEOUT_S
+        if odom_ok:
+            pose = state['pose'] = odom
+        else:
+            pose = state['pose']
+            # Mất odom mà xe đang chạy -> bản đồ nhớ sẽ lệch: chỉ dùng dữ liệu cảm biến hiện tại
+            if any(abs(v) > 1e-3 for v in self.published):
+                self.grid.clear()
+        scan_ok = scan is not None and now - scan_time < SENSOR_TIMEOUT_S
+
+        grid = self.grid
+        grid.recenter(pose[0], pose[1])
+        grid.mark_body(pose, now)
+        if scan_ok and scan_time > state['scan_used']:
+            grid.update_lidar(pose, scan, now)
+            state['scan_used'] = scan_time
+        if astra is not None and astra_time > state['astra_used'] and now - astra_time < 1.0:
+            grid.update_astra(pose, astra['obstacles'], astra['floor'], astra['cliffs'], now)
+            state['astra_used'] = astra_time
+        obstacles, blind = grid.query(pose, now, lidar_model=self.lidar_model)
+        if scan_ok:
+            obstacles = oa._concat(obstacles, scan.points)
+        with self.target_lock:
+            target = self.tracker.estimate(now, pose if odom_ok else None)
+
+        if IS_PAUSED:
+            self.planner.reset()
+            cmd = oa.NavCommand(state='TAM_DUNG', reason='TAM DUNG THEO LENH')
+        elif now < self.manual_override_until:
+            self.planner.reset()
+            cmd = self._manual_command(obstacles, blind, scan_ok)
+        elif not scan_ok:
+            self.planner.reset()
+            cmd = oa.NavCommand(state='MAT_LIDAR', reason='MAT TIN HIEU LIDAR /scan - DUNG XE')
+        elif now - self.camera_time > 2.0:
+            self.planner.reset()
+            cmd = oa.NavCommand(state='MAT_CAMERA', reason='MAT CAMERA ASTRA - DUNG XE')
+        else:
+            cmd = self.planner.plan(obstacles, blind, target, now, pose if odom_ok else None)
+
+        self.nav_cmd = cmd
+        self.nav_target = target
+        with self.motion_lock:
+            # Lệnh + dữ liệu vật cản đã dùng để kiểm tra nó được cập nhật cùng lúc,
+            # Heartbeat không bao giờ ghép lệnh cũ với dữ liệu mới (hoặc ngược lại)
+            self.safety_snapshot = (obstacles, blind, now)
+            self.desired_linear_x, self.desired_linear_y, self.desired_angular_z = cmd.vx, cmd.vy, cmd.wz
+            self.desired_time = time.monotonic()
+        with self.state_lock:
+            self.last_action_text = cmd.reason or cmd.state
+        if cycle % 2 == 0:
+            # 5 lần/giây: cập nhật khoảng trống cho giao diện + vẽ radar
+            if cmd.clearance is None or cmd.v_allow is None:
+                cmd.clearance, cmd.v_allow = self.planner.evaluate(obstacles, blind)
+            self._update_obstacle_info(cmd, obstacles, scan_ok)
+            self._render_radar(pose, now, cmd, target, odom_ok, scan_ok)
+
+    def _manual_command(self, obstacles, blind, scan_ok):
+        """Lái tay vẫn an toàn: chặn lệnh sắp đâm vật; đi vào vùng LiDAR không thấy thì chạy chậm."""
+        vx, vy, wz = self.manual_command
+        moving = abs(vx) + abs(vy) > 1e-6
+        if not scan_ok and moving:
+            return oa.NavCommand(0.0, 0.0, 0.0, 'LAI_TAY_CHAN', 'MAT LIDAR: CHI CHO XOAY TAI CHO')
+        ok, why = oa.motion_is_safe(obstacles, vx, vy, wz, self.avoid)
+        if not ok:
+            return oa.NavCommand(0.0, 0.0, 0.0, 'LAI_TAY_CHAN', 'CHAN LAI TAY: ' + why)
+        reason = 'LAI THU CONG'
+        if moving and len(blind) and not oa.motion_is_safe(blind, vx, vy, 0.0, self.avoid)[0]:
+            scale = min(1.0, 0.06 / math.hypot(vx, vy))
+            vx, vy = vx * scale, vy * scale
+            reason = 'LAI TAY VAO VUNG LIDAR KHONG THAY - CHAY CHAM'
+        return oa.NavCommand(vx, vy, wz, 'LAI_TAY', reason)
+
+    def _update_obstacle_info(self, cmd, obstacles, scan_ok):
+        """Khoảng trống (cm) trái / trước / phải theo vật cản thật (không tính vùng mù) cho giao diện."""
+        clear = self.planner.clearance(oa.thin_points(obstacles)) if len(obstacles) else None
+        dirs = self.planner.dirs
+
+        def sector(centre_deg):
+            if clear is None:
+                return 999.0
+            value = float(np.min(clear[np.abs(oa.wrap(dirs - math.radians(centre_deg))) <= math.radians(20)]))
+            return 999.0 if not np.isfinite(value) else min(999.0, 100.0 * value)
+
+        dl, dc, dr = sector(90.0), sector(0.0), sector(-90.0)
+        status = 'MAT LIDAR' if not scan_ok else ('NGUY HIEM' if dc < 15 else ('CANH BAO' if dc < 40 else 'AN TOAN'))
+        with obstacle_lock:
+            obstacle_info.update(dist_l=dl, dist_c=dc, dist_r=dr, status=status,
+                                 strafe_dir='LEFT' if cmd.vy > 0.01 else ('RIGHT' if cmd.vy < -0.01 else 'NONE'))
+
+    def _render_radar(self, pose, now, cmd, target, odom_ok, scan_ok):
+        global raw_frame_oakd, display_frame_oakd
+        if USE_OAKD:
+            return
+        with self.astra_lock:
+            calib = 'ASTRA {:.0f}cm {:.1f}do {}'.format(100 * self.astra.height, self.astra.pitch_deg, self.astra.source)
+        lines = [
+            (cmd.reason or cmd.state)[:56],
+            'vx {:+.2f} vy {:+.2f} m/s  wz {:+.0f} do/s{}'.format(cmd.vx, cmd.vy, cmd.wz, '  CHAY KHO' if DRY_RUN else ''),
+            '{} | ODOM {} | LIDAR {}'.format(calib, 'OK' if odom_ok else 'MAT', 'OK' if scan_ok else 'MAT'),
+        ]
+        img = oa.render_radar(self.avoid, self.grid, pose, now, cmd, target, self.lidar_model, lines=lines,
+                              dry_run=DRY_RUN)
+        with frame_lock:
+            raw_frame_oakd = img
+            display_frame_oakd = img
+
+    def nav_status(self):
+        """Trạng thái né vật cản cho /status (giao diện web)."""
+        now = time.monotonic()
+        cmd, tgt = self.nav_cmd, self.nav_target
+
+        def age(stamp):
+            return round(now - stamp, 1) if stamp else None
+
+        with self.astra_lock:
+            astra = {'astra_height_cm': round(100 * self.astra.height, 1),
+                     'astra_pitch_deg': round(self.astra.pitch_deg, 1),
+                     'astra_calib': self.astra.source,
+                     'astra_quality': round(float(self.astra.quality), 2)}
+        scan = self.latest_scan
+        with self.state_lock:
+            detections = [
+                {'class_name': d['class_name'], 'confidence': round(float(d['conf']), 3),
+                 'box': [int(v) for v in d['box']]}
+                for d in sorted(self.last_detections, key=lambda d: d['conf'], reverse=True)[:8]
+            ]
+            candidate_confidence = self.last_target_confidence
+            candidate_box = list(self.last_target_box) if self.last_target_box is not None else None
+            depth_sync_ms = self.last_depth_sync_ms
+        with self.target_lock:
+            tracker_hits = self.tracker.hits
+            tracker_confirmed = self.tracker.confirmed
+        status = {
+            'nav_state': cmd.state,
+            'nav_reason': cmd.reason,
+            'block_reason': self.block_reason,
+            'published': [round(float(v), 3) for v in self.published],
+            'target_visible': bool(tgt.valid and tgt.visible),
+            'target_remembered': bool(tgt.valid and not tgt.visible),
+            'target_bearing_deg': round(math.degrees(tgt.bearing), 1) if tgt.valid else None,
+            'target_distance_m': round(float(tgt.distance), 2) if tgt.valid and tgt.distance is not None else None,
+            'target_source': tgt.source if tgt.valid else '',
+            'camera_age': age(self.camera_time),
+            'depth_age': age(self.depth_time),
+            'lidar_age': age(self.scan_time),
+            'odom_age': age(self.odom_time),
+            'lidar_valid_pct': round(100 * scan.valid_fraction) if scan is not None else None,
+            'nav_loop_ms': round(self.nav_loop_ms, 1),
+            'manual_active': now < self.manual_override_until,
+            'detections': detections,
+            'target_candidate_confidence': (round(float(candidate_confidence), 3)
+                                            if candidate_confidence is not None else None),
+            'target_candidate_box': candidate_box,
+            'target_confidence_required': TARGET_CONFIDENCE.get(TARGET_CLASS, TARGET_CONFIDENCE_DEFAULT),
+            'tracker_hits': tracker_hits,
+            'tracker_confirmed': bool(tracker_confirmed),
+            'depth_sync_ms': round(float(depth_sync_ms), 1) if depth_sync_ms is not None else None,
+        }
+        status.update(astra)
+        return status
 
     def stop(self):
         rospy.loginfo(">> [JetAuto Pro] Dang tat va dung robot an toan...")
+        self.manual_override_until = 0.0
         self.set_desired_velocity(0.0, 0.0, 0.0)
+        # Driver khung gầm KHÔNG tự dừng khi mất lệnh -> chủ động gửi vận tốc 0 vài lần trước khi thoát
+        zero = Twist()
+        for _ in range(3):
+            for pub in self.cmd_publishers:
+                try:
+                    pub.publish(zero)
+                except Exception:
+                    pass
+            time.sleep(0.05)
 
 
 # ==========================================================
@@ -1707,7 +2179,7 @@ class ObjectSeeker(object):
 def sigint_handler(signum, frame):
     print("\n>> Nhan tin hieu Ctrl+C! Dang dung dong co va thoat an toan...", flush=True)
     if seeker_instance:
-        seeker_instance.set_desired_velocity(0.0, 0.0, 0.0)
+        seeker_instance.stop()   # gui van toc 0 truoc khi thoat (driver khong tu dung)
     try:
         rospy.signal_shutdown("Ctrl+C pressed")
     except Exception:
