@@ -1,0 +1,22 @@
+# Load into /jetauto_navigation. Geometry/scan settings are shared with monitor.
+monitor_namespace: /jetauto_collision_monitor
+odom_frame: odom
+base_frame: base_footprint
+target_topic: /vision/target
+output_topic: /collision_monitor/cmd_vel_raw
+resolution: 0.06
+inflation_radius: 0.06  # yellow obstacle buffer: 6 cm; chassis footprint checked separately
+grid_size: 81
+memory_s: 4.0
+ray_range: 3.0
+planner_hz: 2.0
+control_hz: 10.0
+goal_tolerance: 0.10
+lookahead: 0.20
+target_timeout: 1.2
+odom_timeout: 0.5
+pose_sync_tolerance: 0.15
+acceleration: 0.25
+progress_timeout: 8.0
+progress_distance: 0.06
+default_standoff: 0.35

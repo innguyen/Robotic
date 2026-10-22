@@ -1,0 +1,17 @@
+const assert = require('node:assert/strict');
+const {explainNavigation} = require('./navigation_status.js');
+const format = n => explainNavigation({mode:'live', navigation:n});
+assert.match(format({state:'WAIT_SCAN',scan_error:'SCAN_NEEDS_MATCHED_ODOMETRY'}), /chưa có odometry đủ gần/);
+assert.match(format({state:'WAIT_SCAN',scan_error:'STALE_SCAN_STAMP'}), /Timestamp LiDAR quá cũ/);
+assert.match(format({state:'WAIT_SCAN',scan_error:'SCAN_FRAME_MISMATCH'}), /không khớp cấu hình/);
+assert.match(format({state:'WAIT_SCAN',scan_age_s:.8,limits:{scan_timeout_s:.5}}), /0.800 s \/ giới hạn 0.500 s/);
+assert.match(format({state:'WAIT_SCAN',scan_age_s:.8}), /từng được chấp nhận/);
+assert.match(format({state:'WAIT_ODOMETRY',odom_error:'INVALID_QUATERNION'}), /Dữ liệu hướng robot/);
+assert.match(format({state:'MONITOR_STOP_ZONE'}), /Có điểm vật cản/);
+assert.match(format({state:'FOLLOW',velocity:[.1,0,0],monitor_velocity:[0,0,0]}), /chưa phải xác nhận bánh xe/);
+assert.match(format({state:'FOLLOW',velocity:[.1,0,0],monitor_velocity:[0,0,0]}), /Lệnh sau Monitor: tiến 0.000/);
+assert.match(format({state:'WAIT_TARGET',target_error:'STALE_TARGET'}), /Thông tin mục tiêu đã quá hạn/);
+assert.match(format({state:'FUTURE_STATE'}), /Trạng thái chưa có diễn giải/);
+assert.match(explainNavigation({mode:'preview',navigation:{state:'FOLLOW'}}), /lệnh không gửi tới động cơ/);
+assert.doesNotThrow(() => explainNavigation({}));
+console.log('13 dashboard diagnostic checks passed');

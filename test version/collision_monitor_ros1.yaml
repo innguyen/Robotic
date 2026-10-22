@@ -1,0 +1,28 @@
+# Load into /jetauto_collision_monitor before starting the Python node.
+input_topic: /collision_monitor/cmd_vel_raw
+# Preview topic: does not connect to the chassis unless explicitly changed.
+output_topic: /collision_monitor/cmd_vel_checked
+scan_topic: /scan
+# REQUIRED: replace with /scan/header/frame_id; confirm measured mount below.
+scan_frame: ''
+scan_x: 0.096
+scan_y: 0.0
+scan_yaw: 0.0  # radians
+body_length: 0.324
+body_width: 0.260
+stop_margin: 0.06
+slow_margin: 0.25
+slowdown_ratio: 0.35
+reaction_time: 0.25
+brake_decel: 0.35
+rate: 20.0
+source_timeout: 0.5
+command_timeout: 0.4
+max_forward: 0.18
+max_backward: 0.06
+max_lateral: 0.12
+max_angular: 0.5235987756  # rad/s, 30 deg/s
+min_valid_fraction: 0.05
+blind_sectors_deg: [[120.0, 180.0], [-180.0, -90.0]]
+# With these rear sectors, rotating and translating into them are blocked.
+block_blind_motion: true
