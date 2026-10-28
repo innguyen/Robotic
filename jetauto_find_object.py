@@ -524,281 +524,238 @@ class CamHandler(BaseHTTPRequestHandler):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JetAuto Dual Vision - Mecanum Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00E5FF;
-            --accent: #3B82F6;
-            --success: #22C55E;
-            --warning: #F59E0B;
-            --danger: #EF4444;
-            --bg-color: #0b1120;
-            --card-bg: rgba(15, 23, 42, 0.75);
-            --glass-bg: rgba(255, 255, 255, 0.04);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --neon-glow: 0 0 25px rgba(0, 229, 255, 0.35);
+            color-scheme: dark;
+            --primary: #8ab4ff; --accent: #5287ed;
+            --success: #80cba5; --warning: #efbf75; --danger: #f18b92;
+            --bg-color: #101215; --card-bg: #191c21;
+            --glass-bg: #191c21; --glass-border: #30343c;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0b1120 80%);
-            color: #f8fafc;
-            font-family: 'Inter', -apple-system, sans-serif;
-            min-height: 100vh;
-            padding: 1.2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        body { background: var(--bg-color); color: #e8eaed;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh; padding: 32px clamp(16px, 3vw, 48px) 40px;
+            display: flex; flex-direction: column; align-items: center; }
+        button, input { font: inherit; }
+        button { cursor: pointer; }
+        button:focus-visible, input:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+        button:disabled { opacity: .5; cursor: not-allowed; }
+        .header { width: 100%; max-width: 1440px; margin-bottom: 24px; text-align: left; }
+        .header::before { content: 'JETAUTO / CONTROL CENTER'; display: block; color: #969da9;
+            font-size: 10px; font-weight: 600; letter-spacing: .18em; margin-bottom: 12px; }
+        .header h1 { display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+            font-size: clamp(22px, 3vw, 30px); font-weight: 600; letter-spacing: -.04em; }
+        .header p { color: #969da9; font-size: 12px; line-height: 1.7; margin-top: 8px; max-width: 850px; }
+        .target-badge { color: var(--primary); background: #202c40; border: 1px solid #354969;
+            border-radius: 6px; padding: 6px 10px; font-size: 11px; font-weight: 600; letter-spacing: .04em; }
+        .container { width: 100%; max-width: 1440px; display: flex; flex-direction: column; gap: 16px; }
+        .top-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;
+            gap: 12px; padding: 12px; border: 1px solid var(--glass-border); background: var(--card-bg); border-radius: 10px; }
+        .group-left, .group-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .btn-toggle { background: transparent; color: #aeb5c1; border: 1px solid transparent;
+            padding: 8px 10px; border-radius: 6px; font-size: 11px; font-weight: 500; }
+        .btn-toggle:hover { background: #252a32; color: #fff; }
+        .btn-toggle.active { background: #26364e; color: #b4ceff; border-color: #3b5379; }
+        .camera-grid, .main-display-grid { display: grid; gap: 16px; width: 100%; align-items: stretch; }
+        .camera-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+        .main-display-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1fr); }
+        .stream-card { min-width: 0; border: 1px solid var(--glass-border); border-radius: 10px;
+            overflow: hidden; background: var(--card-bg); display: flex; flex-direction: column; }
+        .stream-header { min-height: 46px; padding: 12px 14px; display: flex; justify-content: space-between;
+            align-items: center; gap: 10px; border-bottom: 1px solid var(--glass-border); font-size: 11px; font-weight: 600; }
+        .stream-header > span:first-child { color: #d7dce5 !important; }
+        .stream-header > span:last-child { font-size: 10px; white-space: nowrap; }
+        .stream-box { position: relative; background: #0b0d10; width: 100%; min-height: 240px;
+            flex: 1; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .stream-box img { display: block; width: 100%; height: auto; max-height: 440px; object-fit: contain; color: #969da9; }
+        .legend { display: flex; flex-wrap: wrap; gap: 8px 14px; padding: 10px 14px;
+            border-top: 1px solid var(--glass-border); font-size: 10px; color: #a4acb9; }
+        .legend i { display: inline-block; width: 7px; height: 7px; border-radius: 2px; margin-right: 5px; }
+        .control-row { display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px; padding: 14px;
+            border: 1px solid var(--glass-border); border-radius: 10px; background: var(--card-bg); }
+        #targetInput { flex: 1 1 280px; min-width: 0; background: #111419; border: 1px solid #3b414c;
+            border-radius: 6px; color: #e8eaed; padding: 12px; font-size: 12px; }
+        #targetInput::placeholder { color: #89919e; }
+        #targetInput:focus { border-color: var(--primary); }
+        .btn-action { display: flex; align-items: center; justify-content: center; gap: 6px;
+            padding: 11px 14px; border: 1px solid transparent; border-radius: 6px; font-size: 11px; font-weight: 600;
+            transition: background-color .15s, border-color .15s; }
+        .btn-action:hover { filter: brightness(1.12); }
+        .btn-find { background: #8ab4ff; color: #13223c; }
+        .btn-pause, .btn-dry-on { background: #352c1e; border-color: #675335; color: #efbf75; }
+        .btn-resume { background: #20372c; border-color: #3b644f; color: #9bdbb9; }
+        .btn-stop { background: #c9414e; border-color: #e15c69; color: #fff; }
+        .btn-test { background: #24282f; border-color: #3b414c; color: #c4cbd6; }
+        .tags-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 0 2px; }
+        .tag-btn { background: #191c21; color: #aeb7c6; border: 1px solid #30343c;
+            border-radius: 5px; padding: 6px 10px; font-size: 11px; }
+        .tag-btn:hover { color: #c8dcff; background: #253246; border-color: #4c658b; }
+        .bottom-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr); gap: 16px; }
+        .info-card, .dpad-card { min-width: 0; padding: 18px; background: var(--card-bg);
+            border: 1px solid var(--glass-border); border-radius: 10px; }
+        .card-title { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+            gap: 8px; padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid var(--glass-border);
+            color: #d9dee7; font-size: 12px; font-weight: 600; line-height: 1.6; }
+        .hud-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+        .hud-item { min-width: 0; background: #13161b; border: 1px solid #2b3038; border-radius: 7px; padding: 12px; }
+        .hud-item:first-child { border-left: 3px solid var(--primary); background: #1b2533; }
+        .hud-label { font-size: 10px; font-weight: 500; color: #a0a8b5; margin-bottom: 8px; line-height: 1.5; }
+        .hud-val { font-size: 12px; font-weight: 500; line-height: 1.65; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+        .dpad-layout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; max-width: 320px; margin: 20px auto; }
+        .dpad-btn { min-height: 56px; padding: 10px 6px; border-radius: 7px; border: 1px solid #3a414d;
+            background: #252a32; color: #d8dfe9; font-size: 11px; font-weight: 600; text-align: center;
+            touch-action: none; user-select: none; }
+        .dpad-btn:hover { background: #303846; border-color: #687c99; }
+        .dpad-btn:active { background: #8ab4ff; color: #13223c; }
+        .dpad-strafe { background: #202c3d; border-color: #3b506f; color: #accaff; }
+        .dpad-stop { background: #3d2329; border-color: #74414b; color: #ffadb5; }
+        @media (max-width: 1100px) {
+            .main-display-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .main-display-grid .stream-card:last-child { grid-column: 1 / -1; }
+            .bottom-grid { grid-template-columns: minmax(0, 1.2fr) minmax(280px, 1fr); }
+        }
+        @media (max-width: 760px) {
+            body { padding: 20px 12px 28px; }
+            .header { margin-bottom: 18px; }
+            .header h1 { gap: 10px; }
+            .camera-grid, .main-display-grid, .bottom-grid { grid-template-columns: minmax(0, 1fr); }
+            .main-display-grid .stream-card:last-child { grid-column: auto; }
+            .control-row .btn-action { flex: 1 1 130px; }
+            .top-toolbar { align-items: flex-start; }
+            .stream-header { flex-wrap: wrap; }
+            .stream-box { min-height: 200px; }
+            .info-card, .dpad-card { padding: 14px; }
+        }
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+        /* Watch faces: camera in obsidian, LiDAR in porcelain. */
+        :root { --primary: #ffad70; --accent: #fa7c39; --bg-color: #080808;
+            --card-bg: #111111; --glass-border: #292929; --success: #9ac8ab; }
+        body { background: #080808; padding-top: 30px; }
+        .header, .container { max-width: 1120px; }
+        .header { margin-bottom: 26px; position: relative; }
+        .header::before { content: 'J E T A U T O   /   L I V E   S T U D I O'; color: #aaa39c; font-size: 9px; letter-spacing: .12em; }
+        .header h1 { font-size: clamp(24px, 3vw, 36px); font-weight: 400; letter-spacing: -.055em; }
+        .header p { color: #827e79; font-size: 12px; }
+        .target-badge { margin-left: auto; border-radius: 30px; background: #191612; border-color: #3b2a1e;
+            color: #e9b38b; font-size: 10px; letter-spacing: .08em; padding: 9px 14px; }
+        .camera-grid, .main-display-grid { grid-template-columns: repeat(2, minmax(0, 1fr));
+            align-items: start; gap: clamp(24px, 5vw, 72px); padding: 18px 24px 32px; }
+        .stream-card.watch-face { position: relative; isolation: isolate; display: flex; flex-direction: column;
+            width: 100%; max-width: 520px; justify-self: center; min-width: 0; aspect-ratio: 1 / 1.12; border-radius: 24%; overflow: hidden;
+            background: #030303; border: 1px solid #414141;
+            box-shadow: inset 0 2px 5px #ffffff26, inset 0 18px 28px #ffffff0c, 0 16px 40px #0009, 0 26px 44px -32px #f57935; }
+        .watch-face::before { content: ''; position: absolute; z-index: 0; pointer-events: none; inset: 0;
+            background: linear-gradient(180deg, #ffffff16 0%, transparent 19%, transparent 70%, #e84a08 94%, #ffdba3 100%); opacity: .9; }
+        .watch-face::after { content: ''; width: 20px; height: 28px; position: absolute; top: 0; left: 23%;
+            background: #fffdf9; border-radius: 0 0 2px 2px; z-index: 2; }
+        .watch-face .stream-header { position: relative; z-index: 1; padding: 46px 32px 16px;
+            display: flex; flex-direction: column; justify-content: center; gap: 6px; border: 0; text-align: center; }
+        .watch-face .stream-header > span:first-child { color: #f4f1ed !important; font-size: clamp(23px, 3vw, 36px);
+            letter-spacing: -.055em; font-weight: 400; line-height: 1; }
+        .watch-face .stream-header > span:last-child { color: #a29d96 !important; font-size: 9px;
+            letter-spacing: .11em; text-transform: uppercase; white-space: normal; }
+        .watch-face .stream-box { position: relative; z-index: 1; width: calc(100% - 44px); margin: 0 auto;
+            flex: 1; min-height: 0; border-radius: 18px; background: #0c0c0c; border: 1px solid #ffffff12; }
+        .watch-face .stream-box img { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none;
+            object-fit: contain; z-index: 1; background: #0c0c0c; }
+        .watch-face .stream-box img[data-offline] { opacity: 0; }
+        .feed-empty { text-align: center; color: #99938c; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 9px; padding: 16px; font-size: 11px; }
+        .feed-empty b { font-size: 32px; font-weight: 200; letter-spacing: -.06em; color: #b8afa5; }
+        .feed-empty small { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+        .watch-footer { position: relative; z-index: 1; min-height: 70px; display: flex; align-items: center;
+            justify-content: space-between; padding: 14px 36px 22px; gap: 10px; font-size: 9px; color: #fff1e0;
+            letter-spacing: .12em; text-transform: uppercase; }
+        .watch-footer span:last-child { opacity: .72; }
+        .stream-card.watch-light { background: #f1f0ed; border-color: #fff;
+            box-shadow: inset 0 2px 6px #fff, 0 16px 40px #0005; }
+        .watch-light::before { background: linear-gradient(150deg, #fff 0%, #ffffff00 40%, #dedcd744 100%); }
+        .watch-light::after { background: #242424; }
+        .watch-light .stream-header > span:first-child { color: #181818 !important; }
+        .watch-light .stream-header > span:last-child { color: #6a6864 !important; }
+        .watch-light .stream-box { background: #e7e6e2; border-color: #0000000a; }
+        .watch-light .stream-box img { background: #e7e6e2; }
+        .watch-light .feed-empty { color: #7a7771; }
+        .watch-light .feed-empty b { color: #35332f; }
+        .watch-light .watch-footer { color: #55514a; }
+        .watch-light .legend { position: relative; z-index: 1; border: 0; color: #625e57; font-size: 8px;
+            justify-content: center; padding: 0 28px 26px; gap: 6px 10px; }
+        .watch-light:has(.legend) .watch-footer { min-height: 48px; padding-bottom: 10px; }
+        .top-toolbar { order: 1; border: 0; border-bottom: 1px solid #292929; background: transparent;
+            border-radius: 0; padding: 0 0 16px; }
+        .control-row { order: 2; background: #121110; border-color: #302b26; border-radius: 20px; padding: 12px; }
+        .tags-bar { order: 3; }
+        .bottom-grid { order: 4; }
+        .aux-feed { order: 5; border: 1px solid #292929; border-radius: 20px; background: #111; padding: 16px; }
+        .aux-feed summary { cursor: pointer; color: #a8a099; font-size: 11px; }
+        .aux-feed .stream-card { margin-top: 14px; max-width: 500px; }
+        .btn-toggle { color: #aaa39b; }
+        .btn-toggle.active { color: #f5c19b; background: #2d2118; border-color: #4c3322; }
+        .btn-action { border-radius: 12px; padding: 12px 14px; }
+        .btn-find { background: #f7e8d8; color: #25190e; }
+        .btn-pause, .btn-dry-on { color: #e6bb8e; border-color: #58402b; background: #2c2118; }
+        .btn-test { background: #1e1c1a; border-color: #38322c; color: #b9b0a5; }
+        #targetInput { background: #090909; border-color: #34302b; border-radius: 12px; }
+        .tag-btn { background: transparent; border-color: #2c2824; border-radius: 30px; color: #a69b90; }
+        .tag-btn:hover { background: #2d2118; border-color: #80542e; color: #f5c19b; }
+        .info-card, .dpad-card { background: #111; border-color: #292929; border-radius: 22px; }
+        .card-title { border-color: #292929; color: #c4bdb5; }
+        .hud-item { background: transparent; border: 0; border-bottom: 1px solid #242424; border-radius: 0; }
+        .hud-item:first-child { border: 1px solid #423124; background: #1e1813; border-radius: 12px; }
+        .hud-label { color: #8c837b; }
+        .dpad-btn { background: #1c1b19; border-color: #3d3832; border-radius: 14px; color: #d4cbc1; }
+        .dpad-btn:hover { background: #302820; border-color: #8d6544; }
+        .dpad-btn:active { background: #efb88d; color: #25190e; }
+        .dpad-strafe { background: #221b15; border-color: #4c3726; color: #e5b18a; }
+        .dpad-stop { background: #382024; border-color: #703d42; color: #f4b0b5; }
+        @media (max-width: 1100px) {
+            .main-display-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .main-display-grid .stream-card:last-child { grid-column: auto; }
+        }
+        @media (max-width: 760px) {
+            .camera-grid, .main-display-grid { grid-template-columns: minmax(0, 1fr) !important;
+                padding: 4px 10px 20px; gap: 28px; }
+            .watch-face { max-width: 480px; justify-self: center; }
+            .watch-face .stream-header { padding: 36px 24px 14px; }
+            .watch-face .stream-header > span:first-child { font-size: 30px; }
+            .watch-footer { min-height: 60px; padding: 14px 28px 18px; }
+            .header h1 { font-size: 28px; }
+            .target-badge { font-size: 9px; padding: 7px 10px; }
         }
 
-        .header { text-align: center; margin-bottom: 1rem; max-width: 900px; width: 100%; }
-        .header h1 {
-            font-weight: 800;
-            font-size: 2rem;
-            background: linear-gradient(135deg, #00E5FF 0%, #3B82F6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
+        /* Keep every operator control within easy reach. */
+        .control-row { order: -3; position: sticky; top: 8px; z-index: 10;
+            box-shadow: 0 8px 24px #0009; }
+        .tags-bar { order: -2; }
+        .top-toolbar { order: -1; }
+        .stream-card.watch-face { max-width: 360px; }
+        .camera-grid, .main-display-grid { padding-top: 4px; padding-bottom: 12px; gap: 32px; }
+        .watch-face .stream-header { padding-top: 32px; padding-bottom: 12px; }
+        .watch-face .stream-header > span:first-child { font-size: 28px; }
+        .watch-face .stream-box { width: calc(100% - 36px); }
+        .watch-footer { min-height: 54px; padding: 12px 26px 18px; font-size: 8px; }
+        .watch-light:has(.legend) .watch-footer { min-height: 38px; }
+        .bottom-grid { grid-template-columns: minmax(280px, .9fr) minmax(0, 1.6fr); }
+        .bottom-grid .dpad-card { order: 0; scroll-margin-top: 140px; }
+        .bottom-grid .info-card { order: 1; }
+        .control-link { color: #e5b18a; border: 1px solid #4c3726; border-radius: 8px;
+            padding: 8px 12px; font-size: 11px; text-decoration: none; }
+        .control-link:hover { background: #302820; }
+        .dpad-layout { margin: 10px auto; }
+        @media (max-width: 760px) {
+            .control-row { position: static; }
+            .bottom-grid { grid-template-columns: minmax(0, 1fr); }
+            .bottom-grid .dpad-card { scroll-margin-top: 12px; }
+            .watch-face { max-width: 360px; }
         }
-        .header p { color: #94a3b8; font-size: 0.92rem; margin-top: 0.4rem; }
-        .target-badge {
-            background: rgba(0, 229, 255, 0.15);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 0.25rem 0.9rem;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            box-shadow: var(--neon-glow);
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1320px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 1.4rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);
-            backdrop-filter: blur(16px);
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        /* TOOLBAR TOP */
-        .top-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid var(--glass-border);
-            padding: 10px 18px;
-            border-radius: 16px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .group-left, .group-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-
-        .btn-toggle {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #cbd5e1;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 0.82rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-toggle:hover { background: rgba(255, 255, 255, 0.12); color: white; }
-        .btn-toggle.active {
-            background: linear-gradient(135deg, #00E5FF, #3B82F6);
-            color: #0b1120;
-            border-color: transparent;
-            font-weight: 800;
-        }
-
-        /* CAMERA GRIDS */
-        .camera-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.2rem;
-            width: 100%;
-        }
-        @media (max-width: 860px) {
-            .camera-grid { grid-template-columns: 1fr; }
-        }
-
-        .stream-card {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.4);
-        }
-        .stream-header {
-            padding: 10px 14px;
-            background: rgba(15, 23, 42, 0.95);
-            border-bottom: 1px solid var(--glass-border);
-            font-size: 0.82rem;
-            font-weight: 700;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .stream-box {
-            position: relative;
-            width: 100%;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 280px;
-        }
-        .stream-box img {
-            width: 100%;
-            height: auto;
-            max-height: 460px;
-            object-fit: contain;
-            display: block;
-        }
-
-        /* QUICK CONTROLS */
-        .control-row {
-            display: flex;
-            gap: 10px;
-            width: 100%;
-            flex-wrap: wrap;
-        }
-        #targetInput {
-            flex: 1;
-            min-width: 220px;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid var(--glass-border);
-            padding: 12px 18px;
-            border-radius: 14px;
-            color: #fff;
-            font-size: 0.95rem;
-            outline: none;
-        }
-        #targetInput:focus { border-color: var(--primary); box-shadow: var(--neon-glow); }
-
-        .btn-action {
-            padding: 12px 20px;
-            border-radius: 14px;
-            border: none;
-            font-weight: 700;
-            font-size: 0.88rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-find { background: linear-gradient(135deg, #00E5FF, #3B82F6); color: #0b1120; }
-        .btn-pause { background: #F59E0B; color: #000; }
-        .btn-resume { background: #10B981; color: #fff; }
-        .btn-test { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid var(--glass-border); }
-        .btn-stop { background: #EF4444; color: #fff; }
-        .btn-dry-on { background: #F59E0B; color: #000; }
-        .legend { display: flex; flex-wrap: wrap; gap: 10px; padding: 8px 12px; font-size: 0.72rem; color: #94a3b8; border-top: 1px solid var(--glass-border); }
-        .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
-
-        .tags-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .tag-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #cbd5e1;
-            padding: 5px 12px;
-            border-radius: 16px;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
-        .tag-btn:hover { background: rgba(0, 229, 255, 0.2); border-color: var(--primary); color: #fff; }
-
-        /* BOTTOM HUD & D-PAD */
-        .bottom-grid {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr;
-            gap: 1.2rem;
-            width: 100%;
-        }
-        @media (max-width: 980px) {
-            .bottom-grid { grid-template-columns: 1fr; }
-        }
-
-        .info-card, .dpad-card {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            padding: 18px;
-        }
-        .card-title {
-            font-size: 0.95rem;
-            font-weight: 800;
-            color: #94a3b8;
-            margin-bottom: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            padding-bottom: 8px;
-        }
-        .hud-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        .hud-item {
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 10px 14px;
-        }
-        .hud-label { font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
-        .hud-val { font-size: 0.92rem; font-weight: 700; }
-
-        /* MECANUM D-PAD */
-        .dpad-layout {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            max-width: 320px;
-            margin: 0 auto;
-        }
-        .dpad-btn {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #fff;
-            padding: 14px 8px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.15s;
-            user-select: none;
-            touch-action: none;
-            text-align: center;
-        }
-        .dpad-btn:active { background: var(--primary); color: #000; }
-        .dpad-strafe { background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3); color: #38bdf8; font-size: 0.78rem; }
-        .dpad-stop { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4); color: #ef4444; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>JetAuto Dual Vision <span class="target-badge" id="targetBadge">🎯 """ + TARGET_CLASS.upper() + """</span></h1>
-        <p>Cam Astra: YOLO Khóa Mục Tiêu + Độ Sâu | LiDAR G4 + Astra: Né Vật Cản Mecanum (đầu xe vẫn nhìn mục tiêu)</p>
+        <h1>See. Sense. Move. <span class="target-badge" id="targetBadge">""" + TARGET_CLASS.upper() + """</span></h1>
+        <p>Quan sát camera, theo dõi mục tiêu và điều khiển robot.</p>
     </div>
 
     <div class="container">
@@ -806,40 +763,45 @@ class CamHandler(BaseHTTPRequestHandler):
         <div class="top-toolbar">
             <div class="group-left">
                 <span style="color: #64748b; font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">Bố cục:</span>
-                <button class="btn-toggle active" id="btnLayoutDual" onclick="setLayout('dual')">⊞ 2 Màn Hình (Cards)</button>
-                <button class="btn-toggle" id="btnLayoutCombined" onclick="setLayout('combined')">🔲 Ghép 1 Luồng (Unified)</button>
-                <button class="btn-toggle" id="btnLayoutAstra" onclick="setLayout('astra')">🔲 Chỉ Cam Astra</button>
-                <button class="btn-toggle" id="btnLayoutOakd" onclick="setLayout('oakd')">🔲 Chỉ Radar</button>
+                <button class="btn-toggle active" id="btnLayoutDual" onclick="setLayout('dual')">⊞ Camera + LiDAR</button>
+                <button class="btn-toggle" id="btnLayoutCombined" onclick="setLayout('combined')">Combined</button>
+                <button class="btn-toggle" id="btnLayoutAstra" onclick="setLayout('astra')">Camera</button>
+                <button class="btn-toggle" id="btnLayoutOakd" onclick="setLayout('oakd')">LiDAR</button>
             </div>
             <div class="group-right">
+                <a class="control-link" href="#manualControls">Lái tay ↓</a>
                 <span style="color: #64748b; font-weight: 700; font-size: 0.8rem; text-transform: uppercase;">Chế độ:</span>
-                <button class="btn-toggle active" id="btnFeedStream" onclick="setFeedMode('stream')">📡 Stream Video</button>
-                <button class="btn-toggle" id="btnFeedSnapshot" onclick="setFeedMode('snapshot')">⚡ Snapshot</button>
+                <button class="btn-toggle active" id="btnFeedStream" onclick="setFeedMode('stream')">Stream Video</button>
+                <button class="btn-toggle" id="btnFeedSnapshot" onclick="setFeedMode('snapshot')">Snapshot</button>
             </div>
         </div>
 
         <!-- DUAL CAMERA GRID -->
         <div class="camera-grid" id="cameraGrid">
             <!-- CAM 1: ASTRA PRO PLUS (YOLO AI) -->
-            <div class="stream-card" id="cardAstra">
+            <div class="stream-card watch-face" id="cardAstra">
                 <div class="stream-header">
-                    <span style="color: var(--primary);">🟢 ASTRA PRO PLUS (YOLO Khóa Mục Tiêu)</span>
-                    <span style="color: var(--success);" id="feedStatusAstra">● AI Active</span>
+                    <span style="color: var(--primary);">Camera</span>
+                    <span style="color: var(--success);" id="feedStatusAstra">ASTRA / VISION</span>
                 </div>
                 <div class="stream-box">
-                    <img id="feedAstra" src="/cam_astra.mjpg" alt="Astra Feed" />
+                    <div class="feed-empty"><b>VISION</b><span>Chờ tín hiệu từ robot</span><small>ASTRA RGB</small></div>
+                    <img id="feedAstra" src="/cam_astra.mjpg" alt="Astra Feed" onload="this.removeAttribute('data-offline')" onerror="this.setAttribute('data-offline', '')" />
                 </div>
+                <div class="watch-footer"><span>01 / RGB CAMERA</span><span>ASTRA PRO PLUS</span></div>
             </div>
 
             <!-- KHUNG 2: RADAR NÉ VẬT CẢN (LiDAR + Astra, nhìn từ trên xuống, đầu xe hướng lên) -->
-            <div class="stream-card" id="cardOakd">
+            <div class="stream-card watch-face watch-light" id="cardOakd">
                 <div class="stream-header">
-                    <span style="color: #38bdf8;">🧭 RADAR NÉ VẬT CẢN (LiDAR + Astra)</span>
+                    <span style="color: #38bdf8;">LiDAR</span>
                     <span style="color: var(--success);" id="feedStatusOakd">● Đang khởi động</span>
                 </div>
                 <div class="stream-box">
-                    <img id="feedOakd" src="/cam_oakd.mjpg" alt="Radar ne vat can" />
+                    <div class="feed-empty"><b>SCAN</b><span>Chờ tín hiệu từ robot</span><small>LIDAR / LOCAL MAP</small></div>
+                    <img id="feedOakd" src="/cam_oakd.mjpg" alt="Radar ne vat can" onload="this.removeAttribute('data-offline')" onerror="this.setAttribute('data-offline', '')" />
                 </div>
+                <div class="watch-footer"><span>02 / SPATIAL VIEW</span><span>LIDAR + DEPTH</span></div>
                 <div class="legend">
                     <span><i style="background:#00dcff"></i>LiDAR</span>
                     <span><i style="background:#ff8c00"></i>Astra</span>
@@ -864,25 +826,25 @@ class CamHandler(BaseHTTPRequestHandler):
 
         <!-- QUICK CONTROLS -->
         <div class="control-row">
-            <input type="text" id="targetInput" placeholder="Nhập tên vật thể cần tìm (person, bottle, cup, chair, cell phone...)" onkeypress="if(event.key==='Enter') setTarget()" />
-            <button class="btn-action btn-find" onclick="setTarget()">🔍 TÌM KIẾM</button>
-            <button id="pauseBtn" class="btn-action btn-pause" onclick="togglePause()">⏸️ TẠM DỪNG</button>
-            <button class="btn-action btn-stop" onclick="emergencyStop()">🛑 DỪNG KHẨN</button>
-            <button id="dryRunBtn" class="btn-action btn-test" onclick="toggleDryRun()" title="Tính toán và hiển thị lệnh nhưng không gửi ra động cơ">🧪 CHẠY KHÔ: TẮT</button>
-            <button class="btn-action btn-test" onclick="calibrateAstra()" title="Đặt robot nhìn thấy sàn trống phía trước rồi bấm">📐 HIỆU CHUẨN SÀN</button>
-            <button class="btn-action btn-test" onclick="testMotors()">🛠️ TEST MECANUM 3-DOF</button>
+            <input type="text" id="targetInput" aria-label="Vật thể cần tìm" placeholder="Nhập tên vật thể cần tìm (person, bottle, cup, chair, cell phone...)" onkeypress="if(event.key==='Enter') setTarget()" />
+            <button class="btn-action btn-find" onclick="setTarget()">TÌM KIẾM</button>
+            <button id="pauseBtn" class="btn-action btn-pause" onclick="togglePause()">TẠM DỪNG</button>
+            <button class="btn-action btn-stop" onclick="emergencyStop()">DỪNG KHẨN</button>
+            <button id="dryRunBtn" class="btn-action btn-test" onclick="toggleDryRun()" title="Tính toán và hiển thị lệnh nhưng không gửi ra động cơ">CHẠY KHÔ: TẮT</button>
+            <button class="btn-action btn-test" onclick="calibrateAstra()" title="Đặt robot nhìn thấy sàn trống phía trước rồi bấm">HIỆU CHUẨN SÀN</button>
+            <button class="btn-action btn-test" onclick="testMotors()">TEST MECANUM 3-DOF</button>
         </div>
 
         <!-- QUICK TAGS -->
         <div class="tags-bar">
             <span style="font-size: 0.8rem; color: #64748b; font-weight: 700;">Gợi ý:</span>
-            <button class="tag-btn" onclick="quickSelect('person')">👤 person</button>
-            <button class="tag-btn" onclick="quickSelect('bottle')">🍾 bottle</button>
-            <button class="tag-btn" onclick="quickSelect('cup')">☕ cup</button>
-            <button class="tag-btn" onclick="quickSelect('cell phone')">📱 cell phone</button>
-            <button class="tag-btn" onclick="quickSelect('chair')">🪑 chair</button>
-            <button class="tag-btn" onclick="quickSelect('backpack')">🎒 backpack</button>
-            <button class="tag-btn" onclick="quickSelect('sports ball')">⚽ ball</button>
+            <button class="tag-btn" onclick="quickSelect('person')">person</button>
+            <button class="tag-btn" onclick="quickSelect('bottle')">bottle</button>
+            <button class="tag-btn" onclick="quickSelect('cup')">cup</button>
+            <button class="tag-btn" onclick="quickSelect('cell phone')">cell phone</button>
+            <button class="tag-btn" onclick="quickSelect('chair')">chair</button>
+            <button class="tag-btn" onclick="quickSelect('backpack')">backpack</button>
+            <button class="tag-btn" onclick="quickSelect('sports ball')">ball</button>
         </div>
 
         <!-- BOTTOM GRID: STATUS HUD & D-PAD -->
@@ -925,7 +887,7 @@ class CamHandler(BaseHTTPRequestHandler):
             </div>
 
             <!-- MECANUM D-PAD MANUAL DRIVE -->
-            <div class="dpad-card">
+            <div class="dpad-card" id="manualControls">
                 <div class="card-title">
                     <span>Lái thủ công Bánh Mecanum (W,A,S,D + Q,E trượt)</span>
                 </div>
@@ -966,9 +928,9 @@ class CamHandler(BaseHTTPRequestHandler):
 
             if (mode === 'dual') {
                 grid.style.display = 'grid';
-                grid.style.gridTemplateColumns = '1fr 1fr';
-                cardAstra.style.display = 'block';
-                cardOakd.style.display = 'block';
+                grid.style.gridTemplateColumns = '';
+                cardAstra.style.display = 'flex';
+                cardOakd.style.display = 'flex';
                 cardCombined.style.display = 'none';
             } else if (mode === 'combined') {
                 grid.style.display = 'none';
@@ -976,14 +938,14 @@ class CamHandler(BaseHTTPRequestHandler):
             } else if (mode === 'astra') {
                 grid.style.display = 'grid';
                 grid.style.gridTemplateColumns = '1fr';
-                cardAstra.style.display = 'block';
+                cardAstra.style.display = 'flex';
                 cardOakd.style.display = 'none';
                 cardCombined.style.display = 'none';
             } else if (mode === 'oakd') {
                 grid.style.display = 'grid';
                 grid.style.gridTemplateColumns = '1fr';
                 cardAstra.style.display = 'none';
-                cardOakd.style.display = 'block';
+                cardOakd.style.display = 'flex';
                 cardCombined.style.display = 'none';
             }
         }
@@ -1051,7 +1013,7 @@ class CamHandler(BaseHTTPRequestHandler):
                 body: JSON.stringify({target: t})
             }).then(r => r.json()).then(d => {
                 if (d.status === 'ok') {
-                    document.getElementById('targetBadge').innerText = '🎯 ' + t.toUpperCase();
+                    document.getElementById('targetBadge').innerText = '' + t.toUpperCase();
                     document.getElementById('targetInput').value = '';
                 }
             });
@@ -1078,7 +1040,7 @@ class CamHandler(BaseHTTPRequestHandler):
         function updateDryRunUI(dry) {
             const btn = document.getElementById('dryRunBtn');
             btn.className = 'btn-action ' + (dry ? 'btn-dry-on' : 'btn-test');
-            btn.innerText = dry ? '🧪 CHẠY KHÔ: BẬT (động cơ đứng yên)' : '🧪 CHẠY KHÔ: TẮT';
+            btn.innerText = dry ? 'CHẠY KHÔ: BẬT (động cơ đứng yên)' : 'CHẠY KHÔ: TẮT';
         }
 
         function toggleDryRun() {
@@ -1097,10 +1059,10 @@ class CamHandler(BaseHTTPRequestHandler):
             const btn = document.getElementById('pauseBtn');
             if (paused) {
                 btn.className = 'btn-action btn-resume';
-                btn.innerText = '▶️ TIẾP TỤC';
+                btn.innerText = 'TIẾP TỤC';
             } else {
                 btn.className = 'btn-action btn-pause';
-                btn.innerText = '⏸️ TẠM DỪNG';
+                btn.innerText = 'TẠM DỪNG';
             }
         }
 
@@ -1330,7 +1292,7 @@ class ObjectSeeker(object):
 
         # Load YOLO Model
         self.classes = self.load_classes()
-        model_path = os.path.join(os.path.dirname(__file__), 'yolov5n.onnx')
+        model_path = os.path.join(os.path.dirname(__file__), 'models', 'yolov5n.onnx')
         if not os.path.exists(model_path):
             rospy.logerr(">> Khong tim thay file model: " + model_path)
             sys.exit(1)
@@ -1391,7 +1353,7 @@ class ObjectSeeker(object):
             'BAT' if USE_OAKD else 'TAT', 'BAT' if DRY_RUN else 'TAT'))
 
     def load_classes(self):
-        path = os.path.join(os.path.dirname(__file__), 'coco.names')
+        path = os.path.join(os.path.dirname(__file__), 'models', 'coco.names')
         if os.path.exists(path):
             with open(path, 'r') as f:
                 return [c.strip() for c in f.readlines() if c.strip()]

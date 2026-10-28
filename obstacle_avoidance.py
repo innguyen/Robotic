@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Né vật cản cho JetAuto Pro (bánh Mecanum) - LiDAR G4 + camera độ sâu Astra Pro Plus.
-Module không phụ thuộc ROS để kiểm thử được trên máy tính (test_obstacle_avoidance.py).
+Module không phụ thuộc ROS; được chương trình jetauto_find_object.py sử dụng.
 
 Hệ tọa độ xe: x tiến, y sang trái, z lên trên (mét, radian, góc dương = quay trái).
 Bộ nhớ ngắn hạn lưu theo khung odom để vật cản không "biến mất" khi lọt vào vùng mù.

@@ -6,14 +6,21 @@ Double-click **`run_test_robot.bat`** in this directory. It uploads the test cod
 models and driver-check helper, verifies sensors, stops the old AI application,
 detects scan/odom frames and runs vision + navigation + Collision Monitor together.
 Enter the robot SSH password when requested. It does not install dependencies.
+To stop the repeated password prompts, run **`setup_ssh_key.bat`** once (asks for the
+password one last time and installs your SSH key on the robot).
 
 Open **http://192.168.149.1:5010**, select a target and use **Bắt đầu / Tạm dừng**.
+For search and rescue, select the target class and press **Tự động tìm kiếm**: the robot
+spin-scans, explores unseen space, approaches the target when confirmed and marks
+**ĐÃ TÌM THẤY** with its odom position on the map (`search_core_ros1.py`).
 Default mode is **preview**: commands go to a test topic, not the motors.
 For the explicit live shortcut, use **`run_test_robot_live.bat`**. The page shows
 the active mode and why navigation is waiting or blocked. It also displays the
 local obstacle grid and path next to the camera. This grid is not SLAM.
 The old controller remains stopped after the launcher exits. Keep the terminal
-open; Ctrl+C shuts down the test nodes while retaining sensor drivers.
+open; Ctrl+C shuts down the test nodes while retaining sensor drivers. When the
+local ssh ends for any reason (Ctrl+C, network loss), the launcher also runs
+`stop_test_stack_ros1.sh` on the robot. To stop it by hand, run **`stop_test_robot.bat`**.
 Re-running the launcher gracefully replaces a previous test supervisor only after
 verifying its script path and startup-lock ownership. Unidentified lock holders
 are reported without terminating them; deleting a lock file is not a recovery step.

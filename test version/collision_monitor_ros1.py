@@ -25,6 +25,8 @@ class Config(object):
         # Known obscured sectors, expressed around the scan sensor in degrees.
         'blind_sectors_deg': [[120.0, 180.0], [-180.0, -90.0]],
         'block_blind_motion': True,
+        # Rotation is still swept against observed points; only blind translation is blocked.
+        'allow_rotation': True,
     }
 
     def __init__(self, **kwargs):
@@ -35,7 +37,7 @@ class Config(object):
             value = kwargs.get(key, default)
             setattr(self, key, value)
         for key in self.DEFAULTS:
-            if key not in ('blind_sectors_deg', 'block_blind_motion'):
+            if key not in ('blind_sectors_deg', 'block_blind_motion', 'allow_rotation'):
                 value = float(getattr(self, key))
                 if not math.isfinite(value):
                     raise ValueError(key + ' must be finite')
@@ -53,6 +55,8 @@ class Config(object):
             raise ValueError('Invalid min_valid_fraction')
         if not isinstance(self.block_blind_motion, bool):
             raise ValueError('block_blind_motion must be a boolean')
+        if not isinstance(self.allow_rotation, bool):
+            raise ValueError('allow_rotation must be a boolean')
         for sector in self.blind_sectors_deg:
             if len(sector) != 2 or not all(math.isfinite(float(x)) for x in sector):
                 raise ValueError('Invalid blind sector')
@@ -207,7 +211,7 @@ class Monitor(object):
         state = 'LIMIT' if scale < 1 else 'PASS'
         if cfg.block_blind_motion and cfg.blind_sectors_deg:
             angle = math.degrees(math.atan2(vy, vx) - cfg.scan_yaw)
-            if abs(wz) > 1e-6 or (math.hypot(vx, vy) > 1e-6 and any(
+            if (abs(wz) > 1e-6 and not cfg.allow_rotation) or (math.hypot(vx, vy) > 1e-6 and any(
                     in_sector(angle, lo, hi) for lo, hi in cfg.blind_sectors_deg)):
                 return zero, 'UNOBSERVED_DIRECTION'
         if self._inside(self.points, cfg.stop_margin).any():

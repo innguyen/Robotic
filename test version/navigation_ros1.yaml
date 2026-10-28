@@ -5,18 +5,23 @@ base_frame: base_footprint
 target_topic: /vision/target
 output_topic: /collision_monitor/cmd_vel_raw
 resolution: 0.06
-inflation_radius: 0.06  # yellow obstacle buffer: 6 cm; chassis footprint checked separately
-grid_size: 81
-memory_s: 4.0
+inflation_radius: 0.05  # planned body clearance >= 5 cm (typically 5-11 cm with 6 cm cells)
+grid_size: 121        # 121 x 6 cm = 7.3 m window (+-3.6 m); 161 = 9.7 m if Nano timing allows (max 201)
+memory_s: 20.0        # seconds an observed cell is remembered (behind the robot too); odom drift grows with it
 ray_range: 3.0
 planner_hz: 2.0
 control_hz: 10.0
 goal_tolerance: 0.10
 lookahead: 0.20
-target_timeout: 1.2
+target_timeout: 2.5  # >= vision target_memory_small_s (odom-anchored static objects)
 odom_timeout: 0.5
 pose_sync_tolerance: 0.15
 acceleration: 0.25
 progress_timeout: 8.0
 progress_distance: 0.06
 default_standoff: 0.35
+heading_gain: 1.0           # wz = gain * heading error toward the vision target (rad/s per rad)
+rotate_in_place_deg: 45.0   # turn in place first when the target is further off-axis
+align_tolerance_deg: 15.0   # at the standoff, turn until the target is within this angle
+heading_tolerance_deg: 25.0 # while following, correct heading only beyond this (camera FOV ~ +-29 deg)
+recovery_offset_deg: 20.0   # no route: try headings target-20 / target+20 deg, then give up

@@ -12,7 +12,11 @@ from collections import deque
 
 from collision_monitor_ros1 import Config
 from navigation_core_ros1 import NavConfig, Navigator, nearest_pose
+from search_core_ros1 import SearchConfig, SearchMission
 
+
+# Collision Monitor states that let navigation keep commanding; any other state stops it.
+MONITOR_OK = ('PASS', 'LIMIT', 'SLOWDOWN', 'APPROACH', 'IDLE', 'STALE_COMMAND', 'WAIT_COMMAND')
 
 STANDOFF = {'person': .55, 'chair': .40, 'couch': .45, 'bed': .45,
             'dining table': .40, 'tv': .50, 'refrigerator': .40}
@@ -65,7 +69,7 @@ def main():
                  monitor_state='', monitor_velocity=None, goal_mode='vision', goal_error='', error='WAIT_INPUT', scan_stamp=None,
                  odom_stamp=None, target_error='WAIT_TARGET',
                  odom_error='WAIT_ODOMETRY', scan_error='WAIT_SCAN',
-                 epoch=0, reset_pending=False, clear_map_pending=False,
+                 epoch=0, reset_pending=False, clear_map_pending=False, search_request=None,
                  pending_scan=None, scan_sequence=0, invalid_scan_sequence=0, scan_sync_s=None, pending_scan_sync_s=None)
     pub = rospy.Publisher(output, Twist, queue_size=1)
     status_pub = rospy.Publisher('~state', String, queue_size=1, latch=True)
@@ -114,6 +118,7 @@ def main():
                         state['scan_time'] = state['target'] = state['target_time'] = None
                         state['enabled'] = False
                         state['goal_mode'] = 'vision'
+                        state['search_request'] = None   # coverage was in the old odom frame
                 history.append((stamp, pose))
                 state.update(pose=pose, odom_time=time.monotonic()-max(0., age), odom_stamp=stamp, odom_error='')
             except (ValueError, TypeError) as exc:
@@ -166,8 +171,17 @@ def main():
             pub.publish(Twist())
             try:
                 data = json.loads(msg.data)
+                state['search_request'] = None
                 if data.get('mode') == 'vision':
                     state.update(goal_mode='vision', target=None, target_time=None, goal_error='', target_error='WAIT_TARGET')
+                    return
+                if data.get('mode') == 'search':
+                    # Autonomous search: spin/explore until the vision target is found.
+                    # The mission object is created by the control loop (it owns nav).
+                    if state['scan_time'] is None or time.monotonic()-state['scan_time'] > cc.source_timeout:
+                        raise ValueError('MAP_NOT_FRESH')
+                    state.update(goal_mode='search', target=None, target_time=None, goal_error='',
+                                 target_error='WAIT_TARGET', search_request=state['epoch'], enabled=True)
                     return
                 target, _, _ = parse_target(dict(data, valid=True, label='map_point'),
                     rospy.Time.now().to_sec(), frame, 2.)
@@ -175,7 +189,8 @@ def main():
                     raise ValueError('INVALID_GOAL_MODE')
                 if state['scan_time'] is None or time.monotonic()-state['scan_time'] > cc.source_timeout:
                     raise ValueError('MAP_NOT_FRESH')
-                if nav.grid is None or not nav.grid.point_free(target):
+                # Unobserved goals are accepted and explored; observed-blocked ones are not.
+                if nav.grid is None or not nav.grid.inside(target) or nav.grid.known_blocked(target):
                     raise ValueError('GOAL_BLOCKED_OR_UNKNOWN')
                 state.update(goal_mode='point', target=target, target_time=None, label='map_point',
                              target_error='', goal_error='', enabled=True)
@@ -243,6 +258,9 @@ def main():
 
     rospy.on_shutdown(shutdown)
     previous, last_visualization = time.monotonic(), 0.
+    search_cfg = SearchConfig(**{key: rospy.get_param('~search/'+key, value)
+                                 for key, value in SearchConfig.DEFAULTS.items()})
+    mission, mission_request = None, None   # owned by the control loop only
     rospy.loginfo('ROS 1 navigation paused; enable via /jetauto_navigation/enable. Output: %s', output)
 
     def gate(snapshot, now):
@@ -253,11 +271,11 @@ def main():
                 ('scan_time', cc.source_timeout, 'WAIT_SCAN'),
                 ('target_time', cfg.target_timeout, 'WAIT_TARGET'),
                 ('monitor_time', cc.source_timeout, 'WAIT_COLLISION_MONITOR')):
-            if key == 'target_time' and snapshot['goal_mode'] == 'point':
+            if key == 'target_time' and snapshot['goal_mode'] in ('point', 'search'):
                 continue
             if snapshot[key] is None or not 0 <= now-snapshot[key] <= timeout:
                 return reason
-        if snapshot['monitor_state'] not in ('PASS', 'LIMIT', 'SLOWDOWN', 'APPROACH', 'IDLE', 'STALE_COMMAND', 'WAIT_COMMAND'):
+        if snapshot['monitor_state'] not in MONITOR_OK:
             return 'MONITOR_'+snapshot['monitor_state']
         return ''
 
@@ -269,10 +287,15 @@ def main():
                 state['reset_pending'] = state['clear_map_pending'] = False
                 pending, state['pending_scan'] = state['pending_scan'], None
                 scan_epoch, history_copy = state['epoch'], list(history)
+                search_request = state['search_request'] if state['goal_mode'] == 'search' else None
             if clear:
                 nav.costmap.cells.clear()
             if reset:
                 nav.reset()
+            if search_request != mission_request:
+                # New search request (fresh coverage), or search left/cancelled.
+                mission_request = search_request
+                mission = SearchMission(nav, search_cfg) if search_request is not None else None
             map_started = time.monotonic()
             if pending is not None:
                 scan, observation_time, sequence = pending
@@ -287,6 +310,9 @@ def main():
                     try:
                         nav.costmap.update(scan.ranges, scan.angle_min, scan.angle_increment,
                             scan.range_min, scan.range_max, matched, observation_time)
+                        if mission is not None:
+                            mission.update_coverage(scan.ranges, scan.angle_min, scan.angle_increment,
+                                                    scan.range_min, matched)
                     except (ValueError, TypeError, OverflowError) as exc:
                         error = str(exc)
                 with lock:
@@ -308,7 +334,12 @@ def main():
             plan_started = time.monotonic()
             reason = gate(snapshot, plan_started)
             velocity = (0., 0., 0.)
-            if not reason:
+            if not reason and snapshot['goal_mode'] == 'search' and mission is not None:
+                fresh_target = (snapshot['target'] is not None and snapshot['target_time'] is not None
+                                and 0 <= plan_started-snapshot['target_time'] <= cfg.target_timeout)
+                velocity, reason = mission.step(snapshot['pose'], snapshot['target'] if fresh_target else None,
+                    STANDOFF.get(snapshot['label'], cfg.default_standoff), plan_started, plan_started-previous)
+            elif not reason:
                 velocity, reason = nav.step(snapshot['pose'], snapshot['target'],
                     STANDOFF.get(snapshot['label'], cfg.default_standoff), plan_started, plan_started-previous,
                     exact_goal=snapshot['goal_mode'] == 'point')
@@ -346,6 +377,7 @@ def main():
                     scan_header_age_s=round(rospy.Time.now().to_sec()-state['scan_stamp'], 3) if state['scan_stamp'] is not None else None,
                     latest_scan_odom_delta_s=round(state['scan_stamp']-state['odom_stamp'], 3) if state['scan_stamp'] is not None and state['odom_stamp'] is not None else None,
                     last_input_error=state['odom_error'] or state['scan_error'] or state['target_error'],
+                    search=mission.info() if mission is not None else None,
                     target_error=state['target_error']))))
                 visualization = dict(state)
             if now-last_visualization >= .5:

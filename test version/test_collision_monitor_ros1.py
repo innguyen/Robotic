@@ -50,8 +50,12 @@ class MonitorTests(unittest.TestCase):
     def test_reverse_blind(self):
         self.assertEqual(self.monitor(command=(-.05, 0, 0)).evaluate(10.1)[1], 'UNOBSERVED_DIRECTION')
 
-    def test_rotation_blind(self):
-        self.assertEqual(self.monitor(command=(0, 0, .3)).evaluate(10.1)[1], 'UNOBSERVED_DIRECTION')
+    def test_rotation_blind_when_disabled(self):
+        self.assertEqual(self.monitor(command=(0, 0, .3), allow_rotation=False).evaluate(10.1)[1],
+                         'UNOBSERVED_DIRECTION')
+
+    def test_rotation_in_place_allowed(self):
+        self.assertEqual(self.monitor(command=(0, 0, .3)).evaluate(10.1), ((0, 0, .3), 'PASS'))
 
     def test_swept_rotation_hits_corner(self):
         # Outside initial rectangle, inside rectangle after rotating ~45 degrees.

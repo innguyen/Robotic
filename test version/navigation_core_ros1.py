@@ -19,7 +19,9 @@ class NavConfig(object):
                     lookahead=0.20, target_timeout=1.2, odom_timeout=0.5,
                     pose_sync_tolerance=0.15, acceleration=0.25,
                     progress_timeout=8.0, progress_distance=0.06,
-                    default_standoff=0.35)
+                    default_standoff=0.35, heading_gain=1.0,
+                    rotate_in_place_deg=45.0, align_tolerance_deg=15.0,
+                    heading_tolerance_deg=25.0, recovery_offset_deg=20.0)
 
     def __init__(self, **kwargs):
         if set(kwargs) - set(self.DEFAULTS):
@@ -91,11 +93,48 @@ def footprint_mask(points, origin, shape, yaw, hx, hy, resolution):
     return out
 
 
+# One-cell (drow, dcol) moves; the opposite moves reuse these masks from the other end.
+SWEEP_MOVES = ((0, 1), (1, 0), (1, 1), (1, -1))
+
+
+def sweep_mask(points, origin, shape, yaw, hx, hy, resolution, move):
+    """Start cells whose fixed-heading rectangle sweep by one cell `move` hits a point."""
+    out = np.zeros(shape, dtype=bool)
+    n, m = shape
+    c, s = math.cos(yaw), math.sin(yaw)
+    world = (move[1]*resolution, move[0]*resolution)
+    mx, my = c*world[0]+s*world[1], -s*world[0]+c*world[1]
+    extent_x, extent_y = abs(c)*hx+abs(s)*hy, abs(s)*hx+abs(c)*hy
+    rx = int(math.ceil((extent_x+abs(world[0]))/resolution))+1
+    ry = int(math.ceil((extent_y+abs(world[1]))/resolution))+1
+    ox, oy = np.meshgrid(np.arange(-rx, rx+1), np.arange(-ry, ry+1))
+    offsets = np.column_stack((ox.ravel(), oy.ravel()))
+    points = np.asarray(points, dtype=float).reshape(-1, 2)
+    for begin in range(0, len(points), 256):
+        batch = points[begin:begin+256]
+        cells = np.floor(batch/resolution).astype(np.int64)[:, None, :]+offsets[None, :, :]
+        delta = batch[:, None, :]-(cells+.5)*resolution
+        start = (c*delta[:, :, 0]+s*delta[:, :, 1], -s*delta[:, :, 0]+c*delta[:, :, 1])
+        enter, leave = np.zeros(start[0].shape), np.ones(start[0].shape)
+        for local, direction, half in ((start[0], mx, hx), (start[1], my, hy)):
+            if abs(direction) < 1e-12:
+                enter[np.abs(local) > half] = float('inf')
+            else:
+                t1, t2 = (local-half)/direction, (local+half)/direction
+                enter = np.maximum(enter, np.minimum(t1, t2))
+                leave = np.minimum(leave, np.maximum(t1, t2))
+        cols, rows = cells[:, :, 0]-origin[0], cells[:, :, 1]-origin[1]
+        hit = (enter <= leave) & (cols >= 0) & (cols < m) & (rows >= 0) & (rows < n)
+        out[rows[hit].astype(int), cols[hit].astype(int)] = True
+    return out
+
+
 class Costmap(object):
     def __init__(self, cfg, collision_cfg):
         self.cfg, self.collision_cfg = cfg, collision_cfg
         self.cells = {}  # fixed odom cell -> (occupied, monotonic observation time)
         self.obstacle_points = {}  # preserve real hits instead of moving them to cell centers
+        self.last_prune = float('-inf')
 
     def update(self, ranges, angle_min, angle_increment, range_min, range_max, pose, now):
         cc, cfg = self.collision_cfg, self.cfg
@@ -133,11 +172,10 @@ class Costmap(object):
         # Deduplicate in NumPy instead of inserting tens of thousands of duplicate
         # ray cells in Python, which delays odometry on the Nano.
         keys = np.unique((cells[:, 0]-base[0])*width+cells[:, 1]-base[1])
-        unique_cells = np.column_stack((keys//width+base[0], keys % width+base[1])).tolist()
-        for i, j in unique_cells:
-            cell = (i, j)
-            self.cells[cell] = (False, now)
-            self.obstacle_points.pop(cell, None)
+        # dict.fromkeys/update run in C; stale obstacle points of cleared cells are
+        # dropped by the occupied-cell filter at the end of this update.
+        free_value = (False, now)
+        self.cells.update(dict.fromkeys(zip((keys//width+base[0]).tolist(), (keys % width+base[1]).tolist()), free_value))
         hits = finite[valid] & (values[valid] <= cfg.ray_range)
         current_hits = {}
         for point, (i, j) in zip(endpoints[hits].tolist(), np.floor(endpoints[hits] / cfg.resolution).astype(int).tolist()):
@@ -153,13 +191,18 @@ class Costmap(object):
             key = (int(i), int(j))
             if not self.cells.get(key, (False, 0))[0]:
                 self.cells[key] = (False, now)
-        center = np.floor(np.asarray(pose[:2]) / cfg.resolution).astype(int)
-        half = cfg.grid_size // 2 + 2
-        self.cells = {key: value for key, value in self.cells.items()
-                      if 0 <= now-value[1] <= cfg.memory_s
-                      and max(abs(key[0]-center[0]), abs(key[1]-center[1])) <= half}
+        # Expired/out-of-window cells are already ignored by snapshot(); pruning the
+        # whole dict every scan is slow on the Nano, so do it a few times per second.
+        if now-self.last_prune >= .25 or now < self.last_prune:
+            self.last_prune = now
+            center = np.floor(np.asarray(pose[:2]) / cfg.resolution).astype(int)
+            half = cfg.grid_size // 2 + 2
+            cx, cy = int(center[0]), int(center[1])
+            self.cells = {key: value for key, value in self.cells.items()
+                          if 0 <= now-value[1] <= cfg.memory_s
+                          and abs(key[0]-cx) <= half and abs(key[1]-cy) <= half}
         self.obstacle_points = {key: points for key, points in self.obstacle_points.items()
-                                if key in self.cells and self.cells[key][0]}
+                                if self.cells.get(key, (False,))[0]}
 
     def snapshot(self, pose, now):
         cfg, cc = self.cfg, self.collision_cfg
@@ -167,11 +210,17 @@ class Costmap(object):
         raw = np.full((cfg.grid_size, cfg.grid_size), -1, dtype=np.int8)
         obstacles = []
         origin_x, origin_y = int(origin[0]), int(origin[1])
-        for (i, j), (occupied, stamp) in self.cells.items():
-            row, col = j-origin_y, i-origin_x
-            if 0 <= row < cfg.grid_size and 0 <= col < cfg.grid_size and 0 <= now-stamp <= cfg.memory_s:
-                raw[row, col] = 100 if occupied else 0
-            if occupied and 0 <= now-stamp <= cfg.memory_s:
+        if self.cells:
+            # Bulk conversion instead of a per-cell Python loop (dominant cost on the Nano).
+            keys = np.array(list(self.cells.keys()), dtype=np.int64).reshape(-1, 2)
+            values = np.array(list(self.cells.values()), dtype=float).reshape(-1, 2)
+            age = now-values[:, 1]
+            fresh = (age >= 0) & (age <= cfg.memory_s)
+            occupied = fresh & (values[:, 0] > .5)
+            rows, cols = keys[:, 1]-origin_y, keys[:, 0]-origin_x
+            inside = fresh & (rows >= 0) & (rows < cfg.grid_size) & (cols >= 0) & (cols < cfg.grid_size)
+            raw[rows[inside], cols[inside]] = np.where(occupied[inside], 100, 0)
+            for i, j in keys[occupied].tolist():
                 obstacles.extend(self.obstacle_points.get((i, j), [((i+.5)*cfg.resolution, (j+.5)*cfg.resolution)]))
         obstacles = np.asarray(obstacles, dtype=float).reshape(-1, 2)
         # The visible buffer is 6 cm by default. Chassis clearance is checked
@@ -191,11 +240,29 @@ class Grid(object):
         self.obstacles, self.footprint = obstacles, footprint
         self._buckets = {}
         self._edge_cache = {}
-        if footprint is not None:
-            for point in obstacles:
-                key = (int(math.floor(point[0]/.3)), int(math.floor(point[1]/.3)))
-                self._buckets.setdefault(key, []).append(point)
-            self._buckets = {key: np.asarray(value) for key, value in self._buckets.items()}
+        self._sweep_blocked = None
+        if footprint is not None and len(obstacles):
+            # Vectorized bucketing: per-point Python/NumPy calls are very slow on the Nano.
+            points = np.asarray(obstacles, dtype=float).reshape(-1, 2)
+            keys = np.floor(points/.3).astype(np.int64)
+            order = np.lexsort((keys[:, 1], keys[:, 0]))
+            keys, points = keys[order], points[order]
+            starts = np.flatnonzero(np.r_[True, np.any(keys[1:] != keys[:-1], axis=1)])
+            for begin, end in zip(starts.tolist(), np.r_[starts[1:], len(keys)].tolist()):
+                self._buckets[(int(keys[begin, 0]), int(keys[begin, 1]))] = points[begin:end]
+
+    def sweep_blocked(self):
+        """Per-direction masks of blocked one-cell moves, computed once per grid.
+
+        Same slab test as translation_sweep_clear, batched over all obstacle points
+        and start cells: per-edge NumPy calls made A* take seconds on the Nano.
+        """
+        if self._sweep_blocked is None:
+            hx, hy, yaw = self.footprint
+            self._sweep_blocked = {move: sweep_mask(self.obstacles, self.origin, self.raw.shape,
+                                                    yaw, hx, hy, self.resolution, move)
+                                   for move in SWEEP_MOVES}
+        return self._sweep_blocked
 
     def nearby(self, a, b):
         hx, hy, yaw = self.footprint
@@ -219,6 +286,29 @@ class Grid(object):
         i, j = cell
         return 0 <= i < self.allowed.shape[0] and 0 <= j < self.allowed.shape[1] and self.allowed[i, j]
 
+    def pose_free(self, point, yaw):
+        """Inflated footprint at another heading clear of obstacle points (for turning)."""
+        if self.footprint is None or self.obstacles is None or not len(self.obstacles):
+            return True
+        hx, hy, _ = self.footprint
+        delta = np.asarray(self.obstacles)-np.asarray(point, dtype=float)
+        delta = delta[np.abs(delta).max(axis=1) <= math.hypot(hx, hy)]
+        c, s = math.cos(yaw), math.sin(yaw)
+        return not np.any((np.abs(c*delta[:, 0]+s*delta[:, 1]) <= hx)
+                          & (np.abs(-s*delta[:, 0]+c*delta[:, 1]) <= hy))
+
+    def inside(self, point):
+        i, j = self.cell(point)
+        return 0 <= i < self.raw.shape[0] and 0 <= j < self.raw.shape[1]
+
+    def known_blocked(self, point):
+        """Observed space where the robot cannot stand. Unknown/out-of-window is not blocked:
+        such goals are explored through observed frontiers instead of being rejected."""
+        i, j = self.cell(point)
+        if not (0 <= i < self.raw.shape[0] and 0 <= j < self.raw.shape[1]) or self.raw[i, j] < 0:
+            return False
+        return not self.point_free(point)
+
     def point_free(self, point):
         if self.footprint is None:
             return self.free(self.cell(point))
@@ -234,6 +324,15 @@ class Grid(object):
     def edge_free(self, cell, nxt):
         if self.footprint is not None:
             hx, hy, yaw = self.footprint
+            if self.obstacles is None or not len(self.obstacles):
+                return True
+            move = (nxt[0]-cell[0], nxt[1]-cell[1])
+            start = cell
+            if move not in SWEEP_MOVES:
+                move, start = (-move[0], -move[1]), nxt
+            n, m = self.raw.shape
+            if move in SWEEP_MOVES and 0 <= start[0] < n and 0 <= start[1] < m:
+                return not self.sweep_blocked()[move][start]
             key = (cell, nxt) if cell < nxt else (nxt, cell)
             if key not in self._edge_cache:
                 a, b = self.point(cell), self.point(nxt)
@@ -311,7 +410,10 @@ def plan_approach(grid, start, target, distance, yaw, cc, exact_goal=False):
     start_cell = grid.cell(start)
     if not grid.point_free(start):
         return [], 'START_BLOCKED', 0
-    if exact_goal and not grid.point_free(target):
+    # An exact goal in unobserved space (e.g. behind the robot) is approached via
+    # observed frontiers until LiDAR sees it; only observed-blocked goals are refused.
+    explore = exact_goal and not grid.point_free(target)
+    if explore and grid.known_blocked(target):
         return [], 'GOAL_BLOCKED_OR_UNKNOWN', 0
     target = np.asarray(target)
     start_distance = float(np.linalg.norm(target-start))
@@ -396,7 +498,7 @@ def plan_approach(grid, start, target, distance, yaw, cc, exact_goal=False):
             if new_cost < costs.get(nxt, float('inf')):
                 costs[nxt], parent[nxt] = new_cost, cell
                 heapq.heappush(queue, (new_cost+heuristic(nxt), new_cost, nxt))
-    if best_frontier is not None and not exact_goal:
+    if best_frontier is not None and (not exact_goal or explore):
         return reconstruct(best_frontier), 'OBSERVED_SUBGOAL', len(visited)
     return [], 'NO_REACHABLE_APPROACH', len(visited)
 
@@ -421,6 +523,8 @@ class Navigator(object):
         self.future_generation = None
         self.route_mode = False
         self.planner_ms = 0.
+        self.recovery_ref = self.recovery_wait = self.recovery_started = None
+        self.recovery_step = 0
 
     def close(self):
         if self.executor is not None:
@@ -436,6 +540,60 @@ class Navigator(object):
         self.route_target = None
         self.route_strategy = ''
         self.planning_info = {}
+        self.recovery_ref = self.recovery_wait = self.recovery_started = None
+        self.recovery_step = 0
+
+    def _recover(self, pose, now):
+        """Small spin recovery: try headings target+-offset so a blind sector moves off the route.
+
+        Offsets stay inside the camera view, so the vision target is not lost. Each
+        heading is held for two planner periods; after all offsets, give up (bounded).
+        """
+        cfg, cc = self.cfg, self.cc
+        offsets = (-cfg.recovery_offset_deg, cfg.recovery_offset_deg)
+        while self.recovery_step < len(offsets):
+            if self.recovery_started is None:
+                self.recovery_started = now
+            goal = self.recovery_ref+math.radians(offsets[self.recovery_step])
+            error = (goal-pose[2]+math.pi) % (2*math.pi)-math.pi
+            # Turning in place is not lack of progress.
+            self.progress_anchor, self.progress_time = np.asarray(pose[:2], dtype=float).copy(), now
+            if abs(error) > math.radians(3.) and now-self.recovery_started <= 6.:
+                self.recovery_wait = None
+                speed = min(cc.max_angular, max(.15, cfg.heading_gain*abs(error)))
+                return (0., 0., math.copysign(speed, error)), 'RECOVERY_ROTATE'
+            if self.recovery_wait is None:
+                self.recovery_wait = now
+            if now-self.recovery_wait <= 2./cfg.planner_hz:
+                return (0., 0., 0.), 'RECOVERY_WAIT'
+            self.recovery_step += 1
+            self.recovery_wait = self.recovery_started = None
+        return None
+
+    def _escape(self, position, yaw, speed=.05):
+        """Move directly away from the nearest obstacle point, if that is observed space."""
+        cc, grid = self.cc, self.grid
+        if grid.obstacles is None or not len(grid.obstacles):
+            return None
+        i, j = grid.cell(position)
+        if not (0 <= i < grid.raw.shape[0] and 0 <= j < grid.raw.shape[1] and grid.raw[i, j] == 0):
+            return None
+        delta = grid.obstacles-position
+        distance = np.linalg.norm(delta, axis=1)
+        nearest = int(np.argmin(distance))
+        if distance[nearest] < 1e-6 or distance[nearest] > .6:
+            return None
+        away = -delta[nearest]/distance[nearest]
+        c, s = math.cos(yaw), math.sin(yaw)
+        base = math.atan2(-s*away[0]+c*away[1], c*away[0]+s*away[1])   # body frame
+        # Straight away first; if that points into the LiDAR blind sector (common right
+        # after a spin reveals a rear obstacle), try directions still moving away from it.
+        for offset in (0., 45., -45., 70., -70.):
+            heading = base+math.radians(offset)
+            angle = math.degrees(heading-cc.scan_yaw)
+            if not (cc.block_blind_motion and any(in_sector(angle, lo, hi) for lo, hi in cc.blind_sectors_deg)):
+                return (float(math.cos(heading)*speed), float(math.sin(heading)*speed), 0.)
+        return None
 
     def step(self, pose, target, standoff, now, dt, exact_goal=False):
         cfg, cc = self.cfg, self.cc
@@ -448,8 +606,17 @@ class Navigator(object):
             return zero, 'INVALID_GOAL'
         offset = target-position
         distance = float(np.linalg.norm(offset))
+        # Face the goal: keeps a vision target in the camera; turns toward map points (also behind).
+        heading_error = (math.atan2(offset[1], offset[0])-pose[2]+math.pi) % (2*math.pi)-math.pi
+        if exact_goal and distance < .30:
+            # Map points: face the travel direction, but do not spin on the last few cm.
+            heading_error = 0.
+        turn = float(np.clip(cfg.heading_gain*heading_error, -cc.max_angular, cc.max_angular))
         stopping_distance = 0. if exact_goal else cc.body_length/2 + standoff
         if distance <= stopping_distance + cfg.goal_tolerance:
+            if not exact_goal and abs(heading_error) > math.radians(cfg.align_tolerance_deg):
+                self.previous_velocity[:] = 0
+                return (0., 0., turn), 'ALIGN'
             self.reset()
             return zero, 'ARRIVED'
         # Preserve minimum target clearance as well as the requested standoff.
@@ -459,11 +626,27 @@ class Navigator(object):
         if not self.grid.point_free(position):
             self.previous_velocity[:] = 0
             self.path = []
+            escape = self._escape(position, pose[2])
+            if escape is not None:
+                # Inside the planning buffer only: back away slowly; the monitor still checks it.
+                self.progress_anchor, self.progress_time = position.copy(), now
+                return escape, 'ESCAPE'
             return zero, 'START_BLOCKED'
-        changed = self.route_target is None or np.linalg.norm(target-self.route_target) > .15 or self.route_mode != exact_goal
+        if (abs(heading_error) > math.radians(cfg.rotate_in_place_deg)
+                and self.grid.pose_free(position, pose[2]+turn*.5)):
+            # Turn first: a target behind or beside the robot lies in blind/unplanned space.
+            # Not when turning would swing a corner into the buffer: move away first.
+            # Rotation is not lack of progress, so keep the stuck timer fresh.
+            self.previous_velocity[:] = 0
+            self.path = []
+            self.progress_anchor, self.progress_time = position.copy(), now
+            return (0., 0., turn), 'ROTATE'
+        changed =self.route_target is None or np.linalg.norm(target-self.route_target) > .15 or self.route_mode != exact_goal
         if changed:
             self.stuck = False
             self.progress_anchor, self.progress_time = position.copy(), now
+            self.recovery_ref = self.recovery_wait = self.recovery_started = None
+            self.recovery_step = 0
         if self.stuck:
             return zero, 'STUCK'
         if self.progress_anchor is None or np.linalg.norm(position-self.progress_anchor) >= cfg.progress_distance:
@@ -472,7 +655,11 @@ class Navigator(object):
             self.stuck = True
             self.previous_velocity[:] = 0
             return zero, 'STUCK'
-        invalid_path = bool(self.path) and any(not self.grid.free(self.grid.cell(p)) for p in self.path)
+        # Path ends are real positions (robot start, exact goal), not cell centres: a
+        # blocked centre cell must fall back to the exact footprint test, otherwise the
+        # async planner discards every path near obstacles and the robot crawls to STUCK.
+        invalid_path = bool(self.path) and any(
+            not self.grid.free(self.grid.cell(p)) and not self.grid.point_free(p) for p in self.path)
         if self.executor is not None:
             if changed:
                 self.generation += 1
@@ -502,7 +689,8 @@ class Navigator(object):
                 self.plan_future = self.executor.submit(compute, self.grid, position.copy(), target.copy(), pose[2])
             if not self.path and self.plan_future is not None:
                 self.previous_velocity[:] = 0
-                return zero, 'PLANNING'
+                recovery = self._recover(pose, now) if self.recovery_ref is not None else None
+                return recovery if recovery is not None else (zero, 'PLANNING')
         elif changed or invalid_path or self.plan_time is None or now-self.plan_time >= 1./cfg.planner_hz:
             self.path, self.route_strategy, reached = plan_approach(self.grid, position, target, stopping_distance, pose[2], cc, exact_goal)
             self.plan_time, self.route_target = now, target.copy()
@@ -512,10 +700,14 @@ class Navigator(object):
                                      approach_point=self.plan_goal.tolist() if self.plan_goal is not None else None)
         if not self.path:
             self.previous_velocity[:] = 0
-            return zero, 'NO_REACHABLE_APPROACH'
+            if self.recovery_ref is None:
+                self.recovery_ref = pose[2]+heading_error
+            recovery = self._recover(pose, now)
+            return recovery if recovery is not None else (zero, 'NO_REACHABLE_APPROACH')
+        self.recovery_wait = self.recovery_started = None
         partial = self.route_strategy == 'OBSERVED_SUBGOAL'
         # Skip passed points and follow only a visible segment of the A* path.
-        nearest = int(np.argmin([np.linalg.norm(p-position) for p in self.path]))
+        nearest = int(np.argmin(np.linalg.norm(np.asarray(self.path)-position, axis=1)))
         self.path = self.path[nearest:]
         waypoint = None
         for point in self.path:
@@ -538,8 +730,8 @@ class Navigator(object):
         yaw = pose[2]
         vx = math.cos(yaw)*error[0] + math.sin(yaw)*error[1]
         vy = -math.sin(yaw)*error[0] + math.cos(yaw)*error[1]
-        # Fixed-heading holonomic control avoids commanding rotation through blind sectors.
-        angle = math.degrees(math.atan2(vy, vx)-cc.scan_yaw)
+        # Holonomic translation along the path plus a heading correction toward the target.
+        angle =math.degrees(math.atan2(vy, vx)-cc.scan_yaw)
         if cc.block_blind_motion and any(in_sector(angle, lo, hi) for lo, hi in cc.blind_sectors_deg):
             self.previous_velocity[:] = 0
             return zero, 'UNOBSERVED_DIRECTION'
@@ -557,4 +749,11 @@ class Navigator(object):
             self.previous_velocity[:] = 0
             return zero, 'CONTROL_BLOCKED'
         self.previous_velocity = desired
-        return (float(desired[0]), float(desired[1]), 0.), 'FOLLOW_PARTIAL' if partial else 'FOLLOW'
+        # Small errors keep the target in the camera view; leaving wz at zero keeps the
+        # monitor on its exact translation sweep when passing close to obstacles.
+        if (abs(heading_error) <= math.radians(cfg.heading_tolerance_deg)
+                or not self.grid.pose_free(position, pose[2]+turn*.5)):
+            # Also hold heading beside obstacles: a turning corner would enter the buffer
+            # and leave the robot START_BLOCKED.
+            turn = 0.
+        return (float(desired[0]), float(desired[1]), turn), 'FOLLOW_PARTIAL' if partial else 'FOLLOW'

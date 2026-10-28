@@ -8,6 +8,11 @@ PORT="${3:-5010}"
 case "$MODE" in preview|live) ;; *) echo 'Mode must be preview or live'; exit 1 ;; esac
 [[ "$TARGET" =~ ^[a-z][a-z\ ]{0,39}$ ]] || { echo 'Invalid target class'; exit 1; }
 [[ "$PORT" =~ ^[0-9]+$ ]] && [ "$PORT" -ge 1024 ] && [ "$PORT" -le 65535 ] || { echo 'Invalid port'; exit 1; }
+CHECK_PID=''
+# Until the full cleanup trap below exists, stop a running driver check at once.
+trap '[ -z "$CHECK_PID" ] || kill -TERM "$CHECK_PID" 2>/dev/null; exit 130' INT TERM HUP
+# A disconnected Windows Ctrl+C can leave an earlier stack or its orphans running.
+[ ! -f "$TASK_DIR/stop_test_stack_ros1.sh" ] || bash "$TASK_DIR/stop_test_stack_ros1.sh" "$$"
 exec 8>/tmp/jetauto_test_stack.lock
 if ! flock -n 8; then
     echo 'A previous test stack holds the startup lock. Checking its identity...'
@@ -25,8 +30,15 @@ if ! flock -n 8; then
 fi
 echo '[1/5] Checking ROS, chassis and camera drivers; pausing old controller...'
 [ -f "$TASK_DIR/start_server.sh" ] || { echo 'Missing bundled start_server.sh'; exit 1; }
-# Driver children must not retain our supervisor lock.
-bash -l "$TASK_DIR/start_server.sh" --check-only 8>&-
+# A just-stopped check's short-lived helpers may hold its lock for a few seconds.
+flock -w 15 /tmp/jetauto_start_server.lock true 2>/dev/null || true
+# Driver children must not retain our supervisor lock. Run it in the background and
+# wait: bash defers traps until a foreground child exits, which made Ctrl+C/SIGTERM
+# wait for the whole check and could orphan it (holding its startup lock).
+bash -l "$TASK_DIR/start_server.sh" --check-only 8>&- &
+CHECK_PID=$!
+wait "$CHECK_PID"
+CHECK_PID=''
 source /opt/ros/melodic/setup.bash
 for workspace in /home/jetauto/jetauto_ws/devel/setup.bash /home/jetauto/ros_ws/devel/setup.bash /home/jetauto/catkin_ws/devel/setup.bash; do
     [ ! -f "$workspace" ] || source "$workspace"

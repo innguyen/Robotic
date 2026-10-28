@@ -10,7 +10,7 @@ from unittest.mock import patch
 
 import numpy as np
 
-from collision_monitor_ros1 import Config, Monitor
+from collision_monitor_ros1 import Config, Monitor, translation_sweep_clear
 from navigation_core_ros1 import NavConfig, Costmap, Grid, Navigator, astar, nearest_pose, plan_approach, footprint_mask
 from navigation_ros1 import parse_target
 import navigation_ros1 as adapter
@@ -92,15 +92,20 @@ class PlanningTests(unittest.TestCase):
         self.assertNotEqual(nav.step((.65, .18, 0.), goal, .55, 10.1, .1, exact_goal=True)[1], 'ARRIVED')
         self.assertEqual(nav.step((1.15, .18, 0.), goal, .55, 10.2, .1, exact_goal=True)[1], 'ARRIVED')
 
-    def test_map_point_in_unknown_space_is_rejected(self):
+    def test_map_point_in_unknown_space_is_explored_but_observed_obstacle_rejected(self):
         nav = Navigator()
         known_map(nav)
         grid = nav.costmap.snapshot((0., 0., 0.), 10.)
         goal = (1.2, .18)
         grid.raw[grid.cell(goal)] = -1
+        self.assertFalse(grid.known_blocked(goal))
         path, strategy, _ = plan_approach(grid, np.zeros(2), goal, 0., 0., nav.cc, exact_goal=True)
-        self.assertEqual(path, [])
-        self.assertEqual(strategy, 'GOAL_BLOCKED_OR_UNKNOWN')
+        self.assertTrue(path)
+        self.assertNotEqual(strategy, 'GOAL_BLOCKED_OR_UNKNOWN')
+        grid.raw[grid.cell(goal)] = 100
+        self.assertTrue(grid.known_blocked(goal))
+        path, strategy, _ = plan_approach(grid, np.zeros(2), goal, 0., 0., nav.cc, exact_goal=True)
+        self.assertEqual((path, strategy), ([], 'GOAL_BLOCKED_OR_UNKNOWN'))
 
     def test_diagonal_clear_sweep_can_pass_between_blocked_side_nodes(self):
         points = np.array([[.302, -.15], [-.182, .27]])
@@ -113,6 +118,20 @@ class PlanningTests(unittest.TestCase):
         self.assertFalse(grid.free(grid.cell((.03, .09))))
         self.assertTrue(grid.segment_free(start, goal))
         self.assertEqual(len(astar(grid, start, goal)), 2)
+
+    def test_batched_edge_sweep_matches_exact_per_edge_sweep(self):
+        rng = np.random.RandomState(3)
+        for yaw in (0., .4, -1.1):
+            points = rng.uniform(-.6, .6, (40, 2))
+            raw = np.zeros((25, 25), dtype=np.int8)
+            grid = Grid(raw, np.ones(raw.shape, dtype=bool), (-12, -12), .06,
+                        obstacles=points, footprint=(.222, .19, yaw))
+            for row in range(2, 23, 3):
+                for col in range(2, 23, 3):
+                    for di, dj in ((0, 1), (1, 0), (1, 1), (1, -1), (0, -1), (-1, 0), (-1, -1), (-1, 1)):
+                        a, b = grid.point((row, col)), grid.point((row+di, col+dj))
+                        expected = translation_sweep_clear(points, a, b, yaw, .222, .19)
+                        self.assertEqual(grid.edge_free((row, col), (row+di, col+dj)), expected)
 
     def test_diagonal_sweep_rejects_collision_between_free_endpoints(self):
         points = np.array([[.271, -.129]])
@@ -188,9 +207,44 @@ class PlanningTests(unittest.TestCase):
             monitor.set_command(*command, now=now)
             checked, _ = monitor.evaluate(now)
             position += np.array(checked[:2])*.1
-            if state == 'ARRIVED':
+            if state in ('ARRIVED', 'ALIGN'):
                 break
-        self.assertEqual(state, 'ARRIVED', (state, position))
+        # Yaw is not integrated here, so a final ALIGN (turn toward target) also counts.
+        self.assertIn(state, ('ARRIVED', 'ALIGN'), (state, position))
+        if state == 'ALIGN':
+            self.assertEqual(command[:2], (0., 0.))
+            self.assertGreater(command[2]*(0.-position[1]), 0.)
+
+    def test_escape_backs_away_from_obstacle_inside_buffer(self):
+        nav = Navigator(NavConfig(memory_s=100.))
+        known_map(nav)
+        # 3 cm beside the right body edge: inside the 6 cm buffer, outside the chassis.
+        # (Escaping away from a left obstacle would point into the rear-right blind sector.)
+        nav.costmap.cells[(0, -3)] = (True, 10.)
+        nav.costmap.obstacle_points[(0, -3)] = [(.0, -.16)]
+        velocity, state = nav.step((0, 0, 0), (2, 0), .35, 10., .1)
+        self.assertEqual(state, 'ESCAPE')
+        self.assertGreater(velocity[1], 0.)
+        self.assertAlmostEqual(velocity[0], 0.)
+
+    def test_escape_avoids_blind_sector_by_turning_the_escape_direction(self):
+        nav = Navigator(NavConfig(memory_s=100.))
+        known_map(nav)
+        # Obstacle left: straight away (-90 deg) is in the rear-right blind sector.
+        nav.costmap.cells[(0, 2)] = (True, 10.)
+        nav.costmap.obstacle_points[(0, 2)] = [(.0, .16)]
+        velocity, state = nav.step((0, 0, 0), (2, 0), .35, 10., .1)
+        self.assertEqual(state, 'ESCAPE')
+        self.assertLess(velocity[1], 0.)      # still moving away from the obstacle
+        self.assertGreater(velocity[0], 0.)   # tilted forward, out of the blind sector
+
+    def test_rotates_in_place_toward_target_behind(self):
+        nav = Navigator(NavConfig(memory_s=100.))
+        known_map(nav)
+        velocity, state = nav.step((0, 0, 0), (-1.5, .2), .35, 10., .1)
+        self.assertEqual(state, 'ROTATE')
+        self.assertEqual(velocity[:2], (0., 0.))
+        self.assertAlmostEqual(velocity[2], nav.cc.max_angular)
 
     def test_approach_searches_far_side_even_if_direct_goal_is_disconnected(self):
         cc = Config(blind_sectors_deg=[])
@@ -574,6 +628,83 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(reports[14]['goal_mode'], 'vision')
         self.assertEqual(reports[15]['goal_error'], 'GOAL_BLOCKED_OR_UNKNOWN')
         self.assertFalse(reports[15]['enabled'])
+
+    def test_node_search_mode_spins_without_target_then_approaches(self):
+        ns = types.SimpleNamespace
+        callbacks, services, outputs, reports = {}, {}, [], []
+        clock, cycle = [100.], [0]
+        ros = types.ModuleType('rospy')
+        params = {'/jetauto_collision_monitor/scan_frame': 'laser', '~control_hz': 1000.}
+        ros.init_node = ros.loginfo = lambda *a, **k: None
+        ros.get_param = lambda name, default: params.get(name, default)
+        ros.resolve_name = lambda name: name
+        ros.on_shutdown = lambda callback: None
+        ros.Time = ns(now=lambda: ns(to_sec=lambda: clock[0]))
+        twist = lambda: ns(linear=ns(x=0., y=0., z=0.), angular=ns(x=0., y=0., z=0.))
+
+        def publisher(topic, *a, **k):
+            def publish(message):
+                if topic == '/collision_monitor/cmd_vel_raw':
+                    outputs.append((cycle[0], message.angular.z))
+                elif topic == '~state':
+                    reports.append(json.loads(message.data))
+            return ns(publish=publish)
+        ros.Publisher = publisher
+        ros.Subscriber = lambda topic, cls, callback, **k: callbacks.__setitem__(topic, callback) or ns(unregister=lambda: None)
+        ros.Service = lambda topic, cls, callback: services.__setitem__(topic, callback) or ns(shutdown=lambda: None)
+
+        def feed(stamp):
+            callbacks['/odom'](ns(header=ns(frame_id='odom', stamp=ns(to_sec=lambda: stamp)),
+                                  child_frame_id='base_footprint', pose=ns(pose=ns(
+                                      position=ns(x=0., y=0.), orientation=ns(x=0., y=0., z=0., w=1.)))))
+            callbacks['/scan'](ns(header=ns(frame_id='laser', stamp=ns(to_sec=lambda: stamp)),
+                                  ranges=[float('inf')]*360, angle_min=-math.pi,
+                                  angle_increment=math.pi/180, range_min=.1, range_max=6.))
+            callbacks['/jetauto_collision_monitor/state'](ns(data=json.dumps({'state': 'IDLE'})))
+
+        def running():
+            index = cycle[0]
+            cycle[0] += 1
+            if index >= 14:
+                return True
+            clock[0] = stamp = 100.+index*.01
+            if index == 0:
+                return False
+            feed(stamp)
+            if index == 2:
+                callbacks['~map_goal'](ns(data=json.dumps(dict(mode='search'))))
+            if index >= 9:
+                callbacks['/vision/target'](ns(data=json.dumps(dict(
+                    valid=True, frame_id='odom', stamp=stamp, x=2., y=0., label='person'))))
+            return False
+        ros.is_shutdown = running
+        modules = {'rospy': ros}
+        for name, items in {
+                'geometry_msgs.msg': {'Twist': twist, 'PoseStamped': lambda: ns(header=ns(), pose=ns(position=ns(), orientation=ns()))},
+                'nav_msgs.msg': {'Odometry': object, 'Path': lambda: ns(header=ns(), poses=[]),
+                                 'OccupancyGrid': lambda: ns(header=ns(), info=ns(origin=ns(position=ns(), orientation=ns())))},
+                'sensor_msgs.msg': {'LaserScan': object},
+                'std_msgs.msg': {'String': lambda **kw: ns(**kw)},
+                'std_srvs.srv': {'SetBool': object, 'SetBoolResponse': lambda **kw: ns(**kw)}}.items():
+            parent, child = name.split('.')
+            modules.setdefault(parent, types.ModuleType(parent))
+            modules[name] = types.ModuleType(name)
+            for key, value in items.items():
+                setattr(modules[name], key, value)
+            setattr(modules[parent], child, modules[name])
+        with patch.dict(sys.modules, modules):
+            adapter.main()
+        states = [report['state'] for report in reports]
+        modes = [report['goal_mode'] for report in reports]
+        self.assertIn('search', modes)
+        # No target, no enable button: the search itself enables motion and starts its
+        # spin scan (first dwelling 1.2 s wall time, so no turn within this fast test;
+        # turning is covered by test_search_ros1 in the simulation).
+        self.assertIn('SEARCH_SPIN', states[:9])
+        self.assertTrue(all(r['enabled'] for r in reports if r['goal_mode'] == 'search'))
+        searching = [r for r in reports if r['goal_mode'] == 'search']
+        self.assertIsNotNone(searching[-1]['search'])
+        self.assertEqual(searching[-1]['search']['state'], 'APPROACH')
 
 
 if __name__ == '__main__':

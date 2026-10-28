@@ -45,6 +45,51 @@ class LauncherTests(unittest.TestCase):
                     os.link(str(lock), str(item / 'fd' / '8'))
             self.assertEqual(find_supervisors(lock, script, 104, proc), [100])
 
+    def test_stop_script_stops_only_this_stack_supervisor_first(self):
+        bash = shutil.which('bash')
+        git_bash = Path('C:/Program Files/Git/bin/bash.exe')
+        if os.name == 'nt' and git_bash.exists():
+            bash = str(git_bash)
+        if not bash:
+            self.skipTest('Bash not installed')
+        with tempfile.TemporaryDirectory(prefix='jetauto_stop_') as folder:
+            root = Path(folder)
+            unix_root = str(root).replace('\\', '/')
+            bin_dir = root / 'bin'
+            bin_dir.mkdir()
+            write_unix(root / 'stop_test_stack_ros1.sh',
+                       Path(__file__).with_name('stop_test_stack_ros1.sh').read_text(encoding='utf-8'))
+            task = 'TASK'   # replaced by the folder as bash spells it (/c/... on Git Bash)
+            table = [
+                (201, '/bin/bash -l {}/start_all_ros1.sh live bottle 5010'.format(task)),   # old supervisor
+                (202, '/bin/bash -l {}/start_server.sh --check-only'.format(task)),         # orphaned check
+                (203, 'python3 {}/navigation_ros1.py'.format(task)),
+                (204, 'python3 -u {}/jetauto_find_object.py person --port 5010'.format(task)),
+                (205, '/usr/bin/python /opt/ros/melodic/bin/roslaunch jetauto_peripherals lidar.launch'),
+                (206, 'python3 /home/jetauto/jetauto_find_object.py'),                      # not this folder
+                (207, '/bin/bash -l {}/start_all_ros1.sh live bottle 5010'.format(task)),   # new caller: kept
+            ]
+            write_unix(root / 'table', ''.join('{} {}\n'.format(pid, args) for pid, args in table))
+            write_unix(bin_dir / 'ps', '#!/bin/bash\nwhile read -r p a; do grep -qx "$p" "$TEST_DIR/killed" 2>/dev/null || echo "$p $a"; done < "$TEST_DIR/table"\n')
+            write_unix(bin_dir / 'kill', '#!/bin/bash\nsig=$1; shift\nfor p in "$@"; do echo "$sig $p" >> "$TEST_DIR/signals"; echo "$p" >> "$TEST_DIR/killed"; done\n')
+            write_unix(bin_dir / 'sleep', '#!/bin/bash\nexit 0\n')
+            # The script's shell must use the fake kill, not the bash builtin.
+            write_unix(root / 'no_builtin_kill.sh', 'enable -n kill\n')
+            env = dict(os.environ, TEST_DIR=unix_root, BASH_ENV=unix_root+'/no_builtin_kill.sh')
+            command = ('cd "$1"; export PATH="$PWD/bin:$PATH"; chmod +x "$1"/bin/*; '
+                       'task=$(cd "$1" && pwd); sed -i "s#TASK#$task#" "$1/table"; '
+                       'bash "$1/stop_test_stack_ros1.sh" 207')
+            result = subprocess.run([bash, '-c', command, 'stop-test', unix_root], env=env,
+                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                    timeout=30, universal_newlines=True)
+            self.assertEqual(result.returncode, 0, result.stdout)
+            self.assertTrue((root / 'signals').exists(), result.stdout)
+            signals = (root / 'signals').read_text().split('\n')
+            self.assertEqual(signals[0], '-TERM 201', result.stdout)     # supervisor first
+            killed = {int(line.split()[1]) for line in signals if line}
+            self.assertEqual(killed, {201, 202, 203, 204})
+            self.assertNotIn('-KILL', ''.join(signals))
+
     def test_supervisor_autodetects_frames_and_stops_pair_on_vision_failure(self):
         bash = shutil.which('bash')
         git_bash = Path('C:/Program Files/Git/bin/bash.exe')
@@ -121,8 +166,12 @@ class WebControlTests(unittest.TestCase):
         self.assertFalse(tracking.estimate(1.2).valid)
         tracking.observe('chair', 0., 1., 1.4)
         self.assertTrue(tracking.estimate(1.4).valid)
+        # One inconsistent box is an outlier; three in a row drop the confirmed target.
         tracking.observe('chair', 1., 3., 1.5)
-        self.assertFalse(tracking.estimate(1.5).valid)
+        self.assertTrue(tracking.estimate(1.5).valid)
+        tracking.observe('chair', 1., 3., 1.6)
+        tracking.observe('chair', 1., 3., 1.7)
+        self.assertFalse(tracking.estimate(1.7).valid)
         calls = []
         def control(enabled):
             calls.append(enabled)

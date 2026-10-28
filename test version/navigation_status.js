@@ -20,7 +20,17 @@ function explainNavigation(d) {
     ARRIVED: ['Đã tới khoảng dừng trước mục tiêu', 'Robot dừng đúng yêu cầu, không cần tiến sát vật thể.'],
     FOLLOW: ['Đang tạo lệnh bám đường', 'Xem lệnh sau Collision Monitor để biết lệnh được phép gửi; chưa phải xác nhận bánh xe đang chạy.'],
     FOLLOW_PARTIAL: ['Đang tạo lệnh tới điểm trung gian', 'Robot tiếp cận vùng quan sát mới trước khi lập tiếp đường tới mục tiêu.'],
-    INPUT_CHANGED: ['Dữ liệu hoặc chế độ đổi trong lúc tính đường', 'Lệnh cũ đã hủy; chờ chu kỳ cập nhật tiếp theo.'],
+    ROTATE: ['Đang xoay tại chỗ về phía mục tiêu', 'Mục tiêu lệch nhiều so với hướng robot; robot quay trước rồi mới tìm đường.'],
+    ALIGN: ['Đã tới khoảng dừng, đang xoay mặt về mục tiêu', 'Robot chỉ xoay tại chỗ, không tiến thêm.'],
+    ESCAPE: ['Robot đang nằm trong vùng đệm vật cản, lùi chậm ra xa', 'Robot đi chậm theo hướng ngược với vật gần nhất; Collision Monitor vẫn kiểm tra lệnh này.'],
+    RECOVERY_ROTATE: ['Chưa có đường: đang xoay nhẹ để thử hướng khác', 'Robot lệch ±20° so với mục tiêu để vùng mù LiDAR không che lối đi; mục tiêu vẫn trong khung hình.'],
+    RECOVERY_WAIT: ['Chưa có đường: đứng yên chờ tìm đường ở hướng mới', 'Nếu cả hai hướng thử đều không có đường, robot sẽ dừng.'],
+    SEARCH_SPIN: ['Tìm kiếm: đang xoay quét tại chỗ', 'Robot xoay từng bước 45° và dừng ngắn ở mỗi hướng để YOLO kịp xác nhận mục tiêu.'],
+    SEARCH_EXPLORE: ['Tìm kiếm: đang đi tới vùng chưa nhìn thấy', 'Điểm đến (hình thoi vàng) là chỗ có nhiều vùng camera/LiDAR chưa quan sát; tới nơi robot sẽ xoay quét tiếp.'],
+    SEARCH_LAST_SEEN: ['Tìm kiếm: mất dấu, đi tới chỗ thấy lần cuối', 'Robot dừng trước vị trí mục tiêu được thấy gần nhất rồi xoay quét lại.'],
+    SEARCH_COMPLETE: ['Tìm kiếm xong: không thấy mục tiêu', 'Đã quét hết vùng tới được trong bản đồ hiện tại. Đổi vị trí robot hoặc mục tiêu rồi bắt đầu lại.'],
+    FOUND: ['ĐÃ TÌM THẤY MỤC TIÊU', 'Robot đã tiếp cận và dừng; vị trí được đánh dấu đỏ trên bản đồ.'],
+    INPUT_CHANGED:['Dữ liệu hoặc chế độ đổi trong lúc tính đường', 'Lệnh cũ đã hủy; chờ chu kỳ cập nhật tiếp theo.'],
     INVALID_GOAL: ['Tọa độ mục tiêu không hợp lệ', 'Chọn lại mục tiêu và kiểm tra dữ liệu định vị.']
   };
   const errors = {
@@ -65,7 +75,13 @@ function explainNavigation(d) {
   const description = monitorBlock ? ['Bộ kiểm tra va chạm đang giữ robot dừng', detail(state.slice(8))] :
     (descriptions[state] || ['Trạng thái chưa có diễn giải', 'Xem mã kỹ thuật và dữ liệu chi tiết bên dưới.']);
   const lines = [description[0]+' ['+state+']', description[1]];
-  lines.push('Chế độ: '+(n.goal_mode==='point'?'Đi tới điểm chọn trên bản đồ':'Theo mục tiêu camera'));
+  lines.push('Chế độ: '+(n.goal_mode==='point'?'Đi tới điểm chọn trên bản đồ':n.goal_mode==='search'?'Tự động tìm kiếm':'Theo mục tiêu camera'));
+  const search = n.search;
+  if (search) {
+    if (search.found) lines.push('Vị trí mục tiêu (odom): x='+search.found[0].toFixed(2)+' m, y='+search.found[1].toFixed(2)+' m');
+    lines.push('Tìm kiếm: đã quét '+search.spots+' điểm, camera đã nhìn ~'+Number(search.covered_m2).toFixed(1)+' m²'+
+               (search.nav_reason ? ' · điều hướng: '+search.nav_reason : ''));
+  }
   if (n.goal_error) lines.push('Điểm đến chưa được chấp nhận: '+n.goal_error+' — chọn lại điểm trống khi bản đồ mới.');
   if (d.mode === 'preview') lines.unshift('CHẠY THỬ: lệnh không gửi tới động cơ. Dùng run_test_robot_live.bat để chạy thật.');
   for (const [name, key] of [['LiDAR', 'scan_error'], ['Odometry', 'odom_error'], ['Mục tiêu', 'target_error']]) {

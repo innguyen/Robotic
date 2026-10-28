@@ -23,7 +23,9 @@ from sensor_msgs.msg import Image as RosImage, CameraInfo
 from std_msgs.msg import String
 
 TWO_PI = 2.0 * math.pi
-DETECTION_CONFIDENCE = 0.35
+# Raw detector floor (YOLOv5 default). Confirming a target still needs TARGET_CONFIDENCE;
+# a confirmed target keeps being tracked down to this floor (hysteresis).
+DETECTION_CONFIDENCE = 0.25
 TARGET_CONFIDENCE_DEFAULT = 0.45
 TARGET_CONFIDENCE = {'person': 0.40, 'chair': 0.40, 'bottle': 0.45, 'cup': 0.45,
                      'cell phone': 0.50, 'remote': 0.50}
@@ -37,7 +39,10 @@ frame_lock = threading.Lock()
 class TrackingConfig:
     astra_x, astra_y, astra_height = -0.131, 0.02, 0.462
     astra_pitch_deg, astra_roll_deg = 7.9, 0.0
-    target_memory_s, target_memory_small_s = 5.0, 1.2
+    # Small objects are static and anchored in odom: 2.5 s rides through blur/turns.
+    # Navigation target_timeout (navigation_ros1.yaml) must be at least this long.
+    target_memory_s, target_memory_small_s = 5.0, 2.5
+    target_outlier_limit = 3  # consecutive inconsistent boxes before a confirmed target is dropped
     target_confirm_hits, target_confirm_hits_small = 2, 3
     target_max_bearing_jump_deg = 18.0
     target_max_distance_jump, target_max_distance_ratio = 0.60, 0.45
@@ -107,18 +112,25 @@ class TargetTracker(object):
         self.source = ''
         self.anchor = None
         self.anchor_heading = None
+        self.outliers = 0
 
     def observe(self, label, bearing, distance, now, pose=None, source=''):
         if label != self.label:
             self.reset(label)
-        recent = self.last_time is not None and now - self.last_time <= 0.8
         strict = self.cfg.strict_target_tracking_for(label)
+        # An odom-anchored target can be checked against its position for the whole
+        # memory window, so a short loss does not restart confirmation.
+        window = self.cfg.target_memory_for(label) if (pose is not None and self.anchor is not None) else 0.8
+        recent = self.last_time is not None and now - self.last_time <= max(0.8, window)
         expected_bearing, expected_distance = self.bearing, self.distance
         if strict and recent and pose is not None and self.anchor is not None:
             x, y, yaw = pose
             dx, dy = self.anchor[0] - x, self.anchor[1] - y
             expected_bearing = wrap_scalar(math.atan2(dy, dx) - yaw)
             expected_distance = math.hypot(dx, dy)
+        elif strict and recent and pose is not None and self.anchor_heading is not None:
+            # No range yet: still compensate the robot's own rotation.
+            expected_bearing = wrap_scalar(self.anchor_heading - pose[2])
         consistent = recent and expected_bearing is not None
         if strict and consistent:
             jump = abs(wrap_scalar(bearing - expected_bearing))
@@ -127,6 +139,13 @@ class TargetTracker(object):
             limit = max(self.cfg.target_max_distance_jump,
                         self.cfg.target_max_distance_ratio * max(expected_distance, 0.1))
             consistent = abs(distance - expected_distance) <= limit
+        if strict and not consistent and recent and self.confirmed:
+            # One odd box (motion blur, a second bottle) must not drop a confirmed
+            # target; it keeps aging in memory unless the odd boxes persist.
+            self.outliers += 1
+            if self.outliers < self.cfg.target_outlier_limit:
+                return False
+        self.outliers = 0
         if not consistent:
             self.hits = 1
             if strict:
@@ -157,6 +176,7 @@ class TargetTracker(object):
             if self.distance is not None:
                 self.anchor = (x + self.distance * math.cos(self.anchor_heading),
                                y + self.distance * math.sin(self.anchor_heading))
+        return True
 
     def missed(self, now):
         if self.last_time is None or now - self.last_time > 0.8:
@@ -243,7 +263,7 @@ def locate_target(box, rgb_intrinsics, astra, depth_mm, depth_intrinsics, cfg, l
     return math.atan2(py, px), math.hypot(px, py), 'KICH THUOC'
 
 class ObjectSeeker:
-    def __init__(self, models_dir):
+    def __init__(self, models_dir, stream_fps=12.0):
         rospy.init_node('jetauto_vision_test', anonymous=True)
         self.models_dir = Path(models_dir)
         self.tracking_config = TrackingConfig()
@@ -274,6 +294,8 @@ class ObjectSeeker:
         self.map_received = 0.0
         self.local_path = []
         self.jpeg = None
+        self.overlay = None
+        self.stream_fps = stream_fps
         self.classes = self.load_classes()
         model_path = str(self.models_dir / 'yolov5n.onnx')
         if not Path(model_path).is_file():
@@ -281,7 +303,8 @@ class ObjectSeeker:
         try:
             import onnxruntime as ort
             options = ort.SessionOptions()
-            options.intra_op_num_threads = 4
+            # Leave Nano cores for LiDAR navigation/monitor; 4 threads starved the controller.
+            options.intra_op_num_threads = 2
             available = ort.get_available_providers()
             providers = ['CUDAExecutionProvider', 'CPUExecutionProvider'] if 'CUDAExecutionProvider' in available else ['CPUExecutionProvider']
             self.session = ort.InferenceSession(model_path, sess_options=options, providers=providers)
@@ -289,6 +312,7 @@ class ObjectSeeker:
             self.use_ort = True
         except Exception as exc:
             rospy.logwarn('Using OpenCV DNN: %s', exc)
+            cv2.setNumThreads(2)
             self.net = cv2.dnn.readNetFromONNX(model_path)
             self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
             self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
@@ -305,6 +329,8 @@ class ObjectSeeker:
         ]
         self.ai_thread = threading.Thread(target=self.ai_worker_loop, daemon=True)
         self.ai_thread.start()
+        self.stream_thread = threading.Thread(target=self.stream_worker_loop, daemon=True)
+        self.stream_thread.start()
 
     def load_classes(self):
         return [s.strip() for s in (self.models_dir / 'coco.names').read_text().splitlines() if s.strip()]
@@ -332,7 +358,7 @@ class ObjectSeeker:
 
     def set_map_goal(self, data):
         mode = data.get('mode')
-        if mode not in ('point', 'vision'):
+        if mode not in ('point', 'vision', 'search'):
             raise ValueError('Chế độ mục tiêu không hợp lệ.')
         goal = dict(mode=mode, frame_id=self.odom_frame, stamp=rospy.Time.now().to_sec())
         if mode == 'point':
@@ -345,8 +371,8 @@ class ObjectSeeker:
                     raise ValueError('Bản đồ đã cũ; chờ LiDAR và odometry cập nhật.')
                 col = int(math.floor((x-grid['origin'][0])/grid['resolution']))
                 row = int(math.floor((y-grid['origin'][1])/grid['resolution']))
-                if not (0 <= col < grid['width'] and 0 <= row < grid['height']) or grid['data'][row*grid['width']+col] != 0:
-                    raise ValueError('Chọn điểm trong vùng trống đã quan sát, ngoài vùng đỏ/vàng/vật cản.')
+                if not (0 <= col < grid['width'] and 0 <= row < grid['height']) or grid['data'][row*grid['width']+col] not in (0, -1):
+                    raise ValueError('Không chọn được điểm trên vật cản hoặc vùng đỏ/vàng (vùng chưa quan sát thì được).')
             goal.update(x=x, y=y)
         if self.map_goal_publisher.get_num_connections() == 0:
             raise RuntimeError('Chưa kết nối bộ điều hướng; chưa gửi điểm đến.')
@@ -382,7 +408,8 @@ class ObjectSeeker:
             result = dict(map=self.local_map, path=self.local_path,
                           age_s=round(now-self.map_received, 2) if self.map_received else None,
                           target=self.navigation_state.get('target'),
-                          approach=self.navigation_state.get('planning', {}).get('approach_point'))
+                          approach=(self.navigation_state.get('planning') or {}).get('approach_point'),
+                          search=self.navigation_state.get('search'))
         with self.sensor_lock:
             result['robot'] = self.odom_pose if now-self.odom_time <= SENSOR_TIMEOUT_S else None
         return result
@@ -488,10 +515,16 @@ class ObjectSeeker:
     def run_yolo(self, frame):
         INPUT_SIZE = 640
         h, w = frame.shape[:2]
-        x_scale = w / float(INPUT_SIZE)
-        y_scale = h / float(INPUT_SIZE)
+        # Letterbox like YOLOv5 training (keep aspect, pad grey). Stretching 640x480 to
+        # 640x640 halved person confidence on a seated, occluded person (0.59 -> 0.29).
+        ratio = min(INPUT_SIZE / float(w), INPUT_SIZE / float(h))
+        new_w, new_h = int(round(w * ratio)), int(round(h * ratio))
+        pad_x, pad_y = (INPUT_SIZE - new_w) // 2, (INPUT_SIZE - new_h) // 2
+        canvas = np.full((INPUT_SIZE, INPUT_SIZE, 3), 114, dtype=np.uint8)
+        canvas[pad_y:pad_y+new_h, pad_x:pad_x+new_w] = (
+            frame if (new_w, new_h) == (w, h) else cv2.resize(frame, (new_w, new_h), interpolation=cv2.INTER_LINEAR))
 
-        blob = cv2.dnn.blobFromImage(frame, 1.0 / 255.0, (INPUT_SIZE, INPUT_SIZE), swapRB=True, crop=False)
+        blob = cv2.dnn.blobFromImage(canvas, 1.0 / 255.0, (INPUT_SIZE, INPUT_SIZE), swapRB=True, crop=False)
 
         if self.use_ort:
             outputs = self.session.run(None, {self.input_name: blob})
@@ -530,10 +563,10 @@ class ObjectSeeker:
         confidences = confidences[conf_mask]
         class_ids = class_ids[conf_mask]
 
-        cx = arr[:, 0] * x_scale
-        cy = arr[:, 1] * y_scale
-        bw = arr[:, 2] * x_scale
-        bh = arr[:, 3] * y_scale
+        cx = (arr[:, 0] - pad_x) / ratio
+        cy = (arr[:, 1] - pad_y) / ratio
+        bw = arr[:, 2] / ratio
+        bh = arr[:, 3] / ratio
         x = (cx - bw / 2.0).astype(int)
         y = (cy - bh / 2.0).astype(int)
         bw = bw.astype(int)
@@ -622,6 +655,21 @@ class ObjectSeeker:
             raw_targets = [d for d in detections if d['class_name'] == label]
             min_confidence = TARGET_CONFIDENCE.get(label, TARGET_CONFIDENCE_DEFAULT)
             targets = [d for d in raw_targets if d['conf'] >= min_confidence]
+            if not targets and raw_targets:
+                # Confidence hysteresis: a confirmed target keeps being tracked down to
+                # the detector floor; the tracker's position check rejects other objects.
+                with self.target_lock:
+                    tracking = self.tracker.confirmed and self.tracker.label == label
+                    strict = self.tracking_config.strict_target_tracking_for(label)
+                    last_bearing = self.tracker.bearing
+                if tracking and strict:
+                    targets = raw_targets
+                elif tracking and last_bearing is not None:
+                    # Non-strict labels (person) have no position check in the tracker:
+                    # only keep low-confidence boxes near the tracked bearing.
+                    limit = math.radians(self.tracking_config.target_max_bearing_jump_deg)
+                    targets = [d for d in raw_targets if abs(wrap_scalar(
+                        self._locate_target(d['box'], raw_frame.shape, with_depth=False)[0] - last_bearing)) <= limit]
             best = self._pick_target(targets, raw_frame.shape) if targets else None
 
             # Ghép depth gần nhất với đúng frame RGB. YOLO trên Jetson mất khoảng 250 ms,
@@ -656,9 +704,9 @@ class ObjectSeeker:
                         continue
                     if self.tracker.label != label:
                         self.tracker.reset(label)
-                    self.tracker.observe(label, bearing, distance, now, pose, source)
-                    self.last_observation_stamp = rgb_stamp or 0.0
-                    self.last_world_valid = pose is not None and distance is not None
+                    if self.tracker.observe(label, bearing, distance, now, pose, source):
+                        self.last_observation_stamp = rgb_stamp or 0.0
+                        self.last_world_valid = pose is not None and distance is not None
                 bx, by, bw, bh = best['box']
                 target_center = (bx + bw // 2, by + bh // 2)
                 target_info = {'distance': distance, 'source': source}
@@ -676,23 +724,11 @@ class ObjectSeeker:
             text = 'CONFIRMED' if estimate.valid else 'VERIFYING'
             if best is None:
                 text = 'MEMORY' if estimate.valid else 'NO TARGET'
-            for det in detections:
-                x, y, w, h = det['box']
-                color = ((0, 255, 0) if det['conf'] >= min_confidence else (0, 180, 255)) if det['class_name'] == label else (140, 140, 140)
-                cv2.rectangle(raw_frame, (x, y), (x+w, y+h), color, 2)
-                cv2.putText(raw_frame, '{} {:.0f}%'.format(det['class_name'], 100*det['conf']),
-                            (x, max(18, y-6)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
-            cv2.putText(raw_frame, '{} | {} | {:.1f} FPS'.format(label, text, current_ai_fps),
-                        (15, 28), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 230, 255), 2)
-            cv2.putText(raw_frame, 'HITS {}/{} | MIN CONF {:.0f}%'.format(tracker_hits, required_hits, min_confidence*100),
-                        (15, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 230, 255), 1)
-            if target_info and target_info['distance'] is not None:
-                cv2.putText(raw_frame, '{:.2f} m | {}'.format(target_info['distance'], target_info['source']),
-                            (15, 55), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 230, 255), 2)
-            ok, encoded = cv2.imencode('.jpg', raw_frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
+            overlay = dict(detections=detections, label=label, text=text, ai_fps=current_ai_fps,
+                           hits=tracker_hits, required_hits=required_hits, min_confidence=min_confidence,
+                           target_info=target_info)
             with self.state_lock:
-                if ok:
-                    self.jpeg = encoded.tobytes()
+                self.overlay = overlay
                 self.last_detections = detections
                 self.best_target_center = target_center
                 candidate = max(raw_targets, key=lambda d: d['conf']) if raw_targets else None
@@ -701,6 +737,52 @@ class ObjectSeeker:
                 self.last_depth_sync_ms = depth_sync_ms
                 self.ai_fps = current_ai_fps
 
+
+    @staticmethod
+    def draw_overlay(frame, overlay):
+        label, min_confidence = overlay['label'], overlay['min_confidence']
+        for det in overlay['detections']:
+            x, y, w, h = det['box']
+            color = ((0, 255, 0) if det['conf'] >= min_confidence else (0, 180, 255)) if det['class_name'] == label else (140, 140, 140)
+            cv2.rectangle(frame, (x, y), (x+w, y+h), color, 2)
+            cv2.putText(frame, '{} {:.0f}%'.format(det['class_name'], 100*det['conf']),
+                        (x, max(18, y-6)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
+        cv2.putText(frame, '{} | {} | AI {:.1f} FPS | CAM {:.0f} FPS'.format(
+                        label, overlay['text'], overlay['ai_fps'], overlay.get('stream_fps', 0.)),
+                    (15, 28), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 230, 255), 2)
+        cv2.putText(frame, 'HITS {}/{} | MIN CONF {:.0f}%'.format(overlay['hits'], overlay['required_hits'], min_confidence*100),
+                    (15, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 230, 255), 1)
+        info = overlay['target_info']
+        if info and info['distance'] is not None:
+            cv2.putText(frame, '{:.2f} m | {}'.format(info['distance'], info['source']),
+                        (15, 55), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 230, 255), 2)
+
+    def stream_worker_loop(self):
+        """Web video at camera rate (capped), independent of YOLO speed.
+
+        Boxes come from the latest YOLO result, so they lag the picture by one
+        inference (~0.2 s on the Nano). The cap bounds JPEG CPU cost.
+        """
+        last_seq, frames, fps, window_start = -1, 0, 0., time.monotonic()
+        period = 1.0/self.stream_fps
+        while not rospy.is_shutdown():
+            started = time.monotonic()
+            with frame_lock:
+                frame = raw_frame_astra.copy() if raw_frame_astra is not None and self.frame_seq != last_seq else None
+                last_seq = self.frame_seq
+            if frame is not None:
+                with self.state_lock:
+                    overlay = self.overlay
+                if overlay is not None:
+                    self.draw_overlay(frame, dict(overlay, stream_fps=fps))
+                ok, encoded = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 75])
+                if ok:
+                    with self.state_lock:
+                        self.jpeg = encoded.tobytes()
+                frames += 1
+                if started-window_start >= 1.0:
+                    fps, frames, window_start = frames/(started-window_start), 0, started
+            time.sleep(max(0.005, period-(time.monotonic()-started)))
 
     def status(self):
         now = time.monotonic()
@@ -734,7 +816,7 @@ img{width:100%;border-radius:12px}select,button{font:inherit;padding:8px}pre{whi
 <p id="mode">Đang kết nối…</p>
 <select id="target"></select> <button id="apply">Chọn mục tiêu</button>
 <button id="startNav">Bắt đầu</button> <button id="pauseNav">Tạm dừng</button>
-<p><button id="pickPoint">Chọn điểm trên bản đồ</button> <button id="goPoint" disabled>Đi tới điểm đã chọn</button> <button id="visionMode">Theo mục tiêu camera</button></p>
+<p><button id="pickPoint">Chọn điểm trên bản đồ</button> <button id="goPoint" disabled>Đi tới điểm đã chọn</button> <button id="visionMode">Theo mục tiêu camera</button> <button id="searchMode">Tự động tìm kiếm</button></p>
 <p id="pointInfo">Chọn điểm rồi bấm Đi tới điểm đã chọn để bắt đầu. Tạm dừng dùng chung cho cả hai chế độ.</p>
 <p id="error"></p><p id="reason">Đang chờ trạng thái điều hướng…</p>
 <div class="views"><div><h3>Camera Astra</h3><img src="/stream" alt="Camera Astra"></div>
@@ -754,14 +836,15 @@ document.getElementById('apply').onclick=async()=>{try{const r=await fetch('/tar
 async function navigation(enabled){try{const r=await fetch('/navigation',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({enabled})});if(!r.ok)throw Error(await r.text());document.getElementById('error').textContent='';await refresh()}catch(e){document.getElementById('error').textContent=e.message}}
 document.getElementById('startNav').onclick=()=>navigation(true);
 document.getElementById('pauseNav').onclick=()=>navigation(false);
-document.getElementById('pickPoint').onclick=()=>{pickingPoint=true;document.getElementById('map').style.cursor='crosshair';document.getElementById('pointInfo').textContent='Nhấp vào vùng trống trên bản đồ. Robot chỉ chạy khi bấm Đi tới điểm đã chọn.'};
+document.getElementById('pickPoint').onclick=()=>{pickingPoint=true;document.getElementById('map').style.cursor='crosshair';document.getElementById('pointInfo').textContent='Nhấp vào vùng trống hoặc vùng tối (chưa quan sát, kể cả phía sau robot). Robot chỉ chạy khi bấm Đi tới điểm đã chọn.'};
 document.getElementById('map').onclick=e=>{
 if(!pickingPoint)return;
 try{
 if(!latestMap||latestMap.age_s+(performance.now()-mapFetchedAt)/1000>1)throw Error('Bản đồ cũ; chờ bản đồ mới trước khi chọn điểm.');
 const m=latestMap.map,r=e.currentTarget.getBoundingClientRect();
 const col=Math.floor((e.clientX-r.left)/r.width*m.width),row=m.height-1-Math.floor((e.clientY-r.top)/r.height*m.height);
-if(col<0||row<0||col>=m.width||row>=m.height||m.data[row*m.width+col]!==0)throw Error('Điểm phải nằm trong vùng trống đã quan sát, ngoài vùng đỏ/vàng.');
+const cell=m.data[row*m.width+col];
+if(col<0||row<0||col>=m.width||row>=m.height||(cell!==0&&cell!==-1))throw Error('Không chọn được điểm trên vật cản hoặc vùng đỏ/vàng. Vùng tối (chưa quan sát) thì chọn được.');
 selectedPoint=[m.origin[0]+(col+.5)*m.resolution,m.origin[1]+(row+.5)*m.resolution];
 pickingPoint=false;e.currentTarget.style.cursor='default';document.getElementById('goPoint').disabled=false;
 document.getElementById('pointInfo').textContent='Điểm đã chọn: x='+selectedPoint[0].toFixed(2)+' m, y='+selectedPoint[1].toFixed(2)+' m. Bấm Đi tới điểm đã chọn.';
@@ -771,11 +854,12 @@ async function sendGoal(mode){try{
 const body=mode==='point'?{mode,x:selectedPoint[0],y:selectedPoint[1]}:{mode};
 const r=await fetch('/map_goal',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
 if(!r.ok)throw Error(await r.text());
-document.getElementById('pointInfo').textContent=mode==='point'?'Đã gửi điểm đến. Xem trạng thái chấp nhận/tìm đường phía dưới.':'Đã yêu cầu theo camera; bấm Bắt đầu khi mục tiêu được xác nhận.';
+document.getElementById('pointInfo').textContent=mode==='point'?'Đã gửi điểm đến. Xem trạng thái chấp nhận/tìm đường phía dưới.':mode==='search'?'Đã bắt đầu tự động tìm kiếm mục tiêu đang chọn. Bấm Tạm dừng để dừng.':'Đã yêu cầu theo camera; bấm Bắt đầu khi mục tiêu được xác nhận.';
 selectedPoint=null;document.getElementById('goPoint').disabled=true;await refresh();
 }catch(e){document.getElementById('pointInfo').textContent=e.message}}
 document.getElementById('goPoint').onclick=()=>sendGoal('point');
 document.getElementById('visionMode').onclick=()=>sendGoal('vision');
+document.getElementById('searchMode').onclick=()=>sendGoal('search');
 refresh();setInterval(refresh,500);
 async function refreshMap(){try{const r=await fetch('/map');const d=await r.json();const canvas=document.getElementById('map');const ctx=canvas.getContext('2d');ctx.clearRect(0,0,480,480);if(!d.map){document.getElementById('mapInfo').textContent='Chưa có bản đồ: cần odometry và LiDAR hợp lệ.';return}
 const m=d.map,sx=480/m.width,sy=480/m.height;
@@ -786,6 +870,9 @@ if(selectedPoint){const p=point(selectedPoint);ctx.strokeStyle='#fff';ctx.lineWi
 if(d.path.length){ctx.beginPath();ctx.strokeStyle='#c084fc';ctx.lineWidth=3;d.path.forEach((p,i)=>{const xy=point(p);if(i)ctx.lineTo(...xy);else ctx.moveTo(...xy)});ctx.stroke()}
 if(d.target){const p=point(d.target);ctx.beginPath();ctx.fillStyle='#4ade80';ctx.arc(...p,6,0,Math.PI*2);ctx.fill()}
 if(d.approach){const p=point(d.approach);ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.strokeRect(p[0]-5,p[1]-5,10,10)}
+const s=d.search;
+if(s&&s.goal&&!s.found){const p=point(s.goal);ctx.strokeStyle='#facc15';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(p[0],p[1]-8);ctx.lineTo(p[0]+8,p[1]);ctx.lineTo(p[0],p[1]+8);ctx.lineTo(p[0]-8,p[1]);ctx.closePath();ctx.stroke()}
+if(s&&s.found){const p=point(s.found);ctx.strokeStyle='#ef4444';ctx.lineWidth=4;ctx.beginPath();ctx.arc(...p,12,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#ef4444';ctx.font='bold 14px sans-serif';ctx.fillText('ĐÃ TÌM THẤY ('+s.found[0].toFixed(2)+', '+s.found[1].toFixed(2)+')',Math.min(p[0]+14,300),Math.max(p[1]-14,16))}
 if(d.robot){const p=point(d.robot);ctx.save();ctx.translate(...p);ctx.rotate(-d.robot[2]);ctx.fillStyle='#fb923c';const w=.324/m.resolution*sx,h=.260/m.resolution*sy;ctx.fillRect(-w/2,-h/2,w,h);ctx.strokeStyle='#fff';ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(w/2+8,0);ctx.stroke();ctx.restore()}
 document.getElementById('mapInfo').textContent='Ô '+Math.round(m.resolution*100)+' cm · '+(m.width*m.resolution).toFixed(2)+' × '+(m.height*m.resolution).toFixed(2)+' m · cập nhật '+d.age_s+' giây trước'+(d.age_s>2?' — dữ liệu cũ':'');
 }catch(e){document.getElementById('mapInfo').textContent=e.message}}
@@ -820,13 +907,15 @@ class Handler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=frame')
             self.end_headers()
+            sent = None  # send each new frame once; the old 0.1 s loop capped video at 10 FPS
             try:
                 while not rospy.is_shutdown():
                     with self.server.seeker.state_lock:
                         jpeg = self.server.seeker.jpeg
-                    if jpeg:
+                    if jpeg and jpeg is not sent:
+                        sent = jpeg
                         self.wfile.write(b'--frame\r\nContent-Type: image/jpeg\r\nContent-Length: '+str(len(jpeg)).encode()+b'\r\n\r\n'+jpeg+b'\r\n')
-                    time.sleep(0.1)
+                    time.sleep(0.02)
             except (BrokenPipeError, ConnectionResetError):
                 pass
         else:
@@ -864,12 +953,14 @@ def main():
     parser.add_argument('target', nargs='?', default='person')
     parser.add_argument('--models-dir', default=str(Path(__file__).resolve().parent.parent / 'models'))
     parser.add_argument('--port', type=int, default=5010)
+    parser.add_argument('--stream-fps', type=float, default=12.0,
+                        help='Web video frame cap (independent of YOLO); lower saves CPU on the Nano')
     args = parser.parse_args(rospy.myargv()[1:])
     TARGET_CLASS = args.target.strip().lower()
     classes = (Path(args.models_dir) / 'coco.names').read_text().splitlines()
     if TARGET_CLASS not in classes:
         parser.error('Target must be a class in coco.names')
-    seeker = ObjectSeeker(args.models_dir)
+    seeker = ObjectSeeker(args.models_dir, max(1.0, min(30.0, args.stream_fps)))
     server = ThreadingHTTPServer(('0.0.0.0', args.port), Handler)
     server.seeker = seeker
     thread = threading.Thread(target=server.serve_forever, daemon=True)

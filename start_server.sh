@@ -1,9 +1,8 @@
 #!/bin/bash
 # Verify live sensor data and launch each driver once.
 set -o pipefail
-APP_SCRIPT="${1:-jetauto_find_object.py}"
-MODE="${2:-run}"
-case "$APP_SCRIPT" in jetauto_find_object.py|jetauto_smart_search.py) ;; *) exit 1 ;; esac
+APP_SCRIPT="jetauto_find_object.py"
+MODE="${1:-run}"
 case "$MODE" in run|--check-only|--no-tail) ;; *) exit 1 ;; esac
 exec 9>/tmp/jetauto_start_server.lock
 flock -n 9 || { echo '[ERROR] Another startup is in progress.'; exit 1; }
@@ -112,7 +111,11 @@ for candidate in /home/jetauto/.virtualenvs/mediapipe/lib/python3.6/site-package
 done
 export PY3_PYTHONPATH="/home/jetauto/.local/lib/python3.6/site-packages:$SYSTEM_CV2_DIR:$PYTHONPATH"
 [ -f "/home/jetauto/$APP_SCRIPT" ] || fail "Missing app: $APP_SCRIPT"
+[ -s /home/jetauto/obstacle_avoidance.py ] || fail 'Missing obstacle_avoidance.py'
+[ -s /home/jetauto/models/yolov5n.onnx ] || fail 'Missing models/yolov5n.onnx'
+[ -s /home/jetauto/models/coco.names ] || fail 'Missing models/coco.names'
 # Match only app Python processes, allow graceful motor stop, never kill sensors.
+# Also stop any legacy Smart Search process left running on the robot.
 APP_PATTERN='^([^ ]*/)?python[23]?([.][0-9]+)?[ ]+(-u[ ]+)?([^ ]*/)?jetauto_(find_object|smart_search)[.]py([ ]|$)'
 pkill -TERM -f "$APP_PATTERN" 2>/dev/null || true
 for attempt in 1 2 3 4 5; do
