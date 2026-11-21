@@ -14,4 +14,12 @@ assert.match(format({state:'WAIT_TARGET',target_error:'STALE_TARGET'}), /Thông 
 assert.match(format({state:'FUTURE_STATE'}), /Trạng thái chưa có diễn giải/);
 assert.match(explainNavigation({mode:'preview',navigation:{state:'FOLLOW'}}), /lệnh không gửi tới động cơ/);
 assert.doesNotThrow(() => explainNavigation({}));
-console.log('13 dashboard diagnostic checks passed');
+const memory = format({state:'SEARCH_EXPLORE',map_memory:{memory_s:120,known_cells:300,occupied_cells:20,
+  expired_cells:4,window_evicted_cells:12,reset_count:1,last_reset_reason:'ODOM_RESET'}});
+assert.match(memory, /nhớ 120 s/);
+assert.match(memory, /hết hạn 4; ngoài cửa sổ 12/);
+assert.match(memory, /Bộ nhớ cục bộ đã xóa 1 lần: ODOM_RESET/);
+assert.match(format({state:'VERIFY_TARGET'}), /xác minh/);
+assert.match(format({state:'WAIT_LOCALIZATION'}), /TF map tới odom/);
+assert.match(format({state:'FOLLOW',frame_id:'map',map_memory:{persistent:true,global_cells:1200}}), /1200 ô lưu lâu dài/);
+console.log('19 dashboard diagnostic checks passed');

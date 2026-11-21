@@ -1,5 +1,44 @@
 # Local navigation for JetAuto on ROS 1 Melodic
 
+## Bản nâng cấp mới
+
+Xem [NAVIGATION_UPGRADE.md](NAVIGATION_UPGRADE.md) cho sửa xoay/kẹt, bản đồ lâu dài,
+`map_server`/AMCL hoặc GMapping, ghi rosbag trên robot và kết quả kiểm tra giả lập.
+Các mô tả bản đồ theo TTL bên dưới áp dụng cho chế độ `local`.
+
+## Cập nhật: giữ bản đồ và đường đi khi tìm người
+
+Chế độ **Tự động tìm kiếm** dùng `search_memory_s: 120.0` trong
+`navigation_ros1.yaml`. Các chế độ khác vẫn dùng `memory_s: 20.0`.
+Một vòng xoay quét có thể dài hơn 20 giây, nhất là khi Monitor giảm tốc;
+thời gian nhớ cũ làm vùng vừa quan sát biến thành unknown trước khi xe đi tiếp.
+Thời gian nhớ mới áp dụng cho cả ô trống và vật cản, không làm mới timestamp
+của quan sát cũ. Khi nhìn lại, tia LiDAR mới vẫn có thể xóa vật cản đã di chuyển.
+Ô ngoài cửa sổ cục bộ vẫn bị loại; đây chưa phải bản đồ SLAM lưu cả phòng.
+Nhớ lâu hơn cũng giữ sai số odom lâu hơn, nên cần kiểm tra trên robot thực tế.
+
+Khi tạm chờ scan/odom/Monitor, node xuất lệnh 0 nhưng giữ đường đã tính.
+Khi dữ liệu trở lại, Navigator kiểm tra đường với bản đồ hiện tại trước khi đi.
+Đổi mục tiêu, tạm dừng/bật lại và reset odom vẫn hủy đường theo cơ chế hiện có.
+Reset odom xóa cả các ô và các tọa độ vật cản, hủy mục tiêu và tạm dừng robot.
+Các watchdog scan 0,5 s, lệnh 0,4 s và bộ lọc va chạm không bị nới lỏng.
+
+Dashboard có phần **Bản đồ** và topic `/jetauto_navigation/state` có `map_memory`:
+
+- `memory_s`, `search_mode`: thời gian nhớ thực tế và chế độ tìm kiếm.
+- `known_cells`, `occupied_cells`: số ô đã biết/vật cản trong snapshot gần nhất.
+- `expired_cells`: tổng số ô bị loại do hết hạn.
+- `window_evicted_cells`: tổng số ô bị loại do ra ngoài cửa sổ bản đồ.
+- `reset_count`, `last_reset_reason`: số lần xóa bản đồ và lý do, ví dụ `ODOM_RESET`.
+
+Để kiểm tra trên robot: chạy launcher để tải lại mã/cấu hình, chọn `person`,
+bắt đầu tìm kiếm và kiểm tra dòng **Bản đồ: nhớ 120 s**. Khi bản đồ mất dữ liệu,
+đối chiếu các bộ đếm với `scan_error`, `odom_error`, `map_ms`, `async_planner_ms`.
+Các bộ đếm là cộng dồn trong phiên chạy; so sánh trước và sau lúc lỗi xảy ra.
+Chưa có dữ liệu chạy thật xác nhận nguyên nhân duy nhất hoặc hết lỗi.
+
+Kiểm thử hồi quy bổ sung: `python -m unittest -v test_map_memory`.
+
 This implements the planner/controller/costmap separation used by Nav2, with a
 small original Python implementation for the existing Ubuntu 18.04 robot.
 It is not Nav2 itself or a source-compatible port. No upstream code is copied.

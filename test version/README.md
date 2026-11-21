@@ -1,5 +1,10 @@
 # JetAuto vision test
 
+See [NAVIGATION_UPGRADE.md](NAVIGATION_UPGRADE.md) for the navigation upgrade,
+persistent maps (`-MapMode mapping` or `-MapMode localization`), on-robot recording,
+and offline simulation checks. The descriptions below refer to the default `local`
+map profile. The desktop simulator now has a **Bản đồ lâu dài** option.
+
 ## Start everything from Windows
 
 Double-click **`run_test_robot.bat`** in this directory. It uploads the test code,

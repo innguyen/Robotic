@@ -8,6 +8,15 @@ resolution: 0.06
 inflation_radius: 0.05  # planned body clearance >= 5 cm (typically 5-11 cm with 6 cm cells)
 grid_size: 121        # 121 x 6 cm = 7.3 m window (+-3.6 m); 161 = 9.7 m if Nano timing allows (max 201)
 memory_s: 20.0        # seconds an observed cell is remembered (behind the robot too); odom drift grows with it
+search_memory_s: 120.0 # bounded search memory: survives a spin + slow exploration; still local odom, not SLAM
+clear_observations: 3 # independent free scans needed to clear an old local hit
+rotate_exit_deg: 30.0
+rotation_timeout: 18.0
+rotation_stall_s: 3.0
+rotation_progress_deg: 3.0
+replan_interval: 2.0
+path_improvement: 0.15
+max_plan_expansions: 20000
 ray_range: 3.0
 planner_hz: 2.0
 control_hz: 10.0

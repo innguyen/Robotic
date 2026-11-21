@@ -1,0 +1,308 @@
+{
+  "results": [
+    {
+      "name": "gap",
+      "expected": "ARRIVED",
+      "state": "ARRIVED",
+      "passed": true,
+      "collision": false,
+      "simulated_seconds": 9.5,
+      "wall_seconds": 1.641,
+      "position": [
+        1.4923585816440523,
+        -0.02998781875483643,
+        0.0
+      ],
+      "states": {
+        "PLANNING": 1,
+        "FOLLOW": 93,
+        "ARRIVED": 1
+      },
+      "monitor_states": {
+        "IDLE": 2,
+        "PASS": 93
+      },
+      "turn_reversals": 0,
+      "max_translation_per_step_m": 0.018103601267156516,
+      "plan_count": 5,
+      "path_switches": 1,
+      "map_memory": {
+        "memory_s": 20.0,
+        "search_mode": false,
+        "stored_cells": 7192,
+        "known_cells": 7192,
+        "occupied_cells": 31,
+        "expired_cells": 0,
+        "window_evicted_cells": 0,
+        "reset_count": 0,
+        "last_reset_reason": "",
+        "persistent": false,
+        "global_cells": 0
+      }
+    },
+    {
+      "name": "detour",
+      "expected": "ARRIVED",
+      "state": "ARRIVED",
+      "passed": true,
+      "collision": false,
+      "simulated_seconds": 18.6,
+      "wall_seconds": 4.328,
+      "position": [
+        1.6301990095517562,
+        -0.38989549087998693,
+        0.4399725894810983
+      ],
+      "states": {
+        "PLANNING": 1,
+        "FOLLOW": 179,
+        "ALIGN": 5,
+        "ARRIVED": 1
+      },
+      "monitor_states": {
+        "IDLE": 2,
+        "PASS": 75,
+        "LIMIT": 1,
+        "SLOWDOWN": 108
+      },
+      "turn_reversals": 0,
+      "max_translation_per_step_m": 0.021255305486332955,
+      "plan_count": 9,
+      "path_switches": 1,
+      "map_memory": {
+        "memory_s": 20.0,
+        "search_mode": false,
+        "stored_cells": 7555,
+        "known_cells": 7555,
+        "occupied_cells": 9,
+        "expired_cells": 0,
+        "window_evicted_cells": 0,
+        "reset_count": 0,
+        "last_reset_reason": "",
+        "persistent": false,
+        "global_cells": 0
+      }
+    },
+    {
+      "name": "rear_goal",
+      "expected": "ARRIVED",
+      "state": "ARRIVED",
+      "passed": true,
+      "collision": false,
+      "simulated_seconds": 11.2,
+      "wall_seconds": 2.672,
+      "position": [
+        -1.1174082368527327,
+        -0.2637594462341507,
+        -2.5012648569205203
+      ],
+      "states": {
+        "ROTATE": 46,
+        "PLANNING": 1,
+        "FOLLOW": 64,
+        "ARRIVED": 1
+      },
+      "monitor_states": {
+        "PASS": 110,
+        "IDLE": 2
+      },
+      "turn_reversals": 0,
+      "max_translation_per_step_m": 0.021578412532823533,
+      "plan_count": 4,
+      "path_switches": 1,
+      "map_memory": {
+        "memory_s": 20.0,
+        "search_mode": false,
+        "stored_cells": 9643,
+        "known_cells": 9526,
+        "occupied_cells": 0,
+        "expired_cells": 0,
+        "window_evicted_cells": 308,
+        "reset_count": 0,
+        "last_reset_reason": "",
+        "persistent": false,
+        "global_cells": 0
+      }
+    },
+    {
+      "name": "mapped_room",
+      "expected": "ARRIVED",
+      "state": "ARRIVED",
+      "passed": true,
+      "collision": false,
+      "simulated_seconds": 28.7,
+      "wall_seconds": 51.515,
+      "position": [
+        2.4178859102074695,
+        -0.04210090453093456,
+        0.1423426135444472
+      ],
+      "states": {
+        "GLOBAL_PLANNING": 1,
+        "ROTATE": 14,
+        "PLANNING": 17,
+        "FOLLOW": 252,
+        "ESCAPE": 2,
+        "ARRIVED": 1
+      },
+      "monitor_states": {
+        "IDLE": 19,
+        "PASS": 268
+      },
+      "turn_reversals": 1,
+      "max_translation_per_step_m": 0.020488898019845082,
+      "plan_count": 21,
+      "path_switches": 17,
+      "map_memory": {
+        "memory_s": 20.0,
+        "search_mode": false,
+        "stored_cells": 2246,
+        "known_cells": 3996,
+        "occupied_cells": 906,
+        "expired_cells": 432,
+        "window_evicted_cells": 0,
+        "reset_count": 0,
+        "last_reset_reason": "",
+        "persistent": true,
+        "global_cells": 3996
+      }
+    },
+    {
+      "name": "global_8m",
+      "expected": "ARRIVED",
+      "state": "ARRIVED",
+      "passed": true,
+      "collision": false,
+      "simulated_seconds": 60.7,
+      "wall_seconds": 82.578,
+      "position": [
+        7.90505050153361,
+        -0.012242900086047434,
+        0.0
+      ],
+      "states": {
+        "GLOBAL_PLANNING": 1,
+        "PLANNING": 40,
+        "FOLLOW": 565,
+        "ARRIVED": 1
+      },
+      "monitor_states": {
+        "IDLE": 42,
+        "PASS": 565
+      },
+      "turn_reversals": 0,
+      "max_translation_per_step_m": 0.018149015620338955,
+      "plan_count": 42,
+      "path_switches": 40,
+      "map_memory": {
+        "memory_s": 20.0,
+        "search_mode": false,
+        "stored_cells": 9336,
+        "known_cells": 10020,
+        "occupied_cells": 0,
+        "expired_cells": 7965,
+        "window_evicted_cells": 745,
+        "reset_count": 0,
+        "last_reset_reason": "",
+        "persistent": true,
+        "global_cells": 12512
+      }
+    },
+    {
+      "name": "search_person",
+      "expected": "FOUND",
+      "state": "FOUND",
+      "passed": true,
+      "collision": false,
+      "simulated_seconds": 183.9,
+      "wall_seconds": 109.953,
+      "position": [
+        1.636718761920224,
+        -0.6767362681128939,
+        5.6843129118781
+      ],
+      "states": {
+        "SEARCH_SPIN": 258,
+        "SEARCH_EXPLORE": 644,
+        "PLANNING": 3,
+        "FOLLOW": 258,
+        "RECOVERY_ROTATE": 54,
+        "ESCAPE": 608,
+        "ALIGN": 5,
+        "VERIFY_TARGET": 8,
+        "FOUND": 1
+      },
+      "monitor_states": {
+        "IDLE": 117,
+        "PASS": 241,
+        "APPROACH": 1,
+        "SLOWDOWN": 1480
+      },
+      "turn_reversals": 2,
+      "max_translation_per_step_m": 0.019194875401728987,
+      "plan_count": 27,
+      "path_switches": 17,
+      "map_memory": {
+        "memory_s": 120.0,
+        "search_mode": true,
+        "stored_cells": 1645,
+        "known_cells": 1645,
+        "occupied_cells": 163,
+        "expired_cells": 1606,
+        "window_evicted_cells": 0,
+        "reset_count": 0,
+        "last_reset_reason": "",
+        "persistent": false,
+        "global_cells": 0
+      }
+    },
+    {
+      "name": "mapped_search_person",
+      "expected": "FOUND",
+      "state": "FOUND",
+      "passed": true,
+      "collision": false,
+      "simulated_seconds": 76.1,
+      "wall_seconds": 44.484,
+      "position": [
+        1.594229580713317,
+        -0.9896324015149579,
+        6.077992881836948
+      ],
+      "states": {
+        "SEARCH_SPIN": 258,
+        "SEARCH_EXPLORE": 416,
+        "GLOBAL_PLANNING": 1,
+        "PLANNING": 1,
+        "FOLLOW": 71,
+        "ALIGN": 5,
+        "VERIFY_TARGET": 8,
+        "FOUND": 1
+      },
+      "monitor_states": {
+        "IDLE": 136,
+        "PASS": 526,
+        "SLOWDOWN": 95,
+        "LIMIT": 4
+      },
+      "turn_reversals": 2,
+      "max_translation_per_step_m": 0.019967896814461504,
+      "plan_count": 34,
+      "path_switches": 28,
+      "map_memory": {
+        "memory_s": 120.0,
+        "search_mode": true,
+        "stored_cells": 3042,
+        "known_cells": 3996,
+        "occupied_cells": 912,
+        "expired_cells": 0,
+        "window_evicted_cells": 0,
+        "reset_count": 0,
+        "last_reset_reason": "",
+        "persistent": true,
+        "global_cells": 3996
+      }
+    }
+  ],
+  "limitations": "Ideal 2D LiDAR/odometry and synthetic camera. No ROS, AMCL, GMapping or hardware latency."
+}

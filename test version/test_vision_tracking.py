@@ -31,6 +31,18 @@ vision = load_vision()
 
 
 class TrackerTests(unittest.TestCase):
+    def test_person_rejects_single_other_person_and_compensates_rotation(self):
+        tracker = vision.TargetTracker(vision.TrackingConfig())
+        for now in (10., 10.2):
+            tracker.observe('person', 0., 1.4, now, (0., 0., 0.))
+        self.assertTrue(tracker.confirmed)
+        self.assertFalse(tracker.observe('person', .8, 1.4, 10.3, (0., 0., 0.)))
+        self.assertTrue(tracker.confirmed)
+        yaw = .5
+        self.assertTrue(tracker.observe('person', -yaw, 1.4, 10.4, (0., 0., yaw)))
+        self.assertAlmostEqual(tracker.anchor[0], 1.4)
+        self.assertAlmostEqual(tracker.anchor[1], 0.)
+
     def confirmed_bottle(self, pose=(0., 0., 0.)):
         tracker = vision.TargetTracker(vision.TrackingConfig())
         for i in range(3):

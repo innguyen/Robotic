@@ -117,7 +117,7 @@ class TargetTracker(object):
     def observe(self, label, bearing, distance, now, pose=None, source=''):
         if label != self.label:
             self.reset(label)
-        strict = self.cfg.strict_target_tracking_for(label)
+        strict = self.cfg.strict_target_tracking_for(label) or label == 'person'
         # An odom-anchored target can be checked against its position for the whole
         # memory window, so a short loss does not restart confirmation.
         window = self.cfg.target_memory_for(label) if (pose is not None and self.anchor is not None) else 0.8
@@ -360,7 +360,8 @@ class ObjectSeeker:
         mode = data.get('mode')
         if mode not in ('point', 'vision', 'search'):
             raise ValueError('Chế độ mục tiêu không hợp lệ.')
-        goal = dict(mode=mode, frame_id=self.odom_frame, stamp=rospy.Time.now().to_sec())
+        goal_frame = self.navigation_state.get('frame_id', self.odom_frame)
+        goal = dict(mode=mode, frame_id=goal_frame, stamp=rospy.Time.now().to_sec())
         if mode == 'point':
             x, y = float(data['x']), float(data['y'])
             if not all(math.isfinite(v) for v in (x, y)):
@@ -382,7 +383,7 @@ class ObjectSeeker:
         width, height = msg.info.width, msg.info.height
         origin = msg.info.origin
         values = (msg.info.resolution, origin.position.x, origin.position.y)
-        if (msg.header.frame_id.lstrip('/') != self.odom_frame
+        if (msg.header.frame_id.lstrip('/') != self.navigation_state.get('frame_id', self.odom_frame)
                 or not 0 < width <= 201 or not 0 < height <= 201
                 or len(msg.data) != width*height or not all(math.isfinite(v) for v in values)
                 or msg.info.resolution <= 0):
@@ -394,7 +395,7 @@ class ObjectSeeker:
             self.map_received = time.monotonic()
 
     def _callback_path(self, msg):
-        if msg.header.frame_id.lstrip('/') != self.odom_frame:
+        if msg.header.frame_id.lstrip('/') != self.navigation_state.get('frame_id', self.odom_frame):
             return
         points = [[p.pose.position.x, p.pose.position.y] for p in msg.poses[:2000]]
         if not all(math.isfinite(v) for point in points for v in point):
@@ -411,7 +412,10 @@ class ObjectSeeker:
                           approach=(self.navigation_state.get('planning') or {}).get('approach_point'),
                           search=self.navigation_state.get('search'))
         with self.sensor_lock:
-            result['robot'] = self.odom_pose if now-self.odom_time <= SENSOR_TIMEOUT_S else None
+            result['robot'] = (self.navigation_state.get('robot_pose') if
+                self.navigation_state.get('frame_id', self.odom_frame) != self.odom_frame else
+                self.odom_pose if now-self.odom_time <= SENSOR_TIMEOUT_S else None)
+        result['frame_id'] = self.navigation_state.get('frame_id', self.odom_frame)
         return result
 
     def _callback_depth_info(self, msg):
@@ -439,7 +443,8 @@ class ObjectSeeker:
         """Publish perception only; no velocity command is produced by this file."""
         valid = bool(estimate.valid and self.last_world_valid and self.tracker.anchor is not None)
         data = dict(valid=valid, label=label, frame_id=self.odom_frame,
-                    stamp=self.last_observation_stamp, source=estimate.source)
+                    stamp=self.last_observation_stamp, source=estimate.source,
+                    visible=estimate.visible, age_s=estimate.age if estimate.valid else None)
         if valid:
             data.update(x=self.tracker.anchor[0], y=self.tracker.anchor[1])
         else:
@@ -615,11 +620,18 @@ class ObjectSeeker:
 
     def _pick_target(self, targets, shape):
         """Nhiều vật cùng lớp: ưu tiên vật gần hướng đang bám (không nhảy qua lại), rồi tới độ tin cậy."""
+        with self.sensor_lock:
+            pose = self.odom_pose if time.monotonic()-self.odom_time <= SENSOR_TIMEOUT_S else None
         with self.target_lock:
             recent = self.tracker.last_time is not None and time.monotonic() - self.tracker.last_time < 1.5
-            last = self.tracker.bearing if recent else None
-        if last is None or len(targets) == 1:
+            last = self.tracker.estimate(time.monotonic(), pose).bearing if recent and self.tracker.confirmed else None
+        if last is None:
             return max(targets, key=lambda d: d['conf'])
+        associated = [d for d in targets if abs(wrap_scalar(
+            self._locate_target(d['box'], shape, with_depth=False)[0]-last)) <=
+            math.radians(self.tracking_config.target_max_bearing_jump_deg)]
+        if associated:
+            targets = associated
         return max(targets, key=lambda d: d['conf'] - 0.8 * abs(wrap_scalar(
             self._locate_target(d['box'], shape, with_depth=False)[0] - last)))
 

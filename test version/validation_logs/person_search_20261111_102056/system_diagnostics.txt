@@ -1,0 +1,103 @@
+2026-09-18T14:41:46+08:00
+ 14:41:46 up 37 min,  1 user,  load average: 0.27, 4.16, 5.31
+              total        used        free      shared  buff/cache   available
+Mem:           3963        1352        1891          16         720        2774
+Swap:          4029         255        3774
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/mmcblk1p1   58G   49G  5.9G  90% /
+18727 zsh -c date -Iseconds; uptime; free -m; df -h /home/jetauto; ps -eo pid,args | grep -E '[r]oscore|[r]osmaster|[r]oslaunch'; sudo -n dmesg | tail -55; tail -60 /tmp/roscore.log; ls -lt /home/jetauto/.ros/log | head -10
+[   33.915200] avdd-io-edp-1v05: disabling
+[   33.915203] vdd-usb-hub-en: disabling
+[   34.038699] tegra-i2c 7000c000.i2c: no acknowledge from address 0x50
+[   34.045681] tegra-i2c 7000c400.i2c: no acknowledge from address 0x50
+[   38.585631] fuse init (API version 7.26)
+[   43.184706] EXT4-fs (mmcblk0p1): recovery complete
+[   43.184715] EXT4-fs (mmcblk0p1): mounted filesystem with ordered data mode. Opts: (null)
+[   49.007011] usb 1-2.4.2: usb_suspend_both: status 0
+[   49.148055] tegra-i2c 7000c000.i2c: no acknowledge from address 0x50
+[   49.155126] tegra-i2c 7000c400.i2c: no acknowledge from address 0x50
+[  424.341674] tegra-i2c 7000c000.i2c: no acknowledge from address 0x50
+[  424.350176] tegra-i2c 7000c400.i2c: no acknowledge from address 0x50
+[  427.689172] tegra-i2c 7000c000.i2c: no acknowledge from address 0x50
+[  427.695990] tegra-i2c 7000c400.i2c: no acknowledge from address 0x50
+[  478.635395] usb 1-2.3.2: new full-speed USB device number 13 using tegra-xusb
+[  478.660052] usb 1-2.3.2: New USB device found, idVendor=1a86, idProduct=55d4
+[  478.660119] usb 1-2.3.2: New USB device strings: Mfr=0, Product=2, SerialNumber=3
+[  478.660168] usb 1-2.3.2: Product: USB Single Serial
+[  478.660216] usb 1-2.3.2: SerialNumber: 58D2011519
+[  478.715945] cdc_acm 1-2.3.2:1.0: ttyACM0: USB ACM device
+[  478.716438] usbcore: registered new interface driver cdc_acm
+[  478.716442] cdc_acm: USB Abstract Control Model driver for USB modems and ISDN adapters
+[  484.036459] usb 1-2.3.2: USB disconnect, device number 13
+[  484.036692] cdc_acm 1-2.3.2:1.0: acm_ctrl_irq - usb_submit_urb failed: -19
+[  484.311569] usb 1-2.3.2: new full-speed USB device number 14 using tegra-xusb
+[  484.336070] usb 1-2.3.2: New USB device found, idVendor=1a86, idProduct=55d4
+[  484.336097] usb 1-2.3.2: New USB device strings: Mfr=0, Product=2, SerialNumber=3
+[  484.336115] usb 1-2.3.2: Product: USB Single Serial
+[  484.336132] usb 1-2.3.2: SerialNumber: 58D2011519
+[  484.340242] cdc_acm 1-2.3.2:1.0: ttyACM1: USB ACM device
+[  491.030984] usb 1-2.4.2: usb_suspend_both: status 0
+[  674.372661] tegra-i2c 7000c000.i2c: no acknowledge from address 0x50
+[  674.379478] tegra-i2c 7000c400.i2c: no acknowledge from address 0x50
+[  677.558306] tegra-i2c 7000c000.i2c: no acknowledge from address 0x50
+[  677.565082] tegra-i2c 7000c400.i2c: no acknowledge from address 0x50
+[  747.047877] usb 1-2.4.2: usb_suspend_both: status 0
+[  924.713841] tegra-i2c 7000c000.i2c: no acknowledge from address 0x50
+[  924.720617] tegra-i2c 7000c400.i2c: no acknowledge from address 0x50
+[  927.925204] tegra-i2c 7000c000.i2c: no acknowledge from address 0x50
+[  927.936088] tegra-i2c 7000c400.i2c: no acknowledge from address 0x50
+[ 1174.298906] FAN rising trip_level:1 cur_temp:51000 trip_temps[2]:61000
+[ 1189.751847] tegra-xusb 70090000.xusb: WARN Event TRB for slot 8 ep 2 with no TDs queued?
+[ 1189.918126] tegra-xusb 70090000.xusb: WARN Event TRB for slot 8 ep 2 with no TDs queued?
+[ 1423.219690] usb 1-2.4.2: usb_suspend_both: status 0
+[ 1450.939756] FAN cooling trip_level:0 cur_temp:35750 trip_temps[1]:51000
+[ 1470.813969] tegra-i2c 7000c000.i2c: no acknowledge from address 0x50
+[ 1470.824532] tegra-i2c 7000c400.i2c: no acknowledge from address 0x50
+[ 1474.094520] tegra-i2c 7000c000.i2c: no acknowledge from address 0x50
+[ 1474.105200] tegra-i2c 7000c400.i2c: no acknowledge from address 0x50
+[ 1529.454728] tegra-xusb 70090000.xusb: WARN Event TRB for slot 8 ep 4 with no TDs queued?
+[ 1679.418960] FAN rising trip_level:1 cur_temp:51000 trip_temps[2]:61000
+[ 1709.980479] TCP: request_sock_TCP: Possible SYN flooding on port 5010. Dropping request.  Check SNMP counters.
+[ 1969.346823] tegra-xusb 70090000.xusb: WARN Event TRB for slot 8 ep 4 with no TDs queued?
+[ 1976.207646] usb 1-2.4.2: usb_suspend_both: status 0
+[ 2061.339647] FAN cooling trip_level:0 cur_temp:35750 trip_temps[1]:51000
+... logging to /home/jetauto/.ros/log/371bc4b8-b32a-11f1-b763-488f4cdeb988/roslaunch-jetauto-8168.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;roscore
+[1mstarted roslaunch server http://192.168.149.1:40963/[0m
+ros_comm version 1.14.13
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: melodic
+ * /rosversion: 1.14.13
+
+NODES
+
+auto-starting new master
+[1mprocess[master]: started with pid [8260][0m
+[1mROS_MASTER_URI=http://192.168.149.1:11311/[0m
+]2;roscore http://192.168.149.1:11311/
+[1msetting /run_id to 371bc4b8-b32a-11f1-b763-488f4cdeb988[0m
+[1mprocess[rosout-1]: started with pid [8299][0m
+started core service [/rosout]
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+total 7900
+-rw-rw-r-- 1 jetauto jetauto    2285 Sep 18  2026 jetauto_smart_seeker_7682_1789724075229.log
+drwxrwxr-x 2 jetauto jetauto    4096 Sep 18  2026 19efab00-b336-11f1-893a-488f4cdeb988
+-rw-rw-r-- 1 jetauto jetauto    4280 Sep 18  2026 jetauto_smart_seeker_28242_1789722942913.log
+-rw-rw-r-- 1 jetauto jetauto    1533 Sep 18  2026 rostopic_31318_1789723230302.log
+-rw-rw-r-- 1 jetauto jetauto    1533 Sep 18  2026 rostopic_30347_1789723131163.log
+-rw-rw-r-- 1 jetauto jetauto    3821 Sep 18  2026 jetauto_smart_seeker_26740_1789722890088.log
+-rw-rw-r-- 1 jetauto jetauto    2986 Sep 18  2026 jetauto_smart_seeker_24735_1789722777153.log
+-rw-rw-r-- 1 jetauto jetauto    4627 Sep 18  2026 jetauto_smart_seeker_21459_1789722444714.log
+-rw-rw-r-- 1 jetauto jetauto    5029 Sep 18  2026 jetauto_smart_seeker_18048_1789722246159.log

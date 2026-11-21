@@ -1,0 +1,25 @@
+path:        /home/jetauto/test_version/recordings/session_20260918_142044_30806_0.bag
+version:     2.0
+duration:    3:11s (191s)
+start:       Sep 18 2026 14:20:48.68 (1789712448.68)
+end:         Sep 18 2026 14:23:59.95 (1789712639.95)
+size:        32.0 MB
+messages:    31248
+compression: none [42/42 chunks]
+types:       geometry_msgs/Twist    [9f195f881246fdfa2798d1d3eebca84a]
+             nav_msgs/OccupancyGrid [3381f2d731d4076ec5c71b0759edbe4e]
+             nav_msgs/Odometry      [cd5e73d190d741a2f92e81eda573aca7]
+             nav_msgs/Path          [6227e2b7e9cce15051f669a5e197bbf7]
+             sensor_msgs/LaserScan  [90c7ef2dc6895d81024acba2ac42f369]
+             std_msgs/String        [992ce8a1687cec8c8bd883ec73ca41d1]
+             tf2_msgs/TFMessage     [94810edda583a504dfda3829e70d7eec]
+topics:      /collision_monitor/cmd_vel_raw      1360 msgs    : geometry_msgs/Twist   
+             /jetauto_collision_monitor/state    3684 msgs    : std_msgs/String       
+             /jetauto_navigation/path             335 msgs    : nav_msgs/Path         
+             /jetauto_navigation/state           1359 msgs    : std_msgs/String       
+             /map                                  47 msgs    : nav_msgs/OccupancyGrid
+             /odom                               5727 msgs    : nav_msgs/Odometry     
+             /scan                               2234 msgs    : sensor_msgs/LaserScan 
+             /tf                                15556 msgs    : tf2_msgs/TFMessage     (3 connections)
+             /tf_static                             5 msgs    : tf2_msgs/TFMessage     (5 connections)
+             /vision/target                       941 msgs    : std_msgs/String

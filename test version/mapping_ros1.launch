@@ -1,0 +1,39 @@
+<launch>
+  <arg name="profile" default="mapping" />
+  <arg name="map_file" default="" />
+  <arg name="odom_frame" default="odom" />
+  <arg name="base_frame" default="base_footprint" />
+  <group if="$(eval arg('profile') == 'mapping')">
+    <node pkg="gmapping" type="slam_gmapping" name="test_slam_gmapping" required="true" output="screen">
+      <remap from="scan" to="/test_mapping/scan" />
+      <param name="base_frame" value="$(arg base_frame)" />
+      <param name="odom_frame" value="$(arg odom_frame)" />
+      <param name="map_frame" value="map" />
+      <param name="delta" value="0.06" />
+      <param name="map_update_interval" value="3.0" />
+      <param name="particles" value="20" />
+      <param name="linearUpdate" value="0.15" />
+      <param name="angularUpdate" value="0.15" />
+      <param name="temporalUpdate" value="2.0" />
+      <param name="maxUrange" value="5.5" />
+      <param name="maxRange" value="6.0" />
+      <param name="xmin" value="-10.0" /><param name="xmax" value="10.0" />
+      <param name="ymin" value="-10.0" /><param name="ymax" value="10.0" />
+    </node>
+  </group>
+  <group if="$(eval arg('profile') == 'localization')">
+    <node pkg="map_server" type="map_server" name="test_map_server" args="$(arg map_file)" required="true" output="screen" />
+    <node pkg="amcl" type="amcl" name="test_amcl" required="true" output="screen">
+      <remap from="scan" to="/test_mapping/scan" />
+      <param name="odom_frame_id" value="$(arg odom_frame)" />
+      <param name="base_frame_id" value="$(arg base_frame)" />
+      <param name="global_frame_id" value="map" />
+      <param name="odom_model_type" value="omni" />
+      <param name="use_map_topic" value="true" />
+      <param name="min_particles" value="200" /><param name="max_particles" value="1000" />
+      <param name="laser_max_beams" value="60" />
+      <param name="update_min_d" value="0.10" /><param name="update_min_a" value="0.10" />
+      <param name="transform_tolerance" value="0.3" />
+    </node>
+  </group>
+</launch>

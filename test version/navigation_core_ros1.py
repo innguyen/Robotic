@@ -21,7 +21,11 @@ class NavConfig(object):
                     progress_timeout=8.0, progress_distance=0.06,
                     default_standoff=0.35, heading_gain=1.0,
                     rotate_in_place_deg=45.0, align_tolerance_deg=15.0,
-                    heading_tolerance_deg=25.0, recovery_offset_deg=20.0)
+                    heading_tolerance_deg=25.0, recovery_offset_deg=20.0,
+                    search_memory_s=120.0, clear_observations=1,
+                    rotate_exit_deg=30.0, rotation_timeout=18.0, rotation_stall_s=3.0,
+                    rotation_progress_deg=3.0, replan_interval=2.0, path_improvement=0.15,
+                    max_plan_expansions=20000)
 
     def __init__(self, **kwargs):
         if set(kwargs) - set(self.DEFAULTS):
@@ -36,6 +40,11 @@ class NavConfig(object):
         self.grid_size = int(self.grid_size)
         if self.grid_size % 2 == 0:
             raise ValueError('grid_size must be odd')
+        for key in ('clear_observations', 'max_plan_expansions'):
+            if getattr(self, key) != int(getattr(self, key)):
+                raise ValueError(key + ' must be an integer')
+        if self.rotate_exit_deg >= self.rotate_in_place_deg or self.path_improvement >= 1:
+            raise ValueError('Invalid rotation hysteresis or path improvement')
 
 
 def to_world(points, pose):
@@ -135,6 +144,36 @@ class Costmap(object):
         self.cells = {}  # fixed odom cell -> (occupied, monotonic observation time)
         self.obstacle_points = {}  # preserve real hits instead of moving them to cell centers
         self.last_prune = float('-inf')
+        self.search_mode = False
+        self.expired_cells = self.window_evicted_cells = self.reset_count = 0
+        self.last_reset_reason = ''
+        self.known_cells = self.occupied_cells = 0
+        self.clear_votes = {}
+        self.global_map = None
+
+    @property
+    def memory_s(self):
+        # One search spin can outlast the ordinary local-map memory. Keep both
+        # free space and obstacles for the same bounded interval during search.
+        return max(self.cfg.memory_s, self.cfg.search_memory_s) if self.search_mode else self.cfg.memory_s
+
+    def clear(self, reason='ODOM_RESET'):
+        self.cells.clear()
+        self.obstacle_points.clear()
+        self.clear_votes.clear()
+        self.last_prune = float('-inf')
+        self.known_cells = self.occupied_cells = 0
+        self.reset_count += 1
+        self.last_reset_reason = reason
+
+    def info(self):
+        return dict(memory_s=self.memory_s, search_mode=self.search_mode,
+                    stored_cells=len(self.cells), known_cells=self.known_cells,
+                    occupied_cells=self.occupied_cells, expired_cells=self.expired_cells,
+                    window_evicted_cells=self.window_evicted_cells,
+                    reset_count=self.reset_count, last_reset_reason=self.last_reset_reason,
+                    persistent=self.global_map is not None,
+                    global_cells=0 if self.global_map is None else int(self.global_map.raw.size))
 
     def update(self, ranges, angle_min, angle_increment, range_min, range_max, pose, now):
         cc, cfg = self.collision_cfg, self.cfg
@@ -175,12 +214,25 @@ class Costmap(object):
         # dict.fromkeys/update run in C; stale obstacle points of cleared cells are
         # dropped by the occupied-cell filter at the end of this update.
         free_value = (False, now)
-        self.cells.update(dict.fromkeys(zip((keys//width+base[0]).tolist(), (keys % width+base[1]).tolist()), free_value))
+        free_cells = list(zip((keys//width+base[0]).tolist(), (keys % width+base[1]).tolist()))
+        # Hits are immediate. Missing rays do not count as free-space evidence.
+        protected = {key: self.cells[key] for key in self.obstacle_points
+                     if self.cells.get(key, (False,))[0]}
+        self.cells.update(dict.fromkeys(free_cells, free_value))
+        for key, old in protected.items():
+            if self.cells.get(key) == free_value:
+                votes = self.clear_votes.get(key, 0)+1
+                if votes < self.cfg.clear_observations:
+                    self.cells[key] = old
+                    self.clear_votes[key] = votes
+                else:
+                    self.clear_votes.pop(key, None)
         hits = finite[valid] & (values[valid] <= cfg.ray_range)
         current_hits = {}
         for point, (i, j) in zip(endpoints[hits].tolist(), np.floor(endpoints[hits] / cfg.resolution).astype(int).tolist()):
             cell = (i, j)
             self.cells[cell] = (True, now)
+            self.clear_votes.pop(cell, None)
             current_hits.setdefault(cell, []).append((float(point[0]), float(point[1])))
         self.obstacle_points.update(current_hits)
         # The occupied robot footprint is known space; never erase actual hits.
@@ -198,16 +250,29 @@ class Costmap(object):
             center = np.floor(np.asarray(pose[:2]) / cfg.resolution).astype(int)
             half = cfg.grid_size // 2 + 2
             cx, cy = int(center[0]), int(center[1])
-            self.cells = {key: value for key, value in self.cells.items()
-                          if 0 <= now-value[1] <= cfg.memory_s
-                          and abs(key[0]-cx) <= half and abs(key[1]-cy) <= half}
+            retained = {}
+            memory = self.memory_s
+            for key, value in self.cells.items():
+                if not 0 <= now-value[1] <= memory:
+                    self.expired_cells += 1
+                elif abs(key[0]-cx) > half or abs(key[1]-cy) > half:
+                    self.window_evicted_cells += 1
+                else:
+                    retained[key] = value
+            self.cells = retained
         self.obstacle_points = {key: points for key, points in self.obstacle_points.items()
                                 if self.cells.get(key, (False,))[0]}
+        self.clear_votes = {key: value for key, value in self.clear_votes.items()
+                            if key in self.obstacle_points}
 
     def snapshot(self, pose, now):
         cfg, cc = self.cfg, self.collision_cfg
         origin = np.floor(np.asarray(pose[:2]) / cfg.resolution).astype(int) - cfg.grid_size // 2
         raw = np.full((cfg.grid_size, cfg.grid_size), -1, dtype=np.int8)
+        if self.global_map is not None:
+            rows, cols = np.indices(raw.shape)
+            xy = (np.column_stack((cols.ravel(), rows.ravel()))+origin+.5)*cfg.resolution
+            raw[:] = self.global_map.sample(xy).reshape(raw.shape)
         obstacles = []
         origin_x, origin_y = int(origin[0]), int(origin[1])
         if self.cells:
@@ -215,20 +280,31 @@ class Costmap(object):
             keys = np.array(list(self.cells.keys()), dtype=np.int64).reshape(-1, 2)
             values = np.array(list(self.cells.values()), dtype=float).reshape(-1, 2)
             age = now-values[:, 1]
-            fresh = (age >= 0) & (age <= cfg.memory_s)
+            fresh = (age >= 0) & (age <= self.memory_s)
             occupied = fresh & (values[:, 0] > .5)
             rows, cols = keys[:, 1]-origin_y, keys[:, 0]-origin_x
             inside = fresh & (rows >= 0) & (rows < cfg.grid_size) & (cols >= 0) & (cols < cfg.grid_size)
-            raw[rows[inside], cols[inside]] = np.where(occupied[inside], 100, 0)
+            # Local free rays never erase walls in the persistent map.
+            rr, cs = rows[inside], cols[inside]
+            raw[rr, cs] = np.maximum(raw[rr, cs], np.where(occupied[inside], 100, 0))
             for i, j in keys[occupied].tolist():
                 obstacles.extend(self.obstacle_points.get((i, j), [((i+.5)*cfg.resolution, (j+.5)*cfg.resolution)]))
         obstacles = np.asarray(obstacles, dtype=float).reshape(-1, 2)
+        if self.global_map is not None:
+            obstacles = np.concatenate((obstacles, self.global_map.obstacles_near(
+                pose[:2], cfg.grid_size*cfg.resolution/2+.6)))
         # The visible buffer is 6 cm by default. Chassis clearance is checked
         # separately using its actual rectangle, not a 36 cm circular buffer.
         inflated = dilate(raw == 100, int(math.ceil(cfg.inflation_radius / cfg.resolution)))
         hx, hy = cc.body_length/2+cfg.inflation_radius, cc.body_width/2+cfg.inflation_radius
+        if self.global_map is not None:
+            # A stored occupied pixel represents an area, unlike a measured LiDAR point.
+            pad = self.global_map.resolution*math.sqrt(.5)
+            hx, hy = hx+pad, hy+pad
         body_blocked = footprint_mask(obstacles, origin, raw.shape, pose[2], hx, hy, cfg.resolution)
         allowed = (raw == 0) & ~body_blocked
+        self.known_cells = int(np.count_nonzero(raw >= 0))
+        self.occupied_cells = int(np.count_nonzero(raw == 100))
         return Grid(raw, allowed, origin, cfg.resolution, inflated, obstacles, (hx, hy, pose[2]))
 
 
@@ -401,7 +477,7 @@ def astar(grid, start, goal, yaw=None, collision_cfg=None):
     return []
 
 
-def plan_approach(grid, start, target, distance, yaw, cc, exact_goal=False):
+def plan_approach(grid, start, target, distance, yaw, cc, exact_goal=False, max_expansions=20000):
     """Multi-goal A*: any reachable point on the complete standoff ring.
 
     If the ring is unseen, an observed frontier that makes real progress may be
@@ -452,6 +528,8 @@ def plan_approach(grid, start, target, distance, yaw, cc, exact_goal=False):
         if cell in visited or cost > costs[cell]+1e-9:
             continue
         visited.add(cell)
+        if len(visited) > max_expansions:
+            return [], 'PLAN_BUDGET_EXCEEDED', len(visited)
         remaining = remaining_at(cell)
         if exact_goal and remaining <= res*1.5:
             endpoint = grid.point(cell) if cell != start_cell else np.asarray(start)
@@ -525,6 +603,9 @@ class Navigator(object):
         self.planner_ms = 0.
         self.recovery_ref = self.recovery_wait = self.recovery_started = None
         self.recovery_step = 0
+        self.rotating = False
+        self.turn_started = self.turn_progress_time = self.turn_yaw = None
+        self.plan_count = self.path_switches = 0
 
     def close(self):
         if self.executor is not None:
@@ -542,6 +623,34 @@ class Navigator(object):
         self.planning_info = {}
         self.recovery_ref = self.recovery_wait = self.recovery_started = None
         self.recovery_step = 0
+        self.rotating = False
+        self.turn_started = self.turn_progress_time = self.turn_yaw = None
+
+    def _turn_guard(self, yaw, now):
+        if self.turn_started is None:
+            self.turn_started = self.turn_progress_time = now
+            self.turn_yaw = yaw
+        moved = abs((yaw-self.turn_yaw+math.pi) % (2*math.pi)-math.pi)
+        if moved >= math.radians(self.cfg.rotation_progress_deg):
+            self.turn_yaw, self.turn_progress_time = yaw, now
+        if (now-self.turn_started > self.cfg.rotation_timeout or
+                now-self.turn_progress_time > self.cfg.rotation_stall_s):
+            self.stuck = True
+            self.previous_velocity[:] = 0
+            return False
+        return True
+
+    @staticmethod
+    def trim_path(path, position):
+        if not path:
+            return []
+        nearest = int(np.argmin(np.linalg.norm(np.asarray(path)-position, axis=1)))
+        return path[nearest:]
+
+    @staticmethod
+    def path_length(path, position):
+        points = np.vstack((position, np.asarray(path)))
+        return float(np.linalg.norm(np.diff(points, axis=0), axis=1).sum())
 
     def _recover(self, pose, now):
         """Small spin recovery: try headings target+-offset so a blind sector moves off the route.
@@ -604,6 +713,15 @@ class Navigator(object):
                 or not math.isfinite(standoff) or standoff < 0):
             self.reset()
             return zero, 'INVALID_GOAL'
+        changed = self.route_target is None or np.linalg.norm(target-self.route_target) > .15 or self.route_mode != exact_goal
+        if changed:
+            self.reset()
+            self.route_target, self.route_mode = target.copy(), exact_goal
+            self.progress_anchor, self.progress_time = position.copy(), now
+        # A failed goal stays stopped until a new goal or explicit reset, including
+        # heading changes and escape/arrival branches.
+        if self.stuck:
+            return zero, 'STUCK'
         offset = target-position
         distance = float(np.linalg.norm(offset))
         # Face the goal: keeps a vision target in the camera; turns toward map points (also behind).
@@ -615,6 +733,8 @@ class Navigator(object):
         stopping_distance = 0. if exact_goal else cc.body_length/2 + standoff
         if distance <= stopping_distance + cfg.goal_tolerance:
             if not exact_goal and abs(heading_error) > math.radians(cfg.align_tolerance_deg):
+                if not self._turn_guard(pose[2], now):
+                    return zero, 'STUCK'
                 self.previous_velocity[:] = 0
                 return (0., 0., turn), 'ALIGN'
             self.reset()
@@ -632,23 +752,20 @@ class Navigator(object):
                 self.progress_anchor, self.progress_time = position.copy(), now
                 return escape, 'ESCAPE'
             return zero, 'START_BLOCKED'
-        if (abs(heading_error) > math.radians(cfg.rotate_in_place_deg)
+        rotate_threshold = cfg.rotate_exit_deg if self.rotating else cfg.rotate_in_place_deg
+        if (abs(heading_error) > math.radians(rotate_threshold)
                 and self.grid.pose_free(position, pose[2]+turn*.5)):
             # Turn first: a target behind or beside the robot lies in blind/unplanned space.
             # Not when turning would swing a corner into the buffer: move away first.
             # Rotation is not lack of progress, so keep the stuck timer fresh.
             self.previous_velocity[:] = 0
-            self.path = []
+            self.rotating = True
+            if not self._turn_guard(pose[2], now):
+                return zero, 'STUCK'
             self.progress_anchor, self.progress_time = position.copy(), now
             return (0., 0., turn), 'ROTATE'
-        changed =self.route_target is None or np.linalg.norm(target-self.route_target) > .15 or self.route_mode != exact_goal
-        if changed:
-            self.stuck = False
-            self.progress_anchor, self.progress_time = position.copy(), now
-            self.recovery_ref = self.recovery_wait = self.recovery_started = None
-            self.recovery_step = 0
-        if self.stuck:
-            return zero, 'STUCK'
+        self.rotating = False
+        self.turn_started = self.turn_progress_time = self.turn_yaw = None
         if self.progress_anchor is None or np.linalg.norm(position-self.progress_anchor) >= cfg.progress_distance:
             self.progress_anchor, self.progress_time = position.copy(), now
         if self.progress_time is not None and now-self.progress_time > cfg.progress_timeout:
@@ -658,6 +775,7 @@ class Navigator(object):
         # Path ends are real positions (robot start, exact goal), not cell centres: a
         # blocked centre cell must fall back to the exact footprint test, otherwise the
         # async planner discards every path near obstacles and the robot crawls to STUCK.
+        self.path = self.trim_path(self.path, position)
         invalid_path = bool(self.path) and any(
             not self.grid.free(self.grid.cell(p)) and not self.grid.point_free(p) for p in self.path)
         if self.executor is not None:
@@ -671,28 +789,50 @@ class Navigator(object):
             if self.plan_future is not None and self.plan_future.done():
                 result, self.planner_ms = self.plan_future.result()
                 if self.future_generation == self.generation:
-                    self.path, self.route_strategy, reached = result
+                    candidate, strategy, reached = result
+                    candidate = self.trim_path(candidate, position)
+                    # Revalidate a delayed result on the current map before accepting it.
+                    valid = bool(candidate) and all(self.grid.point_free(p) for p in candidate)
+                    replace = (not self.path or invalid_path or (valid and (
+                               strategy != self.route_strategy or
+                               self.path_length(candidate, position) <
+                               self.path_length(self.path, position)*(1.-cfg.path_improvement))))
+                    if replace:
+                        self.path = candidate if valid else []
+                        self.route_strategy = strategy
+                        self.path_switches += 1
                     self.plan_time = now
                     self.plan_goal = self.path[-1].copy() if self.path else None
                     self.planning_info = dict(strategy=self.route_strategy, reachable_cells=reached,
                         approach_point=self.plan_goal.tolist() if self.plan_goal is not None else None)
                 self.plan_future = None
-            due = self.plan_time is None or now-self.plan_time >= 1./cfg.planner_hz or invalid_path
+            interval = max(1./cfg.planner_hz, cfg.replan_interval) if self.path else 1./cfg.planner_hz
+            due = self.plan_time is None or now-self.plan_time >= interval or invalid_path
             if self.plan_future is None and due:
                 # The worker owns an immutable grid snapshot. It never writes the
                 # live map, pose, path or command; only this control loop accepts results.
                 self.future_generation = self.generation
                 def compute(grid, position, goal, heading):
                     started = time.monotonic()
-                    result = plan_approach(grid, position, goal, stopping_distance, heading, cc, exact_goal)
+                    result = plan_approach(grid, position, goal, stopping_distance, heading, cc,
+                                           exact_goal, cfg.max_plan_expansions)
                     return result, (time.monotonic()-started)*1000.
                 self.plan_future = self.executor.submit(compute, self.grid, position.copy(), target.copy(), pose[2])
+                self.plan_count += 1
             if not self.path and self.plan_future is not None:
                 self.previous_velocity[:] = 0
                 recovery = self._recover(pose, now) if self.recovery_ref is not None else None
                 return recovery if recovery is not None else (zero, 'PLANNING')
-        elif changed or invalid_path or self.plan_time is None or now-self.plan_time >= 1./cfg.planner_hz:
-            self.path, self.route_strategy, reached = plan_approach(self.grid, position, target, stopping_distance, pose[2], cc, exact_goal)
+        elif changed or invalid_path or self.plan_time is None or now-self.plan_time >= (
+                max(1./cfg.planner_hz, cfg.replan_interval) if self.path else 1./cfg.planner_hz):
+            candidate, strategy, reached = plan_approach(self.grid, position, target, stopping_distance,
+                                                       pose[2], cc, exact_goal, cfg.max_plan_expansions)
+            if (not self.path or invalid_path or (candidate and (strategy != self.route_strategy or
+                    self.path_length(candidate, position) <
+                    self.path_length(self.path, position)*(1.-cfg.path_improvement)))):
+                self.path, self.route_strategy = candidate, strategy
+                self.path_switches += 1
+            self.plan_count += 1
             self.plan_time, self.route_target = now, target.copy()
             self.route_mode = exact_goal
             self.plan_goal = self.path[-1].copy() if self.path else None

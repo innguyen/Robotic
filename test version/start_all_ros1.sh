@@ -5,6 +5,11 @@ TASK_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 MODE="${1:-preview}"
 TARGET="${2:-bottle}"
 PORT="${3:-5010}"
+JETAUTO_MAP_PROFILE="${4:-local}"
+MAP_FILE="${5:-}"
+RECORD="${6:-true}"
+case "$JETAUTO_MAP_PROFILE" in local|mapping|localization) ;; *) echo 'Invalid map profile'; exit 1 ;; esac
+export JETAUTO_MAP_PROFILE
 case "$MODE" in preview|live) ;; *) echo 'Mode must be preview or live'; exit 1 ;; esac
 [[ "$TARGET" =~ ^[a-z][a-z\ ]{0,39}$ ]] || { echo 'Invalid target class'; exit 1; }
 [[ "$PORT" =~ ^[0-9]+$ ]] && [ "$PORT" -ge 1024 ] && [ "$PORT" -le 65535 ] || { echo 'Invalid port'; exit 1; }
@@ -65,8 +70,10 @@ for candidate in /home/jetauto/.virtualenvs/mediapipe/lib/python3.6/site-package
         break
     fi
 done
-export PYTHONPATH="/home/jetauto/.local/lib/python3.6/site-packages:$CV2_DIR:${PYTHONPATH:-}"
-python3 -c 'import rospy, rosgraph, cv2, numpy; from std_srvs.srv import SetBool; from sensor_msgs.msg import LaserScan; assert hasattr(cv2, "dnn")'
+# Keep Python 3 vision packages out of Melodic's Python 2 CLI tools
+# (rosbag, roslaunch and rosparam). Only the vision process needs this path.
+VISION_PYTHONPATH="/home/jetauto/.local/lib/python3.6/site-packages:$CV2_DIR:${PYTHONPATH:-}"
+env PYTHONPATH="$VISION_PYTHONPATH" python3 -c 'import rospy, rosgraph, cv2, numpy; from std_srvs.srv import SetBool; from sensor_msgs.msg import LaserScan; assert hasattr(cv2, "dnn")'
 FRAME_INFO=$(timeout 20 python3 - <<'PY'
 import rospy
 from sensor_msgs.msg import LaserScan
@@ -98,23 +105,40 @@ PY
 
 PAIR_PID=''
 VISION_PID=''
+MAPPING_PID=''
+RECORD_PID=''
 cleanup() {
     # Close controller/filter before perception; each child handles graceful stop.
     [ -z "$PAIR_PID" ] || kill -TERM "$PAIR_PID" 2>/dev/null || true
     [ -z "$PAIR_PID" ] || wait "$PAIR_PID" 2>/dev/null || true
     [ -z "$VISION_PID" ] || kill -TERM "$VISION_PID" 2>/dev/null || true
     [ -z "$VISION_PID" ] || wait "$VISION_PID" 2>/dev/null || true
+    [ -z "$MAPPING_PID" ] || kill -TERM "$MAPPING_PID" 2>/dev/null || true
+    [ -z "$MAPPING_PID" ] || wait "$MAPPING_PID" 2>/dev/null || true
+    [ -z "$RECORD_PID" ] || kill -TERM "$RECORD_PID" 2>/dev/null || true
+    [ -z "$RECORD_PID" ] || wait "$RECORD_PID" 2>/dev/null || true
 }
 trap cleanup EXIT
 trap 'exit 130' INT TERM HUP
+if [ "$JETAUTO_MAP_PROFILE" != local ]; then
+    bash "$TASK_DIR/start_mapping_ros1.sh" "$JETAUTO_MAP_PROFILE" "$MAP_FILE" 8>&- &
+    MAPPING_PID=$!
+fi
+if [ "$RECORD" = true ] && [ -f "$TASK_DIR/session_recorder_ros1.py" ]; then
+    python3 "$TASK_DIR/session_recorder_ros1.py" --directory "$TASK_DIR/recordings" 8>&- &
+    RECORD_PID=$!
+fi
 echo '[4/5] Starting navigation and Collision Monitor...'
 bash "$TASK_DIR/start_navigation_ros1.sh" "$SCAN_FRAME" "$MODE" 8>&- &
 PAIR_PID=$!
 echo '[5/5] Starting YOLO and web camera...'
-python3 -u "$TASK_DIR/jetauto_find_object.py" "$TARGET" --models-dir "$TASK_DIR/models" --port "$PORT" \
+env PYTHONPATH="$VISION_PYTHONPATH" python3 -u "$TASK_DIR/jetauto_find_object.py" "$TARGET" --models-dir "$TASK_DIR/models" --port "$PORT" \
     "_odom_frame:=$JETAUTO_ODOM_FRAME" "_base_frame:=$JETAUTO_BASE_FRAME" 8>&- &
 VISION_PID=$!
 echo "Camera: http://192.168.149.1:$PORT"
 echo "Mode: $MODE. Navigation starts PAUSED. Use Start/Pause on the camera page."
 echo 'Keep this terminal open. Ctrl+C stops all test nodes; sensor drivers remain running.'
-wait -n "$PAIR_PID" "$VISION_PID"
+CHILDREN=("$PAIR_PID" "$VISION_PID")
+[ -z "$MAPPING_PID" ] || CHILDREN+=("$MAPPING_PID")
+[ -z "$RECORD_PID" ] || CHILDREN+=("$RECORD_PID")
+wait -n "${CHILDREN[@]}"

@@ -404,14 +404,18 @@ class PlanningTests(unittest.TestCase):
         nav.costmap.cells[(12, 0)] = (True, 10.)
         obstacle = np.array([[.75, .03]])
         position = np.array([0., 0.])
+        yaw = 0.
         greatest_sideways = 0.
         for step in range(350):
             now = 10.+step*.1
-            command, state = nav.step((position[0], position[1], 0.), (2., 0.), .35, now, .1)
-            monitor.set_scan(obstacle-position, now)
+            command, state = nav.step((position[0], position[1], yaw), (2., 0.), .35, now, .1)
+            c, s = math.cos(yaw), math.sin(yaw)
+            delta = obstacle-position
+            monitor.set_scan(np.column_stack((c*delta[:, 0]+s*delta[:, 1], -s*delta[:, 0]+c*delta[:, 1])), now)
             monitor.set_command(*command, now=now)
             checked, _ = monitor.evaluate(now)
-            position += np.array(checked[:2])*.1
+            position += np.array([c*checked[0]-s*checked[1], s*checked[0]+c*checked[1]])*.1
+            yaw += checked[2]*.1
             greatest_sideways = max(greatest_sideways, abs(position[1]))
             if state == 'ARRIVED':
                 break
@@ -472,10 +476,10 @@ class TargetTests(unittest.TestCase):
             obj.tracker = types.SimpleNamespace(anchor=(1., 2.))
             output = []
             obj.target_publisher = types.SimpleNamespace(publish=lambda msg: output.append(json.loads(msg.data)))
-            obj._publish_target(types.SimpleNamespace(valid=True, source='DO SAU'), 'bottle')
+            obj._publish_target(types.SimpleNamespace(valid=True, source='DO SAU', visible=True, age=0.), 'bottle')
             self.assertEqual(parse_target(output[-1], 100.1, 'odom', 1.2)[:2], ((1., 2.), 'bottle'))
             obj.last_world_valid = False
-            obj._publish_target(types.SimpleNamespace(valid=True, source='DO SAU'), 'bottle')
+            obj._publish_target(types.SimpleNamespace(valid=True, source='DO SAU', visible=True, age=0.), 'bottle')
             self.assertFalse(output[-1]['valid'])
 
 
@@ -484,6 +488,7 @@ class AdapterTests(unittest.TestCase):
         ns = types.SimpleNamespace
         callbacks, services, output, statuses = {}, {}, [], []
         reports = []
+        navigator_seen, held_paths = [], []
         loop_outputs = {}
         clock, cycle = [100.], [0]
         ros = types.ModuleType('rospy')
@@ -508,6 +513,8 @@ class AdapterTests(unittest.TestCase):
                     report = json.loads(message.data)
                     reports.append(report)
                     statuses.append(report['state'])
+                    if report['state'] == 'MONITOR_STOP_ZONE':
+                        held_paths.append(list(navigator_seen[0].path))
             return ns(publish=publish)
 
         def subscribe(topic, cls, callback, **kwargs):
@@ -582,6 +589,9 @@ class AdapterTests(unittest.TestCase):
         callback_checks = []
 
         def update_while_receiving_odom(costmap, *args, **kwargs):
+            if cycle[0] == 8:
+                # A monitor hold must not destroy an already-computed route.
+                navigator_seen[0].path = [np.array([0., 0.]), np.array([1., 0.])]
             if cycle[0] == 6:  # preserve the explicit stale-odom test case
                 return original_update(costmap, *args, **kwargs)
             completed = __import__('threading').Event()
@@ -599,6 +609,8 @@ class AdapterTests(unittest.TestCase):
             return original_update(costmap, *args, **kwargs)
 
         def step_while_pausing(navigator, *args, **kwargs):
+            if not navigator_seen:
+                navigator_seen.append(navigator)
             result = original_step(navigator, *args, **kwargs)
             if cycle[0] == 9:
                 completed = __import__('threading').Event()
@@ -620,6 +632,10 @@ class AdapterTests(unittest.TestCase):
             self.assertEqual(loop_outputs[index], (0., 0., 0.))
         self.assertEqual(loop_outputs[2], (0., 0., 0.))
         self.assertTrue(callback_checks)
+        self.assertEqual(len(held_paths), 1)
+        np.testing.assert_allclose(held_paths[0], [[0., 0.], [1., 0.]])
+        self.assertEqual(reports[9]['map_memory']['reset_count'], 1)
+        self.assertEqual(reports[9]['map_memory']['last_reset_reason'], 'ODOM_RESET')
         self.assertEqual(output[-3:], [(0., 0., 0.)]*3)
         self.assertEqual(reports[11]['goal_mode'], 'point')
         self.assertEqual(reports[12]['target'], [6., 0.], 'Camera target overrode clicked goal')
@@ -676,6 +692,8 @@ class AdapterTests(unittest.TestCase):
             if index >= 9:
                 callbacks['/vision/target'](ns(data=json.dumps(dict(
                     valid=True, frame_id='odom', stamp=stamp, x=2., y=0., label='person'))))
+            if index == 13:
+                callbacks['~map_goal'](ns(data=json.dumps(dict(mode='vision'))))
             return False
         ros.is_shutdown = running
         modules = {'rospy': ros}
@@ -703,8 +721,12 @@ class AdapterTests(unittest.TestCase):
         self.assertIn('SEARCH_SPIN', states[:9])
         self.assertTrue(all(r['enabled'] for r in reports if r['goal_mode'] == 'search'))
         searching = [r for r in reports if r['goal_mode'] == 'search']
+        self.assertTrue(all(r['map_memory']['search_mode'] for r in searching))
+        self.assertTrue(all(r['map_memory']['memory_s'] == 120. for r in searching))
         self.assertIsNotNone(searching[-1]['search'])
         self.assertEqual(searching[-1]['search']['state'], 'APPROACH')
+        self.assertFalse(reports[-1]['map_memory']['search_mode'])
+        self.assertEqual(reports[-1]['map_memory']['memory_s'], NavConfig.DEFAULTS['memory_s'])
 
 
 if __name__ == '__main__':

@@ -1,0 +1,52 @@
+{
+  "results": [
+    {
+      "name": "mapped_search_person",
+      "expected": "FOUND",
+      "state": "FOUND",
+      "passed": true,
+      "collision": false,
+      "simulated_seconds": 76.1,
+      "wall_seconds": 34.828,
+      "position": [
+        1.594229580713317,
+        -0.9896324015149579,
+        6.077992881836948
+      ],
+      "states": {
+        "SEARCH_SPIN": 258,
+        "SEARCH_EXPLORE": 416,
+        "GLOBAL_PLANNING": 1,
+        "PLANNING": 1,
+        "FOLLOW": 71,
+        "ALIGN": 5,
+        "VERIFY_TARGET": 8,
+        "FOUND": 1
+      },
+      "monitor_states": {
+        "IDLE": 136,
+        "PASS": 526,
+        "SLOWDOWN": 95,
+        "LIMIT": 4
+      },
+      "turn_reversals": 2,
+      "max_translation_per_step_m": 0.019967896814461504,
+      "plan_count": 34,
+      "path_switches": 28,
+      "map_memory": {
+        "memory_s": 120.0,
+        "search_mode": true,
+        "stored_cells": 3042,
+        "known_cells": 3996,
+        "occupied_cells": 912,
+        "expired_cells": 0,
+        "window_evicted_cells": 0,
+        "reset_count": 0,
+        "last_reset_reason": "",
+        "persistent": true,
+        "global_cells": 3996
+      }
+    }
+  ],
+  "limitations": "Ideal 2D LiDAR/odometry and synthetic camera. No ROS, AMCL, GMapping or hardware latency."
+}

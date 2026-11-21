@@ -3,6 +3,15 @@ function explainNavigation(d) {
   const n = d.navigation || {}, state = n.state || 'WAIT_NAVIGATION';
   const descriptions = {
     PLANNING: ['Đang tìm đường trong luồng riêng', 'Robot chờ khi chưa có đường. LiDAR và điều khiển tiếp tục cập nhật.'],
+    GLOBAL_PLANNING: ['Đang tìm đường trên bản đồ toàn cục', 'Chờ đường nối tới mục tiêu; lớp điều khiển cục bộ tiếp tục kiểm tra vật cản.'],
+    NO_GLOBAL_PATH: ['Chưa có đường toàn cục tới mục tiêu', 'Kiểm tra vị trí định vị, vùng chưa biết và các lối bị chặn trên bản đồ.'],
+    WAIT_GLOBAL_MAP: ['Đang chờ bản đồ toàn cục', 'Kiểm tra map_server hoặc SLAM.'],
+    WAIT_LOCALIZATION: ['Đang chờ định vị trên bản đồ', 'Kiểm tra TF map tới odom và đặt vị trí ban đầu khi dùng AMCL.'],
+    STALE_LOCALIZATION: ['Thông tin định vị đã quá cũ', 'Robot dừng chờ TF map tới odom cập nhật.'],
+    LOCALIZATION_UNCERTAIN: ['Định vị chưa đủ tin cậy', 'Đặt vị trí ban đầu trong RViz và chờ AMCL hội tụ.'],
+    VERIFY_TARGET: ['Đang xác minh đã tiếp cận mục tiêu', 'Cần ảnh mục tiêu còn mới và odometry xác nhận robot đã dừng ổn định.'],
+    SEARCH_MAP_TOO_LARGE: ['Bản đồ vượt giới hạn thăm dò hiện tại', 'Tăng độ phân giải ô hoặc giới hạn phạm vi bản đồ sau khi kiểm tra tài nguyên trên robot.'],
+    INVALID_GLOBAL_MAP: ['Bản đồ toàn cục không hợp lệ', 'Kiểm tra dữ liệu OccupancyGrid và cấu hình nguồn bản đồ.'],
     PAUSED: ['Đang tạm dừng', 'Bấm Bắt đầu khi muốn bật điều hướng.'],
     WAIT_NAVIGATION: ['Mất hoặc chưa nhận trạng thái điều hướng', 'Kiểm tra cửa sổ khởi chạy và tiến trình navigation_ros1.py.'],
     WAIT_SCAN: ['Chưa có LiDAR đủ mới và ghép được vị trí robot', 'Xem chi tiết LiDAR bên dưới. Bản đồ đang hiện có thể là dữ liệu cũ.'],
@@ -77,8 +86,17 @@ function explainNavigation(d) {
   const lines = [description[0]+' ['+state+']', description[1]];
   lines.push('Chế độ: '+(n.goal_mode==='point'?'Đi tới điểm chọn trên bản đồ':n.goal_mode==='search'?'Tự động tìm kiếm':'Theo mục tiêu camera'));
   const search = n.search;
+  const memory = n.map_memory;
+  if (memory) {
+    if (memory.persistent) lines.push('Bản đồ toàn cục: '+memory.global_cells+' ô lưu lâu dài; hệ tọa độ '+(n.frame_id || 'map')+'.');
+    lines.push('Bản đồ: nhớ '+memory.memory_s+' s; '+memory.known_cells+' ô đã biết, '+memory.occupied_cells+' ô vật cản.');
+    lines.push('Ô đã loại (cộng dồn): hết hạn '+memory.expired_cells+'; ngoài cửa sổ '+memory.window_evicted_cells+'.');
+    if (memory.reset_count) lines.push('Bộ nhớ cục bộ đã xóa '+memory.reset_count+' lần: '+memory.last_reset_reason+
+      (memory.last_reset_reason==='ODOM_RESET' ? ' — odom đổi đột ngột, mục tiêu cũ bị hủy và robot tạm dừng.' :
+       ' — vị trí được hiệu chỉnh, bản đồ toàn cục vẫn được giữ.'));
+  }
   if (search) {
-    if (search.found) lines.push('Vị trí mục tiêu (odom): x='+search.found[0].toFixed(2)+' m, y='+search.found[1].toFixed(2)+' m');
+    if (search.found) lines.push('Vị trí mục tiêu ('+(n.frame_id || 'odom')+'): x='+search.found[0].toFixed(2)+' m, y='+search.found[1].toFixed(2)+' m');
     lines.push('Tìm kiếm: đã quét '+search.spots+' điểm, camera đã nhìn ~'+Number(search.covered_m2).toFixed(1)+' m²'+
                (search.nav_reason ? ' · điều hướng: '+search.nav_reason : ''));
   }

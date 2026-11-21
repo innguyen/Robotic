@@ -1,0 +1,32 @@
+2026-09-18T14:37:56+08:00
+rospy.exceptions.ROSException: publish() to a closed topic
+
+[INFO] [1789712962.688945]: Pinging motor IDs 1 through 10...
+[INFO] [1789712962.694364]: Found 7 motors , initialization complete.
+[INFO] [1789713426.513949]: ------motor stop-------
+etauto_controller/launch/jetauto_controller.launch http://192.168.149.1:11311
+[1mprocess[robot_state_publisher-1]: started with pid [8900][0m
+[1mprocess[ros_robot_controller-2]: started with pid [8901][0m
+[1mprocess[hiwonder_servo_manager-3]: started with pid [8912][0m
+[1mprocess[joint_states_publisher-4]: started with pid [8919][0m
+[1mprocess[imu_calib-5]: started with pid [8931][0m
+[1mprocess[imu_filter-6]: started with pid [8933][0m
+[1mprocess[jetauto_odom_publisher-7]: started with pid [8940][0m
+[1mprocess[ekf_localization-8]: started with pid [8952][0m
+[ekf_localization-8] killing on exit
+[jetauto_odom_publisher-7] killing on exit
+[imu_filter-6] killing on exit
+[imu_calib-5] killing on exit
+[joint_states_publisher-4] killing on exit
+[hiwonder_servo_manager-3] killing on exit
+[ros_robot_controller-2] killing on exit
+[robot_state_publisher-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+total 113440
+-rw-rw-r-- 1 jetauto jetauto  8990165 Sep 18 14:37 session_20260918_142956_10682_2.bag.active
+-rw-rw-r-- 1 jetauto jetauto 33590249 Sep 18 14:36 session_20260918_142956_10682_1.bag
+-rw-rw-r-- 1 jetauto jetauto 33601763 Sep 18 14:33 session_20260918_142956_10682_0.bag
+-rw-rw-r-- 1 jetauto jetauto  6381980 Sep 18 14:27 session_20260918_142044_30806_2.bag
+-rw-rw-r-- 1 jetauto jetauto 33590041 Sep 18 14:27 session_20260918_142044_30806_1.bag

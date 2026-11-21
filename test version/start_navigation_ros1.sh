@@ -12,7 +12,10 @@ source /opt/ros/melodic/setup.bash
 set -u
 python3 - "$MODE" <<'PY'
 import sys
+import socket
+import xmlrpc.client
 import rosgraph
+socket.setdefaulttimeout(2.)
 master = rosgraph.Master('/navigation_startup_check')
 publishers = master.getSystemState()[0]
 if sys.argv[1] == 'live':
@@ -22,10 +25,17 @@ if sys.argv[1] == 'live':
         raise SystemExit('Stop existing chassis publishers before live mode: ' + str(bypass))
 for node in ('/jetauto_navigation', '/jetauto_collision_monitor'):
     try:
-        master.lookupNode(node)
+        uri = master.lookupNode(node)
     except rosgraph.MasterError:
         continue
-    raise SystemExit('Already running: ' + node)
+    # Master can retain an API URI after a node exits. A lookup alone is not
+    # proof of a running controller; verify the node's XML-RPC endpoint.
+    try:
+        code, _, pid = xmlrpc.client.ServerProxy(uri).getPid('/navigation_startup_check')
+    except (OSError, xmlrpc.client.Error):
+        continue
+    if code == 1 and isinstance(pid, int) and pid > 0:
+        raise SystemExit('Already running: ' + node)
 PY
 rosparam load "$TASK_DIR/collision_monitor_ros1.yaml" /jetauto_collision_monitor
 rosparam load "$TASK_DIR/navigation_ros1.yaml" /jetauto_navigation
@@ -36,6 +46,12 @@ fi
 if [ -n "${JETAUTO_BASE_FRAME:-}" ]; then
     rosparam set /jetauto_navigation/base_frame "$JETAUTO_BASE_FRAME"
 fi
+if [ "${JETAUTO_MAP_PROFILE:-local}" != local ]; then
+    rosparam set /jetauto_navigation/global_frame map
+else
+    rosparam set /jetauto_navigation/global_frame "${JETAUTO_ODOM_FRAME:-odom}"
+fi
+rosparam set /jetauto_navigation/require_amcl "$([ "${JETAUTO_MAP_PROFILE:-local}" = localization ] && echo true || echo false)"
 if [ "$MODE" = live ]; then
     rosparam set /jetauto_collision_monitor/output_topic /jetauto_controller/cmd_vel
 fi

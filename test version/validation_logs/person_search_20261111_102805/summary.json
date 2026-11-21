@@ -1,0 +1,16 @@
+{
+  "reason": "FOUND",
+  "started": true,
+  "stop_confirmed": true,
+  "states": {
+    "SEARCH_SPIN": 5,
+    "GLOBAL_PLANNING": 5,
+    "WAIT_SCAN": 10,
+    "PLANNING": 4,
+    "FOLLOW": 4,
+    "PATH_BLOCKED": 1,
+    "ALIGN": 2,
+    "VERIFY_TARGET": 3,
+    "FOUND": 1
+  }
+}

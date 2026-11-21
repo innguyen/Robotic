@@ -1,0 +1,135 @@
+{
+  "summary": {
+    "reason": "TIME_LIMIT",
+    "started": true,
+    "stop_confirmed": true,
+    "states": {
+      "SEARCH_SPIN": 18,
+      "WAIT_SCAN": 86
+    }
+  },
+  "elapsed_to_pause_s": 61.26,
+  "status_samples": 104,
+  "monitor_states": {
+    "IDLE": 35,
+    "PASS": 11,
+    "STALE_COMMAND": 58
+  },
+  "target_visible_samples": 0,
+  "target_confirmed_samples": 0,
+  "scan_age_s": {
+    "min": 0.315,
+    "median": 0.598,
+    "p95": 0.829,
+    "max": 0.896
+  },
+  "scan_header_age_s": {
+    "min": 0.092,
+    "median": 0.145,
+    "p95": 0.177,
+    "max": 0.183
+  },
+  "map_ms": {
+    "min": 75.2,
+    "median": 152.6,
+    "p95": 236.1,
+    "max": 330.5
+  },
+  "plan_ms": {
+    "min": 92.5,
+    "median": 294.4,
+    "p95": 430.7,
+    "max": 524.9
+  },
+  "global_cells": [
+    102400
+  ],
+  "reset_counts": [
+    0
+  ],
+  "first_pose": [
+    0.0504958100081576,
+    0.0980068258349314,
+    0.6742320685326741
+  ],
+  "last_pose": [
+    0.008813177575127673,
+    0.051513561677419155,
+    -2.294750428346552
+  ],
+  "max_command_translation_m_s": 0.0,
+  "max_command_turn_rad_s": 0.5235987756,
+  "last_status": {
+    "state": "PAUSED",
+    "enabled": false,
+    "velocity": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "target": null,
+    "label": "",
+    "frame_id": "map",
+    "goal_mode": "search",
+    "goal_error": "",
+    "robot_pose": [
+      0.011859748490039242,
+      0.05309148988951281,
+      -2.2950357825864742
+    ],
+    "monitor_state": "IDLE",
+    "pose_stamp": 1789715460.196335,
+    "monitor_velocity": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "monitor_age_s": 0.006,
+    "limits": {
+      "scan_timeout_s": 0.5,
+      "odom_timeout_s": 0.5,
+      "pose_sync_tolerance_s": 0.15
+    },
+    "planning": {},
+    "map_memory": {
+      "memory_s": 120.0,
+      "search_mode": true,
+      "stored_cells": 4749,
+      "known_cells": 5516,
+      "occupied_cells": 524,
+      "expired_cells": 0,
+      "window_evicted_cells": 0,
+      "reset_count": 0,
+      "last_reset_reason": "",
+      "persistent": true,
+      "global_cells": 102400
+    },
+    "odom_error": "",
+    "scan_error": "",
+    "map_ms": 234.7,
+    "plan_ms": 0.0,
+    "async_planner_ms": 0.0,
+    "plan_count": 0,
+    "path_switches": 0,
+    "localization_error": "",
+    "localization_age_s": 0.03313437500037253,
+    "odom_age_s": 0.027,
+    "scan_age_s": 0.353,
+    "scan_sync_s": 0.006016731262207031,
+    "pending_scan_sync_s": 0.006016731262207031,
+    "scan_header_age_s": 0.105,
+    "latest_scan_odom_delta_s": -0.078,
+    "last_input_error": "NO_CONFIRMED_TARGET",
+    "search": {
+      "state": "COMPLETE",
+      "found": null,
+      "goal": null,
+      "goal_kind": "",
+      "covered_cells": 3816,
+      "covered_m2": 13.74,
+      "spots": 1,
+      "nav_reason": ""
+    },
+    "target_error": "NO_CONFIRMED_TARGET"
+  }
+}

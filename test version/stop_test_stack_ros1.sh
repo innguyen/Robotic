@@ -11,7 +11,7 @@ while [ -n "$pid" ] && [ "$pid" -gt 1 ] 2>/dev/null; do
     pid=$(awk '{print $4}' "/proc/$pid/stat" 2>/dev/null) || break
 done
 SUPERVISOR="$TASK_DIR/start_all_ros1[.]sh"
-ALL="$TASK_DIR/(start_all_ros1|start_navigation_ros1|start_server)[.]sh|$TASK_DIR/(navigation_ros1|collision_monitor_ros1|jetauto_find_object)[.]py"
+ALL="$TASK_DIR/(start_all_ros1|start_navigation_ros1|start_mapping_ros1|start_server)[.]sh|$TASK_DIR/(navigation_ros1|collision_monitor_ros1|jetauto_find_object|mapping_scan_ros1|session_recorder_ros1)[.]py|$TASK_DIR/mapping_ros1[.]launch"
 
 matching() {
     ps -eo pid=,args= | while read -r candidate args; do

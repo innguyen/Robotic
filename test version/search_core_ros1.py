@@ -5,6 +5,7 @@ ROS-independent; shared by navigation_ros1.py and the desktop simulation so both
 the same mission logic. Positions are metres in odom.
 """
 import math
+from collections import deque
 
 import numpy as np
 
@@ -15,7 +16,8 @@ class SearchConfig(object):
     DEFAULTS = dict(spin_step_deg=45.0, spin_dwell_s=1.2, camera_fov_deg=58.0, camera_range=3.5,
                     min_goal_distance=0.5, goal_timeout_s=45.0, revisit_radius=0.7,
                     blacklist_radius=0.4, lost_standoff=0.6, min_gain_cells=12.0,
-                    fail_hold_s=2.5, stall_s=15.0, stall_distance=0.10, explore_arrive_radius=0.30)
+                    fail_hold_s=2.5, stall_s=15.0, stall_distance=0.10, explore_arrive_radius=0.30,
+                    found_hold_s=0.6, found_max_age_s=0.6, stopped_speed=0.03)
 
     def __init__(self, **kwargs):
         if set(kwargs) - set(self.DEFAULTS):
@@ -35,7 +37,7 @@ def wrap(angle):
 # here: it is about the robot's own position (handled by ESCAPE), not the goal, and
 # counting it burned through every candidate while the robot sat in a buffer.
 GOAL_FAILURES = ('NO_REACHABLE_APPROACH', 'GOAL_BLOCKED_OR_UNKNOWN', 'STUCK',
-                 'PATH_BLOCKED', 'INVALID_GOAL')
+                 'PATH_BLOCKED', 'INVALID_GOAL', 'NO_GLOBAL_PATH', 'PLAN_BUDGET_EXCEEDED')
 # Only real motion toward the goal clears a failure. The async planner interleaves
 # PLANNING (and recovery spins) between failures; letting those reset the timer kept
 # an unreachable goal alive until STUCK (~15 s of standing still).
@@ -45,6 +47,7 @@ GOAL_PROGRESS = ('FOLLOW', 'FOLLOW_PARTIAL', 'ROTATE', 'ESCAPE')
 class SearchMission(object):
     def __init__(self, nav, cfg=None):
         self.nav, self.cfg = nav, cfg or SearchConfig()
+        self.nav.costmap.search_mode = True
         self.covered = set()     # odom cells the camera has looked at (not expiring)
         self.found = None
         self.state = 'SPIN'
@@ -57,6 +60,8 @@ class SearchMission(object):
         self.approach_fail_since, self.ignore_target_until = None, float('-inf')
         self.focus, self.focus_until = None, float('-inf')
         self.nav_reason = ''
+        self.found_since = None
+        self.approach_best, self.approach_progress = float('inf'), None
 
     def info(self):
         return dict(state=self.state, found=self.found, goal=None if self.goal is None else [float(v) for v in self.goal],
@@ -111,6 +116,25 @@ class SearchMission(object):
         # One cell inside the standable area: a goal on its edge is often beside an
         # obstacle face not seen yet, and becomes unreachable once that face appears.
         inner = grid.allowed & ~dilate(~grid.allowed, 1)
+        if grid.footprint is None:
+            # A saved map can contain other rooms or space outside closed walls.
+            # Score only the connected component the robot can actually reach.
+            start = grid.cell(pose[:2])
+            cached = getattr(grid, '_reachable', None)
+            if cached is None or not (grid.free(start) and cached[start]):
+                cached = np.zeros(grid.raw.shape, dtype=bool)
+                queue = deque([start]) if grid.free(start) else deque()
+                if queue:
+                    cached[start] = True
+                while queue:
+                    row, col = queue.popleft()
+                    for di, dj in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+                        nxt = (row+di, col+dj)
+                        if grid.free(nxt) and not cached[nxt]:
+                            cached[nxt] = True
+                            queue.append(nxt)
+                grid._reachable = cached
+            inner &= cached
         candidates = inner & dilate(interest, 2)
         position = np.asarray(pose[:2], dtype=float)
         best, best_score = None, 0.
@@ -146,7 +170,13 @@ class SearchMission(object):
         self.nav.reset()
 
     def _next_goal(self, pose, now):
-        goal = self.choose_goal(pose, self.nav.grid, now)
+        try:
+            grid = (self.nav.exploration_grid(pose, now) if hasattr(self.nav, 'exploration_grid')
+                    else self.nav.grid)
+        except ValueError:
+            self.state = 'MAP_TOO_LARGE'
+            return (0., 0., 0.), 'SEARCH_MAP_TOO_LARGE'
+        goal = self.choose_goal(pose, grid, now)
         if goal is None:
             self.state, self.goal = 'COMPLETE', None
             return (0., 0., 0.), 'SEARCH_COMPLETE'
@@ -178,7 +208,7 @@ class SearchMission(object):
         self.spin_yaws = None
         return self._next_goal(pose, now)
 
-    def step(self, pose, target, standoff, now, dt):
+    def step(self, pose, target, standoff, now, dt, target_visible=True, target_age=0., measured_velocity=None):
         """One control cycle. target: odom (x, y) of a confirmed fresh detection, or None."""
         zero = (0., 0., 0.)
         nav = self.nav
@@ -192,24 +222,45 @@ class SearchMission(object):
             if self.state != 'APPROACH':
                 nav.reset()
                 self.approach_fail_since = None
+                self.approach_best, self.approach_progress = float('inf'), now
             self.state, self.last_target, self.lost_pending = 'APPROACH', np.asarray(target, dtype=float), True
             velocity, self.nav_reason = nav.step(pose, target, standoff, now, dt)
             if self.nav_reason == 'ARRIVED':
-                self.found = [float(target[0]), float(target[1])]
-                self.state = 'FOUND'
-                return zero, 'FOUND'
+                stopped = (measured_velocity is not None and np.isfinite(measured_velocity).all() and
+                           max(math.hypot(*measured_velocity[:2]), abs(measured_velocity[2])) <= self.cfg.stopped_speed)
+                if target_visible and 0 <= target_age <= self.cfg.found_max_age_s and stopped:
+                    if self.found_since is None:
+                        self.found_since = now
+                    if now-self.found_since >= self.cfg.found_hold_s:
+                        self.found = [float(target[0]), float(target[1])]
+                        self.state = 'FOUND'
+                        return zero, 'FOUND'
+                else:
+                    self.found_since = None
+                return zero, 'VERIFY_TARGET'
+            self.found_since = None
+            remaining = float(np.linalg.norm(np.asarray(target)-position))
+            if nav.path:
+                remaining = nav.path_length(nav.path, position)
+            if remaining < self.approach_best-self.cfg.stall_distance:
+                self.approach_best, self.approach_progress = remaining, now
             if self.nav_reason in GOAL_PROGRESS:
                 self.approach_fail_since = None
             elif self.nav_reason in GOAL_FAILURES and self.approach_fail_since is None:
                 self.approach_fail_since = now
-            if self.nav_reason == 'STUCK' or (self.approach_fail_since is not None
-                                              and now-self.approach_fail_since >= self.cfg.fail_hold_s):
+            if (self.nav_reason == 'STUCK' or
+                    (self.approach_progress is not None and now-self.approach_progress > self.cfg.stall_s) or (self.approach_fail_since is not None
+                                              and now-self.approach_fail_since >= self.cfg.fail_hold_s)):
                 hold = 15.
                 self.ignore_target_until = self.focus_until = now+hold
                 self.focus, self.lost_pending = self.last_target.copy(), False
                 nav.grid = nav.costmap.snapshot(pose, now)
                 return self._next_goal(pose, now)
+            if not target_visible:
+                # Remembered position is useful, but approach it cautiously.
+                velocity = (velocity[0]*.35, velocity[1]*.35, velocity[2]*.5)
             return velocity, self.nav_reason
+        self.found_since = None
         if self.lost_pending:
             # Lost during approach: look from just before the last sighting first.
             self.lost_pending = False
@@ -221,6 +272,8 @@ class SearchMission(object):
                 self._start_spin(pose)
         if self.state == 'COMPLETE':
             return zero, 'SEARCH_COMPLETE'
+        if self.state == 'MAP_TOO_LARGE':
+            return zero, 'SEARCH_MAP_TOO_LARGE'
         if self.state in ('SPIN', 'APPROACH'):
             nav.grid = nav.costmap.snapshot(pose, now)
             self.nav_reason = ''

@@ -1,0 +1,7157 @@
+{
+  "mode": "live",
+  "end_reason": "FOUND",
+  "elapsed_s": 44.77,
+  "state_counts": {
+    "SEARCH_SPIN": 44,
+    "WAIT_SCAN": 8,
+    "SEARCH_EXPLORE": 34,
+    "ALIGN": 1,
+    "FOUND": 1
+  },
+  "odom_travel_m": 0.07,
+  "nonzero_chassis_messages": 568,
+  "samples": [
+    {
+      "seconds": 0.5,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          0.005821677669346197
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.048,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 926,
+          "known_cells": 926,
+          "occupied_cells": 83,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 83.9,
+        "plan_ms": 52.8,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.021,
+        "scan_age_s": 0.242,
+        "scan_sync_s": 0.012643575668334961,
+        "pending_scan_sync_s": 0.012643575668334961,
+        "scan_header_age_s": 0.157,
+        "latest_scan_odom_delta_s": -0.136,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 154,
+          "covered_m2": 0.55,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 1.0,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          0.005985054495161282
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.007,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 926,
+          "known_cells": 926,
+          "occupied_cells": 83,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 52.1,
+        "plan_ms": 52.4,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.038,
+        "scan_age_s": 0.243,
+        "scan_sync_s": 0.0050394535064697266,
+        "pending_scan_sync_s": 0.0050394535064697266,
+        "scan_header_age_s": 0.16,
+        "latest_scan_odom_delta_s": -0.122,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 156,
+          "covered_m2": 0.56,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 1.5,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          0.006061152869225424
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.034,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 926,
+          "known_cells": 926,
+          "occupied_cells": 78,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 34.6,
+        "plan_ms": 61.4,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.04,
+        "scan_age_s": 0.252,
+        "scan_sync_s": 0.012518882751464844,
+        "pending_scan_sync_s": 0.012518882751464844,
+        "scan_header_age_s": 0.167,
+        "latest_scan_odom_delta_s": -0.127,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 211,
+          "covered_m2": 0.76,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.5235987756
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 2.0,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          0.1822243445903415
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "monitor_age_s": 0.035,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 1038,
+          "known_cells": 1038,
+          "occupied_cells": 96,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 63.9,
+        "plan_ms": 51.7,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.036,
+        "scan_age_s": 0.216,
+        "scan_sync_s": 0.014742851257324219,
+        "pending_scan_sync_s": 0.014742851257324219,
+        "scan_header_age_s": 0.131,
+        "latest_scan_odom_delta_s": -0.095,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 236,
+          "covered_m2": 0.85,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.5235987756
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 2.5,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.4156586327233831
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          0.4204627019541244
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.48732341079469643
+        ],
+        "monitor_age_s": 0.049,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 1088,
+          "known_cells": 1088,
+          "occupied_cells": 105,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 43.7,
+        "plan_ms": 111.5,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.042,
+        "scan_age_s": 0.257,
+        "scan_sync_s": 0.018182754516601562,
+        "pending_scan_sync_s": 0.018182754516601562,
+        "scan_header_age_s": 0.174,
+        "latest_scan_odom_delta_s": -0.132,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 247,
+          "covered_m2": 0.89,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.48732341079469643
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 3.0,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.23493464474452708
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          0.5883428665617152
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.26036127783586194
+        ],
+        "monitor_age_s": 0.043,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 1135,
+          "known_cells": 1135,
+          "occupied_cells": 114,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 49.6,
+        "plan_ms": 62.0,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.035,
+        "scan_age_s": 0.224,
+        "scan_sync_s": 0.011838197708129883,
+        "pending_scan_sync_s": 0.011838197708129883,
+        "scan_header_age_s": 0.138,
+        "latest_scan_odom_delta_s": -0.103,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 257,
+          "covered_m2": 0.93,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.23493464474452708
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 3.51,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.15
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          0.7049378035695674
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.15
+        ],
+        "monitor_age_s": 0.006,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 1192,
+          "known_cells": 1192,
+          "occupied_cells": 115,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 50.2,
+        "plan_ms": 56.6,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.004,
+        "scan_age_s": 0.26,
+        "scan_sync_s": 0.013278484344482422,
+        "pending_scan_sync_s": 0.013278484344482422,
+        "scan_header_age_s": 0.174,
+        "latest_scan_odom_delta_s": -0.17,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 265,
+          "covered_m2": 0.95,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.15
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 4.01,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          0.7407237774665741
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.029,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 1210,
+          "known_cells": 1210,
+          "occupied_cells": 111,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 61.9,
+        "plan_ms": 47.8,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.036,
+        "scan_age_s": 0.246,
+        "scan_sync_s": 0.009207963943481445,
+        "pending_scan_sync_s": 0.009207963943481445,
+        "scan_header_age_s": 0.162,
+        "latest_scan_odom_delta_s": -0.125,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 266,
+          "covered_m2": 0.96,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 4.51,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          0.7414909473537171
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.016,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 1212,
+          "known_cells": 1212,
+          "occupied_cells": 106,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 47.2,
+        "plan_ms": 78.6,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.02,
+        "scan_age_s": 0.23,
+        "scan_sync_s": 0.009014129638671875,
+        "pending_scan_sync_s": 0.009014129638671875,
+        "scan_header_age_s": 0.144,
+        "latest_scan_odom_delta_s": -0.123,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 268,
+          "covered_m2": 0.96,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 5.01,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          0.7405845909435421
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "monitor_age_s": 0.021,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 1213,
+          "known_cells": 1213,
+          "occupied_cells": 109,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 31.5,
+        "plan_ms": 77.0,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.049,
+        "scan_age_s": 0.275,
+        "scan_sync_s": 0.0065920352935791016,
+        "pending_scan_sync_s": 0.0065920352935791016,
+        "scan_header_age_s": 0.104,
+        "latest_scan_odom_delta_s": -0.055,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 268,
+          "covered_m2": 0.96,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.5235987756
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 5.51,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          0.9571995138227762
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "monitor_age_s": 0.034,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 1225,
+          "known_cells": 1225,
+          "occupied_cells": 133,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 55.6,
+        "plan_ms": 83.8,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.057,
+        "scan_age_s": 0.237,
+        "scan_sync_s": 0.01307058334350586,
+        "pending_scan_sync_s": 0.01307058334350586,
+        "scan_header_age_s": 0.151,
+        "latest_scan_odom_delta_s": -0.094,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 275,
+          "covered_m2": 0.99,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.5235987756
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 6.01,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.41436796951407606
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          1.1958830064055375
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.465913702872907
+        ],
+        "monitor_age_s": 0.043,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 1378,
+          "known_cells": 1378,
+          "occupied_cells": 143,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 33.2,
+        "plan_ms": 78.6,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.048,
+        "scan_age_s": 0.266,
+        "scan_sync_s": 0.01708984375,
+        "pending_scan_sync_s": 0.01708984375,
+        "scan_header_age_s": 0.094,
+        "latest_scan_odom_delta_s": -0.045,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 292,
+          "covered_m2": 1.05,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.41436796951407606
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 6.51,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.22607588077633878
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          1.3712792984332614
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.28783160798331675
+        ],
+        "monitor_age_s": 0.004,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 1697,
+          "known_cells": 1697,
+          "occupied_cells": 141,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 71.5,
+        "plan_ms": 83.3,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.073,
+        "scan_age_s": 0.289,
+        "scan_sync_s": 0.017390727996826172,
+        "pending_scan_sync_s": 0.017390727996826172,
+        "scan_header_age_s": 0.121,
+        "latest_scan_odom_delta_s": -0.048,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 310,
+          "covered_m2": 1.12,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.22607588077633878
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 7.01,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.15
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          1.4915176655694569
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.15
+        ],
+        "monitor_age_s": 0.008,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 1904,
+          "known_cells": 1904,
+          "occupied_cells": 142,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 60.2,
+        "plan_ms": 68.5,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.048,
+        "scan_age_s": 0.282,
+        "scan_sync_s": 0.0004699230194091797,
+        "pending_scan_sync_s": 0.0004699230194091797,
+        "scan_header_age_s": 0.113,
+        "latest_scan_odom_delta_s": -0.065,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 331,
+          "covered_m2": 1.19,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.15
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 7.51,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          1.5375441235806089
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.031,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 2014,
+          "known_cells": 2014,
+          "occupied_cells": 141,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 62.1,
+        "plan_ms": 96.1,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.037,
+        "scan_age_s": 0.304,
+        "scan_sync_s": 0.0012824535369873047,
+        "pending_scan_sync_s": 0.0012824535369873047,
+        "scan_header_age_s": 0.133,
+        "latest_scan_odom_delta_s": -0.096,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 340,
+          "covered_m2": 1.22,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 8.01,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          1.5359900780086562
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.003,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 2039,
+          "known_cells": 2039,
+          "occupied_cells": 140,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 48.1,
+        "plan_ms": 91.9,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.047,
+        "scan_age_s": 0.232,
+        "scan_sync_s": 0.0179445743560791,
+        "pending_scan_sync_s": 0.0179445743560791,
+        "scan_header_age_s": 0.146,
+        "latest_scan_odom_delta_s": -0.099,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 342,
+          "covered_m2": 1.23,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 8.51,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          1.5349376307047404
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.004,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 2049,
+          "known_cells": 2049,
+          "occupied_cells": 138,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 44.0,
+        "plan_ms": 128.2,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.068,
+        "scan_age_s": 0.29,
+        "scan_sync_s": 0.011974811553955078,
+        "pending_scan_sync_s": 0.011974811553955078,
+        "scan_header_age_s": 0.118,
+        "latest_scan_odom_delta_s": -0.049,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 342,
+          "covered_m2": 1.23,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.5235987756
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 9.01,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          1.6385557547016527
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "monitor_age_s": 0.008,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 2065,
+          "known_cells": 2065,
+          "occupied_cells": 143,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 45.4,
+        "plan_ms": 84.8,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.07,
+        "scan_age_s": 0.243,
+        "scan_sync_s": 0.005887031555175781,
+        "pending_scan_sync_s": 0.005887031555175781,
+        "scan_header_age_s": 0.158,
+        "latest_scan_odom_delta_s": -0.087,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 343,
+          "covered_m2": 1.23,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.5235987756
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 9.51,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.4947956111811225
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          1.918494313421469
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "monitor_age_s": 0.042,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 2378,
+          "known_cells": 2378,
+          "occupied_cells": 147,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 78.4,
+        "plan_ms": 83.1,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.026,
+        "scan_age_s": 0.302,
+        "scan_sync_s": 0.023355960845947266,
+        "pending_scan_sync_s": 0.023355960845947266,
+        "scan_header_age_s": 0.13,
+        "latest_scan_odom_delta_s": -0.104,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 363,
+          "covered_m2": 1.31,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.4947956111811225
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 10.01,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.22148544170587714
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          2.175798236628766
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.30864340752505637
+        ],
+        "monitor_age_s": 0.004,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 2808,
+          "known_cells": 2808,
+          "occupied_cells": 146,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 55.4,
+        "plan_ms": 116.2,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.039,
+        "scan_age_s": 0.278,
+        "scan_sync_s": 0.005728006362915039,
+        "pending_scan_sync_s": 0.005728006362915039,
+        "scan_header_age_s": 0.108,
+        "latest_scan_odom_delta_s": -0.069,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 388,
+          "covered_m2": 1.4,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.22148544170587714
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 10.52,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.15
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          2.2811318985385416
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.15
+        ],
+        "monitor_age_s": 0.053,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 3045,
+          "known_cells": 3045,
+          "occupied_cells": 148,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 67.5,
+        "plan_ms": 136.8,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.046,
+        "scan_age_s": 0.304,
+        "scan_sync_s": 0.023966073989868164,
+        "pending_scan_sync_s": 0.023966073989868164,
+        "scan_header_age_s": 0.131,
+        "latest_scan_odom_delta_s": -0.085,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 702,
+          "covered_m2": 2.53,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.15
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 11.02,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          2.3258299689071764
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.03,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 3120,
+          "known_cells": 3120,
+          "occupied_cells": 148,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 48.0,
+        "plan_ms": 97.3,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.045,
+        "scan_age_s": 0.293,
+        "scan_sync_s": 0.014356136322021484,
+        "pending_scan_sync_s": 0.014356136322021484,
+        "scan_header_age_s": 0.121,
+        "latest_scan_odom_delta_s": -0.076,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 784,
+          "covered_m2": 2.82,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 11.52,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          2.330744938062907
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.003,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 3157,
+          "known_cells": 3157,
+          "occupied_cells": 149,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 67.2,
+        "plan_ms": 73.0,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.053,
+        "scan_age_s": 0.267,
+        "scan_sync_s": 0.013229608535766602,
+        "pending_scan_sync_s": 0.013229608535766602,
+        "scan_header_age_s": 0.095,
+        "latest_scan_odom_delta_s": -0.041,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 883,
+          "covered_m2": 3.18,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 12.02,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          2.329334618576912
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.037,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 3193,
+          "known_cells": 3193,
+          "occupied_cells": 148,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 55.3,
+        "plan_ms": 107.9,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.026,
+        "scan_age_s": 0.289,
+        "scan_sync_s": 0.003349781036376953,
+        "pending_scan_sync_s": 0.003349781036376953,
+        "scan_header_age_s": 0.117,
+        "latest_scan_odom_delta_s": -0.091,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 883,
+          "covered_m2": 3.18,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.5235987756
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 12.52,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          2.5351399394933685
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "monitor_age_s": 0.003,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 3246,
+          "known_cells": 3246,
+          "occupied_cells": 146,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 59.0,
+        "plan_ms": 87.0,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.057,
+        "scan_age_s": 0.306,
+        "scan_sync_s": 0.015978336334228516,
+        "pending_scan_sync_s": 0.015978336334228516,
+        "scan_header_age_s": 0.133,
+        "latest_scan_odom_delta_s": -0.076,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 1062,
+          "covered_m2": 3.82,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.5235987756
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 13.02,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.39873915354148926
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          2.8032468576893126
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "monitor_age_s": 0.021,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 3604,
+          "known_cells": 3604,
+          "occupied_cells": 146,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 104.6,
+        "plan_ms": 108.9,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.05,
+        "scan_age_s": 0.37,
+        "scan_sync_s": 0.017890453338623047,
+        "pending_scan_sync_s": 0.017890453338623047,
+        "scan_header_age_s": 0.112,
+        "latest_scan_odom_delta_s": -0.06,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 1525,
+          "covered_m2": 5.49,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.39873915354148926
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 13.52,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.18331750172794292
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          3.008462399837598
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.2777666353628985
+        ],
+        "monitor_age_s": 0.047,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 3843,
+          "known_cells": 3843,
+          "occupied_cells": 151,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 123.9,
+        "plan_ms": 162.5,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.039,
+        "scan_age_s": 0.461,
+        "scan_sync_s": 0.011835575103759766,
+        "pending_scan_sync_s": 0.011835575103759766,
+        "scan_header_age_s": 0.114,
+        "latest_scan_odom_delta_s": -0.075,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 1965,
+          "covered_m2": 7.07,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.2777666353628985
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 14.02,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.15
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          3.071356859934076
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18331750172794292
+        ],
+        "monitor_age_s": 0.007,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4003,
+          "known_cells": 4003,
+          "occupied_cells": 150,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 116.6,
+        "plan_ms": 142.3,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.036,
+        "scan_age_s": 0.377,
+        "scan_sync_s": 0.009727001190185547,
+        "pending_scan_sync_s": 0.009727001190185547,
+        "scan_header_age_s": 0.123,
+        "latest_scan_odom_delta_s": -0.086,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 2230,
+          "covered_m2": 8.03,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.15
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 14.52,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          3.1323995010786527
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.033,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4110,
+          "known_cells": 4110,
+          "occupied_cells": 149,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 105.9,
+        "plan_ms": 116.8,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.038,
+        "scan_age_s": 0.342,
+        "scan_sync_s": 0.0031540393829345703,
+        "pending_scan_sync_s": 0.0031540393829345703,
+        "scan_header_age_s": 0.171,
+        "latest_scan_odom_delta_s": -0.132,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 2475,
+          "covered_m2": 8.91,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 15.02,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          3.131950599145919
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.029,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4155,
+          "known_cells": 4155,
+          "occupied_cells": 150,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 147.7,
+        "plan_ms": 92.3,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.022,
+        "scan_age_s": 0.362,
+        "scan_sync_s": 0.0061321258544921875,
+        "pending_scan_sync_s": 0.0061321258544921875,
+        "scan_header_age_s": 0.105,
+        "latest_scan_odom_delta_s": -0.083,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 2480,
+          "covered_m2": 8.93,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 15.52,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          3.1316476805574998
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.029,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4155,
+          "known_cells": 4155,
+          "occupied_cells": 148,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 68.5,
+        "plan_ms": 89.1,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.029,
+        "scan_age_s": 0.307,
+        "scan_sync_s": 0.02204108238220215,
+        "pending_scan_sync_s": 0.02204108238220215,
+        "scan_header_age_s": 0.136,
+        "latest_scan_odom_delta_s": -0.107,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 2480,
+          "covered_m2": 8.93,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.5235987756
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 16.02,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.9434755732353803
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "monitor_age_s": 0.021,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4346,
+          "known_cells": 4346,
+          "occupied_cells": 149,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 91.5,
+        "plan_ms": 96.4,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.046,
+        "scan_age_s": 0.29,
+        "scan_sync_s": 0.011336326599121094,
+        "pending_scan_sync_s": 0.011336326599121094,
+        "scan_header_age_s": 0.119,
+        "latest_scan_odom_delta_s": -0.073,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 2612,
+          "covered_m2": 9.4,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.5235987756
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 16.53,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.3829021910758392
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.682294117150511
+        ],
+        "monitor_state": "PASS",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.5219266278271117
+        ],
+        "monitor_age_s": 0.033,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4468,
+          "known_cells": 4468,
+          "occupied_cells": 150,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 111.6,
+        "plan_ms": 121.3,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.077,
+        "scan_age_s": 0.392,
+        "scan_sync_s": 0.014898538589477539,
+        "pending_scan_sync_s": 0.014898538589477539,
+        "scan_header_age_s": 0.134,
+        "latest_scan_odom_delta_s": -0.057,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 3048,
+          "covered_m2": 10.97,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.1340157668765437
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 17.03,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.17711837430874944
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.519501624231115
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0863344782919313
+        ],
+        "monitor_age_s": 0.023,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4489,
+          "known_cells": 4489,
+          "occupied_cells": 149,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 132.4,
+        "plan_ms": 154.7,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.066,
+        "scan_age_s": 0.468,
+        "scan_sync_s": 0.0005924701690673828,
+        "pending_scan_sync_s": 0.0005924701690673828,
+        "scan_header_age_s": 0.124,
+        "latest_scan_odom_delta_s": -0.057,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 3449,
+          "covered_m2": 12.42,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0863344782919313
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 17.53,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.16916509374161492
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.5184730987502135
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0619914310080623
+        ],
+        "monitor_age_s": 0.052,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4506,
+          "known_cells": 4506,
+          "occupied_cells": 149,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 102.5,
+        "plan_ms": 118.8,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.063,
+        "scan_age_s": 0.351,
+        "scan_sync_s": 0.011922121047973633,
+        "pending_scan_sync_s": 0.011922121047973633,
+        "scan_header_age_s": 0.094,
+        "latest_scan_odom_delta_s": -0.031,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 3617,
+          "covered_m2": 13.02,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.05920778280956522
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 18.03,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.15839804881191988
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.505615118786738
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0580131051898296
+        ],
+        "monitor_age_s": 0.04,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4514,
+          "known_cells": 4514,
+          "occupied_cells": 150,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 154.6,
+        "plan_ms": 135.2,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.023,
+        "scan_age_s": 0.43,
+        "scan_sync_s": 0.006294965744018555,
+        "pending_scan_sync_s": 0.006294965744018555,
+        "scan_header_age_s": 0.172,
+        "latest_scan_odom_delta_s": -0.148,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 3624,
+          "covered_m2": 13.05,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.055439317084171956
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 18.53,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.15
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.4893317360682903
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.05379425103792128
+        ],
+        "monitor_age_s": 0.004,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4565,
+          "known_cells": 4565,
+          "occupied_cells": 150,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 121.7,
+        "plan_ms": 127.6,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.03,
+        "scan_age_s": 0.388,
+        "scan_sync_s": 0.024781465530395508,
+        "pending_scan_sync_s": 0.024781465530395508,
+        "scan_header_age_s": 0.131,
+        "latest_scan_odom_delta_s": -0.101,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 3644,
+          "covered_m2": 13.12,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0525
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 19.03,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.15
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.47388220652714
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0525
+        ],
+        "monitor_age_s": 0.003,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4565,
+          "known_cells": 4565,
+          "occupied_cells": 147,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 106.2,
+        "plan_ms": 144.5,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.063,
+        "scan_age_s": 0.407,
+        "scan_sync_s": 0.01014399528503418,
+        "pending_scan_sync_s": 0.01014399528503418,
+        "scan_header_age_s": 0.149,
+        "latest_scan_odom_delta_s": -0.086,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 3688,
+          "covered_m2": 13.28,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0525
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 19.53,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.15
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.4536112007241906
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0525
+        ],
+        "monitor_age_s": 0.05,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4573,
+          "known_cells": 4573,
+          "occupied_cells": 146,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 138.6,
+        "plan_ms": 169.0,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.043,
+        "scan_age_s": 0.472,
+        "scan_sync_s": 0.00569915771484375,
+        "pending_scan_sync_s": 0.00569915771484375,
+        "scan_header_age_s": 0.129,
+        "latest_scan_odom_delta_s": -0.086,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 3689,
+          "covered_m2": 13.28,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0525
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 20.03,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.426123300820719
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0525
+        ],
+        "monitor_age_s": 0.028,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4577,
+          "known_cells": 4577,
+          "occupied_cells": 148,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 161.2,
+        "plan_ms": 133.4,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.042,
+        "scan_age_s": 0.402,
+        "scan_sync_s": 0.0064160823822021484,
+        "pending_scan_sync_s": 0.0064160823822021484,
+        "scan_header_age_s": 0.146,
+        "latest_scan_odom_delta_s": -0.104,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 3694,
+          "covered_m2": 13.3,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 20.53,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.4167738239766003
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.036,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4582,
+          "known_cells": 4582,
+          "occupied_cells": 152,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 108.7,
+        "plan_ms": 105.2,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.014,
+        "scan_age_s": 0.36,
+        "scan_sync_s": 0.012817621231079102,
+        "pending_scan_sync_s": 0.012817621231079102,
+        "scan_header_age_s": 0.102,
+        "latest_scan_odom_delta_s": -0.088,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 3697,
+          "covered_m2": 13.31,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 21.03,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.4168461887085897
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.024,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4584,
+          "known_cells": 4584,
+          "occupied_cells": 152,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 137.1,
+        "plan_ms": 145.5,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.026,
+        "scan_age_s": 0.426,
+        "scan_sync_s": 0.003213644027709961,
+        "pending_scan_sync_s": 0.003213644027709961,
+        "scan_header_age_s": 0.17,
+        "latest_scan_odom_delta_s": -0.143,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 3704,
+          "covered_m2": 13.33,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 21.53,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.415717564924174
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.012,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4585,
+          "known_cells": 4585,
+          "occupied_cells": 152,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 108.9,
+        "plan_ms": 108.5,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.055,
+        "scan_age_s": 0.371,
+        "scan_sync_s": 0.015441656112670898,
+        "pending_scan_sync_s": 0.015441656112670898,
+        "scan_header_age_s": 0.112,
+        "latest_scan_odom_delta_s": -0.056,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 3717,
+          "covered_m2": 13.38,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 22.04,
+      "navigation": {
+        "state": "SEARCH_SPIN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.415717564924174
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.012,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4585,
+          "known_cells": 4585,
+          "occupied_cells": 152,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 108.9,
+        "plan_ms": 108.5,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.055,
+        "scan_age_s": 0.371,
+        "scan_sync_s": 0.015441656112670898,
+        "pending_scan_sync_s": 0.015441656112670898,
+        "scan_header_age_s": 0.112,
+        "latest_scan_odom_delta_s": -0.056,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "SPIN",
+          "found": null,
+          "goal": null,
+          "goal_kind": "",
+          "covered_cells": 3717,
+          "covered_m2": 13.38,
+          "spots": 0,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 22.54,
+      "navigation": {
+        "state": "WAIT_SCAN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.30746233011931
+        ],
+        "monitor_state": "STALE_COMMAND",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.016,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4585,
+          "known_cells": 4585,
+          "occupied_cells": 151,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 150.5,
+        "plan_ms": 711.8,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.025,
+        "scan_age_s": 0.982,
+        "scan_sync_s": 0.009324789047241211,
+        "pending_scan_sync_s": 0.009324789047241211,
+        "scan_header_age_s": 0.124,
+        "latest_scan_odom_delta_s": -0.099,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 3717,
+          "covered_m2": 13.38,
+          "spots": 1,
+          "nav_reason": ""
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 23.04,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.307279691005652
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.022,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4596,
+          "known_cells": 4596,
+          "occupied_cells": 153,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 169.0,
+        "plan_ms": 176.6,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.007,
+        "scan_age_s": 0.472,
+        "scan_sync_s": 0.0017371177673339844,
+        "pending_scan_sync_s": 0.0017371177673339844,
+        "scan_header_age_s": 0.128,
+        "latest_scan_odom_delta_s": -0.121,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 3805,
+          "covered_m2": 13.7,
+          "spots": 1,
+          "nav_reason": "PLANNING"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 23.54,
+      "navigation": {
+        "state": "WAIT_SCAN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.3070303851473755
+        ],
+        "monitor_state": "STALE_COMMAND",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.021,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4596,
+          "known_cells": 4596,
+          "occupied_cells": 152,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 200.6,
+        "plan_ms": 236.1,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.03,
+        "scan_age_s": 0.585,
+        "scan_sync_s": 0.01206660270690918,
+        "pending_scan_sync_s": 0.01206660270690918,
+        "scan_header_age_s": 0.155,
+        "latest_scan_odom_delta_s": -0.125,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 3806,
+          "covered_m2": 13.7,
+          "spots": 1,
+          "nav_reason": "PLANNING"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 24.04,
+      "navigation": {
+        "state": "WAIT_SCAN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.3068015225422984
+        ],
+        "monitor_state": "STALE_COMMAND",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.049,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4598,
+          "known_cells": 4598,
+          "occupied_cells": 152,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 311.4,
+        "plan_ms": 214.2,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.029,
+        "scan_age_s": 0.687,
+        "scan_sync_s": 0.008394479751586914,
+        "pending_scan_sync_s": 0.008394479751586914,
+        "scan_header_age_s": 0.172,
+        "latest_scan_odom_delta_s": -0.143,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 3807,
+          "covered_m2": 13.71,
+          "spots": 1,
+          "nav_reason": "PLANNING"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 24.54,
+      "navigation": {
+        "state": "WAIT_SCAN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.306555676888865
+        ],
+        "monitor_state": "STALE_COMMAND",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.016,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4604,
+          "known_cells": 4604,
+          "occupied_cells": 153,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 233.2,
+        "plan_ms": 271.6,
+        "async_planner_ms": 0.0,
+        "odom_age_s": 0.056,
+        "scan_age_s": 0.614,
+        "scan_sync_s": 0.00935506820678711,
+        "pending_scan_sync_s": 0.00935506820678711,
+        "scan_header_age_s": 0.098,
+        "latest_scan_odom_delta_s": -0.042,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 3852,
+          "covered_m2": 13.87,
+          "spots": 1,
+          "nav_reason": "PLANNING"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 25.04,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.3064807247974
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.007,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4604,
+          "known_cells": 4604,
+          "occupied_cells": 153,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 124.6,
+        "plan_ms": 90.9,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.054,
+        "scan_age_s": 0.367,
+        "scan_sync_s": 0.012444496154785156,
+        "pending_scan_sync_s": 0.012444496154785156,
+        "scan_header_age_s": 0.108,
+        "latest_scan_odom_delta_s": -0.054,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 3852,
+          "covered_m2": 13.87,
+          "spots": 1,
+          "nav_reason": "RECOVERY_ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 25.55,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.2354179637488425
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.018,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4604,
+          "known_cells": 4604,
+          "occupied_cells": 153,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 121.6,
+        "plan_ms": 215.4,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.043,
+        "scan_age_s": 0.472,
+        "scan_sync_s": 0.0009260177612304688,
+        "pending_scan_sync_s": 0.0009260177612304688,
+        "scan_header_age_s": 0.126,
+        "latest_scan_odom_delta_s": -0.084,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 3861,
+          "covered_m2": 13.9,
+          "spots": 1,
+          "nav_reason": "RECOVERY_ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 26.05,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.1869998643656943
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.014,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4610,
+          "known_cells": 4610,
+          "occupied_cells": 155,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 104.1,
+        "plan_ms": 142.3,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.025,
+        "scan_age_s": 0.375,
+        "scan_sync_s": 0.01651310920715332,
+        "pending_scan_sync_s": 0.01651310920715332,
+        "scan_header_age_s": 0.12,
+        "latest_scan_odom_delta_s": -0.095,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 3959,
+          "covered_m2": 14.25,
+          "spots": 1,
+          "nav_reason": "RECOVERY_ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 26.55,
+      "navigation": {
+        "state": "WAIT_SCAN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.07334603938678
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.001,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4612,
+          "known_cells": 4612,
+          "occupied_cells": 147,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 175.4,
+        "plan_ms": 174.6,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.062,
+        "scan_age_s": 0.515,
+        "scan_sync_s": 0.015106916427612305,
+        "pending_scan_sync_s": 0.015106916427612305,
+        "scan_header_age_s": 0.171,
+        "latest_scan_odom_delta_s": -0.109,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4144,
+          "covered_m2": 14.92,
+          "spots": 1,
+          "nav_reason": "ESCAPE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        0.0,
+        0.0
+      ],
+      "odom_travel_m": 0.0
+    },
+    {
+      "seconds": 27.05,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.01696517784584406,
+          -0.04703384675591485,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          0.0,
+          0.0,
+          -2.0254293235683276
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.06,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4619,
+          "known_cells": 4619,
+          "occupied_cells": 142,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 200.7,
+        "plan_ms": 192.8,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.042,
+        "scan_age_s": 0.497,
+        "scan_sync_s": 0.011922836303710938,
+        "pending_scan_sync_s": 0.011922836303710938,
+        "scan_header_age_s": 0.154,
+        "latest_scan_odom_delta_s": -0.112,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4268,
+          "covered_m2": 15.36,
+          "spots": 1,
+          "nav_reason": "ESCAPE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.005937812246045421,
+        -0.016461846364570196,
+        0.0
+      ],
+      "odom": [
+        -0.0005559595616768041,
+        0.0001684916718931028
+      ],
+      "odom_travel_m": 0.001
+    },
+    {
+      "seconds": 27.55,
+      "navigation": {
+        "state": "WAIT_SCAN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.006281155270170449,
+          0.0008101705671717597,
+          -2.018059364354926
+        ],
+        "monitor_state": "STALE_COMMAND",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.038,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4648,
+          "known_cells": 4648,
+          "occupied_cells": 145,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 220.8,
+        "plan_ms": 222.8,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.021,
+        "scan_age_s": 0.599,
+        "scan_sync_s": 0.011933088302612305,
+        "pending_scan_sync_s": 0.011933088302612305,
+        "scan_header_age_s": 0.169,
+        "latest_scan_odom_delta_s": -0.148,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4354,
+          "covered_m2": 15.67,
+          "spots": 1,
+          "nav_reason": "ESCAPE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        -0.005946369709355152,
+        0.0008928205952049193
+      ],
+      "odom_travel_m": 0.007
+    },
+    {
+      "seconds": 28.05,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.015964655370860885,
+          -0.047382800454275,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.005938422082166266,
+          0.0008886471309539321,
+          -2.0131522222440856
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.034,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4648,
+          "known_cells": 4648,
+          "occupied_cells": 147,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 211.4,
+        "plan_ms": 150.5,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.048,
+        "scan_age_s": 0.477,
+        "scan_sync_s": 0.0033974647521972656,
+        "pending_scan_sync_s": 0.0033974647521972656,
+        "scan_header_age_s": 0.134,
+        "latest_scan_odom_delta_s": -0.086,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4358,
+          "covered_m2": 15.69,
+          "spots": 1,
+          "nav_reason": "ESCAPE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0055876293798013095,
+        -0.01658398015899625,
+        0.0
+      ],
+      "odom": [
+        -0.009875604855623858,
+        0.0014761109682810431
+      ],
+      "odom_travel_m": 0.011
+    },
+    {
+      "seconds": 28.55,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.017328096803445207,
+          -0.046901354577138094,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.017410401615473175,
+          0.0022766355588600957,
+          -2.0020150137266612
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.00578468327675162,
+          -0.01651627801254478,
+          0.0
+        ],
+        "monitor_age_s": 0.018,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4662,
+          "known_cells": 4662,
+          "occupied_cells": 148,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 91.1,
+        "plan_ms": 132.4,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.014,
+        "scan_age_s": 0.318,
+        "scan_sync_s": 0.0029096603393554688,
+        "pending_scan_sync_s": 0.0029096603393554688,
+        "scan_header_age_s": 0.147,
+        "latest_scan_odom_delta_s": -0.133,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4412,
+          "covered_m2": 15.88,
+          "spots": 1,
+          "nav_reason": "ESCAPE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.006064833881205822,
+        -0.016415474101998333,
+        0.0
+      ],
+      "odom": [
+        -0.01857087158570059,
+        0.002387027665825235
+      ],
+      "odom_travel_m": 0.019
+    },
+    {
+      "seconds": 29.05,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.01685388418133894,
+          -0.047073841865753994,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.026718537352196026,
+          0.0029618214395251644,
+          -1.996627089563492
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.006232887906087112,
+          -0.016352403748383693,
+          0.0
+        ],
+        "monitor_age_s": 0.023,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4669,
+          "known_cells": 4669,
+          "occupied_cells": 146,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 132.4,
+        "plan_ms": 137.6,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.033,
+        "scan_age_s": 0.44,
+        "scan_sync_s": 0.026457548141479492,
+        "pending_scan_sync_s": 0.026457548141479492,
+        "scan_header_age_s": 0.098,
+        "latest_scan_odom_delta_s": -0.065,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4420,
+          "covered_m2": 15.91,
+          "spots": 1,
+          "nav_reason": "ESCAPE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.005898859463468628,
+        -0.016475844653013896,
+        0.0
+      ],
+      "odom": [
+        -0.02728857510250926,
+        0.0029970834309395217
+      ],
+      "odom_travel_m": 0.028
+    },
+    {
+      "seconds": 29.55,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.01758239529683948,
+          -0.046806616793202194,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.0354445127303228,
+          0.0036294308756085842,
+          -1.9901887845182944
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.005864801925423925,
+          -0.01648799861643443,
+          0.0
+        ],
+        "monitor_age_s": 0.022,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4675,
+          "known_cells": 4675,
+          "occupied_cells": 146,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 120.5,
+        "plan_ms": 101.6,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.039,
+        "scan_age_s": 0.346,
+        "scan_sync_s": 0.007768869400024414,
+        "pending_scan_sync_s": 0.007768869400024414,
+        "scan_header_age_s": 0.174,
+        "latest_scan_odom_delta_s": -0.135,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4422,
+          "covered_m2": 15.92,
+          "spots": 1,
+          "nav_reason": "ESCAPE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.006153838353893818,
+        -0.016382315877620766,
+        0.0
+      ],
+      "odom": [
+        -0.03601815901812739,
+        0.0036738560754453163
+      ],
+      "odom_travel_m": 0.037
+    },
+    {
+      "seconds": 30.05,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.018377773340293578,
+          -0.04650008007576756,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.040673410575245525,
+          0.0039491947172151515,
+          -1.9874680328446357
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.006153838353893818,
+          -0.016382315877620766,
+          0.0
+        ],
+        "monitor_age_s": 0.01,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4677,
+          "known_cells": 4677,
+          "occupied_cells": 144,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 130.4,
+        "plan_ms": 163.5,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.034,
+        "scan_age_s": 0.469,
+        "scan_sync_s": 0.001514434814453125,
+        "pending_scan_sync_s": 0.001514434814453125,
+        "scan_header_age_s": 0.126,
+        "latest_scan_odom_delta_s": -0.091,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4424,
+          "covered_m2": 15.93,
+          "spots": 1,
+          "nav_reason": "ESCAPE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.006432220669102752,
+        -0.016275028026518645,
+        0.0
+      ],
+      "odom": [
+        -0.04475094254263787,
+        0.004138430014760215
+      ],
+      "odom_travel_m": 0.046
+    },
+    {
+      "seconds": 30.55,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.01914586581631139,
+          -0.04618913099576349,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.0499983002722295,
+          0.004375405913967369,
+          -1.9915819238827028
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.006402734903448693,
+          -0.01628665053828318,
+          0.0
+        ],
+        "monitor_age_s": 0.015,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4700,
+          "known_cells": 4700,
+          "occupied_cells": 144,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 145.4,
+        "plan_ms": 136.5,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.054,
+        "scan_age_s": 0.42,
+        "scan_sync_s": 0.032784461975097656,
+        "pending_scan_sync_s": 0.032784461975097656,
+        "scan_header_age_s": 0.164,
+        "latest_scan_odom_delta_s": -0.11,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4441,
+          "covered_m2": 15.99,
+          "spots": 1,
+          "nav_reason": "ESCAPE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.006701053035708986,
+        -0.01616619584851722,
+        0.0
+      ],
+      "odom": [
+        -0.05350149768526538,
+        0.004501411994969358
+      ],
+      "odom_travel_m": 0.054
+    },
+    {
+      "seconds": 31.06,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.05816302662762073,
+          0.004595849562414674,
+          -1.9895936746884428
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.007010222140354839,
+          -0.016034549745561264,
+          0.0
+        ],
+        "monitor_age_s": 0.025,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4709,
+          "known_cells": 4709,
+          "occupied_cells": 140,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 84.9,
+        "plan_ms": 121.4,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.066,
+        "scan_age_s": 0.298,
+        "scan_sync_s": 0.0012679100036621094,
+        "pending_scan_sync_s": 0.0012679100036621094,
+        "scan_header_age_s": 0.127,
+        "latest_scan_odom_delta_s": -0.062,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4443,
+          "covered_m2": 15.99,
+          "spots": 1,
+          "nav_reason": "ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        -0.05956509354097746,
+        0.004601638114397637
+      ],
+      "odom_travel_m": 0.061
+    },
+    {
+      "seconds": 31.56,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.019255598442058437,
+          -0.04614349280925965,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.05955007872791265,
+          0.0046027863195768496,
+          -1.9550618841104845
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.046,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4715,
+          "known_cells": 4715,
+          "occupied_cells": 137,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 148.1,
+        "plan_ms": 121.3,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.034,
+        "scan_age_s": 0.403,
+        "scan_sync_s": 0.0030126571655273438,
+        "pending_scan_sync_s": 0.0030126571655273438,
+        "scan_header_age_s": 0.146,
+        "latest_scan_odom_delta_s": -0.112,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4445,
+          "covered_m2": 16.0,
+          "spots": 1,
+          "nav_reason": "ESCAPE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.006739459454720453,
+        -0.016150222483240877,
+        0.0
+      ],
+      "odom": [
+        -0.061147949244947694,
+        0.004578317553446078
+      ],
+      "odom_travel_m": 0.063
+    },
+    {
+      "seconds": 32.06,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.0631922177647664,
+          0.00451617169957983,
+          -1.9117632607913477
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.009,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4721,
+          "known_cells": 4721,
+          "occupied_cells": 137,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 127.7,
+        "plan_ms": 152.1,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.017,
+        "scan_age_s": 0.407,
+        "scan_sync_s": 0.011236906051635742,
+        "pending_scan_sync_s": 0.011236906051635742,
+        "scan_header_age_s": 0.15,
+        "latest_scan_odom_delta_s": -0.132,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4448,
+          "covered_m2": 16.01,
+          "spots": 1,
+          "nav_reason": "ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        -0.06318327135537352,
+        0.004516918730336106
+      ],
+      "odom_travel_m": 0.066
+    },
+    {
+      "seconds": 32.56,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.018095242176225528,
+          -0.04661075209202002,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06318690576274322,
+          0.0045184633712681554,
+          -1.836950579624072
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.002,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4721,
+          "known_cells": 4721,
+          "occupied_cells": 139,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 102.1,
+        "plan_ms": 195.5,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.048,
+        "scan_age_s": 0.425,
+        "scan_sync_s": 0.007421016693115234,
+        "pending_scan_sync_s": 0.007421016693115234,
+        "scan_header_age_s": 0.167,
+        "latest_scan_odom_delta_s": -0.118,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4595,
+          "covered_m2": 16.54,
+          "spots": 1,
+          "nav_reason": "ESCAPE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.006333334761678935,
+        -0.016313763232207006,
+        0.0
+      ],
+      "odom": [
+        -0.06318834012783771,
+        0.004518778017216058
+      ],
+      "odom_travel_m": 0.066
+    },
+    {
+      "seconds": 33.06,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743646866842985,
+          0.003950798324826888,
+          -1.787193944754269
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.037,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4724,
+          "known_cells": 4724,
+          "occupied_cells": 138,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 102.2,
+        "plan_ms": 103.0,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.013,
+        "scan_age_s": 0.318,
+        "scan_sync_s": 0.004138469696044922,
+        "pending_scan_sync_s": 0.004138469696044922,
+        "scan_header_age_s": 0.148,
+        "latest_scan_odom_delta_s": -0.135,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4756,
+          "covered_m2": 17.12,
+          "spots": 1,
+          "nav_reason": "ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        -0.06743148788485204,
+        0.00395186946270984
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 33.56,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743636299462467,
+          0.003952495396774108,
+          -1.7246217178038283
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.013,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4725,
+          "known_cells": 4725,
+          "occupied_cells": 140,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 102.9,
+        "plan_ms": 124.3,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.038,
+        "scan_age_s": 0.4,
+        "scan_sync_s": 0.003936052322387695,
+        "pending_scan_sync_s": 0.003936052322387695,
+        "scan_header_age_s": 0.143,
+        "latest_scan_odom_delta_s": -0.105,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4768,
+          "covered_m2": 17.16,
+          "spots": 1,
+          "nav_reason": "ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        -0.0674362112838658,
+        0.003953495724265593
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 34.06,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743752400508912,
+          0.0039544908021805205,
+          -1.6367889136330351
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.021,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4725,
+          "known_cells": 4725,
+          "occupied_cells": 146,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 129.6,
+        "plan_ms": 176.8,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.031,
+        "scan_age_s": 0.445,
+        "scan_sync_s": 0.015560626983642578,
+        "pending_scan_sync_s": 0.015560626983642578,
+        "scan_header_age_s": 0.103,
+        "latest_scan_odom_delta_s": -0.071,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4794,
+          "covered_m2": 17.26,
+          "spots": 1,
+          "nav_reason": "ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        -0.06743529932699609,
+        0.003955660545532844
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 34.56,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.0674368940550262,
+          0.003956368080994425,
+          -1.5533628202677305
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.032,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4726,
+          "known_cells": 4726,
+          "occupied_cells": 139,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 90.5,
+        "plan_ms": 150.4,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.034,
+        "scan_age_s": 0.403,
+        "scan_sync_s": 0.0003294944763183594,
+        "pending_scan_sync_s": 0.0003294944763183594,
+        "scan_header_age_s": 0.144,
+        "latest_scan_odom_delta_s": -0.11,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4799,
+          "covered_m2": 17.28,
+          "spots": 1,
+          "nav_reason": "ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        -0.06743581385580352,
+        0.003957290073770569
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 35.06,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743666408399966,
+          0.00395797644868718,
+          -1.4710120153890913
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.04,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4734,
+          "known_cells": 4734,
+          "occupied_cells": 151,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 87.3,
+        "plan_ms": 136.7,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.071,
+        "scan_age_s": 0.371,
+        "scan_sync_s": 0.0007734298706054688,
+        "pending_scan_sync_s": 0.0007734298706054688,
+        "scan_header_age_s": 0.113,
+        "latest_scan_odom_delta_s": -0.041,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4800,
+          "covered_m2": 17.28,
+          "spots": 1,
+          "nav_reason": "ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        -0.0674377910513216,
+        0.003957829222078997
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 35.56,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743719224370874,
+          0.003958811389316806,
+          -1.3920907116685544
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.034,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4734,
+          "known_cells": 4734,
+          "occupied_cells": 151,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 80.3,
+        "plan_ms": 117.2,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.015,
+        "scan_age_s": 0.351,
+        "scan_sync_s": 0.004638195037841797,
+        "pending_scan_sync_s": 0.004638195037841797,
+        "scan_header_age_s": 0.086,
+        "latest_scan_odom_delta_s": -0.071,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4803,
+          "covered_m2": 17.29,
+          "spots": 1,
+          "nav_reason": "ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        -0.06743730311632881,
+        0.003959053494811354
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 36.06,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743706675860597,
+          0.003960103446555749,
+          -1.2753880594732947
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.016,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4768,
+          "known_cells": 4768,
+          "occupied_cells": 158,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 110.0,
+        "plan_ms": 85.6,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.041,
+        "scan_age_s": 0.357,
+        "scan_sync_s": 0.016631603240966797,
+        "pending_scan_sync_s": 0.016631603240966797,
+        "scan_header_age_s": 0.099,
+        "latest_scan_odom_delta_s": -0.058,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4938,
+          "covered_m2": 17.78,
+          "spots": 1,
+          "nav_reason": "ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        -0.06743805312324887,
+        0.00395943382570995
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 36.56,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743807480516896,
+          0.00395994471147616,
+          -1.20548137043407
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.01,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2245,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4774,
+          "known_cells": 4774,
+          "occupied_cells": 168,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 39.4,
+        "plan_ms": 127.0,
+        "async_planner_ms": 2011.7,
+        "odom_age_s": 0.015,
+        "scan_age_s": 0.336,
+        "scan_sync_s": 0.01264810562133789,
+        "pending_scan_sync_s": 0.01264810562133789,
+        "scan_header_age_s": 0.163,
+        "latest_scan_odom_delta_s": -0.148,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4981,
+          "covered_m2": 17.93,
+          "spots": 1,
+          "nav_reason": "ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.18325957146
+      ],
+      "odom": [
+        -0.0674381887451366,
+        0.003959922318318656
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 37.07,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.0674375593208547,
+          0.0039606429189389366,
+          -1.172482102193939
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.18325957146
+        ],
+        "monitor_age_s": 0.038,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 2244,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4775,
+          "known_cells": 4775,
+          "occupied_cells": 163,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 86.3,
+        "plan_ms": 96.3,
+        "async_planner_ms": 1804.6,
+        "odom_age_s": 0.002,
+        "scan_age_s": 0.35,
+        "scan_sync_s": 0.017855167388916016,
+        "pending_scan_sync_s": 0.017855167388916016,
+        "scan_header_age_s": 0.093,
+        "latest_scan_odom_delta_s": -0.091,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.69,
+            -0.32999999999999996
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4985,
+          "covered_m2": 17.95,
+          "spots": 1,
+          "nav_reason": "RECOVERY_WAIT"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        -0.0674380713429534,
+        0.003960201467522905
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 37.57,
+      "navigation": {
+        "state": "WAIT_SCAN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743822019955646,
+          0.003960336309577329,
+          -1.144662275552221
+        ],
+        "monitor_state": "STALE_COMMAND",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.02,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 158,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 66.9,
+        "plan_ms": 792.0,
+        "async_planner_ms": 1804.6,
+        "odom_age_s": 0.068,
+        "scan_age_s": 0.958,
+        "scan_sync_s": 0.02388739585876465,
+        "pending_scan_sync_s": 0.02388739585876465,
+        "scan_header_age_s": 0.099,
+        "latest_scan_odom_delta_s": -0.031,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4987,
+          "covered_m2": 17.95,
+          "spots": 1,
+          "nav_reason": "RECOVERY_WAIT"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        -0.0674385709056464,
+        0.0039601635457486555
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 38.07,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743846767677127,
+          0.00396027610719292,
+          -1.1445692547537554
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.044,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 155,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 71.9,
+        "plan_ms": 153.3,
+        "async_planner_ms": 1804.6,
+        "odom_age_s": 0.084,
+        "scan_age_s": 0.349,
+        "scan_sync_s": 0.002289295196533203,
+        "pending_scan_sync_s": 0.002289295196533203,
+        "scan_header_age_s": 0.178,
+        "latest_scan_odom_delta_s": -0.094,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4987,
+          "covered_m2": 17.95,
+          "spots": 1,
+          "nav_reason": "PLANNING"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        -0.06743831800853249,
+        0.003960453240731542
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 38.57,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743826485880966,
+          0.003960572130591898,
+          -1.1440808449515485
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.022,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 154,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 111.1,
+        "plan_ms": 138.6,
+        "async_planner_ms": 1804.6,
+        "odom_age_s": 0.08,
+        "scan_age_s": 0.364,
+        "scan_sync_s": 0.015343427658081055,
+        "pending_scan_sync_s": 0.015343427658081055,
+        "scan_header_age_s": 0.12,
+        "latest_scan_odom_delta_s": -0.04,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4991,
+          "covered_m2": 17.97,
+          "spots": 1,
+          "nav_reason": "PLANNING"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        -0.06743846924161874,
+        0.003960446132397243
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 39.07,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          -0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.0674385593847477,
+          0.003960494827003128,
+          -1.1439066392828492
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          -0.18325957146
+        ],
+        "monitor_age_s": 0.035,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 28,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 149,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 90.1,
+        "plan_ms": 139.2,
+        "async_planner_ms": 862.6,
+        "odom_age_s": 0.045,
+        "scan_age_s": 0.327,
+        "scan_sync_s": 0.01799464225769043,
+        "pending_scan_sync_s": 0.01799464225769043,
+        "scan_header_age_s": 0.156,
+        "latest_scan_odom_delta_s": -0.111,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 4999,
+          "covered_m2": 18.0,
+          "spots": 1,
+          "nav_reason": "RECOVERY_ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        -0.18325957146
+      ],
+      "odom": [
+        -0.0674384981357127,
+        0.0039605718548433476
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 39.57,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          -0.5235987756
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743850089619502,
+          0.003960572237753273,
+          -1.16960660471572
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          -0.18325957146
+        ],
+        "monitor_age_s": 0.015,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 28,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 149,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 105.0,
+        "plan_ms": 148.7,
+        "async_planner_ms": 862.6,
+        "odom_age_s": 0.041,
+        "scan_age_s": 0.423,
+        "scan_sync_s": 0.015646696090698242,
+        "pending_scan_sync_s": 0.015646696090698242,
+        "scan_header_age_s": 0.166,
+        "latest_scan_odom_delta_s": -0.126,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 5002,
+          "covered_m2": 18.01,
+          "spots": 1,
+          "nav_reason": "RECOVERY_ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        -0.18325957146
+      ],
+      "odom": [
+        -0.06743850089619502,
+        0.003960572237753273
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 40.07,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          -0.5123765329222381
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.0674385447762203,
+          0.0039605034408337035,
+          -1.246776472915528
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          -0.18325957146
+        ],
+        "monitor_age_s": 0.044,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 27,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 143,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 95.4,
+        "plan_ms": 111.4,
+        "async_planner_ms": 733.1,
+        "odom_age_s": 0.029,
+        "scan_age_s": 0.311,
+        "scan_sync_s": 0.014909505844116211,
+        "pending_scan_sync_s": 0.014909505844116211,
+        "scan_header_age_s": 0.139,
+        "latest_scan_odom_delta_s": -0.11,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 5026,
+          "covered_m2": 18.09,
+          "spots": 1,
+          "nav_reason": "RECOVERY_ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        -0.18325957146
+      ],
+      "odom": [
+        -0.06743860735870646,
+        0.00396044838146417
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 40.57,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          -0.45280241300275836
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.0674385828759442,
+          0.003960453114303144,
+          -1.309897733793956
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          -0.16901852830673603
+        ],
+        "monitor_age_s": 0.028,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 27,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 141,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 50.7,
+        "plan_ms": 132.7,
+        "async_planner_ms": 733.1,
+        "odom_age_s": 0.048,
+        "scan_age_s": 0.353,
+        "scan_sync_s": 0.005371809005737305,
+        "pending_scan_sync_s": 0.005371809005737305,
+        "scan_header_age_s": 0.096,
+        "latest_scan_odom_delta_s": -0.048,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 5026,
+          "covered_m2": 18.09,
+          "spots": 1,
+          "nav_reason": "RECOVERY_ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        -0.15848084455096542
+      ],
+      "odom": [
+        -0.0674385468699729,
+        0.003960473133852932
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 41.08,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          -0.3834097847395692
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743855042802106,
+          0.003960453881100003,
+          -1.3806203278626215
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          -0.1455660976219636
+        ],
+        "monitor_age_s": 0.024,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 27,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 140,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 74.3,
+        "plan_ms": 162.2,
+        "async_planner_ms": 733.1,
+        "odom_age_s": 0.041,
+        "scan_age_s": 0.384,
+        "scan_sync_s": 0.01007986068725586,
+        "pending_scan_sync_s": 0.01007986068725586,
+        "scan_header_age_s": 0.127,
+        "latest_scan_odom_delta_s": -0.086,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 5027,
+          "covered_m2": 18.1,
+          "spots": 1,
+          "nav_reason": "RECOVERY_ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        -0.1341934246588492
+      ],
+      "odom": [
+        -0.06743858174365315,
+        0.003960426245551263
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 41.58,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          -0.3507323397690607
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743854515614243,
+          0.0039604469843183806,
+          -1.407576453855484
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          -0.1341934246588492
+        ],
+        "monitor_age_s": 0.015,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 27,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 142,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 105.8,
+        "plan_ms": 140.7,
+        "async_planner_ms": 733.1,
+        "odom_age_s": 0.023,
+        "scan_age_s": 0.376,
+        "scan_sync_s": 0.013263225555419922,
+        "pending_scan_sync_s": 0.013263225555419922,
+        "scan_header_age_s": 0.117,
+        "latest_scan_odom_delta_s": -0.094,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 5027,
+          "covered_m2": 18.1,
+          "spots": 1,
+          "nav_reason": "RECOVERY_ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        -0.06743852427149888,
+        0.003960444653333912
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 42.08,
+      "navigation": {
+        "state": "WAIT_SCAN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.0674385112321744,
+          0.003960425724886085,
+          -1.472207287259583
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.025,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 27,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 136,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 211.6,
+        "plan_ms": 231.7,
+        "async_planner_ms": 733.1,
+        "odom_age_s": 0.043,
+        "scan_age_s": 0.576,
+        "scan_sync_s": 0.00024628639221191406,
+        "pending_scan_sync_s": 0.00024628639221191406,
+        "scan_header_age_s": 0.148,
+        "latest_scan_odom_delta_s": -0.105,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 5029,
+          "covered_m2": 18.1,
+          "spots": 1,
+          "nav_reason": "RECOVERY_ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        -0.06743855544717066,
+        0.003960410793347665
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 42.58,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          -0.26972970624541004
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743853235142817,
+          0.003960420657306675,
+          -1.4719259717971835
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          -0.09434968000077903
+        ],
+        "monitor_age_s": 0.017,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 1973,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 142,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 106.1,
+        "plan_ms": 73.2,
+        "async_planner_ms": 1526.3,
+        "odom_age_s": 0.039,
+        "scan_age_s": 0.301,
+        "scan_sync_s": 0.005358457565307617,
+        "pending_scan_sync_s": 0.005358457565307617,
+        "scan_header_age_s": 0.13,
+        "latest_scan_odom_delta_s": -0.09,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 5029,
+          "covered_m2": 18.1,
+          "spots": 1,
+          "nav_reason": "RECOVERY_ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        -0.09440539718589351
+      ],
+      "odom": [
+        -0.06743853831975963,
+        0.003960419679538996
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 43.08,
+      "navigation": {
+        "state": "SEARCH_EXPLORE",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          -0.2597508852251451
+        ],
+        "target": null,
+        "label": "",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743852899909242,
+          0.003960421406430172,
+          -1.5006778653272346
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          -0.09410810479975801
+        ],
+        "monitor_age_s": 0.013,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {
+          "strategy": "NO_REACHABLE_APPROACH",
+          "reachable_cells": 1973,
+          "approach_point": null
+        },
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 142,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 82.0,
+        "plan_ms": 152.2,
+        "async_planner_ms": 1526.3,
+        "odom_age_s": 0.012,
+        "scan_age_s": 0.366,
+        "scan_sync_s": 0.013580560684204102,
+        "pending_scan_sync_s": 0.013580560684204102,
+        "scan_header_age_s": 0.108,
+        "latest_scan_odom_delta_s": -0.095,
+        "last_input_error": "NO_CONFIRMED_TARGET",
+        "search": {
+          "state": "GOTO",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 5029,
+          "covered_m2": 18.1,
+          "spots": 1,
+          "nav_reason": "RECOVERY_ROTATE"
+        },
+        "target_error": "NO_CONFIRMED_TARGET"
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        -0.09091280982880079
+      ],
+      "odom": [
+        -0.06743854743514219,
+        0.003960411304419836
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 43.58,
+      "navigation": {
+        "state": "ALIGN",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.30109412918784173
+        ],
+        "target": [
+          0.09300501313979967,
+          -0.45317247791721443
+        ],
+        "label": "person",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743853698074766,
+          0.003960413119062745,
+          -1.5343447063804527
+        ],
+        "monitor_state": "SLOWDOWN",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.10650055395519346
+        ],
+        "monitor_age_s": 0.027,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 142,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 145.9,
+        "plan_ms": 1.7,
+        "async_planner_ms": 1526.3,
+        "odom_age_s": 0.065,
+        "scan_age_s": 0.284,
+        "scan_sync_s": 0.01473689079284668,
+        "pending_scan_sync_s": 0.01473689079284668,
+        "scan_header_age_s": 0.112,
+        "latest_scan_odom_delta_s": -0.047,
+        "last_input_error": "",
+        "search": {
+          "state": "APPROACH",
+          "found": null,
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 5029,
+          "covered_m2": 18.1,
+          "spots": 1,
+          "nav_reason": "ALIGN"
+        },
+        "target_error": ""
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.1053829452157446
+      ],
+      "odom": [
+        -0.06743854339809953,
+        0.003960410217402122
+      ],
+      "odom_travel_m": 0.07
+    },
+    {
+      "seconds": 44.09,
+      "navigation": {
+        "state": "FOUND",
+        "enabled": true,
+        "velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "target": [
+          -0.06402455923209609,
+          -0.4473083081806072
+        ],
+        "label": "person",
+        "goal_mode": "search",
+        "goal_error": "",
+        "robot_pose": [
+          -0.06743853761186043,
+          0.003960408719917455,
+          -1.5341264670258643
+        ],
+        "monitor_state": "IDLE",
+        "monitor_velocity": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "monitor_age_s": 0.011,
+        "limits": {
+          "scan_timeout_s": 0.5,
+          "odom_timeout_s": 0.5,
+          "pose_sync_tolerance_s": 0.15
+        },
+        "planning": {},
+        "map_memory": {
+          "memory_s": 120.0,
+          "search_mode": true,
+          "stored_cells": 4776,
+          "known_cells": 4776,
+          "occupied_cells": 142,
+          "expired_cells": 368,
+          "window_evicted_cells": 0,
+          "reset_count": 0,
+          "last_reset_reason": ""
+        },
+        "odom_error": "",
+        "scan_error": "",
+        "map_ms": 323.1,
+        "plan_ms": 0.0,
+        "async_planner_ms": 1526.3,
+        "odom_age_s": 0.065,
+        "scan_age_s": 0.441,
+        "scan_sync_s": 0.024162769317626953,
+        "pending_scan_sync_s": 0.024162769317626953,
+        "scan_header_age_s": 0.184,
+        "latest_scan_odom_delta_s": -0.118,
+        "last_input_error": "",
+        "search": {
+          "state": "FOUND",
+          "found": [
+            0.07454452279478042,
+            -0.459527099938398
+          ],
+          "goal": [
+            0.09,
+            -0.87
+          ],
+          "goal_kind": "EXPLORE",
+          "covered_cells": 5029,
+          "covered_m2": 18.1,
+          "spots": 1,
+          "nav_reason": "ARRIVED"
+        },
+        "target_error": ""
+      },
+      "chassis_velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "odom": [
+        -0.06743853583349216,
+        0.003960408463402119
+      ],
+      "odom_travel_m": 0.07
+    }
+  ]
+}
