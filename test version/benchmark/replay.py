@@ -10,12 +10,13 @@ def semantic(directory):
     directory=Path(directory)
     result=json.loads((directory/'result.json').read_text(encoding='utf8'))
     result={k:v for k,v in result.items() if k not in ('run_id','attempt_id','elapsed_wall_s','workers_reaped')}
+    manifest=json.loads((directory/'run_manifest.json').read_text(encoding='utf8'))
     events=[]
     for line in (directory/'events.jsonl').read_text(encoding='utf8').splitlines():
         event=json.loads(line)
         events.append({k:v for k,v in event.items() if k not in ('run_id','attempt_id')})
     with (directory/'trajectory.csv').open(encoding='utf8',newline='') as stream:trajectory=list(csv.DictReader(stream))
-    return dict(result=result,events=events,trajectory=trajectory)
+    return dict(policy=manifest.get('policy_identity',dict(policy_id=manifest['policy_id'])),result=result,events=events,trajectory=trajectory)
 
 
 def compare(left,right):

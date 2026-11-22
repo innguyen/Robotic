@@ -18,7 +18,8 @@ from pathlib import Path
 from .artifacts import output_path,encode,digest
 from .schema import ROOT,load_json
 from .runner import verified_corpus,_execute_single
-from .policy import POLICIES
+from .policy import POLICIES,policy_identity
+from .selectors import selection_diagnostics
 from .oracle import Observation
 from .evaluator import evaluate_report
 from .journal import Journal,atomic,run_lock
@@ -75,6 +76,7 @@ def recover_result(directory,prepared,run_id,attempt_id,end_reason,workers_reape
                 elapsed_sim_s=last_time,path_length_m=partial_length,elapsed_wall_s=None,trajectory_complete=False,
                 workers_reaped=workers_reaped,perception_mode='oracle',n_false_reports=int(received is not None and not correct),
                 recovery='supervisor lost before atomic result')
+    result.update(selection_diagnostics(events,last_time,unknown=True))
     directory.mkdir(parents=True,exist_ok=True)
     atomic(directory/'recovery.json',encode(dict(reason=end_reason,received_events=len(events),raw_logs_preserved=True)))
     atomic(directory/'result.json',encode(result))
@@ -122,9 +124,9 @@ def project(directory,journal,prepared,selected):
                     event_seq=len(records)+1,step_index=records[-1]['step_index'] if records else 0,
                     sim_time_s=result['elapsed_sim_s'],event_type=kind,source='recovery',payload={'end_reason':result['end_reason']}))
         global_events.extend(records)
-        row.update(goals_selected=sum(r['event_type']=='GOAL_SELECTED' for r in records),fallback_goals=None,
+        row.update(goals_selected=result.get('goals_selected',sum(r['event_type']=='GOAL_SELECTED' for r in records)),fallback_goals=result.get('fallback_goals'),
                    first_stalled_s=next((r['sim_time_s'] for r in records if r['event_type']=='POLICY_STALLED'),None),
-                   unresolved_waypoints=None)
+                   unresolved_waypoints=result.get('unresolved_waypoints'))
         stall_start=None;stalled=0.
         for record in records:
             if record['event_type']=='MISSION_STATE':
@@ -132,7 +134,8 @@ def project(directory,journal,prepared,selected):
                 elif record['payload']['state']!='POLICY_STALLED' and stall_start is not None:
                     stalled+=record['sim_time_s']-stall_start;stall_start=None
         if stall_start is not None and result.get('elapsed_sim_s') is not None:stalled+=max(0.,result['elapsed_sim_s']-stall_start)
-        row.update(stalled_sim_s=stalled if result else None,monitor_interventions=sum(r['event_type']=='MONITOR_INTERVENTION' for r in records))
+        row.update(stalled_sim_s=result.get('stalled_sim_s',stalled if result else None),monitor_interventions=sum(r['event_type']=='MONITOR_INTERVENTION' for r in records))
+        row.update(selection_diagnostics(records,result.get('elapsed_sim_s',0.)))
         rows.append(row)
         if (folder/'trajectory.csv').exists():
             with (folder/'trajectory.csv').open(encoding='utf8',newline='') as stream:
@@ -184,6 +187,7 @@ def run_batch(catalog,bundle,output,policy='search-mission-smoke',episode_ids=No
     overrides=policy_overrides or {}
     if set(overrides)-set(selected) or any(p not in POLICIES for p in [policy,*overrides.values()]):raise ValueError('invalid policy')
     identity=dict(protocol='t1-0.2',selection=selected,policies={eid:overrides.get(eid,policy) for eid in selected},
+                  policy_identities={eid:policy_identity(overrides.get(eid,policy),prepared[eid][1],prepared[eid][2]) for eid in selected},
                   fixtures={eid:prepared[eid][3] for eid in prepared},runtime=dict(python=sys.version,platform=platform.platform(),
                   dependencies={n:version(n) for n in ('numpy','PyYAML')}))
     destination=output_path(output)

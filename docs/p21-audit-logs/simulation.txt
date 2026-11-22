@@ -1,0 +1,13 @@
+test_default_gap_reaches_standoff (test_simulation.SimulationTests) ... ok
+test_map_point_behind_robot_turns_and_is_reached (test_simulation.SimulationTests) ... ok
+test_map_point_in_unobserved_shadow_is_reached (test_simulation.SimulationTests) ... ok
+test_map_point_rejected_only_when_observed_blocked (test_simulation.SimulationTests) ... ok
+test_monitor_stops_when_obstacle_in_stop_zone (test_simulation.SimulationTests) ... ok
+test_robot_like_detour_with_async_planner_does_not_crawl_to_stuck (test_simulation.SimulationTests) ... ok
+test_room_with_robot_yaml_reaches_target_behind_box (test_simulation.SimulationTests) ... ok
+test_scan_returns_front_face_and_occludes_back_face (test_simulation.SimulationTests) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 45.940s
+
+OK

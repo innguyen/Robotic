@@ -2,7 +2,9 @@
 
 ## Tóm tắt
 
-Robot tìm kiếm con người trong môi trường thiên tai cần được đánh giá từ lúc bắt đầu khám phá đến khi báo cáo được vị trí người cần tìm. Chỉ đo độ chính xác nhận diện hoặc quãng đường di chuyển chưa phản ánh đủ nhiệm vụ này. Báo cáo khảo sát sáu công trình và protocol Habitat ObjectNav; từ đó đề xuất benchmark gồm ba tầng: tìm kiếm và điều hướng trong mô phỏng, nhận diện trên dữ liệu đã ghi, và đánh giá toàn hệ thống. Nội dung tập trung vào cách tổ chức thực nghiệm. Các phép thử của nhóm chưa được triển khai và chưa có số liệu kết quả.
+Robot tìm kiếm con người trong môi trường thiên tai cần được đánh giá từ lúc bắt đầu khám phá đến khi báo cáo được vị trí người cần tìm. Chỉ đo độ chính xác nhận diện hoặc quãng đường di chuyển chưa phản ánh đủ nhiệm vụ này. Báo cáo khảo sát sáu công trình và protocol Habitat ObjectNav; từ đó đề xuất benchmark gồm ba tầng: tìm kiếm và điều hướng trong mô phỏng, nhận diện trên dữ liệu đã ghi, và đánh giá toàn hệ thống. Nội dung tập trung vào cách tổ chức thực nghiệm; chưa có kết quả đánh giá nghiên cứu của nhóm.
+
+Trạng thái triển khai T1 được cập nhật riêng trong [P1b.2 audit](benchmark-p1b2-audit.md) và [P2.1 audit](benchmark-p21-audit.md): đã có harness offline và selector có version, cùng tests/dev controls. Các log nghiệm thu này không phải bảng so sánh B0/B1 hoặc bằng chứng hoạt động trong thiên tai thật. Phần khảo sát và thiết kế phương pháp bên dưới giữ nguyên phạm vi đó.
 
 ## 1. Bài toán và mục tiêu đánh giá
 
@@ -252,9 +254,9 @@ Một chi tiết cần thống nhất là tham số `STANDOFF['person'] = 0.55`.
 
 Simulator hiện xác nhận mục tiêu sau hai frame thỏa điều kiện quan sát và nhớ vị trí trong 2,5 giây. Các metric về raw detection, confirmation và report cần được ghi riêng. Coverage trong `SearchMission` là ước lượng từ sensing, không phải GT.
 
-CLI headless hiện dừng sau tối đa 600 bước, tương đương 60 giây mô phỏng. Runner benchmark cần lấy budget từ fixture, thay vì dùng giới hạn hard-code này. Việc simulator giữ tọa độ người để sinh quan sát là bình thường; rò GT chỉ xảy ra nếu giao diện policy cho phép truy cập dữ liệu chấm.
+CLI của simulator production trong ảnh chụp source trên dừng sau tối đa 600 bước, tương đương 60 giây mô phỏng. Harness benchmark riêng hiện lấy budget từ fixture và không sửa CLI production. Việc simulator giữ tọa độ người để sinh quan sát là bình thường; rò GT chỉ xảy ra nếu giao diện policy cho phép truy cập dữ liệu chấm.
 
-Các nhận xét trên dựa trên source. Kết quả regression offline thực chạy và giới hạn được cập nhật riêng trong [P0 audit](benchmark-p0-audit.md); chưa có lượt benchmark T1 hoặc kết quả B0/B1. Nhóm hiện chưa sử dụng được JetAuto, nên đầu ra thực nghiệm tiếp theo phù hợp nhất là T1, sau đó T2 trên dữ liệu có nhãn.
+Các nhận xét trên dựa trên source production tại commit đã nêu. Kết quả regression và các bước triển khai harness được cập nhật theo audit P0–P2.1; chưa có đánh giá B0/B1 trên test đã khóa. Nhóm hiện chưa sử dụng được JetAuto, nên hướng thực nghiệm vẫn là T1, sau đó T2 trên dữ liệu có nhãn.
 
 ## 7. Triển khai và khả năng tái lập
 
@@ -262,7 +264,7 @@ Trước hết cần xác nhận môi trường Python, dependencies và regress
 
 Mỗi lần chạy lưu phiên bản code, cấu hình thực sự được nạp, hash fixture, seed, chế độ perception/planner và quy ước đơn vị. Dữ liệu gồm một dòng kết quả mỗi episode, timeline sự kiện và quỹ đạo. Bộ tổng hợp phải tính lại được bảng báo cáo từ log, giữ cả các lượt lỗi và lịch sử chạy lại. Thời gian mô phỏng dùng chấm hành vi; thời gian thực thi phản ánh chi phí tính toán.
 
-[Đặc tả T1 phiên bản 0.2](benchmark-t1-spec.md) chốt fixture, scenario certificates, layout hash/split, frame, B0/B1, matching, thứ tự sự kiện, log, CLI dự kiến và acceptance tests. P0 kiểm tra sự nhất quán và regression trước khi mở P1a; P1a vẫn phải xây validator hình học. Đây là đầu vào lập trình, chưa phải runner đã hoạt động.
+[Đặc tả T1 phiên bản 0.2](benchmark-t1-spec.md) chốt fixture, scenario certificates, layout hash/split, frame, B0/B1, matching, thứ tự sự kiện, log và acceptance tests. Validator hình học, single runner và batch/resume đã triển khai theo các giới hạn trong audit. [P2.1](benchmark-p21-audit.md) ghi bằng chứng cho selector/dev controls; [P2.2](benchmark-p22-plan.md) còn phải nghiệm thu metrics và paired pilot trước khi mở test đã khóa.
 
 Khi có robot, T3 cần GT vị trí được đo độc lập, đồng bộ frame và timestamp, calibration cảm biến và quy trình giám sát thử nghiệm. Giữ nguyên collision monitor, watchdog và giới hạn chuyển động. Điều kiện sân thử phải được mô tả đủ để tái hiện, đồng thời phù hợp khả năng phần cứng.
 

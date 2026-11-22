@@ -2,7 +2,7 @@
 
 ## 1 Phạm vi và phiên bản
 
-Phiên bản protocol và schema là `t1-0.2`. Tài liệu này cụ thể hóa [benchmark đề xuất trong báo cáo](benchmark-report.md). Runner và bộ xác minh fixture đầy đủ chưa được triển khai. Các kiểm tra tài liệu/hash và regression core đã chạy được ghi riêng trong [P0 audit](benchmark-p0-audit.md); chúng không thay thế acceptance tests của runner ở §11.
+Phiên bản protocol và schema là `t1-0.2`. Tài liệu này cụ thể hóa [benchmark đề xuất trong báo cáo](benchmark-report.md). Validator, oracle, single runner và batch/resume đã triển khai trong phạm vi ghi tại [P1b.2 audit](benchmark-p1b2-audit.md). Hai selector chính thức và dev controls được theo dõi tại [P2.1 audit](benchmark-p21-audit.md). Các bảng yêu cầu bên dưới không tự chứng minh kiểm tra đã PASS; xem audit và log tương ứng. Chưa có đánh giá B0/B1 trên test đã khóa.
 
 T1 đánh giá tìm kiếm và điều hướng trong hình học phẳng, với tối đa một mục tiêu `person` không di chuyển. Người được biểu diễn bằng một hình chữ nhật có vị trí xác định, không có nhãn tư thế. Perception là oracle hình học, không chạy YOLO hoặc mô phỏng người bị vùi kín.
 
@@ -149,7 +149,7 @@ Gate chỉ là đoạn cắt dùng xác minh topology, không phải tường th
 
 Không dùng thất bại của planner hoặc raster thô để kết luận “không có đường/không thấy”. Chứng minh dương dùng đường swept-footprint thực. Chứng minh âm S2/S3/S4 phải bao phủ miền liên tục bằng hình học chính xác hoặc bao bảo thủ có sai số khai báo. Có thể dùng đĩa nội tiếp thân robot để chứng minh một đoạn chắc chắn bị chặn bất kể yaw; không dùng đĩa ngoại tiếp để tuyên bố robot không thể qua. Chưa chứng minh được điều kiện phổ quát thì trả `UNVERIFIED`, không `PASS`.
 
-Validator lưu `fixture_validation.json`: phiên bản verifier, fixture/config hashes, traits, witness path/time, gate components, phương pháp/sai số và `PASS|FAIL|UNVERIFIED` kèm lý do. Chứng nhận bị vô hiệu khi đổi hình học, sensor, footprint hoặc budget; nằm riêng ở evaluator, không truyền cho policy. P1a phải có test dương và đối chứng trong bảng trên trước khi tạo suite đánh giá; hiện chưa có verifier này.
+Validator lưu `fixture_validation.json`: phiên bản verifier, fixture/config hashes, traits, witness path/time, gate components, phương pháp/sai số và `PASS|FAIL|UNVERIFIED` kèm lý do. Chứng nhận bị vô hiệu khi đổi hình học, sensor, footprint hoặc budget; nằm riêng ở evaluator, không truyền cho policy. Các test dương/đối chứng và giới hạn của verifier hiện có được ghi tại [P1a.2 audit](benchmark-p1a2-audit.md); chưa chứng minh được thì vẫn phải trả UNVERIFIED.
 
 ## 4 Observation và oracle
 
@@ -175,7 +175,7 @@ Observation gồm `observation_id`, `label`, `x_m`, `y_m`, `frame_id`, `last_con
 
 Đây là B0 `fixed-order-v2`, một baseline có thứ tự cố định và dự phòng, không phải baseline bảo đảm đầy đủ. Trước khi khóa test, phải chạy positive controls trên dev: S1 dễ thấy, S2 có điểm nhìn gần, S3 có nhánh đi được và S4 có đường vòng. Kiểm tra baseline thực sự chọn goal, di chuyển khi cần, qua được vùng chuyển tiếp và có thể hoàn thành từng loại bằng cấu hình chung. Chưa đạt control do lỗi chọn goal/adapter/budget thì kết quả chỉ là chẩn đoán, chưa dùng kết luận B1 tốt hơn. Không xóa episode B0 thất bại; sửa trên dev, tăng policy version rồi chạy lại cả cặp và khóa trước test.
 
-Luôn báo `goals_selected`, `fallback_goals`, `first_stalled_s`, `stalled_sim_s`, `unresolved_waypoints`, path và confirmed/report timing. Trình bày tỷ lệ hoàn thành theo cùng budget; đường ngắn/thời gian ngắn của B0 thất bại không phải lợi thế. Test đơn vị selector không thay thế positive controls bằng rollout; các controls này hiện chưa chạy.
+Luôn báo `goals_selected`, `fallback_goals`, `first_stalled_s`, `stalled_sim_s`, `unresolved_waypoints`, path và confirmed/report timing. Trình bày tỷ lệ hoàn thành theo cùng budget; đường ngắn/thời gian ngắn của B0 thất bại không phải lợi thế. Test đơn vị selector không thay thế positive controls bằng rollout; trạng thái controls thực chạy được ghi tại [P2.1 audit](benchmark-p21-audit.md).
 
 ### 5.2 B1 và phần dùng chung
 
@@ -332,6 +332,8 @@ Event types tối thiểu: `EPISODE_START`, `RAW_DETECTION`, `CONFIRMED_DETECTIO
 So sánh B0/B1 chỉ ghép cùng episode/fixture hash, environment/layout hash/family/split, cấu hình chung, seed và protocol. Hash giống nhau không đủ nếu start/target khác. Thống kê theo layout dùng environment đã kiểm tra registry; các layout cùng family phải được giữ cùng cụm khi bootstrap. Báo riêng số episode dự kiến, đã bắt đầu, hoàn tất và lỗi. Thống kê chính dùng attempt đầu; retry không tự thay thất bại bằng lượt tốt hơn. Nếu thử cấu hình mới, tạo run mới và công bố nó.
 
 ## 10 CLI dự kiến và resume
+
+CLI hiện có dùng `benchmark_batch.py --catalog ... --bundle ... --output ... --policy b0-fixed-order-v2|b1-gain-distance-focus-v1`; bundle được tạo trước bằng `python -B -m benchmark --catalog ... --output ...` từ `test version/`. Xem [README](../test%20version/benchmark/README.md) cho lệnh đầy đủ. Tên CLI dự kiến bên dưới chưa phải alias hiện có. Thêm selector không thay scoring protocol t1-0.2; policy identity/config/source được khóa riêng trong manifest và được kiểm tra khi resume/replay.
 
 Entry point dự kiến là `test version/benchmark_search.py`, đặt cùng cấp module core để giữ import rõ ràng. Các lệnh dưới đây là hợp đồng cần triển khai, chưa phải lệnh hiện có:
 

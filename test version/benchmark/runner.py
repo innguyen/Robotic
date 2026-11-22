@@ -18,7 +18,8 @@ import yaml
 
 from .artifacts import load_catalog,build_bundle,output_path,encode,digest
 from .schema import ROOT
-from .policy import SensorFrame,policy_worker,POLICIES
+from .policy import SensorFrame,policy_worker,POLICIES,policy_identity
+from .selectors import OFFICIAL_POLICIES,selection_diagnostics
 from .oracle import Oracle
 from .simulator import lidar,world_boxes
 from .evaluator import evaluate_report,finite,safety,completed_report_reason
@@ -69,12 +70,12 @@ def simulate(connection,policy,e,s,cfg,fault,lifeline=None):
     pose=tuple(e['start_pose'][k] for k in ('x_m','y_m','yaw_rad'))
     state='SEARCHING';report=None;evaluation=dict(valid=False,matched=False,report_correct=False,position_error_m=None)
     observations={};submitted=None;hold=0;monitor_state='IDLE';reason=None;elapsed=0.;k=0;path_length=0.;seen=False
-    last_mission=None;last_goal=None;last_monitor=None;first_raw=None;first_confirmed=None
+    last_mission=None;last_goal=None;last_monitor=None;first_raw=None;first_confirmed=None;last_selector=None
     def event(kind,payload=None,when=None):
         source=('oracle' if kind in ('RAW_DETECTION','CONFIRMED_DETECTION') else
                 'evaluator' if kind in ('REPORT_EVALUATED','COLLISION','OUT_OF_BOUNDS') else
                 'monitor' if kind in ('MONITOR_STATE','MONITOR_INTERVENTION') else
-                'policy' if kind in ('MISSION_STATE','GOAL_SELECTED','POLICY_STALLED') else 'runner')
+                'policy' if kind in ('MISSION_STATE','GOAL_SELECTED','POLICY_STALLED','SELECTOR_DECISION','SELECTOR_STATUS','WAYPOINT_OUTCOME') else 'runner')
         connection.send(('event',dict(event_type=kind,step_index=k,sim_time_s=k*s['dt_s'] if when is None else when,source=source,payload=_clean(payload or {}))))
     def transition(next_state,when=None):
         nonlocal state
@@ -103,6 +104,9 @@ def simulate(connection,policy,e,s,cfg,fault,lifeline=None):
                 if 'error' in response:
                     reason=response['error'];event('ERROR',response);break
                 command=response['command']
+                for kind,payload in response.get('selector_events',()):event(kind,payload)
+                if response.get('selector_stats') is not None and response['selector_stats']!=last_selector:
+                    last_selector=response['selector_stats'];event('SELECTOR_STATUS',last_selector)
                 if response['planner_barrier']:event('PLANNER_BARRIER',{'application':'next policy tick'})
                 if response['mission']!=last_mission:
                     last_mission=response['mission'];event('MISSION_STATE',{'state':last_mission,'covered_cells':response['covered_cells']})
@@ -183,11 +187,11 @@ def _execute_single(prepared,output,policy_id='search-mission-smoke',fault=None,
     if destination.exists():raise ValueError('output already exists; P1b.1 has no resume')
     destination.mkdir(parents=True,exist_ok=False)
     public={k:copy.deepcopy(cfg[k]) for k in ('navigation','monitor','search')}
-    public.update(bounds=tuple(e['bounds_m']),camera=copy.deepcopy(s['camera']),dt_s=s['dt_s'],standoff=s['person_standoff_m'],planner_wall_timeout_s=s['planner_wall_timeout_s'])
+    public.update(bounds=tuple(e['bounds_m']),camera=copy.deepcopy(s['camera']),dt_s=s['dt_s'],standoff=s['person_standoff_m'],planner_wall_timeout_s=s['planner_wall_timeout_s'],b0_spacing_m=s['b0_spacing_m'])
     run_id=run_id or 'single-'+uuid.uuid4().hex[:12]
     git_sha=subprocess.run(['git','rev-parse','HEAD'],cwd=ROOT,text=True,capture_output=True).stdout.strip()
     dirty=bool(subprocess.run(['git','status','--porcelain'],cwd=ROOT,text=True,capture_output=True).stdout)
-    manifest=dict(stage='P1b.1',protocol='t1-0.2',run_id=run_id,episode_id=episode_id,policy_id=policy_id,
+    manifest=dict(stage='P1b.1',protocol='t1-0.2',run_id=run_id,episode_id=episode_id,policy_id=policy_id,policy_identity=policy_identity(policy_id,s,cfg),
                   git_sha=git_sha,git_dirty=dirty,python=sys.version,dependencies={name:version(name) for name in ('numpy','PyYAML')},dt_s=s['dt_s'],seed=e['seed'],config=cfg,
                   environment_id=e['environment_id'],layout_hash=e['layout_hash'],layout_family_id=e['layout_family_id'],split=e['split'],
                   perception_mode='oracle',planner_mode='async_next_tick_barrier',test_fault=fault,
@@ -197,7 +201,7 @@ def _execute_single(prepared,output,policy_id='search-mission-smoke',fault=None,
     policy_life,policy_owner=ctx.Pipe(duplex=False);sim_life,sim_owner=ctx.Pipe(duplex=False)
     policy=ctx.Process(target=policy_worker,args=(p_end,public,policy_id,policy_life),name='t1-policy')
     worker=ctx.Process(target=simulate,args=(tx,s_end,e,s,cfg,fault,sim_life),name='t1-simulator')
-    result=None;sequence=0;last_time=0.;last_step=0;report_correct=False;last_eval={};last_report=None;progress={}
+    result=None;sequence=0;last_time=0.;last_step=0;report_correct=False;last_eval={};last_report=None;progress={};selector_records=[]
     events=(destination/'events.jsonl').open('w',encoding='utf8')
     trajectory=(destination/'trajectory.csv').open('w',encoding='utf8',newline='');writer=None
     def emit(event):
@@ -205,6 +209,7 @@ def _execute_single(prepared,output,policy_id='search-mission-smoke',fault=None,
         sequence+=1;last_time=max(last_time,event['sim_time_s']);last_step=event['step_index']
         if event['event_type']=='REPORT_EVALUATED':last_eval=event['payload'];report_correct=last_eval['report_correct']
         if event['event_type']=='TARGET_REPORT':last_report=event['payload']['report']
+        if event['event_type']=='SELECTOR_STATUS':selector_records.append(event)
         timestamps={'RAW_DETECTION':'first_raw_s','CONFIRMED_DETECTION':'first_confirmed_s','TARGET_REPORT':'report_submitted_s','STOP_VERIFIED':'stop_verified_s'}
         if event['event_type'] in timestamps:progress.setdefault(timestamps[event['event_type']],event['sim_time_s'])
         record=dict(schema_version='t1-0.2',run_id=run_id,episode_id=episode_id,attempt_id=attempt_id,event_seq=sequence,**event)
@@ -249,6 +254,7 @@ def _execute_single(prepared,output,policy_id='search-mission-smoke',fault=None,
         for name in ('first_raw_s','first_confirmed_s','report_submitted_s','stop_verified_s'):result.setdefault(name,progress.get(name))
         result.setdefault('search_found',result['first_confirmed_s'] is not None)
         result.setdefault('path_length_m',None)
+        result.update(selection_diagnostics(selector_records,result.get('elapsed_sim_s',last_time),unknown=policy_id in OFFICIAL_POLICIES))
         events.close();trajectory.close()
         from .journal import atomic
         atomic(destination/'result.json',encode(result))

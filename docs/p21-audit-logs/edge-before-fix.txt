@@ -1,0 +1,25 @@
+test_b1_optional_now_preserves_production_focus_semantics (test_benchmark_selectors.SelectorTests) ... ERROR
+test_bootstrap_failure_keeps_unknown_selector_counters_null (test_benchmark_selectors.OfficialRunnerTests) ... ERROR
+
+======================================================================
+ERROR: test_b1_optional_now_preserves_production_focus_semantics (test_benchmark_selectors.SelectorTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Projects\Robotic\test version\test_benchmark_selectors.py", line 140, in test_b1_optional_now_preserves_production_focus_semantics
+    actual = GainDistanceFocusSelector().select(domain(g, observed, cfg))
+  File "C:\Projects\Robotic\test version\benchmark\selectors.py", line 177, in select
+    if state.focus is not None and state.now < state.focus_until:
+TypeError: '<' not supported between instances of 'NoneType' and 'float'
+
+======================================================================
+ERROR: test_bootstrap_failure_keeps_unknown_selector_counters_null (test_benchmark_selectors.OfficialRunnerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Projects\Robotic\test version\test_benchmark_selectors.py", line 226, in test_bootstrap_failure_keeps_unknown_selector_counters_null
+    self.assertIsNone(result[name])
+KeyError: 'goals_selected'
+
+----------------------------------------------------------------------
+Ran 2 tests in 5.141s
+
+FAILED (errors=2)

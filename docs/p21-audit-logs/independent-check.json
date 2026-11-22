@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "purpose": "policy_dev_control_not_research",
+  "policies": {
+    "b0-fixed-order-v2": {
+      "repetitions": [
+        {
+          "run": "run-1",
+          "attempts": 5,
+          "journal_head": "4551743c593888ed5629db7b801ffcec176d591f8867dfaa3a38da14754dd8fe"
+        },
+        {
+          "run": "run-2",
+          "attempts": 5,
+          "journal_head": "026dcfdfc0ed459cd04353adb6367efc1050976827a01fee3641bfa1084e0e6b"
+        }
+      ],
+      "replay_episodes": [
+        "sample-s1",
+        "sample-s2",
+        "sample-s3",
+        "sample-s4",
+        "sample-s5"
+      ],
+      "protected_resume_files": 26
+    },
+    "b1-gain-distance-focus-v1": {
+      "repetitions": [
+        {
+          "run": "run-1",
+          "attempts": 5,
+          "journal_head": "40f97cd9d82926adad31be95fe36cf7b01a9e5b8482ae03984e28d3b3b0894ef"
+        },
+        {
+          "run": "run-3",
+          "attempts": 5,
+          "journal_head": "ca61763ce9467032ae56897645b118753400e8ece523bce750f882417e6eb929"
+        }
+      ],
+      "replay_episodes": [
+        "sample-s1",
+        "sample-s2",
+        "sample-s3",
+        "sample-s4",
+        "sample-s5"
+      ],
+      "protected_resume_files": 26
+    }
+  }
+}

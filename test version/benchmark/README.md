@@ -1,6 +1,6 @@
-# T1 offline — P1b.2
+# T1 offline — P2.1 selectors
 
-Protocol: `t1-0.2`, verifier `p1a2-1`. Đã có validator, evaluator và single-episode headless runner P1b.1 và batch/journal/resume P1b.2; chưa có baseline B0/B1 chính thức hoặc bảng so sánh. Không khởi động ROS, camera, chassis hay launcher. Xem [đặc tả](../../docs/benchmark-t1-spec.md), [P1a.1](../../docs/benchmark-p1a1-audit.md), [P1a.2](../../docs/benchmark-p1a2-audit.md) và [nghiệm thu P1b.1](../../docs/benchmark-p1b1-audit.md).
+Protocol: `t1-0.2`, verifier `p1a2-1`. Đã có validator, evaluator, single runner, batch/resume và hai selector chính thức có version. Chưa có đánh giá test hoặc bảng so sánh B0/B1. Không khởi động ROS, camera, chassis hay launcher. Xem [đặc tả](../../docs/benchmark-t1-spec.md), [P1b.2](../../docs/benchmark-p1b2-audit.md) và [P2.1 audit](../../docs/benchmark-p21-audit.md) để biết phạm vi thực kiểm.
 
 Python 3.10+ và PyYAML cho validator; runner cần thêm NumPy và Git để ghi provenance. Môi trường đã kiểm tra dùng Python 3.10.11, PyYAML 6.0.3, NumPy 2.2.6. Runner không cần OpenCV hoặc ROS. Các regression production vẫn dùng dependencies cũ. Golden tests chạy chéo cần Node.js.
 
@@ -85,7 +85,7 @@ python -B -m benchmark --catalog "test version/benchmark/fixtures/catalog.json" 
 python -B benchmark_batch.py --catalog "test version/benchmark/fixtures/catalog.json" --bundle "benchmark-results/p1b2-certificates" --output "benchmark-results/p1b2-run" --episode-id sample-s2 --episode-id sample-s3 --episode-id sample-s4
 ```
 
-Chạy lại cùng lệnh, thêm `--resume` để tiếp tục. Giữ nguyên selection, policy, config, corpus và runtime. `--retry-errors` chỉ đi với resume và chỉ tạo attempt mới cho lỗi thực thi; không retry TIMEOUT/COLLISION/false report của nhiệm vụ. Attempt 1 luôn là primary. Có thể lọc `--seed N` (không đổi seed), `--max-episodes N` hoặc nhiều `--episode-id`; mọi fixture trong catalog vẫn phải được kiểm tra và PASS **trước** lọc. Không có policy B0/B1 chính thức.
+Chạy lại cùng lệnh, thêm `--resume` để tiếp tục. Giữ nguyên selection, policy, config, corpus và runtime. `--retry-errors` chỉ đi với resume và chỉ tạo attempt mới cho lỗi thực thi; không retry TIMEOUT/COLLISION/false report của nhiệm vụ. Attempt 1 luôn là primary. Có thể lọc `--seed N` (không đổi seed), `--max-episodes N` hoặc nhiều `--episode-id`; mọi fixture trong catalog vẫn phải được kiểm tra và PASS **trước** lọc. Các selector P2.1 dùng cùng luồng batch này.
 
 Manifest khóa fingerprint toàn corpus/config/source/evidence, runtime, selection và policies. Chỉ một supervisor giữ OS lock; process chết sẽ giải phóng lock tự động. Journal hash-chain fsync START trước khi chạy; FINISH chỉ ghi sau atomic result. Khi resume:
 
@@ -116,3 +116,28 @@ python -B -m unittest discover -s "test version" -p test_benchmark_batch.py -v
 ```
 
 Giới hạn: chưa chứng minh durability khi mất điện/phần cứng lưu trữ lỗi; không sửa code/config lúc run hoạt động. Projection lỗi IO sẽ dừng batch, giữ reservation để resume sau khi xử lý IO. Source/runtime thay đổi làm resume bị từ chối; không chỉnh manifest để bỏ kiểm tra. Chưa triển khai so sánh baseline hay thống kê nghiên cứu.
+
+## Hai selector chính thức — P2.1
+
+- `b0-fixed-order-v2`, implementation version `2`: lưới neo tại pose đầu từ sensing, thứ tự vòng/góc cố định; unknown/out-of-window được xét lại; index đã giao không được giao lại. Khi hết waypoint đủ điều kiện, fallback sắp các ô chung trong frame ban đầu, không dùng gain, min-gain hoặc focus.
+- `b1-gain-distance-focus-v1`, implementation version `2`: score, min-gain, focus và strict row-major tie từ production `SearchMission.choose_goal()`. Tests đối chiếu trực tiếp source production trên cùng miền hợp lệ, kể cả `now=None`.
+
+`selectors.SelectionState` chỉ chứa pose/time/estimated coverage/blacklist/spun_at/focus công khai. `CandidateDomain` nhận costmap từ sensing, bounds và kích thước thân; không nhận fixture, GT, witness, certificate, evaluator hay Navigator. `GoalSelector.select(domain)` trả `Selection | None`; mission giữ spin/dwell, navigation, tiếp cận và reporting chung. `SelectorMission` dùng chung cho cả B0/B1, giữ stalled/retry tới deadline và vẫn nhận target xác nhận mới.
+
+Miền `observed-standable-v1` áp dụng §5.2 trước scoring, dùng copy mask, không sửa grid của planner. So với `search-mission-smoke`, nó lọc footprint trước scoring và không lặp thao tác loại điểm rồi erosion lại. Đây là khác biệt adapter đã công bố; smoke không phải bản B1 chính thức. Source/config thay đổi đòi hỏi certificate và run mới. Mọi policy vẫn chạy Navigator async, barrier, monitor, oracle và evaluator hiện có.
+
+Manifest lưu `policy_identity`: ID/version, algorithm/domain version, selector parameters, shared search parameters và source hashes. Batch khóa các trường này khi resume; replay so cả identity, semantic events và trajectory. Thay source/parameters không được resume vào run cũ hoặc tuyên bố replay tương đương. Default CLI vẫn là smoke để giữ tương thích; chọn official policy bằng `--policy`.
+
+Ví dụ từ gốc repo, chỉ chọn dev S2 (output mới):
+
+```powershell
+python -B "test version/benchmark_run.py" --catalog "test version/benchmark/fixtures/catalog.json" --bundle "docs/p21-audit-logs/dev-final/certificates" --episode-id sample-s2 --output "benchmark-results/p21-b0-s2" --policy b0-fixed-order-v2
+python -B docs/checks/p21-dev-controls.py --output "benchmark-results/p21-dev-new"
+python -B -m unittest discover -s "test version" -p test_benchmark_selectors.py -v
+```
+
+Lệnh đầu cần bundle đúng source hiện hành, có thể tạo mới bằng CLI validator; không dùng archive lịch sử khi source đã đổi. Script dev kiểm tra **toàn catalog**, chỉ rollout dev S1–S5, chạy hai lần riêng từng policy rồi kiểm tra replay/resume. Đây là control nghiệm thu, không chạy held-out test hoặc xuất bảng so sánh thuật toán.
+
+Nếu phiên tool chạy dài bị ngắt, có thể chia thành các batch CLI riêng với output mới. Script có `--finalize-existing --b1-repeat run-3` để kiểm tra các batch hoàn tất trong hồ sơ P2.1; nó từ chối batch thiếu result, không tự chạy bù hoặc sửa log dở. `controls.json` ghi rõ hai thư mục thực sự được dùng cho mỗi policy; xem audit để phân biệt lượt hoàn tất và lượt gián đoạn.
+
+Log thêm `SELECTOR_DECISION` (point/kind/index và lý do skip), `WAYPOINT_OUTCOME` (reached/failed/preempted), `SELECTOR_STATUS`. Waypoint còn active khi episode chấm dứt được giữ là unresolved, không tự ghi reached. B0 `unresolved_waypoints` là tổng index lưới chưa có outcome reached, gồm chưa giao, failed, preempted và đang chạy; fallback không thêm index lưới. B1 không có lưới, trường này là null. `goals_selected` chỉ đếm goal khám phá của selector; LAST_SEEN/approach không tăng bộ đếm này. Stalled duration lấy từ state mission theo simulated time, kể cả khi monitor thay reason hiển thị. Metrics theo đợt monitor cần nghiệm thu riêng ở [P2.2](../../docs/benchmark-p22-plan.md).

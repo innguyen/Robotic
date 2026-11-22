@@ -1,0 +1,13 @@
+{
+  "archive": "docs/p21-audit-logs/dev",
+  "status": "UNVERIFIED",
+  "cause": "UNVERIFIED: prior tool session disappeared; no Python processes remained at inspection",
+  "unfinished": [
+    {
+      "episode_id": "sample-s2",
+      "attempt_id": 1,
+      "result_exists": false
+    }
+  ],
+  "treatment": "Retain raw files unchanged. Source identity changes require a new certificate/run; do not treat incomplete logs as algorithm outcomes."
+}

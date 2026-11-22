@@ -1,0 +1,21 @@
+test_batch_resume_rejects_selector_parameters_or_source_identity_change (test_benchmark_selectors.OfficialRunnerTests) ... ok
+test_bootstrap_failure_keeps_unknown_selector_counters_null (test_benchmark_selectors.OfficialRunnerTests) ... ok
+test_official_policies_full_single_loop_and_replay (test_benchmark_selectors.OfficialRunnerTests) ... ok
+test_spawned_policy_same_observed_inputs_despite_different_hidden_worlds (test_benchmark_selectors.OfficialRunnerTests) ... ok
+test_assigned_waypoint_never_reissued_even_after_failure (test_benchmark_selectors.SelectorTests) ... ok
+test_b1_matches_production_score_focus_threshold_and_ties (test_benchmark_selectors.SelectorTests) ... ok
+test_b1_optional_now_preserves_production_focus_semantics (test_benchmark_selectors.SelectorTests) ... ok
+test_common_blacklist_revisit_distance_bounds_and_footprint (test_benchmark_selectors.SelectorTests) ... ok
+test_diagnostics_continuous_stall_and_waypoint_outcomes (test_benchmark_selectors.SelectorTests) ... ok
+test_fallback_fixed_order_ignores_gain_and_focus (test_benchmark_selectors.SelectorTests) ... ok
+test_fixed_point_is_not_snapped_to_cell_centre (test_benchmark_selectors.SelectorTests) ... ok
+test_ring_order_and_start_rotation (test_benchmark_selectors.SelectorTests) ... ok
+test_stalled_retry_and_new_target_enter_approach (test_benchmark_selectors.SelectorTests) ... ok
+test_stalled_retry_can_select_after_map_update (test_benchmark_selectors.SelectorTests) ... ok
+test_state_has_no_gt_or_mission_reference_and_is_immutable (test_benchmark_selectors.SelectorTests) ... ok
+test_unknown_and_outside_window_are_reconsidered (test_benchmark_selectors.SelectorTests) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 36.010s
+
+OK

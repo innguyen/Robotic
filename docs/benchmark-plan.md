@@ -4,7 +4,9 @@
 
 **Bài toán chính của nhóm:** robot tự di chuyển trong môi trường thiên tai để tìm kiếm con người.
 
-**Ưu tiên hiện tại:** hoàn thiện báo cáo khảo sát phương pháp xây dựng benchmark và đề xuất giao thức đánh giá cho nhóm. Bản demo chạy được sẽ được triển khai sau khi báo cáo và protocol được rà soát.
+**Ưu tiên ban đầu:** hoàn thiện báo cáo khảo sát phương pháp xây dựng benchmark và đề xuất giao thức đánh giá cho nhóm, trước khi triển khai demo.
+
+Tiến độ hiện tại: harness T1 offline đã qua [P1b.2 trên Windows](benchmark-p1b2-audit.md); hai selector chính thức và dev controls được theo dõi tại [P2.1 audit](benchmark-p21-audit.md). Bước tiếp theo là [P2.2 metrics, paired runs và pilot](benchmark-p22-plan.md). Chưa có đánh giá B0/B1 trên test đã khóa hoặc kết quả robot thật. Các mục bên dưới là kế hoạch tổng thể ban đầu, không phải danh sách đã hoàn thành.
 
 Kế hoạch được tổ chức theo thứ tự công việc, đầu ra và tiêu chí hoàn thành; không đặt lịch hoặc hạn thực hiện.
 

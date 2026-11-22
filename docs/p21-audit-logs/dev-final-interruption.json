@@ -1,0 +1,14 @@
+{
+  "status": "UNVERIFIED",
+  "archive": "docs/p21-audit-logs/dev-final/b1-gain-distance-focus-v1/run-2",
+  "observed": "tool session ended; no old benchmark workers or Python processes remained at inspection",
+  "cause": "UNVERIFIED",
+  "unfinished": [
+    {
+      "episode_id": "sample-s5",
+      "attempt_id": 1,
+      "result_exists": false
+    }
+  ],
+  "replay_repeat": "run-3 is a fresh batch; run-2 remains intact and is not accepted as completed"
+}
