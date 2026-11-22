@@ -1,8 +1,8 @@
-# T1 offline — P1a.2
+# T1 offline — P1b.1
 
-Protocol: `t1-0.2`, verifier `p1a2-1`. Đây là validator và các thành phần evaluator, chưa có runner, policy hoặc bảng hiệu năng. Không import ROS, camera, chassis hay launcher. Xem [đặc tả](../../docs/benchmark-t1-spec.md), [nghiệm thu P1a.1](../../docs/benchmark-p1a1-audit.md) và [nghiệm thu P1a.2](../../docs/benchmark-p1a2-audit.md).
+Protocol: `t1-0.2`, verifier `p1a2-1`. Đã có validator, evaluator và single-episode headless runner P1b.1; chưa có baseline B0/B1 chính thức hoặc bảng so sánh. Không khởi động ROS, camera, chassis hay launcher. Xem [đặc tả](../../docs/benchmark-t1-spec.md), [P1a.1](../../docs/benchmark-p1a1-audit.md), [P1a.2](../../docs/benchmark-p1a2-audit.md) và [nghiệm thu P1b.1](../../docs/benchmark-p1b1-audit.md).
 
-Python 3.10+ và PyYAML; môi trường đã kiểm tra dùng Python 3.10.11/PyYAML 6.0.3. Runtime mới không cần NumPy, OpenCV hoặc ROS. Các regression production vẫn dùng dependencies cũ. Golden tests chạy chéo cần Node.js.
+Python 3.10+ và PyYAML cho validator; runner cần thêm NumPy và Git để ghi provenance. Môi trường đã kiểm tra dùng Python 3.10.11, PyYAML 6.0.3, NumPy 2.2.6. Runner không cần OpenCV hoặc ROS. Các regression production vẫn dùng dependencies cũ. Golden tests chạy chéo cần Node.js.
 
 Từ gốc repository, chạy test:
 
@@ -44,6 +44,34 @@ Phạm vi chứng nhận hiện tại (đều có đối chứng):
 
 Bundle gồm `manifest.json` và mỗi episode có `resolved_episode.json`, `evidence.json`, `fixture_validation.json`. File certificate chứa lịch witness theo tick để tái kiểm tra. Staging không phải output hợp lệ. Lỗi Python trước rename được cleanup; nếu process bị kill có thể để lại staging, nhưng không công bố bundle dở. Chưa chứng minh durability khi mất điện, chưa có journal/resume của runner. Giả định output trong workspace do một người dùng kiểm soát; không bảo vệ race symlink từ tiến trình đối địch.
 
-Không có cơ chế cách ly policy process trong giai đoạn này. Việc không đưa GT qua Observation đã có test; bảo vệ runtime khỏi policy chủ động import dữ liệu sẽ cần worker/interface ở giai đoạn runner.
+P1b.1 dùng `spawn` tách policy khỏi simulator/evaluator. Policy chỉ nhận config công khai và SensorFrame bất biến, không nhận GT/fixture/witness/certificate. Đây là ranh giới dữ liệu cho code hợp tác, chưa phải filesystem/security sandbox chống policy chủ động đọc dữ liệu trên ổ đĩa.
 
-SearchConfig hiện chỉ có trường camera FOV/range. Core coverage chưa có camera extrinsics; trước khi chạy policy với camera offset, P1b phải thêm adapter coverage dùng đúng camera pose cho cả B0/B1. Snapshot FOV/range ở đây không chứng minh core coverage đã hỗ trợ offset.
+Coverage trong runner đã có adapter dùng camera pose/extrinsics và chỉ đọc ô free trên costmap quan sát được; không raycast GT cho policy. Nó dừng ở unknown/occupied, là estimated coverage. Core production không sửa; mọi policy runner dùng chung bước coverage này.
+
+## Chạy một episode P1b.1
+
+Từ thư mục `test version/`, tạo certificate theo đúng source hiện hành rồi chạy **một** episode:
+
+```powershell
+python -B -m benchmark --catalog "test version/benchmark/fixtures/catalog.json" --output "benchmark-results/p1b1-certificates"
+python -B benchmark_run.py --catalog "test version/benchmark/fixtures/catalog.json" --bundle "benchmark-results/p1b1-certificates" --episode-id sample-s1 --output "benchmark-results/p1b1-single"
+```
+
+Từ gốc repository, entry point tương đương là `python -B "test version/benchmark_run.py" ...`. Mọi path input/output tính từ gốc repo. Output runner phải chưa tồn tại. Bundle cũ sẽ bị từ chối nếu source/config/evidence khác; thêm module benchmark cũng đổi verifier hash. Không chỉnh sửa certificate để vượt kiểm tra; tạo bundle mới.
+
+Default `--policy search-mission-smoke` dùng Navigator async, SearchMission và Collision Monitor hiện tại qua adapter benchmark. Đây là smoke integration, chưa là B1 dùng so sánh. Các policy `test-*` chỉ để acceptance; không phải baseline. API `run_single(..., fault=...)` có actuator fault phục vụ test evaluator độc lập, ghi rõ trong manifest, không có flag actuator fault trên CLI.
+
+Runner tạo `run_manifest.json`, `events.jsonl`, `trajectory.csv`, `result.json`. Manifest lưu config/source/bundle hashes, git SHA/dirty, seed, LiDAR model và planner barrier mode. Event có run/episode/attempt/sequence/tick; log vị trí quan sát và report riêng. Result phân biệt report_correct, mission_success, end_reason và trajectory_complete. Dữ liệu không hữu hạn bị sanitize, không ghi JSON NaN/Infinity.
+
+Supervisor sở hữu hai process riêng (simulator và policy), chỉ wall watchdog dùng monotonic time. Clock nhiệm vụ là tick×0,1 s. Planner future được chờ có timeout, kết quả chỉ áp dụng ở lần core kiểm tra tiếp theo; cleanup bị treo vẫn được terminate/kill và join bằng supervisor. Sau report đầu, ngừng gọi policy, yêu cầu 0 qua monitor, tiếp tục tích phân/geometry/stop check, không sửa pose để chấm thành công.
+
+Chưa có batch/resume, attempts.csv/episodes.csv, full journal hoặc summary thống kê. Parent flush log trong khi chạy và ghi result bằng temp→replace; supervisor bị kill/mất điện có thể để log dở. Các trường không biết trên lỗi được để null/trajectory_complete=false. Chưa kiểm tra replay toàn suite hoặc nghiệm thu positive controls cho B0/B1.
+
+Acceptance tests có thể lưu từng run để audit (chọn đường dẫn export mới):
+
+```powershell
+$env:T1_ACCEPTANCE_EXPORT = 'docs/local-acceptance-export'
+python -B -m unittest discover -s "test version" -p test_benchmark_runner.py -v
+```
+
+Lệnh test trên chạy từ gốc repository; bỏ biến môi trường để dùng temporary output và cleanup. Không đưa các log/GT artifact này vào policy.

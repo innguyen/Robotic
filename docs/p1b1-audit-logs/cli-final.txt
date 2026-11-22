@@ -1,0 +1,30 @@
+{
+  "end_reason": "SUCCESS_REPORT",
+  "report_correct": true,
+  "mission_success": true,
+  "report": {
+    "report_id": "report-0001",
+    "label": "person",
+    "x_m": 2.0,
+    "y_m": 0.0,
+    "frame_id": "benchmark_map",
+    "observation_id": "obs-000078"
+  },
+  "position_error_m": 0.0,
+  "elapsed_sim_s": 8.1,
+  "path_length_m": 1.1920484612459625,
+  "search_found": true,
+  "stop_verified": true,
+  "first_raw_s": 0.0,
+  "first_confirmed_s": 0.1,
+  "report_submitted_s": 7.800000000000001,
+  "stop_verified_s": 8.1,
+  "trajectory_complete": true,
+  "stage": "P1b.1",
+  "episode_id": "sample-s1",
+  "run_id": "single-48e7547581d8",
+  "elapsed_wall_s": 7.719000000000051,
+  "workers_reaped": true,
+  "perception_mode": "oracle",
+  "n_false_reports": 0
+}

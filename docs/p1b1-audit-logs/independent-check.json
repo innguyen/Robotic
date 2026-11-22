@@ -1,0 +1,232 @@
+{
+  "status": "PASS",
+  "acceptance_runs": 20,
+  "real_episode": {
+    "end_reason": "SUCCESS_REPORT",
+    "intervals": 81,
+    "moving_intervals": 76,
+    "planner_barriers": 13
+  },
+  "cases": [
+    {
+      "run": "run-1",
+      "episode_id": "positive",
+      "policy_id": "test-idle",
+      "test_fault": "actuator-bounds",
+      "end_reason": "OUT_OF_BOUNDS",
+      "report_correct": false,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 8
+    },
+    {
+      "run": "run-10",
+      "episode_id": "positive",
+      "policy_id": "test-planner-hang",
+      "test_fault": null,
+      "end_reason": "PLANNER_TIMEOUT",
+      "report_correct": false,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 6
+    },
+    {
+      "run": "run-11",
+      "episode_id": "hang",
+      "policy_id": "test-policy-hang",
+      "test_fault": null,
+      "end_reason": "WALL_TIMEOUT",
+      "report_correct": false,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 5
+    },
+    {
+      "run": "run-12",
+      "episode_id": "positive",
+      "policy_id": "test-idle",
+      "test_fault": null,
+      "end_reason": "TIMEOUT",
+      "report_correct": false,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 154
+    },
+    {
+      "run": "run-13",
+      "episode_id": "positive",
+      "policy_id": "search-mission-smoke",
+      "test_fault": null,
+      "end_reason": "SUCCESS_REPORT",
+      "report_correct": true,
+      "mission_success": true,
+      "workers_reaped": true,
+      "events": 22
+    },
+    {
+      "run": "run-14",
+      "episode_id": "distant",
+      "policy_id": "test-report",
+      "test_fault": null,
+      "end_reason": "APPROACH_NOT_SATISFIED",
+      "report_correct": true,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 21
+    },
+    {
+      "run": "run-15",
+      "episode_id": "positive",
+      "policy_id": "test-report",
+      "test_fault": "actuator-pulse",
+      "end_reason": "SUCCESS_REPORT",
+      "report_correct": true,
+      "mission_success": true,
+      "workers_reaped": true,
+      "events": 27
+    },
+    {
+      "run": "run-16",
+      "episode_id": "deadline",
+      "policy_id": "test-delayed-report",
+      "test_fault": null,
+      "end_reason": "SUCCESS_REPORT",
+      "report_correct": true,
+      "mission_success": true,
+      "workers_reaped": true,
+      "events": 39
+    },
+    {
+      "run": "run-17",
+      "episode_id": "late",
+      "policy_id": "test-delayed-report",
+      "test_fault": null,
+      "end_reason": "TIMEOUT",
+      "report_correct": true,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 35
+    },
+    {
+      "run": "run-18",
+      "episode_id": "positive",
+      "policy_id": "test-report",
+      "test_fault": "actuator-drift",
+      "end_reason": "STOP_NOT_VERIFIED",
+      "report_correct": true,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 71
+    },
+    {
+      "run": "run-19",
+      "episode_id": "positive",
+      "policy_id": "test-report",
+      "test_fault": "crash-after-report",
+      "end_reason": "CRASH",
+      "report_correct": true,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 15
+    },
+    {
+      "run": "run-2",
+      "episode_id": "positive",
+      "policy_id": "test-nan",
+      "test_fault": null,
+      "end_reason": "INVALID_STATE",
+      "report_correct": false,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 7
+    },
+    {
+      "run": "run-20",
+      "episode_id": "positive",
+      "policy_id": "test-crash-after-report",
+      "test_fault": "crash-after-report",
+      "end_reason": "CRASH",
+      "report_correct": true,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 15
+    },
+    {
+      "run": "run-3",
+      "episode_id": "offset",
+      "policy_id": "search-mission-smoke",
+      "test_fault": null,
+      "end_reason": "SUCCESS_REPORT",
+      "report_correct": true,
+      "mission_success": true,
+      "workers_reaped": true,
+      "events": 22
+    },
+    {
+      "run": "run-4",
+      "episode_id": "positive",
+      "policy_id": "test-report",
+      "test_fault": "actuator-collision",
+      "end_reason": "COLLISION",
+      "report_correct": true,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 15
+    },
+    {
+      "run": "run-5",
+      "episode_id": "empty",
+      "policy_id": "search-mission-smoke",
+      "test_fault": null,
+      "end_reason": "TIMEOUT",
+      "report_correct": false,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 10
+    },
+    {
+      "run": "run-6",
+      "episode_id": "positive",
+      "policy_id": "test-invalid-report",
+      "test_fault": null,
+      "end_reason": "INVALID_REPORT",
+      "report_correct": false,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 18
+    },
+    {
+      "run": "run-7",
+      "episode_id": "positive",
+      "policy_id": "test-false-report",
+      "test_fault": null,
+      "end_reason": "FALSE_REPORT",
+      "report_correct": false,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 21
+    },
+    {
+      "run": "run-8",
+      "episode_id": "empty",
+      "policy_id": "test-invalid-report",
+      "test_fault": null,
+      "end_reason": "INVALID_REPORT",
+      "report_correct": false,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 13
+    },
+    {
+      "run": "run-9",
+      "episode_id": "positive",
+      "policy_id": "test-planner-error",
+      "test_fault": null,
+      "end_reason": "CRASH",
+      "report_correct": false,
+      "mission_success": false,
+      "workers_reaped": true,
+      "events": 6
+    }
+  ]
+}

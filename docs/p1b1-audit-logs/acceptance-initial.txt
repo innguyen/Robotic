@@ -1,0 +1,21 @@
+test_bounds_and_invalid_state (test_benchmark_runner.RunnerTests) ... ok
+test_camera_offset_real_mission (test_benchmark_runner.RunnerTests) ... ok
+test_collision_wins_over_correct_report_and_stop (test_benchmark_runner.RunnerTests) ... ok
+test_coverage_offset_and_unknown_occlusion_no_gt (test_benchmark_runner.RunnerTests) ... ok
+test_empty_episode_timeout_not_success (test_benchmark_runner.RunnerTests) ... ok
+test_gate_rejects_tampering_and_nonpass (test_benchmark_runner.RunnerTests) ... ok
+test_invalid_and_false_reports (test_benchmark_runner.RunnerTests) ... ok
+test_negative_false_alarm (test_benchmark_runner.RunnerTests) ... ok
+test_planner_exception_timeout_and_policy_hang_reaped (test_benchmark_runner.RunnerTests) ... ok
+test_positive_timeout_without_report (test_benchmark_runner.RunnerTests) ... ok
+test_real_search_mission_success_and_logging (test_benchmark_runner.RunnerTests) ... C:\Projects\Robotic\test version\test_benchmark_runner.py:77: ResourceWarning: unclosed file <_io.TextIOWrapper name='C:\\Projects\\Robotic\\benchmark-results\\p1b1-test-b7bmjdzt\\run-13\\trajectory.csv' mode='r' encoding='cp1252'>
+  rows=list(csv.DictReader((d/'trajectory.csv').open()))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_stop_exact_deadline_and_timeout_with_correct_report (test_benchmark_runner.RunnerTests) ... ok
+test_stop_not_verified_and_report_retained_on_crash (test_benchmark_runner.RunnerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 19.845s
+
+OK

@@ -1,0 +1,22 @@
+test_bounds_and_invalid_state (test_benchmark_runner.RunnerTests) ... ok
+test_camera_offset_real_mission (test_benchmark_runner.RunnerTests) ... ok
+test_cli_rejects_malformed_yaml_as_input_error (test_benchmark_runner.RunnerTests) ... ok
+test_collision_wins_over_correct_report_and_stop (test_benchmark_runner.RunnerTests) ... ok
+test_coverage_offset_and_unknown_occlusion_no_gt (test_benchmark_runner.RunnerTests) ... ok
+test_empty_episode_timeout_not_success (test_benchmark_runner.RunnerTests) ... ok
+test_gate_rejects_tampering_and_nonpass (test_benchmark_runner.RunnerTests) ... ok
+test_invalid_and_false_reports (test_benchmark_runner.RunnerTests) ... ok
+test_matching_threshold_and_invalid_observation_error (test_benchmark_runner.RunnerTests) ... ok
+test_negative_false_alarm (test_benchmark_runner.RunnerTests) ... ok
+test_planner_exception_timeout_and_policy_hang_reaped (test_benchmark_runner.RunnerTests) ... ok
+test_positive_timeout_without_report (test_benchmark_runner.RunnerTests) ... ok
+test_real_search_mission_success_and_logging (test_benchmark_runner.RunnerTests) ... ok
+test_report_without_approach_and_stop_counter_reset (test_benchmark_runner.RunnerTests) ... ok
+test_stop_exact_deadline_and_timeout_with_correct_report (test_benchmark_runner.RunnerTests) ... ok
+test_stop_not_verified_and_report_retained_on_crash (test_benchmark_runner.RunnerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 26.387s
+
+OK
+{"error": "malformed test YAML"}
