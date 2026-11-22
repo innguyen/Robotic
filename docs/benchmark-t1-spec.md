@@ -345,6 +345,10 @@ Manifest `t1-paired-2` khóa full fixture/shared/config/budget/sensing/dynamics/
 
 Thiếu cặp hoặc sai identity phải từ chối. Paired table chỉ dùng attempt 1; all-attempts giữ cả primary/replay và mọi retry/error. Reservation bị ngắt trước attempt manifest chỉ được quy về batch identity đã kiểm chứng khi không có execution evidence; số đo vật lý là UNVERIFIED/null, không tạo manifest giả. Replay của reservation chưa hề chạy policy là UNVERIFIED. Replay bình thường kiểm riêng mỗi policy; seed lặp hoặc bản target/start mới trong cùng layout không làm tăng số môi trường/family độc lập. Dev pilot chỉ kiểm tra pipeline; điều kiện khóa test được ghi tại [audit P2.2](benchmark-p22-audit.md).
 
+### 9.4 Host-liveness sidecar cho final re-acceptance
+
+Wrapper opt-in `stabilized-paired-1` thêm `host-liveness-1` ngoài paired schema 2: khóa source/profile/paired manifest và lấy mẫu clock host, CPU worker, tick/event progress. Sidecar không vào policy, metric reducer hoặc semantic replay; scoring/budget/watchdog t1-0.2 không đổi. Gap chỉ ảnh hưởng cổng xác minh môi trường, không tự sửa end_reason. Không có planner phase heartbeat riêng thì phải ghi UNVERIFIED, không kết luận starvation/deadlock từ CPU thấp. Quy tắc primary/retry giữ nguyên; nghiệm thu phải dùng paired run mới đủ 16 primary + 16 replay attempt 1. Xem [final audit](benchmark-p22-final-audit.md).
+
 ## 10 CLI dự kiến và resume
 
 CLI hiện có dùng `benchmark_batch.py --catalog ... --bundle ... --output ... --policy b0-fixed-order-v2|b1-gain-distance-focus-v1`; bundle được tạo trước bằng `python -B -m benchmark --catalog ... --output ...` từ `test version/`. Xem [README](../test%20version/benchmark/README.md) cho lệnh đầy đủ. Tên CLI dự kiến bên dưới chưa phải alias hiện có. Thêm selector không thay scoring protocol t1-0.2; policy identity/config/source được khóa riêng trong manifest và được kiểm tra khi resume/replay.

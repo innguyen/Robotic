@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "branch": "feat/benchmark",
+  "base_sha": "ef10650d9c279c9d9a4208ebd4d5d70aa7391a66",
+  "tracked_changes": [
+    ".gitattributes",
+    "docs/benchmark-t1-spec.md",
+    "test version/benchmark/README.md"
+  ],
+  "production_changes": [],
+  "old_fail_archive_changes": [],
+  "new_modules": [
+    "host_liveness.py",
+    "stabilization.py"
+  ],
+  "old_policy_metric_inputs_verified_by": "pilot/final-independent-check.json"
+}

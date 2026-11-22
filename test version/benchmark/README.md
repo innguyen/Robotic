@@ -1,5 +1,9 @@
 # T1 offline — P2.2 metrics và paired dev pilot
 
+Final re-acceptance: [audit](../../docs/benchmark-p22-final-audit.md), [P2.3 plan](../../docs/benchmark-p23-plan.md). Wrapper opt-in `benchmark.stabilization` version `stabilized-paired-1` chạy trên paired schema 2 mà không sửa runner/policy/scoring. `host-liveness-1` ghi sidecar clock/CPU/progress, không vào semantic events và không nới watchdog. Không tự đổi thiết lập nguồn điện; giữ máy hoạt động liên tục trong phiên chạy.
+
+Sau khi benchmark tests và production regression đã kết thúc, tạo output mới bằng `docs/checks/p22-pilot.py prepare --output docs/p22-final-audit-logs/pilot`. Từ `test version/`, chạy `python -B -m benchmark.stabilization init --output docs/p22-final-audit-logs/pilot/paired`, rồi `run` cho từng policy/replica/episode với `--policy`, `--replica`, `--episode-id`. Chạy tuần tự đủ 32 slot; wrapper từ chối slot đã có và không hỗ trợ thay attempt 1 bằng retry. Kết thúc bằng `audit` và checker `node docs/checks/p22-final-evidence-check.cjs` từ gốc repo; xem audit để lấy lệnh/bằng chứng môi trường và Kernel-Power. Các hồ sơ FAIL trước vẫn nguyên trạng.
+
 Protocol: `t1-0.2`, verifier `p1a2-1`. Đã có validator, evaluator, single runner, batch/resume và hai selector chính thức có version. Chưa có đánh giá test hoặc bảng so sánh B0/B1. Không khởi động ROS, camera, chassis hay launcher. Xem [đặc tả](../../docs/benchmark-t1-spec.md), [P1b.2](../../docs/benchmark-p1b2-audit.md) và [P2.1 audit](../../docs/benchmark-p21-audit.md) để biết phạm vi thực kiểm.
 
 Metrics và paired pilot hiện hành được ghi tại [P2.2 audit](../../docs/benchmark-p22-audit.md). Các bảng dev dùng kiểm tra pipeline, không phải kết luận policy nào tốt hơn.

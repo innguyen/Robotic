@@ -1,0 +1,14 @@
+test_actual_clock_and_cpu_read_without_power_mutation (test_benchmark_host_liveness.HostDiagnosticTests) ... ok
+test_continuous_host_and_simulated_progress (test_benchmark_host_liveness.HostDiagnosticTests) ... ok
+test_cpu_busy_vs_quiet_are_observations_not_causal_claims (test_benchmark_host_liveness.HostDiagnosticTests) ... ok
+test_missing_clocks_errors_and_bad_sequences_never_pass (test_benchmark_host_liveness.HostDiagnosticTests) ... ok
+test_observer_gap_without_suspend_is_not_called_suspend (test_benchmark_host_liveness.HostDiagnosticTests) ... ok
+test_suspend_advances_biased_clock_but_not_active (test_benchmark_host_liveness.HostDiagnosticTests) ... ok
+test_wall_clock_adjustment_does_not_extend_watchdog_or_imply_suspend (test_benchmark_host_liveness.HostDiagnosticTests) ... ok
+test_admission_and_rehashed_host_profile_change_fail_closed (test_benchmark_host_liveness.HostPairedIntegrationTests) ... ok
+test_real_sidecar_semantics_match_uninstrumented_and_tamper_rejected (test_benchmark_host_liveness.HostPairedIntegrationTests) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 10.466s
+
+OK

@@ -1,0 +1,18 @@
+{
+  "version": "kernel-power-window-1",
+  "query_status": "PASS",
+  "query_error": null,
+  "provider": "Microsoft-Windows-Kernel-Power",
+  "event_ids": [
+    42,
+    107,
+    506,
+    507
+  ],
+  "window_start_utc_s": 1795350511.188,
+  "window_end_utc_s": 1795352703.789,
+  "sample_files": 32,
+  "events": [],
+  "power_settings_changed": false,
+  "limitation": "Retrospective event-log query, bounded host sampling; not a complete scheduler trace."
+}

@@ -1,0 +1,84 @@
+{
+  "scope": "historical_failure_analysis_read_only",
+  "trajectory_intervals": 384,
+  "last_trajectory_row": "383,38.400000000000006,2.280143037185047,0.0899807602543311,-0.4001479816367022,0.18,0.07615363497171734,0.0,0.18,0.07615363497171734,0.0,0.18,0.07615363497171734,0.0,PASS,SEARCHING",
+  "sense_events": 385,
+  "completed_planner_barrier_events": 20,
+  "last_completed_barrier": {
+    "schema_version": "t1-0.2",
+    "run_id": "batch-2a54440afa20",
+    "episode_id": "sample-s5",
+    "attempt_id": 1,
+    "event_seq": 425,
+    "event_type": "PLANNER_BARRIER",
+    "step_index": 379,
+    "sim_time_s": 37.9,
+    "source": "runner",
+    "payload": {
+      "application": "next policy tick"
+    }
+  },
+  "last_events": [
+    {
+      "seq": 426,
+      "step": 380,
+      "t": 38,
+      "type": "SENSE",
+      "source": "runner"
+    },
+    {
+      "seq": 427,
+      "step": 381,
+      "t": 38.1,
+      "type": "SENSE",
+      "source": "runner"
+    },
+    {
+      "seq": 428,
+      "step": 382,
+      "t": 38.2,
+      "type": "SENSE",
+      "source": "runner"
+    },
+    {
+      "seq": 429,
+      "step": 383,
+      "t": 38.300000000000004,
+      "type": "SENSE",
+      "source": "runner"
+    },
+    {
+      "seq": 430,
+      "step": 384,
+      "t": 38.400000000000006,
+      "type": "SENSE",
+      "source": "runner"
+    },
+    {
+      "seq": 431,
+      "step": 384,
+      "t": 38.400000000000006,
+      "type": "ERROR",
+      "source": "supervisor"
+    },
+    {
+      "seq": 432,
+      "step": 384,
+      "t": 38.400000000000006,
+      "type": "RUNNER_STATE",
+      "source": "supervisor"
+    },
+    {
+      "seq": 433,
+      "step": 384,
+      "t": 38.400000000000006,
+      "type": "EPISODE_END",
+      "source": "supervisor"
+    }
+  ],
+  "worker_pids": {
+    "policy_pid": 13272,
+    "simulator_pid": 12528
+  },
+  "heartbeat_limit": "No independent policy/planner phase or CPU heartbeat in this historical attempt; last SENSE cannot locate a blocking operation."
+}

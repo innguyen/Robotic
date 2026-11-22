@@ -1,0 +1,7 @@
+{
+  "docker_exit": 1,
+  "docker_output": "\nfailed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.",
+  "wsl_exit": 0,
+  "wsl_output": "  NAME              STATE           VERSION\n\n* docker-desktop    Stopped         2\n\n",
+  "compatibility_tests": "UNVERIFIED unless active Linux runtime is available; no service started by harness"
+}
