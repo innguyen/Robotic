@@ -1,0 +1,47 @@
+{
+  "host": "Windows-10-10.0.26300-SP0",
+  "python": "3.10.11 (tags/v3.10.11:7d4cc5a, Apr  5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]",
+  "dependencies": {
+    "numpy": "2.2.6",
+    "PyYAML": "6.0.3"
+  },
+  "linux_test_status": "UNVERIFIED",
+  "probes": [
+    {
+      "command": [
+        "wsl",
+        "--list",
+        "--quiet"
+      ],
+      "exit_code": 0,
+      "stdout": "docker-desktop\r\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "docker-desktop",
+        "--",
+        "sh",
+        "-lc",
+        "uname -s; command -v python3 || command -v python"
+      ],
+      "exit_code": 127,
+      "stdout": "Linux\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "image",
+        "ls",
+        "--format",
+        "{{.Repository}}:{{.Tag}}"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "failed to connect to the docker API at npipe:////./pipe/dockerDesktopLinuxEngine; check if the path is correct and if the daemon is running: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.\n"
+    }
+  ]
+}

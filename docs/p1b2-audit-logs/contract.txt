@@ -1,0 +1,32 @@
+✔ known canonical bytes and SHA-256 vector (3.3886ms)
+✔ declared example hash is computed, not trusted (1.41ms)
+✔ obstacle ordering and names do not affect geometry (0.3493ms)
+✔ union ignores overlap, duplicates and rectangle partitioning (0.2495ms)
+✔ both-axis partitions and touching Y intervals preserve an exact union (0.6753ms)
+✔ empty slabs do not merge separated boxes (0.2241ms)
+✔ translation is normalized (0.2531ms)
+✔ start, person, seed and labels are not static layout (0.1629ms)
+✔ bounds and obstacle changes affect the hash (0.1957ms)
+✔ obstacles outside mission bounds are retained (0.5944ms)
+✔ invalid geometry precision, finite values and extents are rejected (1.001ms)
+✔ one layout can have multiple starts in one split (0.2581ms)
+✔ wrong declared hash is rejected (0.6963ms)
+✔ same environment ID cannot change geometry (0.2492ms)
+✔ renaming identical geometry cannot bypass identity (0.2098ms)
+✔ same environment cannot cross dev and test (0.1806ms)
+✔ related layouts with different hashes cannot cross dev and test (0.2159ms)
+✔ environment family cannot change; malformed registry IDs/splits are rejected (0.2479ms)
+✔ JSON examples parse and protocol references agree (0.2825ms)
+✔ example config paths resolve from repository root, independently of cwd (0.5541ms)
+✔ scenario table documents all five predicates and counterexamples (static only) (0.4078ms)
+✔ B0 feasibility and independent trajectories are explicit (static only) (0.2133ms)
+✔ literature distinguishes comparison from ablation and sources episode count (static only) (0.2024ms)
+✔ local Markdown links and anchors exist in report, spec, plan and audit (18.113ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 149.6067

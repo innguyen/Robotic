@@ -1,0 +1,35 @@
+test_batch_multiple_primary_results_and_idempotent_resume (test_benchmark_batch.BatchTests) ... ERROR
+test_full_corpus_validated_before_filter_and_resume (test_benchmark_batch.BatchTests) ... ok
+test_interrupt_and_resume_before_first_execution (test_benchmark_batch.BatchTests) ... ok
+test_journal_truncated_tail_and_corruption (test_benchmark_batch.BatchTests) ... ok
+test_kill_after_atomic_result_adopts_without_overwrite (test_benchmark_batch.BatchTests) ... ok
+test_os_lock_prevents_concurrent_supervisors (test_benchmark_batch.BatchTests) ... ok
+test_real_supervisor_kill_lifeline_and_resume (test_benchmark_batch.BatchTests) ... ok
+test_report_matching_survives_recovery_without_result (test_benchmark_batch.BatchTests) ... ok
+test_resume_rejects_policy_or_completed_file_changes (test_benchmark_batch.BatchTests) ... ok
+test_retry_is_new_attempt_and_keeps_primary (test_benchmark_batch.BatchTests) ... ok
+test_strict_replay_and_deliberate_divergence (test_benchmark_batch.BatchTests) ... ok
+test_vectorized_coverage_matches_scalar_definition (test_benchmark_batch.BatchTests) ... ok
+test_worker_error_does_not_stop_next_episode (test_benchmark_batch.BatchTests) ... ok
+test_zero_denominators_and_mission_timeout_not_retried (test_benchmark_batch.BatchTests) ... ok
+
+======================================================================
+ERROR: test_batch_multiple_primary_results_and_idempotent_resume (test_benchmark_batch.BatchTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Projects\Robotic\test version\test_benchmark_batch.py", line 46, in test_batch_multiple_primary_results_and_idempotent_resume
+    out=self.folder();s=self.run_batch(out,episode_ids=['positive','empty'])
+  File "C:\Projects\Robotic\test version\test_benchmark_batch.py", line 43, in run_batch
+    def run_batch(self,out,**kwargs):return run_batch(self.base.catalog,self.base.bundle,out,**kwargs)
+  File "C:\Projects\Robotic\test version\benchmark\batch.py", line 229, in run_batch
+    summary=project(destination,journal,prepared,selected)
+  File "C:\Projects\Robotic\test version\benchmark\batch.py", line 138, in project
+    atomic(directory/'trajectory.csv',csv_bytes(trajectories,trajectory_columns))
+  File "C:\Projects\Robotic\test version\benchmark\journal.py", line 16, in atomic
+    os.replace(temporary,path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Projects\\Robotic\\benchmark-results\\p1b1-test-bnig9l8a\\batch-1\\trajectory.csv.tmp-201b9d9dddbb46a3a5b87fba025a7d87' -> 'C:\\Projects\\Robotic\\benchmark-results\\p1b1-test-bnig9l8a\\batch-1\\trajectory.csv'
+
+----------------------------------------------------------------------
+Ran 14 tests in 20.304s
+
+FAILED (errors=1)

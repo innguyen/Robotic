@@ -1,6 +1,6 @@
-# T1 offline — P1b.1
+# T1 offline — P1b.2
 
-Protocol: `t1-0.2`, verifier `p1a2-1`. Đã có validator, evaluator và single-episode headless runner P1b.1; chưa có baseline B0/B1 chính thức hoặc bảng so sánh. Không khởi động ROS, camera, chassis hay launcher. Xem [đặc tả](../../docs/benchmark-t1-spec.md), [P1a.1](../../docs/benchmark-p1a1-audit.md), [P1a.2](../../docs/benchmark-p1a2-audit.md) và [nghiệm thu P1b.1](../../docs/benchmark-p1b1-audit.md).
+Protocol: `t1-0.2`, verifier `p1a2-1`. Đã có validator, evaluator và single-episode headless runner P1b.1 và batch/journal/resume P1b.2; chưa có baseline B0/B1 chính thức hoặc bảng so sánh. Không khởi động ROS, camera, chassis hay launcher. Xem [đặc tả](../../docs/benchmark-t1-spec.md), [P1a.1](../../docs/benchmark-p1a1-audit.md), [P1a.2](../../docs/benchmark-p1a2-audit.md) và [nghiệm thu P1b.1](../../docs/benchmark-p1b1-audit.md).
 
 Python 3.10+ và PyYAML cho validator; runner cần thêm NumPy và Git để ghi provenance. Môi trường đã kiểm tra dùng Python 3.10.11, PyYAML 6.0.3, NumPy 2.2.6. Runner không cần OpenCV hoặc ROS. Các regression production vẫn dùng dependencies cũ. Golden tests chạy chéo cần Node.js.
 
@@ -42,7 +42,7 @@ Phạm vi chứng nhận hiện tại (đều có đối chứng):
 - Mỗi pha dùng lệnh không vượt một phần tư speed cap; lịch witness là chứng minh tồn tại theo động học Euler, **không** phải rollout hay thời gian hoàn thành B0/B1. Không mô phỏng động lực học, acceleration controller hoặc monitor trên witness. Giới hạn 100.000 tick/witness và budget; vượt khả năng chứng minh thì UNVERIFIED.
 - Các proof âm trên tọa độ rectangle dùng số hữu tỷ; trig, khoảng cách và footprint vẫn binary64 với guard bảo thủ, chưa phải interval arithmetic toàn bộ. Không khẳng định an toàn robot thật. Family gần giống cần provenance/manual review; catalog mẫu chứa dev và test để kiểm tra leakage, không phải đánh giá held-out.
 
-Bundle gồm `manifest.json` và mỗi episode có `resolved_episode.json`, `evidence.json`, `fixture_validation.json`. File certificate chứa lịch witness theo tick để tái kiểm tra. Staging không phải output hợp lệ. Lỗi Python trước rename được cleanup; nếu process bị kill có thể để lại staging, nhưng không công bố bundle dở. Chưa chứng minh durability khi mất điện, chưa có journal/resume của runner. Giả định output trong workspace do một người dùng kiểm soát; không bảo vệ race symlink từ tiến trình đối địch.
+Bundle gồm `manifest.json` và mỗi episode có `resolved_episode.json`, `evidence.json`, `fixture_validation.json`. File certificate chứa lịch witness theo tick để tái kiểm tra. Staging không phải output hợp lệ. Lỗi Python trước rename được cleanup; nếu process bị kill có thể để lại staging, nhưng không công bố bundle dở. Chưa chứng minh durability khi mất điện; journal/resume của runner được mô tả ở phần P1b.2 bên dưới. Giả định output trong workspace do một người dùng kiểm soát; không bảo vệ race symlink từ tiến trình đối địch.
 
 P1b.1 dùng `spawn` tách policy khỏi simulator/evaluator. Policy chỉ nhận config công khai và SensorFrame bất biến, không nhận GT/fixture/witness/certificate. Đây là ranh giới dữ liệu cho code hợp tác, chưa phải filesystem/security sandbox chống policy chủ động đọc dữ liệu trên ổ đĩa.
 
@@ -65,7 +65,7 @@ Runner tạo `run_manifest.json`, `events.jsonl`, `trajectory.csv`, `result.json
 
 Supervisor sở hữu hai process riêng (simulator và policy), chỉ wall watchdog dùng monotonic time. Clock nhiệm vụ là tick×0,1 s. Planner future được chờ có timeout, kết quả chỉ áp dụng ở lần core kiểm tra tiếp theo; cleanup bị treo vẫn được terminate/kill và join bằng supervisor. Sau report đầu, ngừng gọi policy, yêu cầu 0 qua monitor, tiếp tục tích phân/geometry/stop check, không sửa pose để chấm thành công.
 
-Chưa có batch/resume, attempts.csv/episodes.csv, full journal hoặc summary thống kê. Parent flush log trong khi chạy và ghi result bằng temp→replace; supervisor bị kill/mất điện có thể để log dở. Các trường không biết trên lỗi được để null/trajectory_complete=false. Chưa kiểm tra replay toàn suite hoặc nghiệm thu positive controls cho B0/B1.
+Single-episode API giữ định dạng P1b.1. Batch/journal/resume được bổ sung trong P1b.2 bên dưới. Các trường không biết khi phục hồi giữ null/trajectory_complete=false; chưa nghiệm thu positive controls B0/B1.
 
 Acceptance tests có thể lưu từng run để audit (chọn đường dẫn export mới):
 
@@ -75,3 +75,44 @@ python -B -m unittest discover -s "test version" -p test_benchmark_runner.py -v
 ```
 
 Lệnh test trên chạy từ gốc repository; bỏ biến môi trường để dùng temporary output và cleanup. Không đưa các log/GT artifact này vào policy.
+
+## Batch, journal và resume — P1b.2
+
+Từ `test version/`, tạo bundle theo source hiện hành, rồi chạy batch tuần tự:
+
+```powershell
+python -B -m benchmark --catalog "test version/benchmark/fixtures/catalog.json" --output "benchmark-results/p1b2-certificates"
+python -B benchmark_batch.py --catalog "test version/benchmark/fixtures/catalog.json" --bundle "benchmark-results/p1b2-certificates" --output "benchmark-results/p1b2-run" --episode-id sample-s2 --episode-id sample-s3 --episode-id sample-s4
+```
+
+Chạy lại cùng lệnh, thêm `--resume` để tiếp tục. Giữ nguyên selection, policy, config, corpus và runtime. `--retry-errors` chỉ đi với resume và chỉ tạo attempt mới cho lỗi thực thi; không retry TIMEOUT/COLLISION/false report của nhiệm vụ. Attempt 1 luôn là primary. Có thể lọc `--seed N` (không đổi seed), `--max-episodes N` hoặc nhiều `--episode-id`; mọi fixture trong catalog vẫn phải được kiểm tra và PASS **trước** lọc. Không có policy B0/B1 chính thức.
+
+Manifest khóa fingerprint toàn corpus/config/source/evidence, runtime, selection và policies. Chỉ một supervisor giữ OS lock; process chết sẽ giải phóng lock tự động. Journal hash-chain fsync START trước khi chạy; FINISH chỉ ghi sau atomic result. Khi resume:
+
+- FINISH đã chốt: kiểm tra hash và giữ nguyên mọi file attempt.
+- Có atomic result nhưng thiếu FINISH: nhận result sau kiểm tra identity, không chạy lại/ghi đè.
+- Chưa có result: chốt CRASH/INTERRUPTED từ log nhận được, giữ report đúng trước sự cố, mission_success=false. Không tự động chạy lại episode đó.
+- Tail journal bị cắt: lưu byte hỏng riêng và truncate đúng tail; hỏng record hoàn chỉnh/hash-chain thì từ chối.
+
+Policy/simulator có lifeline riêng: parent mất thì watcher kết thúc worker kể cả planner thread bị treo. PID chỉ dùng để xác minh worker cũ đã chết, không kill PID tùy ý trên resume. Đây vẫn không phải sandbox chống code đối địch đọc file.
+
+Batch tạo `attempts.csv` (mọi attempt), `episodes.csv` (primary), `events.jsonl`, `trajectory.csv`, `summary.json`, `summary.md`. Các bảng là projection từ journal/result, tạo lại atomically, không append trùng khi resume. Journal là nguồn tiến độ chính trong khi episode còn chạy; CSV/summary cập nhật tại checkpoint hoàn tất/phục hồi. Recovery giữ raw log; global events đánh dấu worker end chưa commit và thêm recovery error/terminal riêng.
+
+`summary.json` có mẫu số và các công thức t1-0.2, gắn `purpose=runner_acceptance_not_research`. Giá trị đang chạy/chưa biết hoặc mẫu số 0 là null. `summary.md` chỉ trình bày số đếm và end reasons. Các số diagnostic này không phải success rate nghiên cứu. SPL/GT coverage chưa hỗ trợ, không thay bằng số giả.
+
+Replay dùng trajectory, toàn semantic events và result/end_reason; chỉ bỏ run_id, attempt_id, wall-time và trạng thái thu hồi process. Ví dụ từ `test version/`:
+
+```powershell
+python -B -m benchmark.replay "../benchmark-results/run-a/attempts/sample-s2/attempt-0001" "../benchmark-results/run-b/attempts/sample-s2/attempt-0001"
+```
+
+Khác CLI suite/output, đường replay đọc theo cwd. Không dùng tolerance để che khác biệt trajectory. Xem [nghiệm thu P1b.2](../../docs/benchmark-p1b2-audit.md) để biết phạm vi Windows/Linux thực chạy.
+
+Test batch có thể xuất hồ sơ crash/resume (từ gốc repo, chọn đường export mới):
+
+```powershell
+$env:T1_BATCH_EXPORT = 'docs/local-batch-acceptance'
+python -B -m unittest discover -s "test version" -p test_benchmark_batch.py -v
+```
+
+Giới hạn: chưa chứng minh durability khi mất điện/phần cứng lưu trữ lỗi; không sửa code/config lúc run hoạt động. Projection lỗi IO sẽ dừng batch, giữ reservation để resume sau khi xử lý IO. Source/runtime thay đổi làm resume bị từ chối; không chỉnh manifest để bỏ kiểm tra. Chưa triển khai so sánh baseline hay thống kê nghiên cứu.

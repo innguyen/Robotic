@@ -5,6 +5,7 @@ import csv
 import json
 import math
 import multiprocessing as mp
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -24,7 +25,7 @@ from .evaluator import evaluate_report,finite,safety,completed_report_reason
 from .witness import euler
 
 
-def verified_input(catalog_path,bundle_path,episode_id):
+def verified_corpus(catalog_path,bundle_path,require_all=False):
     """Full corpus first; do not trust a stored PASS or a self-consistent manifest."""
     catalog,suites,cfgs,witnesses=load_catalog(catalog_path)
     expected,_=build_bundle(catalog,suites,cfgs,witnesses)
@@ -33,13 +34,22 @@ def verified_input(catalog_path,bundle_path,episode_id):
     if any(p.is_symlink() for p in directory.rglob('*')):raise ValueError('bundle symlink forbidden')
     actual={p.relative_to(directory).as_posix():p.read_bytes() for p in directory.rglob('*') if p.is_file()}
     if actual!=expected:raise ValueError('stale/tampered/incomplete certificate bundle; regenerate validation first')
-    found=[(e,s['shared'],cfg) for s,cfg in zip(suites,cfgs) for e in s['episodes'] if e['episode_id']==episode_id]
-    if len(found)!=1:raise ValueError('unknown episode ID')
-    cert=json.loads(expected[episode_id+'/fixture_validation.json'])
-    if cert['status']!='PASS':raise ValueError('episode is not certified PASS')
-    # Evidence/certificate NEVER cross to either simulator or policy arguments.
-    return (*copy.deepcopy(found[0]),dict(fixture_hash=cert['fixture_hash'],evidence_hash=cert['evidence_hash'],
-                                        verifier_hash=cert['verifier_hash'],bundle_hash=digest(expected['manifest.json'])))
+    found={}
+    for suite,cfg in zip(suites,cfgs):
+        for e in suite['episodes']:
+            cert=json.loads(expected[e['episode_id']+'/fixture_validation.json'])
+            if cert['status']!='PASS':
+                if require_all:raise ValueError('full corpus is not PASS: '+e['episode_id'])
+                continue
+            found[e['episode_id']]=(*copy.deepcopy((e,suite['shared'],cfg)),
+                dict(fixture_hash=cert['fixture_hash'],evidence_hash=cert['evidence_hash'],verifier_hash=cert['verifier_hash'],bundle_hash=digest(expected['manifest.json'])))
+    return found
+
+
+def verified_input(catalog_path,bundle_path,episode_id):
+    found=verified_corpus(catalog_path,bundle_path)
+    if episode_id not in found:raise ValueError('unknown episode or not certified PASS')
+    return found[episode_id]
 
 
 def _clean(value):
@@ -50,7 +60,9 @@ def _clean(value):
     return str(type(value).__name__)
 
 
-def simulate(connection,policy,e,s,cfg,fault):
+def simulate(connection,policy,e,s,cfg,fault,lifeline=None):
+    from .lifecycle import watch_parent
+    watch_parent(lifeline)
     from collision_monitor_ros1 import Config,Monitor,scan_points
     cc=Config(**{k:cfg['monitor'][k] for k in Config.DEFAULTS})
     monitor=Monitor(cc);boxes=world_boxes(e);oracle=Oracle(s['camera'],s['dt_s'])
@@ -157,16 +169,22 @@ def simulate(connection,policy,e,s,cfg,fault):
 
 
 def run_single(catalog,bundle,episode_id,output,policy_id='search-mission-smoke',fault=None):
+    prepared=verified_input(catalog,bundle,episode_id)
+    return _execute_single(prepared,output,policy_id,fault)
+
+
+def _execute_single(prepared,output,policy_id='search-mission-smoke',fault=None,run_id=None,attempt_id=1,started=None,checkpoint=None):
+    """Internal evaluator-side API; only a freshly verified corpus may prepare it."""
     if policy_id not in POLICIES:raise ValueError('unsupported policy ID')
     if policy_id=='test-crash-after-report' and fault is None:fault='crash-after-report'
     if fault not in (None,'actuator-collision','actuator-bounds','actuator-drift','actuator-pulse','crash-after-report'):raise ValueError('unknown test-only fault')
-    e,s,cfg,binding=verified_input(catalog,bundle,episode_id)
+    e,s,cfg,binding=copy.deepcopy(prepared);episode_id=e['episode_id']
     destination=output_path(output)
     if destination.exists():raise ValueError('output already exists; P1b.1 has no resume')
     destination.mkdir(parents=True,exist_ok=False)
     public={k:copy.deepcopy(cfg[k]) for k in ('navigation','monitor','search')}
     public.update(bounds=tuple(e['bounds_m']),camera=copy.deepcopy(s['camera']),dt_s=s['dt_s'],standoff=s['person_standoff_m'],planner_wall_timeout_s=s['planner_wall_timeout_s'])
-    run_id='single-'+uuid.uuid4().hex[:12]
+    run_id=run_id or 'single-'+uuid.uuid4().hex[:12]
     git_sha=subprocess.run(['git','rev-parse','HEAD'],cwd=ROOT,text=True,capture_output=True).stdout.strip()
     dirty=bool(subprocess.run(['git','status','--porcelain'],cwd=ROOT,text=True,capture_output=True).stdout)
     manifest=dict(stage='P1b.1',protocol='t1-0.2',run_id=run_id,episode_id=episode_id,policy_id=policy_id,
@@ -176,8 +194,9 @@ def run_single(catalog,bundle,episode_id,output,policy_id='search-mission-smoke'
                   lidar_model=dict(beams=720,range_min_m=.05,range_max_m=6.,angle_min_rad=-math.pi,angle_increment_rad=2*math.pi/720),**binding)
     (destination/'run_manifest.json').write_bytes(encode(manifest))
     ctx=mp.get_context('spawn');p_end,s_end=ctx.Pipe();rx,tx=ctx.Pipe(duplex=False)
-    policy=ctx.Process(target=policy_worker,args=(p_end,public,policy_id),name='t1-policy')
-    worker=ctx.Process(target=simulate,args=(tx,s_end,e,s,cfg,fault),name='t1-simulator')
+    policy_life,policy_owner=ctx.Pipe(duplex=False);sim_life,sim_owner=ctx.Pipe(duplex=False)
+    policy=ctx.Process(target=policy_worker,args=(p_end,public,policy_id,policy_life),name='t1-policy')
+    worker=ctx.Process(target=simulate,args=(tx,s_end,e,s,cfg,fault,sim_life),name='t1-simulator')
     result=None;sequence=0;last_time=0.;last_step=0;report_correct=False;last_eval={};last_report=None;progress={}
     events=(destination/'events.jsonl').open('w',encoding='utf8')
     trajectory=(destination/'trajectory.csv').open('w',encoding='utf8',newline='');writer=None
@@ -188,11 +207,14 @@ def run_single(catalog,bundle,episode_id,output,policy_id='search-mission-smoke'
         if event['event_type']=='TARGET_REPORT':last_report=event['payload']['report']
         timestamps={'RAW_DETECTION':'first_raw_s','CONFIRMED_DETECTION':'first_confirmed_s','TARGET_REPORT':'report_submitted_s','STOP_VERIFIED':'stop_verified_s'}
         if event['event_type'] in timestamps:progress.setdefault(timestamps[event['event_type']],event['sim_time_s'])
-        record=dict(schema_version='t1-0.2',run_id=run_id,episode_id=episode_id,attempt_id=1,event_seq=sequence,**event)
+        record=dict(schema_version='t1-0.2',run_id=run_id,episode_id=episode_id,attempt_id=attempt_id,event_seq=sequence,**event)
         events.write(json.dumps(_clean(record),allow_nan=False)+'\n');events.flush()
+        if event['event_type'] in ('TARGET_REPORT','REPORT_EVALUATED','EPISODE_END'):os.fsync(events.fileno())
+        if checkpoint is not None and event['event_type']=='SENSE':checkpoint()
     start=time.monotonic()
     try:
-        policy.start();worker.start();p_end.close();s_end.close();tx.close()
+        policy.start();worker.start();p_end.close();s_end.close();tx.close();policy_life.close();sim_life.close()
+        if started is not None:started(dict(policy_pid=policy.pid,simulator_pid=worker.pid))
         while result is None:
             if time.monotonic()-start>s['episode_wall_timeout_s']:
                 result=dict(end_reason='WALL_TIMEOUT');break
@@ -214,6 +236,7 @@ def run_single(catalog,bundle,episode_id,output,policy_id='search-mission-smoke'
                 if process.is_alive():process.terminate();process.join(timeout=2.)
                 if process.is_alive():process.kill();process.join(timeout=2.)
         rx.close()
+        policy_owner.close();sim_owner.close()
         if result is None:result=dict(end_reason='CRASH')
         if 'trajectory_complete' not in result:
             result.update(report_correct=report_correct,mission_success=False,report=last_report,
@@ -221,13 +244,14 @@ def run_single(catalog,bundle,episode_id,output,policy_id='search-mission-smoke'
             emit(dict(event_type='ERROR',step_index=last_step,sim_time_s=last_time,source='supervisor',payload={'end_reason':result['end_reason']}))
             emit(dict(event_type='RUNNER_STATE',step_index=last_step,sim_time_s=last_time,source='supervisor',payload={'state':'FINISHED'}))
             emit(dict(event_type='EPISODE_END',step_index=last_step,sim_time_s=last_time,source='supervisor',payload={'end_reason':result['end_reason']}))
-        result.update(stage='P1b.1',episode_id=episode_id,run_id=run_id,elapsed_wall_s=time.monotonic()-start,workers_reaped=not worker.is_alive() and not policy.is_alive())
+        result.update(stage='P1b.1',episode_id=episode_id,run_id=run_id,attempt_id=attempt_id,elapsed_wall_s=time.monotonic()-start,workers_reaped=not worker.is_alive() and not policy.is_alive())
         result.update(perception_mode='oracle',n_false_reports=int(result.get('report') is not None and not result.get('report_correct',False)))
         for name in ('first_raw_s','first_confirmed_s','report_submitted_s','stop_verified_s'):result.setdefault(name,progress.get(name))
         result.setdefault('search_found',result['first_confirmed_s'] is not None)
         result.setdefault('path_length_m',None)
         events.close();trajectory.close()
-        temporary=destination/'result.json.tmp';temporary.write_bytes(encode(result));temporary.replace(destination/'result.json')
+        from .journal import atomic
+        atomic(destination/'result.json',encode(result))
     return result
 
 

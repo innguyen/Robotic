@@ -1,0 +1,44 @@
+[
+  {
+    "checkpoint": "result",
+    "output": "benchmark-results/p1b1-test-m812qkp7/batch-4",
+    "supervisor_pid": 7700,
+    "supervisor_exitcode": -15,
+    "workers": {
+      "policy_pid": 15784,
+      "simulator_pid": 3360
+    },
+    "workers_alive_after_kill": {
+      "policy_pid": false,
+      "simulator_pid": false
+    }
+  },
+  {
+    "checkpoint": "running",
+    "output": "benchmark-results/p1b1-test-m812qkp7/batch-5",
+    "supervisor_pid": 5964,
+    "supervisor_exitcode": -15,
+    "workers": {
+      "policy_pid": 7024,
+      "simulator_pid": 8364
+    },
+    "workers_alive_after_kill": {
+      "policy_pid": false,
+      "simulator_pid": false
+    }
+  },
+  {
+    "checkpoint": "result",
+    "output": "benchmark-results/p1b1-test-m812qkp7/batch-6",
+    "supervisor_pid": 23724,
+    "supervisor_exitcode": -15,
+    "workers": {
+      "policy_pid": 18840,
+      "simulator_pid": 6844
+    },
+    "workers_alive_after_kill": {
+      "policy_pid": false,
+      "simulator_pid": false
+    }
+  }
+]

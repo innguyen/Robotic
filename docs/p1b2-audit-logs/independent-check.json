@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "batches": {
+    "original": {
+      "attempts": 3,
+      "events": 3647,
+      "journal_head": "aef11d0b69bdfb546d0f0eb86d0d337e5aec59e33264a92e13b3e3f12f39cd53"
+    },
+    "repeated": {
+      "attempts": 3,
+      "events": 3647,
+      "journal_head": "b84e4e00bc57f5fce128c4f26d7f46e6b5bf1e61806a9c7ab73682f69dd122c1"
+    }
+  },
+  "replay_episodes": [
+    "sample-s2",
+    "sample-s3",
+    "sample-s4"
+  ],
+  "kill_checkpoints": 3,
+  "resume": {
+    "status": "PASS",
+    "attempt_files_unchanged": 15,
+    "journal_unchanged": true
+  }
+}

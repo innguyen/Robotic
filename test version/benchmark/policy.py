@@ -61,8 +61,10 @@ class MissionAdapter(SearchMission):
 def _planner_failure():raise RuntimeError('injected planner failure')
 
 
-def policy_worker(connection,public,policy_id):
+def policy_worker(connection,public,policy_id,lifeline=None):
     """Only inputs: public configs, SensorFrame. Parent owns process cleanup."""
+    from .lifecycle import watch_parent
+    watch_parent(lifeline)
     nav=None
     try:
         nc=NavConfig(**{k:public['navigation'][k] for k in NavConfig.DEFAULTS})

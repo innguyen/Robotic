@@ -1,0 +1,40 @@
+test_batch_multiple_primary_results_and_idempotent_resume (test_benchmark_batch.BatchTests) ... ok
+test_full_corpus_validated_before_filter_and_resume (test_benchmark_batch.BatchTests) ... ok
+test_interrupt_and_resume_before_first_execution (test_benchmark_batch.BatchTests) ... ok
+test_journal_truncated_tail_and_corruption (test_benchmark_batch.BatchTests) ... ok
+test_kill_after_atomic_result_adopts_without_overwrite (test_benchmark_batch.BatchTests) ... ok
+test_os_lock_prevents_concurrent_supervisors (test_benchmark_batch.BatchTests) ... ok
+test_real_supervisor_kill_lifeline_and_resume (test_benchmark_batch.BatchTests) ... Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "C:\Users\lemin\AppData\Local\Programs\Python\Python310\lib\multiprocessing\spawn.py", line 116, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "C:\Users\lemin\AppData\Local\Programs\Python\Python310\lib\multiprocessing\spawn.py", line 126, in _main
+    self = reduction.pickle.load(from_parent)
+  File "C:\Users\lemin\AppData\Local\Programs\Python\Python310\lib\multiprocessing\connection.py", line 962, in rebuild_pipe_connection
+    handle = dh.detach()
+  File "C:\Users\lemin\AppData\Local\Programs\Python\Python310\lib\multiprocessing\reduction.py", line 131, in detach
+    return _winapi.DuplicateHandle(
+PermissionError: [WinError 5] Access is denied
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "C:\Users\lemin\AppData\Local\Programs\Python\Python310\lib\multiprocessing\spawn.py", line 116, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "C:\Users\lemin\AppData\Local\Programs\Python\Python310\lib\multiprocessing\spawn.py", line 126, in _main
+    self = reduction.pickle.load(from_parent)
+  File "C:\Users\lemin\AppData\Local\Programs\Python\Python310\lib\multiprocessing\connection.py", line 962, in rebuild_pipe_connection
+    handle = dh.detach()
+  File "C:\Users\lemin\AppData\Local\Programs\Python\Python310\lib\multiprocessing\reduction.py", line 131, in detach
+    return _winapi.DuplicateHandle(
+PermissionError: [WinError 5] Access is denied
+ok
+test_report_matching_survives_recovery_without_result (test_benchmark_batch.BatchTests) ... ok
+test_resume_rejects_policy_or_completed_file_changes (test_benchmark_batch.BatchTests) ... ok
+test_retry_is_new_attempt_and_keeps_primary (test_benchmark_batch.BatchTests) ... ok
+test_strict_replay_and_deliberate_divergence (test_benchmark_batch.BatchTests) ... ok
+test_worker_error_does_not_stop_next_episode (test_benchmark_batch.BatchTests) ... ok
+test_zero_denominators_and_mission_timeout_not_retried (test_benchmark_batch.BatchTests) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 24.489s
+
+OK
