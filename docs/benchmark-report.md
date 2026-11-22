@@ -4,7 +4,7 @@
 
 Robot tìm kiếm con người trong môi trường thiên tai cần được đánh giá từ lúc bắt đầu khám phá đến khi báo cáo được vị trí người cần tìm. Chỉ đo độ chính xác nhận diện hoặc quãng đường di chuyển chưa phản ánh đủ nhiệm vụ này. Báo cáo khảo sát sáu công trình và protocol Habitat ObjectNav; từ đó đề xuất benchmark gồm ba tầng: tìm kiếm và điều hướng trong mô phỏng, nhận diện trên dữ liệu đã ghi, và đánh giá toàn hệ thống. Nội dung tập trung vào cách tổ chức thực nghiệm; chưa có kết quả đánh giá nghiên cứu của nhóm.
 
-Trạng thái triển khai T1 được cập nhật riêng trong [P1b.2 audit](benchmark-p1b2-audit.md) và [P2.1 audit](benchmark-p21-audit.md): đã có harness offline và selector có version, cùng tests/dev controls. Các log nghiệm thu này không phải bảng so sánh B0/B1 hoặc bằng chứng hoạt động trong thiên tai thật. Phần khảo sát và thiết kế phương pháp bên dưới giữ nguyên phạm vi đó.
+Trạng thái triển khai T1 được cập nhật riêng trong [P1b.2](benchmark-p1b2-audit.md), [P2.1](benchmark-p21-audit.md) và [P2.2 audit](benchmark-p22-audit.md): harness offline, selector có version, reducer và paired dev pilot. Các log nghiệm thu này không phải kết luận B1 tốt hơn B0 hoặc bằng chứng hoạt động trong thiên tai thật. Phần khảo sát và thiết kế phương pháp bên dưới giữ nguyên phạm vi đó.
 
 ## 1. Bài toán và mục tiêu đánh giá
 

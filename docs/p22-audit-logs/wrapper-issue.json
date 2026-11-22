@@ -1,0 +1,9 @@
+{
+  "status": "RESOLVED_WRAPPER_ERROR",
+  "affected_commands": ["primary B0 middle group", "primary B1 middle group"],
+  "observed_error": "PowerShell treated *> after a foreach statement as a command; console file redirection failed after all jobs completed.",
+  "completed_slots": ["sample-s3", "sample-s4", "pilot-compact-s5"],
+  "worker_execution_errors": 0,
+  "raw_evidence": "Each slot retains run_manifest, hash-chain journal, events, trajectory and atomic result under pilot-verified/paired/runs/primary.",
+  "treatment": "Do not repeat or overwrite completed slots. Subsequent commands use direct native-command redirection or an invoked script block. Paired audit verifies raw evidence rather than console exit status."
+}

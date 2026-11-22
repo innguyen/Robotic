@@ -1,6 +1,6 @@
 # P2.2 — Metrics, paired runs và dev pilot
 
-P2.1 cung cấp selector có version và log dev controls; [audit P2.1](benchmark-p21-audit.md) quyết định phần nào đã được nghiệm thu. P2.2 chưa triển khai. Giữ scoring protocol `t1-0.2`, không mở test hoặc công bố bảng B0/B1 từ controls này.
+P2.1 cung cấp selector có version và log dev controls; [audit P2.1](benchmark-p21-audit.md) quyết định phần nào đã được nghiệm thu. Implementation, tests và pilot P2.2 được ghi tại [audit P2.2](benchmark-p22-audit.md); các mục dưới đây là yêu cầu, không tự chứng minh đã PASS. Giữ scoring protocol `t1-0.2`, không mở test hoặc suy ra B1 tốt hơn B0 từ dev controls.
 
 ## 1. Khóa cách đo từ raw log
 

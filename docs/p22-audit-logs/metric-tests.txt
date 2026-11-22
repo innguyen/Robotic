@@ -1,0 +1,24 @@
+test_manual_denominators_errors_and_successful_retry (test_benchmark_metrics.AggregateGoldenTests) ... ok
+test_zero_denominators_and_zero_success (test_benchmark_metrics.AggregateGoldenTests) ... ok
+test_bootstrap_crash_missing_trajectory_is_not_zero_distance_evidence (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_correct_report_outside_approach_is_not_mission_success (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_crash_mid_monitor_episode_is_observed_prefix_only (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_crash_retains_received_correct_report_but_not_full_path_or_counters (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_false_alarm_includes_invalid_negative_report (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_geometry_collision_independent_of_monitor_state (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_goal_counts_stalls_and_unresolved_active_goal (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_invalid_sequence_and_monitor_are_rejected (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_monitor_active_transitions_are_one_continuous_episode (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_monitor_idle_limit_stale_and_approach_and_deadline (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_monitor_same_state_entries_and_continuous_episodes (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_nulls_differ_from_zero_in_empty_attempt (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_path_forward_lateral_and_pure_rotation_hand_sum (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_report_and_safe_success_time_zero_and_stop_point_three (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_report_boundary_no_geometry_epsilon_added (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_result_and_euler_disagreement_are_failures_not_regraded (test_benchmark_metrics.MetricGoldenTests) ... ok
+test_stop_event_without_slow_velocity_is_fail (test_benchmark_metrics.MetricGoldenTests) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 1.372s
+
+OK

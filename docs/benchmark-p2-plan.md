@@ -2,7 +2,7 @@
 
 Đầu vào là runner P1b.2 đã nghiệm thu trên Windows và protocol t1-0.2. Đây là kế hoạch tổng thể, không phải kết quả nghiên cứu. Linux và các giới hạn trong [P1b.2](benchmark-p1b2-audit.md) vẫn phải được theo dõi.
 
-Cập nhật triển khai: selector B0/B1, tests và dev controls được ghi tại [P2.1 audit](benchmark-p21-audit.md). Phần còn lại về metrics, paired runs và pilot có [kế hoạch P2.2](benchmark-p22-plan.md). Các mục dưới đây giữ vai trò yêu cầu, không tự chứng minh đã hoàn tất.
+Cập nhật triển khai: selector B0/B1 và controls được ghi tại [P2.1 audit](benchmark-p21-audit.md); metrics/paired pilot có [kế hoạch](benchmark-p22-plan.md) và [audit P2.2](benchmark-p22-audit.md). Các mục dưới đây giữ vai trò yêu cầu, không tự chứng minh đã hoàn tất.
 
 ## 1 Khóa giao diện và điều kiện so sánh
 

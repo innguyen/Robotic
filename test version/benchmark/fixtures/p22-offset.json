@@ -1,0 +1,89 @@
+{
+  "schema_version": "t1-0.2",
+  "suite_id": "p22-offset-dev",
+  "shared": {
+    "navigation_yaml": "test version/navigation_ros1.yaml",
+    "monitor_yaml": "test version/collision_monitor_ros1.yaml",
+    "person_standoff_m": 0.55,
+    "dt_s": 0.1,
+    "camera": {
+      "x_m": 0.12,
+      "y_m": 0.08,
+      "yaw_rad": 0.08,
+      "fov_deg": 58.0,
+      "range_m": 3.5,
+      "confirm_frames": 2,
+      "memory_s": 2.5
+    },
+    "report_tolerance_m": 0.5,
+    "stop_check": {
+      "linear_speed_m_s": 0.01,
+      "angular_speed_rad_s": 0.01,
+      "hold_steps": 3,
+      "timeout_s": 2.0
+    },
+    "b0_spacing_m": 0.75,
+    "scenario_checks": {
+      "s2_max_view_path_m": 0.75
+    },
+    "geometry_epsilon_m": 0.001,
+    "planner_wall_timeout_s": 10.0,
+    "episode_wall_timeout_s": 300.0
+  },
+  "episodes": [
+    {
+      "episode_id": "pilot-offset-s1",
+      "environment_id": "pilot-offset-layout",
+      "layout_family_id": "pilot-offset-family",
+      "layout_hash": "425e2c07b3064582efd4af92465242bcd9c1a3c8a2286255f6181a8f094f9249",
+      "scenario_id": "S1",
+      "split": "dev",
+      "seed": 42,
+      "frame_id": "benchmark_map",
+      "bounds_m": [
+        -1.2,
+        -2.2,
+        4.2,
+        2.2
+      ],
+      "start_pose": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "yaw_rad": 0.0
+      },
+      "time_limit_s": 180.0,
+      "obstacles": [
+        {
+          "id": "rear-block",
+          "bounds_m": [
+            -0.8,
+            1.1,
+            -0.5,
+            1.4
+          ]
+        },
+        {
+          "id": "far-block",
+          "bounds_m": [
+            2.8,
+            1.3,
+            3.2,
+            1.5
+          ]
+        }
+      ],
+      "targets": [
+        {
+          "id": "gt-person-01",
+          "label": "person",
+          "x_m": 1.8,
+          "y_m": -0.1,
+          "size_m": [
+            0.3,
+            0.3
+          ]
+        }
+      ]
+    }
+  ]
+}

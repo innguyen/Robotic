@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "inputs_shared_configs_budgets_unchanged": true,
+  "policy_identities_unchanged": true,
+  "metric_identity_unchanged": true,
+  "changed_benchmark_sources": [
+    "paired.py"
+  ],
+  "old_schema": "t1-paired-1",
+  "new_schema": "t1-paired-2",
+  "execution_profile": {
+    "exclusive_with_audit": true,
+    "external_load_control": "not guaranteed; no concurrent tests/pilots during acceptance",
+    "max_active_jobs": 1,
+    "version": "single-job-v1",
+    "watchdog": "unchanged_shared_fixture"
+  },
+  "old_failed_audit": "pilot-verified/paired/analysis/audit.json",
+  "old_error": "replay-wall-timeout.json"
+}

@@ -1,0 +1,145 @@
+{
+  "status": "FAIL",
+  "raw_identity_csv_monitor_checks": "PASS",
+  "purpose": "pipeline_verification_not_research",
+  "locked_pairs": 8,
+  "raw_attempts": 33,
+  "primary_attempts": 16,
+  "source_files": 22,
+  "monitor_counts_independently_checked": true,
+  "paired_csv_checked": true,
+  "strict_replay_checked": true,
+  "strict_replays": [
+    {
+      "policy_id": "b0-fixed-order-v2",
+      "episode_id": "sample-s1",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b1-gain-distance-focus-v1",
+      "episode_id": "sample-s1",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b0-fixed-order-v2",
+      "episode_id": "sample-s2",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b1-gain-distance-focus-v1",
+      "episode_id": "sample-s2",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b0-fixed-order-v2",
+      "episode_id": "sample-s5",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b1-gain-distance-focus-v1",
+      "episode_id": "sample-s5",
+      "status": "FAIL",
+      "trajectory_equal": false,
+      "semantic_events_equal": false,
+      "result_equal": false
+    },
+    {
+      "policy_id": "b0-fixed-order-v2",
+      "episode_id": "sample-s3",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b1-gain-distance-focus-v1",
+      "episode_id": "sample-s3",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b0-fixed-order-v2",
+      "episode_id": "sample-s4",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b1-gain-distance-focus-v1",
+      "episode_id": "sample-s4",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b0-fixed-order-v2",
+      "episode_id": "pilot-compact-s5",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b1-gain-distance-focus-v1",
+      "episode_id": "pilot-compact-s5",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b0-fixed-order-v2",
+      "episode_id": "pilot-offset-s1",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b1-gain-distance-focus-v1",
+      "episode_id": "pilot-offset-s1",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b0-fixed-order-v2",
+      "episode_id": "pilot-lower-s3",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    },
+    {
+      "policy_id": "b1-gain-distance-focus-v1",
+      "episode_id": "pilot-lower-s3",
+      "status": "PASS",
+      "trajectory_equal": true,
+      "semantic_events_equal": true,
+      "result_equal": true
+    }
+  ],
+  "stalled_attempts_observed": 8,
+  "monitor_state_entries_observed": 114,
+  "monitor_continuous_episodes_observed": 114
+}

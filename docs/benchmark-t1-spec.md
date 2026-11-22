@@ -331,6 +331,20 @@ Event types tối thiểu: `EPISODE_START`, `RAW_DETECTION`, `CONFIRMED_DETECTIO
 
 So sánh B0/B1 chỉ ghép cùng episode/fixture hash, environment/layout hash/family/split, cấu hình chung, seed và protocol. Hash giống nhau không đủ nếu start/target khác. Thống kê theo layout dùng environment đã kiểm tra registry; các layout cùng family phải được giữ cùng cụm khi bootstrap. Báo riêng số episode dự kiến, đã bắt đầu, hoàn tất và lỗi. Thống kê chính dùng attempt đầu; retry không tự thay thất bại bằng lượt tốt hơn. Nếu thử cấu hình mới, tạo run mới và công bố nó.
 
+### 9.3 Reducer và paired dev pilot P2.2
+
+Reducer `t1-metrics-1` tái tính từ raw events/trajectory, dùng resolved fixture bytes đã bind với certificate, rồi đối chiếu result và evaluator. Tolerance dùng so tính nhất quán serialization/Euler không phải tolerance chấm report, standoff hoặc collision. Không sửa các ngưỡng và thứ tự chấm của t1-0.2.
+
+`monitor_interventions` giữ nghĩa hiện có: đếm mỗi lần vào một trạng thái ngoài PASS/IDLE/LIMIT khi trạng thái đổi; một chuỗi cùng state chỉ đếm một lần. Chuỗi SLOWDOWN → STOP_ZONE → SLOWDOWN có ba lần vào state. Reducer đối chiếu số này với MONITOR_INTERVENTION gốc, không đổi nghĩa trường cũ.
+
+Extension riêng `monitor-episodes-1` thêm `monitor_continuous_episodes`: một đợt gồm các interval thực thi liên tiếp đều đang can thiệp, kể cả khi đổi state ở giữa. Chuỗi trên là một đợt; PASS/IDLE/LIMIT tách đợt. Thêm số chuyển state, thời lượng theo simulated dt, số đợt/thời lượng từng state và nhãn mức can thiệp `none|limited|stopped`. Đây là nhãn vận tốc/monitor, không phải thang đo độ an toàn vật lý hoặc collision evaluator.
+
+Attempt không có trajectory đầy đủ phải giữ cờ incomplete. Các tổng chưa xác minh như full path, monitor/stall duration và goal counters là null; phần prefix đã nhận được giữ riêng với trạng thái UNVERIFIED, không suy ra 0. Report đã nhận trước crash vẫn được kiểm tra, execution error vẫn trong mẫu số primary. B1 không có lưới cố định nên unresolved_waypoints là null theo định nghĩa.
+
+Manifest `t1-paired-2` khóa full fixture/shared/config/budget/sensing/dynamics/evaluator, runtime, metric source/version và identity riêng từng policy. Profile `single-job-v1` chỉ cho một job hoặc audit hoạt động trong cùng paired run; cửa vào được khóa trước cả bước tính lại certificate. Không thay mission budget, watchdog hoặc grading. Không bảo đảm CPU không bị ứng dụng ngoài chiếm dụng.
+
+Thiếu cặp hoặc sai identity phải từ chối. Paired table chỉ dùng attempt 1; all-attempts giữ cả primary/replay và mọi retry/error. Reservation bị ngắt trước attempt manifest chỉ được quy về batch identity đã kiểm chứng khi không có execution evidence; số đo vật lý là UNVERIFIED/null, không tạo manifest giả. Replay của reservation chưa hề chạy policy là UNVERIFIED. Replay bình thường kiểm riêng mỗi policy; seed lặp hoặc bản target/start mới trong cùng layout không làm tăng số môi trường/family độc lập. Dev pilot chỉ kiểm tra pipeline; điều kiện khóa test được ghi tại [audit P2.2](benchmark-p22-audit.md).
+
 ## 10 CLI dự kiến và resume
 
 CLI hiện có dùng `benchmark_batch.py --catalog ... --bundle ... --output ... --policy b0-fixed-order-v2|b1-gain-distance-focus-v1`; bundle được tạo trước bằng `python -B -m benchmark --catalog ... --output ...` từ `test version/`. Xem [README](../test%20version/benchmark/README.md) cho lệnh đầy đủ. Tên CLI dự kiến bên dưới chưa phải alias hiện có. Thêm selector không thay scoring protocol t1-0.2; policy identity/config/source được khóa riêng trong manifest và được kiểm tra khi resume/replay.

@@ -1,0 +1,40 @@
+{
+  "purpose": "post_run_host_diagnostics_not_scoring",
+  "provider": "Microsoft-Windows-Kernel-Power",
+  "timezone": "Asia/Saigon",
+  "events": [
+    {
+      "TimeCreated": "2026-11-22T16:57:21.4329671+07:00",
+      "Id": 507,
+      "Message": "The system is exiting Modern Standby "
+    },
+    {
+      "TimeCreated": "2026-11-22T16:24:49.3820496+07:00",
+      "Id": 506,
+      "Message": "The system is entering Modern Standby "
+    },
+    {
+      "TimeCreated": "2026-11-22T16:24:49.3767716+07:00",
+      "Id": 507,
+      "Message": "The system is exiting Modern Standby "
+    },
+    {
+      "TimeCreated": "2026-11-22T16:23:19.2685339+07:00",
+      "Id": 506,
+      "Message": "The system is entering Modern Standby "
+    }
+  ],
+  "attempt_file_metadata_observed": [
+    {
+      "Name": "run_manifest.json",
+      "CreationTime": "2026-11-22T16:23:06.8766436+07:00",
+      "LastWriteTime": "2026-11-22T16:23:06.8766436+07:00"
+    },
+    {
+      "Name": "result.json",
+      "CreationTime": "2026-11-22T16:57:22.4293093+07:00",
+      "LastWriteTime": "2026-11-22T16:57:22.4298166+07:00"
+    }
+  ],
+  "limitation": "Filesystem timestamps are diagnostic observations, not journal identity or replay fields; no complete scheduler telemetry."
+}

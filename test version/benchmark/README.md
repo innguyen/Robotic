@@ -1,6 +1,8 @@
-# T1 offline — P2.1 selectors
+# T1 offline — P2.2 metrics và paired dev pilot
 
 Protocol: `t1-0.2`, verifier `p1a2-1`. Đã có validator, evaluator, single runner, batch/resume và hai selector chính thức có version. Chưa có đánh giá test hoặc bảng so sánh B0/B1. Không khởi động ROS, camera, chassis hay launcher. Xem [đặc tả](../../docs/benchmark-t1-spec.md), [P1b.2](../../docs/benchmark-p1b2-audit.md) và [P2.1 audit](../../docs/benchmark-p21-audit.md) để biết phạm vi thực kiểm.
+
+Metrics và paired pilot hiện hành được ghi tại [P2.2 audit](../../docs/benchmark-p22-audit.md). Các bảng dev dùng kiểm tra pipeline, không phải kết luận policy nào tốt hơn.
 
 Python 3.10+ và PyYAML cho validator; runner cần thêm NumPy và Git để ghi provenance. Môi trường đã kiểm tra dùng Python 3.10.11, PyYAML 6.0.3, NumPy 2.2.6. Runner không cần OpenCV hoặc ROS. Các regression production vẫn dùng dependencies cũ. Golden tests chạy chéo cần Node.js.
 
@@ -140,4 +142,44 @@ Lệnh đầu cần bundle đúng source hiện hành, có thể tạo mới b�
 
 Nếu phiên tool chạy dài bị ngắt, có thể chia thành các batch CLI riêng với output mới. Script có `--finalize-existing --b1-repeat run-3` để kiểm tra các batch hoàn tất trong hồ sơ P2.1; nó từ chối batch thiếu result, không tự chạy bù hoặc sửa log dở. `controls.json` ghi rõ hai thư mục thực sự được dùng cho mỗi policy; xem audit để phân biệt lượt hoàn tất và lượt gián đoạn.
 
-Log thêm `SELECTOR_DECISION` (point/kind/index và lý do skip), `WAYPOINT_OUTCOME` (reached/failed/preempted), `SELECTOR_STATUS`. Waypoint còn active khi episode chấm dứt được giữ là unresolved, không tự ghi reached. B0 `unresolved_waypoints` là tổng index lưới chưa có outcome reached, gồm chưa giao, failed, preempted và đang chạy; fallback không thêm index lưới. B1 không có lưới, trường này là null. `goals_selected` chỉ đếm goal khám phá của selector; LAST_SEEN/approach không tăng bộ đếm này. Stalled duration lấy từ state mission theo simulated time, kể cả khi monitor thay reason hiển thị. Metrics theo đợt monitor cần nghiệm thu riêng ở [P2.2](../../docs/benchmark-p22-plan.md).
+Log thêm `SELECTOR_DECISION` (point/kind/index và lý do skip), `WAYPOINT_OUTCOME` (reached/failed/preempted), `SELECTOR_STATUS`. Waypoint còn active khi episode chấm dứt được giữ là unresolved, không tự ghi reached. B0 `unresolved_waypoints` là tổng index lưới chưa có outcome reached, gồm chưa giao, failed, preempted và đang chạy; fallback không thêm index lưới. B1 không có lưới, trường này là null. `goals_selected` chỉ đếm goal khám phá của selector; LAST_SEEN/approach không tăng bộ đếm này. Stalled duration lấy từ state mission theo simulated time, kể cả khi monitor thay reason hiển thị. Kết quả kiểm tra metrics theo đợt monitor được ghi ở [audit P2.2](../../docs/benchmark-p22-audit.md).
+
+## Metrics và paired runs — P2.2
+
+`metrics.py` là reducer evaluator-side `t1-metrics-1`: đọc raw events/trajectory và resolved bytes đã bind với certificate, tái kiểm report, Euler, swept geometry, stop hold và vùng tiếp cận rồi đối chiếu result. Nó không lấy `found` hoặc cờ monitor làm kết quả chấm. Sai khác ghi FAIL; reducer không sửa kết quả cũ. Legacy batch projections vẫn giữ định dạng cũ; output reducer nằm riêng trong `paired/analysis/`.
+
+`monitor_interventions` giữ số lần vào từng state ngoài PASS/IDLE/LIMIT. Extension `monitor-episodes-1` thêm `monitor_continuous_episodes`, số đổi state trong can thiệp, duration theo dt và per-state durations. Đổi SLOWDOWN→STOP_ZONE→SLOWDOWN là ba state entries nhưng một đợt liên tục. LIMIT là speed cap thông thường, không thuộc can thiệp theo hợp đồng hiện có. Nhãn none/limited/stopped chỉ mô tả monitor, không đo rủi ro vật lý.
+
+Khi execution error/recovery làm thiếu trajectory, tổng path/monitor/goal/stall chưa xác minh là null; `*_observed` giữ prefix đã nhận. Không sửa raw tail khi đọc, không coi đoạn ngắn của một mission lỗi là lợi thế. SPL/GT coverage/min-clearance chưa được chứng nhận giữ null kèm lý do. B1 unresolved_waypoints là không áp dụng. Report đúng đã nhận trước crash vẫn được giữ, nhưng safe mission false.
+
+`paired.py` khóa manifest `t1-paired-2` trước rollout: toàn corpus, resolved/shared/config/budget, sensing/Euler/planner/evaluator/metric sources, runtime và identity từng policy. Profile single-job-v1 dùng OS lock để chặn job/audit đồng thời trước cả proof recomputation; không sửa watchdog hoặc mission budget. Mỗi slot là một batch của một episode, dùng process isolation/journal/resume cũ. Không truyền manifest/reducer cho policy. Audit từ chối thiếu cặp, sai bindings, sửa completed result hoặc hỏng journal; reader không tự truncate/repair. Bảng paired/episodes chỉ dùng attempt 1, attempts giữ primary-run retries, all-attempts giữ thêm toàn bộ replay/error.
+
+Từ gốc repo, chọn output mới:
+
+```powershell
+python -B docs/checks/p22-pilot.py prepare --output benchmark-results/p22-dev
+python -B docs/checks/p22-pilot.py run --output benchmark-results/p22-dev --limit 2
+# Lặp lệnh run tới ROLLOUTS_COMPLETE; không chạy hai driver tự chọn job cùng lúc.
+python -B docs/checks/p22-pilot.py audit --output benchmark-results/p22-dev
+node docs/checks/p22-evidence-check.cjs benchmark-results/p22-dev
+```
+
+`prepare` tạo/kiểm tra fixtures P2.2 có provenance; input đã tồn tại phải khớp byte, không ghi đè. Toàn catalog có dev/test đều qua validator trước chọn dev. Ba biến thể thêm là camera offset trên layout mới, S5 bounds nhỏ cùng family với empty layout, và S3 target ở nhánh kia trên cùng environment/family cũ. Chúng không tạo thêm family độc lập chỉ vì đổi start/target/seed.
+
+Có thể chạy slot độc lập từ `test version/` để giới hạn thời gian một phiên tool:
+
+```powershell
+python -B -m benchmark.paired run --output benchmark-results/p22-dev/paired --policy b0-fixed-order-v2 --replica primary --episode-id sample-s1
+```
+
+Chạy tuần tự, không chạy tests hoặc pilot khác đồng thời trong phiên nghiệm thu. Profile khóa một slot/audit trong cùng paired run; không kiểm soát toàn bộ ứng dụng ngoài hoặc paired run khác. Output đã tồn tại cần `--resume`; thêm `--retry-errors` khi chủ động chạy retry, vẫn không thay primary. Nếu journal bị cắt, dùng batch resume qua lệnh job này, không sửa byte bằng tay. Manifest/config/source đổi thì cần run mới. Pair initialization chưa có chứng minh durability khi mất điện; manifest/checksum không đầy đủ phải bị từ chối.
+
+Nếu START đã được journal nhưng chưa tạo attempt manifest, batch resume giữ primary CRASH/INTERRUPTED. Paired reducer dùng reservation identity đã khóa, giữ physics/telemetry null và gắn identity_basis rõ ràng; không viết manifest giả. Nếu có raw execution mà thiếu manifest thì BLOCKED. Reservation chưa chạy policy không được coi là replay PASS. Xem audit P2.2 về pilot schema 1 đã FAIL do một WALL_TIMEOUT và pilot schema 2 mới; không ghi đè hoặc trộn hai hồ sơ.
+
+Reducer độc lập cũng dùng được cho archive đã bind với bundle tương ứng, không yêu cầu source verifier hiện hành trùng archive. Đây là phân tích lại snapshot, không phải quyền rollout bằng certificate cũ. Ví dụ từ `test version/`:
+
+```powershell
+python -B -m benchmark.metrics --attempt docs/p21-audit-logs/dev-final/b0-fixed-order-v2/run-1/attempts/sample-s1/attempt-0001 --bundle docs/p21-audit-logs/dev-final/certificates --output benchmark-results/p21-s1-reduced.json
+```
+
+Source/version reducer được ghi trong output mới; không overwrite. Paired pilot thì luôn yêu cầu certificate/source/runtime hiện hành. Counter B0 có work limit một triệu lattice candidates: vượt thì UNVERIFIED/BLOCKED, không ước lượng cardinality hoặc đổi scoring. Linux/cross-OS chỉ được ghi PASS sau khi thực chạy.

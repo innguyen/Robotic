@@ -1,0 +1,59 @@
+{
+  "schema_version": "t1-0.2",
+  "suite_id": "p22-compact-dev",
+  "shared": {
+    "navigation_yaml": "test version/navigation_ros1.yaml",
+    "monitor_yaml": "test version/collision_monitor_ros1.yaml",
+    "person_standoff_m": 0.55,
+    "dt_s": 0.1,
+    "camera": {
+      "x_m": 0.0,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "fov_deg": 58.0,
+      "range_m": 3.5,
+      "confirm_frames": 2,
+      "memory_s": 2.5
+    },
+    "report_tolerance_m": 0.5,
+    "stop_check": {
+      "linear_speed_m_s": 0.01,
+      "angular_speed_rad_s": 0.01,
+      "hold_steps": 3,
+      "timeout_s": 2.0
+    },
+    "b0_spacing_m": 0.75,
+    "scenario_checks": {
+      "s2_max_view_path_m": 0.75
+    },
+    "geometry_epsilon_m": 0.001,
+    "planner_wall_timeout_s": 10.0,
+    "episode_wall_timeout_s": 300.0
+  },
+  "episodes": [
+    {
+      "episode_id": "pilot-compact-s5",
+      "environment_id": "pilot-compact-region",
+      "layout_family_id": "sample-family-5",
+      "layout_hash": "9545a90f25e4549a134b7344903dc4b7631f1fed70dacb62e91939efcd0f3966",
+      "scenario_id": "S5",
+      "split": "dev",
+      "seed": 42,
+      "frame_id": "benchmark_map",
+      "bounds_m": [
+        -0.35,
+        -0.35,
+        0.35,
+        0.35
+      ],
+      "start_pose": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "yaw_rad": 0.0
+      },
+      "time_limit_s": 60.0,
+      "obstacles": [],
+      "targets": []
+    }
+  ]
+}
