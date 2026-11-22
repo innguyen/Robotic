@@ -1,0 +1,155 @@
+{
+  "schema_version": "t1-0.2",
+  "suite_id": "advanced-dev-v1",
+  "shared": {
+    "navigation_yaml": "test version/navigation_ros1.yaml",
+    "monitor_yaml": "test version/collision_monitor_ros1.yaml",
+    "person_standoff_m": 0.55,
+    "dt_s": 0.1,
+    "camera": {
+      "x_m": 0.0,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "fov_deg": 58.0,
+      "range_m": 3.5,
+      "confirm_frames": 2,
+      "memory_s": 2.5
+    },
+    "report_tolerance_m": 0.5,
+    "stop_check": {
+      "linear_speed_m_s": 0.01,
+      "angular_speed_rad_s": 0.01,
+      "hold_steps": 3,
+      "timeout_s": 2.0
+    },
+    "b0_spacing_m": 0.75,
+    "scenario_checks": {
+      "s2_max_view_path_m": 0.75
+    },
+    "geometry_epsilon_m": 0.001,
+    "planner_wall_timeout_s": 10.0,
+    "episode_wall_timeout_s": 300.0
+  },
+  "episodes": [
+    {
+      "episode_id": "sample-s3",
+      "environment_id": "sample-layout-3",
+      "layout_family_id": "sample-family-3",
+      "layout_hash": "8df5e00fd4fff7d11aea66039439ebcf45d551c74f63e30133901db114d890ce",
+      "scenario_id": "S3",
+      "split": "dev",
+      "seed": 42,
+      "frame_id": "benchmark_map",
+      "bounds_m": [
+        -1,
+        -3,
+        5,
+        3
+      ],
+      "start_pose": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "yaw_rad": 0.0
+      },
+      "time_limit_s": 600,
+      "obstacles": [
+        {
+          "id": "central-wall",
+          "bounds_m": [
+            1,
+            -2,
+            5,
+            2
+          ]
+        }
+      ],
+      "targets": [
+        {
+          "id": "gt-person-01",
+          "label": "person",
+          "x_m": 4,
+          "y_m": 2.5,
+          "size_m": [
+            0.3,
+            0.3
+          ]
+        }
+      ],
+      "scenario_evidence": {
+        "gates": [
+          {
+            "id": "upper",
+            "segment_m": [
+              [
+                -1,
+                1
+              ],
+              [
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "id": "lower",
+            "segment_m": [
+              [
+                -1,
+                -1
+              ],
+              [
+                1,
+                -1
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "episode_id": "sample-s4",
+      "environment_id": "sample-layout-4",
+      "layout_family_id": "sample-family-4",
+      "layout_hash": "be456e84b63bdd92d26e8e5818822c048fd67f24ce64deb682d06c3c6dca6412",
+      "scenario_id": "S4",
+      "split": "dev",
+      "seed": 42,
+      "frame_id": "benchmark_map",
+      "bounds_m": [
+        -1,
+        -3,
+        5,
+        3
+      ],
+      "start_pose": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "yaw_rad": 0.0
+      },
+      "time_limit_s": 600,
+      "obstacles": [
+        {
+          "id": "barrier",
+          "bounds_m": [
+            0.8,
+            -1,
+            0.9,
+            1
+          ]
+        }
+      ],
+      "targets": [
+        {
+          "id": "gt-person-01",
+          "label": "person",
+          "x_m": 2.0,
+          "y_m": 0.0,
+          "size_m": [
+            0.3,
+            0.3
+          ]
+        }
+      ]
+    }
+  ]
+}

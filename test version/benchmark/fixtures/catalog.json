@@ -1,0 +1,41 @@
+{
+  "schema_version": "t1-catalog-1",
+  "suites": [
+    "test version/benchmark/fixtures/samples.json",
+    "test version/benchmark/fixtures/advanced.json",
+    "test version/benchmark/fixtures/independent-test.json"
+  ],
+  "witnesses": "test version/benchmark/fixtures/corpus-witnesses.json",
+  "families": {
+    "sample-family-1": {
+      "source": "hand-authored/sample-layout-1",
+      "reviewed": true,
+      "notes": "Distinct declared static geometry; test fixture is independently authored, no transformed dev layout."
+    },
+    "sample-family-2": {
+      "source": "hand-authored/sample-layout-2",
+      "reviewed": true,
+      "notes": "Distinct declared static geometry; test fixture is independently authored, no transformed dev layout."
+    },
+    "sample-family-5": {
+      "source": "hand-authored/sample-layout-5",
+      "reviewed": true,
+      "notes": "Distinct declared static geometry; test fixture is independently authored, no transformed dev layout."
+    },
+    "sample-family-3": {
+      "source": "hand-authored/sample-layout-3",
+      "reviewed": true,
+      "notes": "Distinct declared static geometry; test fixture is independently authored, no transformed dev layout."
+    },
+    "sample-family-4": {
+      "source": "hand-authored/sample-layout-4",
+      "reviewed": true,
+      "notes": "Distinct declared static geometry; test fixture is independently authored, no transformed dev layout."
+    },
+    "test-family-01": {
+      "source": "hand-authored/test-layout-01",
+      "reviewed": true,
+      "notes": "Asymmetric three-obstacle geometry independently authored for split validation, not held-out evaluation data."
+    }
+  }
+}

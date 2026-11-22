@@ -1,0 +1,35 @@
+test_bounds_closed_and_no_epsilon_escape (test_benchmark.GeometryTests) ... ok
+test_ray_tangent_and_parallel (test_benchmark.GeometryTests) ... ok
+test_rotation_and_clearance (test_benchmark.GeometryTests) ... ok
+test_sweep_thin_obstacle_and_rotation (test_benchmark.GeometryTests) ... ok
+test_unresolved_sweep_is_not_pass (test_benchmark.GeometryTests) ... ok
+test_golden_vectors_and_javascript (test_benchmark.LayoutTests) ... ok
+test_invalid_precision_and_span (test_benchmark.LayoutTests) ... ok
+test_approach_visibility_bounds_and_heading (test_benchmark.OracleScenarioTests) ... ok
+test_certificate_binding_changes_and_unverified_has_no_traits (test_benchmark.OracleScenarioTests) ... ok
+test_confirmation_memory_and_immutable (test_benchmark.OracleScenarioTests) ... ok
+test_confirmation_reset_empty_and_instance_isolation (test_benchmark.OracleScenarioTests) ... ok
+test_exact_range_fov_and_memory_boundaries (test_benchmark.OracleScenarioTests) ... ok
+test_negative_s1_s2_s5 (test_benchmark.OracleScenarioTests) ... ok
+test_no_witness_rotating_path_short_budget_and_collision (test_benchmark.OracleScenarioTests) ... ok
+test_positive_s1_s2_s5 (test_benchmark.OracleScenarioTests) ... ok
+test_s3_s4_and_offset_s2_never_silently_pass (test_benchmark.OracleScenarioTests) ... ok
+test_visibility_extrinsics_fov_range_occlusion (test_benchmark.OracleScenarioTests) ... ok
+test_bad_shared_values (test_benchmark.SchemaTests) ... ok
+test_config_unknown_and_bool_numeric (test_benchmark.SchemaTests) ... ok
+test_cross_suite_registry (test_benchmark.SchemaTests) ... ok
+test_duplicate_json_and_yaml_keys (test_benchmark.SchemaTests) ... ok
+test_episode_errors (test_benchmark.SchemaTests) ... ok
+test_geometry_validation (test_benchmark.SchemaTests) ... ok
+test_missing_yaml_dependency_or_file_never_falls_back (test_benchmark.SchemaTests) ... ok
+test_nested_types_and_limits (test_benchmark.SchemaTests) ... ok
+test_path_cwd_and_symlink (test_benchmark.SchemaTests) ... ok
+test_physical_duplicate_ignores_seed_and_id (test_benchmark.SchemaTests) ... ok
+test_samples (test_benchmark.SchemaTests) ... ok
+test_schema_missing_types_and_s3_interface (test_benchmark.SchemaTests) ... ok
+test_validation_never_imports_hardware_modules (test_benchmark.SchemaTests) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 1.723s
+
+OK

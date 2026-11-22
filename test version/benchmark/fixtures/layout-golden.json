@@ -1,0 +1,172 @@
+[
+  {
+    "name": "spec-known",
+    "episode": {
+      "episode_id": "sample-s1",
+      "environment_id": "sample-layout-1",
+      "layout_family_id": "sample-family-1",
+      "layout_hash": "eb085274e87be582ce14b082a7479a0c7e3b97f1ec7f428f278e3597806f56fb",
+      "scenario_id": "S1",
+      "split": "dev",
+      "seed": 42,
+      "frame_id": "benchmark_map",
+      "bounds_m": [
+        -1,
+        -2,
+        4,
+        2
+      ],
+      "start_pose": {
+        "x_m": 0,
+        "y_m": 0,
+        "yaw_rad": 0
+      },
+      "time_limit_s": 180,
+      "obstacles": [
+        {
+          "id": "box-01",
+          "bounds_m": [
+            0.8,
+            0.8,
+            1.2,
+            1.2
+          ]
+        }
+      ],
+      "targets": [
+        {
+          "id": "gt-person-01",
+          "label": "person",
+          "x_m": 2,
+          "y_m": 0,
+          "size_m": [
+            0.3,
+            0.3
+          ]
+        }
+      ]
+    },
+    "canonical": "{\"bounds_um\":[5000000,4000000],\"slabs\":[[1800000,2200000,[[2800000,3200000]]]],\"version\":\"rect-union-um-v1\"}",
+    "hash": "eb085274e87be582ce14b082a7479a0c7e3b97f1ec7f428f278e3597806f56fb"
+  },
+  {
+    "name": "empty",
+    "episode": {
+      "bounds_m": [
+        0,
+        0,
+        2,
+        2
+      ],
+      "obstacles": []
+    },
+    "canonical": "{\"bounds_um\":[2000000,2000000],\"slabs\":[],\"version\":\"rect-union-um-v1\"}",
+    "hash": "1d563b19936ef49ac2d73e2c4eacb520e94697b4055175800f34cdf488bdf214"
+  },
+  {
+    "name": "partition",
+    "episode": {
+      "bounds_m": [
+        0,
+        0,
+        3,
+        3
+      ],
+      "obstacles": [
+        {
+          "bounds_m": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "bounds_m": [
+            1,
+            0,
+            2,
+            1
+          ]
+        },
+        {
+          "bounds_m": [
+            0,
+            1,
+            2,
+            2
+          ]
+        },
+        {
+          "bounds_m": [
+            0,
+            0,
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    "canonical": "{\"bounds_um\":[3000000,3000000],\"slabs\":[[0,2000000,[[0,2000000]]]],\"version\":\"rect-union-um-v1\"}",
+    "hash": "b884943cb43250374c1be3a125ba999d3eeb78a3476e8df2107d7ca8169fce84"
+  },
+  {
+    "name": "outside-negative",
+    "episode": {
+      "bounds_m": [
+        -1,
+        -2,
+        4,
+        2
+      ],
+      "obstacles": [
+        {
+          "bounds_m": [
+            -4,
+            -3,
+            -2,
+            -1
+          ]
+        },
+        {
+          "bounds_m": [
+            10,
+            10,
+            11,
+            11
+          ]
+        }
+      ]
+    },
+    "canonical": "{\"bounds_um\":[5000000,4000000],\"slabs\":[[-3000000,-1000000,[[-1000000,1000000]]],[11000000,12000000,[[12000000,13000000]]]],\"version\":\"rect-union-um-v1\"}",
+    "hash": "748d7cc471144c6ba4b95dc3b99e6c6c2d9e6f25a0429efc188e0c9cae8f1d88"
+  },
+  {
+    "name": "safe-large-positive",
+    "episode": {
+      "bounds_m": [
+        0,
+        0,
+        9007199254.74099,
+        1
+      ],
+      "obstacles": []
+    },
+    "canonical": "{\"bounds_um\":[9007199254740990,1000000],\"slabs\":[],\"version\":\"rect-union-um-v1\"}",
+    "hash": "f5c465460f568bdc04414794004e594b90d553136a5f5887795cafa76d205519"
+  },
+  {
+    "name": "safe-large-negative",
+    "episode": {
+      "bounds_m": [
+        -9007199254.74099,
+        0,
+        0,
+        1
+      ],
+      "obstacles": []
+    },
+    "canonical": "{\"bounds_um\":[9007199254740990,1000000],\"slabs\":[],\"version\":\"rect-union-um-v1\"}",
+    "hash": "f5c465460f568bdc04414794004e594b90d553136a5f5887795cafa76d205519"
+  }
+]

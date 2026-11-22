@@ -1,0 +1,87 @@
+{
+  "schema_version": "t1-0.2",
+  "suite_id": "independent-test-v1",
+  "shared": {
+    "navigation_yaml": "test version/navigation_ros1.yaml",
+    "monitor_yaml": "test version/collision_monitor_ros1.yaml",
+    "person_standoff_m": 0.55,
+    "dt_s": 0.1,
+    "camera": {
+      "x_m": 0.0,
+      "y_m": 0.0,
+      "yaw_rad": 0.0,
+      "fov_deg": 58.0,
+      "range_m": 3.5,
+      "confirm_frames": 2,
+      "memory_s": 2.5
+    },
+    "report_tolerance_m": 0.5,
+    "stop_check": {
+      "linear_speed_m_s": 0.01,
+      "angular_speed_rad_s": 0.01,
+      "hold_steps": 3,
+      "timeout_s": 2.0
+    },
+    "b0_spacing_m": 0.75,
+    "scenario_checks": {
+      "s2_max_view_path_m": 0.75
+    },
+    "geometry_epsilon_m": 0.001,
+    "planner_wall_timeout_s": 10.0,
+    "episode_wall_timeout_s": 300.0
+  },
+  "episodes": [
+    {
+      "episode_id": "test-empty-01",
+      "environment_id": "test-layout-01",
+      "layout_family_id": "test-family-01",
+      "layout_hash": "9fe1f4b4226f94bb842fa635b6f8f2189a7b67c86f2996b4fe8e9ae7caf28957",
+      "scenario_id": "S5",
+      "split": "test",
+      "seed": 42,
+      "frame_id": "benchmark_map",
+      "bounds_m": [
+        -2,
+        -2,
+        5,
+        3
+      ],
+      "start_pose": {
+        "x_m": 0.0,
+        "y_m": 0.0,
+        "yaw_rad": 0.0
+      },
+      "time_limit_s": 180.0,
+      "obstacles": [
+        {
+          "id": "test-post",
+          "bounds_m": [
+            1.2,
+            -1.8,
+            1.5,
+            -0.7
+          ]
+        },
+        {
+          "id": "test-bar",
+          "bounds_m": [
+            2,
+            1,
+            3.5,
+            1.3
+          ]
+        },
+        {
+          "id": "test-wall",
+          "bounds_m": [
+            -1.5,
+            0.8,
+            -1.1,
+            2.4
+          ]
+        }
+      ],
+      "targets": []
+    }
+  ]
+}

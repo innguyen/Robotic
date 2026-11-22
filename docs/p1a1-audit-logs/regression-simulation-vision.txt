@@ -1,0 +1,21 @@
+test_default_gap_reaches_standoff (test_simulation.SimulationTests) ... ok
+test_map_point_behind_robot_turns_and_is_reached (test_simulation.SimulationTests) ... ok
+test_map_point_in_unobserved_shadow_is_reached (test_simulation.SimulationTests) ... ok
+test_map_point_rejected_only_when_observed_blocked (test_simulation.SimulationTests) ... ok
+test_monitor_stops_when_obstacle_in_stop_zone (test_simulation.SimulationTests) ... ok
+test_robot_like_detour_with_async_planner_does_not_crawl_to_stuck (test_simulation.SimulationTests) ... ok
+test_room_with_robot_yaml_reaches_target_behind_box (test_simulation.SimulationTests) ... ok
+test_scan_returns_front_face_and_occludes_back_face (test_simulation.SimulationTests) ... ok
+test_letterbox_keeps_aspect_and_maps_boxes_back (test_vision_tracking.DetectorTests) ... ok
+test_draw_overlay_on_newer_frame (test_vision_tracking.OverlayTests) ... ok
+test_navigation_timeout_covers_vision_memory (test_vision_tracking.TrackerTests) ... ok
+test_persistent_outliers_switch_to_new_object (test_vision_tracking.TrackerTests) ... ok
+test_rotation_is_compensated_by_odometry (test_vision_tracking.TrackerTests) ... ok
+test_short_loss_keeps_confirmation_when_anchored (test_vision_tracking.TrackerTests) ... ok
+test_single_outlier_does_not_drop_confirmed_target (test_vision_tracking.TrackerTests) ... ok
+test_small_object_memory_expires (test_vision_tracking.TrackerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 22.217s
+
+OK
