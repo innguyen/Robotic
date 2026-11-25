@@ -1,0 +1,340 @@
+#VRML_SIM R2025a utf8
+
+WorldInfo {
+  FPS 30
+}
+Viewpoint {
+  orientation 0.10727366616216553 0.9712786025920408 -0.21239170580552574 0.9590544281417454
+  position -6.157540022691327 2.204575504930788 8.565676304642295
+  ambientOcclusionRadius 0
+  bloomThreshold -1
+}
+Background {
+  skyColor [
+    0.18 0.22 0.28
+  ]
+}
+DirectionalLight {
+  direction -1 -1 -2
+}
+Solid {
+  translation 0 0 -0.05
+  children [
+    Shape {
+      appearance DEF FLOOR Appearance {
+        material Material {
+          diffuseColor 0.55 0.55 0.55
+        }
+      }
+      geometry DEF FLOOR_BOX Box {
+        size 8 6 0.1
+      }
+    }
+  ]
+  name "floor"
+  boundingObject USE FLOOR_BOX
+}
+Solid {
+  translation 4 0 0.3
+  children [
+    Shape {
+      appearance USE FLOOR
+      geometry DEF WALL_X Box {
+        size 0.1 6 0.6
+      }
+    }
+  ]
+  name "east wall"
+  boundingObject USE WALL_X
+}
+Solid {
+  translation -4 0 0.3
+  children [
+    Shape {
+      appearance USE FLOOR
+      geometry USE WALL_X
+    }
+  ]
+  name "west wall"
+  boundingObject USE WALL_X
+}
+Solid {
+  translation 0 3 0.3
+  children [
+    Shape {
+      appearance USE FLOOR
+      geometry DEF WALL_Y Box {
+        size 8 0.1 0.6
+      }
+    }
+  ]
+  name "north wall"
+  boundingObject USE WALL_Y
+}
+Solid {
+  translation 0 -3 0.3
+  children [
+    Shape {
+      appearance USE FLOOR
+      geometry USE WALL_Y
+    }
+  ]
+  name "south wall"
+  boundingObject USE WALL_Y
+}
+DEF OBSTACLE Solid {
+  translation 0.3 0.8 0.6
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.55 0.3 0.1
+        }
+      }
+      geometry DEF OBSTACLE_BOX Box {
+        size 0.6 0.6 1.2
+      }
+    }
+  ]
+  name "obstacle"
+  boundingObject USE OBSTACLE_BOX
+}
+DEF PERSON Solid {
+  translation 1 -1 0.9
+  children [
+    Pose {
+      translation 0 0 0.15
+      children [
+        Shape {
+          appearance DEF PERSON_COLOR Appearance {
+            material Material {
+              diffuseColor 0.8 0.1 0.2
+            }
+          }
+          geometry Box {
+            size 0.3 0.45 0.7
+          }
+        }
+      ]
+    }
+    Pose {
+      translation 0 0 0.7
+      children [
+        Shape {
+          appearance USE PERSON_COLOR
+          geometry Sphere {
+            radius 0.16
+          }
+        }
+      ]
+    }
+    Pose {
+      translation 0 0.12 -0.55
+      children [
+        Shape {
+          appearance USE PERSON_COLOR
+          geometry Box {
+            size 0.16 0.16 0.7
+          }
+        }
+      ]
+    }
+    Pose {
+      translation 0 -0.12 -0.55
+      children [
+        Shape {
+          appearance USE PERSON_COLOR
+          geometry Box {
+            size 0.16 0.16 0.7
+          }
+        }
+      ]
+    }
+  ]
+  name "person"
+  model "s0_person"
+  boundingObject Box {
+    size 0.32 0.48 1.8
+  }
+  recognitionColors [
+    0.8 0.1 0.2
+  ]
+}
+Robot {
+  translation -0.0887217372117781 -1.008309413328813 0.09940541073684209
+  rotation 6.544079399563902e-12 -3.438011313089713e-14 0.9999999999999999 0.007632112648298891
+  children [
+    Pose {
+      translation 0 0 0.06
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.1 0.3 0.8
+            }
+          }
+          geometry Box {
+            size 0.4 0.28 0.12
+          }
+        }
+      ]
+    }
+    Camera {
+      translation 0.12 0 0.55
+      fieldOfView 1.012290966
+      width 160
+      height 120
+      near 0.02
+      far 6
+      recognition Recognition {
+        maxRange 3.5
+      }
+    }
+    Lidar {
+      translation 0.12 0 0.15
+      horizontalResolution 180
+      fieldOfView 6.283185307179586
+      verticalFieldOfView 0.01
+      numberOfLayers 1
+      near 0.02
+      minRange 0.05
+      maxRange 6
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 15.970214935252665
+        axis 0 1 0
+        anchor 0 0.18 0
+      }
+      device [
+        RotationalMotor {
+          name "left wheel"
+          maxTorque 2
+        }
+      ]
+      endPoint Solid {
+        translation 0 0.18 0
+        rotation 0.09285218437452114 0.7040520122340872 0.7040520122306396 3.326766081013602
+        children [
+          Shape {
+            appearance DEF WHEEL_COLOR Appearance {
+              material Material {
+                diffuseColor 0.08 0.08 0.08
+              }
+            }
+            geometry DEF WHEEL Cylinder {
+              height 0.04
+              radius 0.1
+              subdivision 16
+            }
+          }
+        ]
+        name "left wheel solid"
+        boundingObject USE WHEEL
+        physics Physics {
+          density -1
+          mass 0.1
+        }
+        linearVelocity -1.1180874013291386e-16 1.190330425653063e-15 -2.83911905786041e-16
+        angularVelocity -9.719006376275795e-15 -1.1071804450614813e-15 2.3348243730391662e-17
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 22.271446794864595
+        axis 0 1 0
+        anchor 0 -0.18 0
+      }
+      device [
+        RotationalMotor {
+          name "right wheel"
+          maxTorque 2
+        }
+      ]
+      endPoint Solid {
+        translation 0 -0.18 0
+        rotation -0.09926170956240701 -0.7036146363669521 -0.7036146363635069 2.9437174164829676
+        children [
+          Shape {
+            appearance USE WHEEL_COLOR
+            geometry USE WHEEL
+          }
+        ]
+        name "right wheel solid"
+        boundingObject USE WHEEL
+        physics Physics {
+          density -1
+          mass 0.1
+        }
+        linearVelocity -8.625851614323149e-17 -5.006289329907174e-16 -2.8479985793651415e-16
+        angularVelocity 4.72463899871551e-15 -9.139700421854963e-16 2.1283307596461043e-16
+      }
+    }
+    BallJoint {
+      jointParameters BallJointParameters {
+        position 66.15675579618375
+        anchor 0.16 0 -0.07
+      }
+      endPoint Solid {
+        translation 0.15999999999999992 2.220446049250313e-16 -0.06999442378947363
+        rotation 0.5093244924285649 -0.7059544835122183 -0.49215528913279166 -2.560281091292829
+        children [
+          Shape {
+            appearance USE WHEEL_COLOR
+            geometry DEF CASTER Sphere {
+              radius 0.03
+            }
+          }
+        ]
+        name "front caster"
+        boundingObject USE CASTER
+        physics Physics {
+          density -1
+          mass 0.02
+        }
+        linearVelocity -4.674461369131408e-17 -1.1209672248618827e-15 9.325873406851315e-16
+        angularVelocity 3.811430706098752e-14 -1.5893103052904421e-15 -6.040534133283492e-30
+      }
+    }
+    BallJoint {
+      jointParameters BallJointParameters {
+        position 59.30592493530302
+        anchor -0.16 0 -0.07
+      }
+      endPoint Solid {
+        translation -0.15999999999999998 4.440892098500626e-16 -0.06999442378947371
+        rotation -0.2974624193233328 -0.7058212480174774 0.6429093831461478 -2.5668002015912856
+        children [
+          Shape {
+            appearance USE WHEEL_COLOR
+            geometry USE CASTER
+          }
+        ]
+        name "rear caster"
+        boundingObject USE CASTER
+        physics Physics {
+          density -1
+          mass 0.02
+        }
+        linearVelocity -2.0355503002542642e-16 -1.0575996562806923e-15 -4.884981308350689e-16
+        angularVelocity 3.59586887313886e-14 -6.921058167462407e-15 1.3384778239459674e-29
+      }
+    }
+  ]
+  name "S0 differential UGV"
+  boundingObject Pose {
+    translation 0 0 0.06
+    children [
+      Box {
+        size 0.4 0.28 0.12
+      }
+    ]
+  }
+  physics Physics {
+    density -1
+    mass 2
+  }
+  controller "s0_smoke"
+  linearVelocity -8.11714271432627e-17 -9.812886817866625e-16 1.7053025658242405e-16
+  angularVelocity -9.238041229689533e-16 -7.51955886028271e-16 1.0430496974866468e-16
+}

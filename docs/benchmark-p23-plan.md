@@ -1,5 +1,7 @@
 # P2.3 — Mở rộng corpus và benchmark nghiên cứu
 
+**Trạng thái 2026-11-25: TẠM HOÃN theo ưu tiên của người dùng.** Thực hiện [S0 — Simulator Feasibility](simulator-feasibility.md) trước; chỉ mở lại P2.3 khi có quyết định tiếp tục. Nội dung dưới đây là kế hoạch được giữ lại, chưa phải công việc đang triển khai.
+
 P2.3 chỉ bắt đầu sau cổng [nghiệm thu P2.2 cuối](benchmark-p22-final-audit.md). Pilot dev không chứng minh B1 tốt hơn B0. Giữ protocol t1-0.2; mọi thay đổi về policy, evaluator, sensing hoặc metric phải có version và nêu tác động tới khả năng so sánh.
 
 ## 1. Xây corpus có provenance
