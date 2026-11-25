@@ -1,0 +1,9 @@
+{
+  "found": {"start": [-1.8, -0.8, -1.5707963267948966], "person": [1.0, -0.8], "boxes": [], "limit_s": 70, "expect": "FOUND"},
+  "occluded": {"start": [-1.8, -0.8, 0], "person": [1.0, -0.8], "boxes": [[-0.2, -0.8, 0.1, 1.4, 2.2]], "limit_s": 180, "expect": "FOUND"},
+  "obstacle": {"start": [-1.8, 0, 0], "person": [1.2, 0], "boxes": [[-0.1, 0, 0.5, 0.7, 0.4]], "limit_s": 110, "expect": "FOUND"},
+  "absent": {"start": [0, 0, 0], "person": null, "boxes": [], "limit_s": 100, "expect": "NO_FALSE_FOUND"},
+  "faults": {"start": [-1.8, -0.8, -1.5707963267948966], "person": [1.0, -0.8], "boxes": [], "limit_s": 80, "expect": "FOUND", "faults": [[2, 2.8, "invalid_scan"], [4, 4.8, "stale_scan"], [6, 6.8, "invalid_camera"], [8, 8.8, "stale_camera"], [10, 10.8, "invalid_pose"], [12, 12.8, "stale_pose"]]},
+  "repeat": {"start": [-1.8, -0.8, -1.5707963267948966], "person": [1.0, -0.8], "boxes": [], "limit_s": 70, "expect": "FOUND", "repeat": true},
+  "calibration": {"start": [0, 0, 0], "person": [1.5, 0.2], "boxes": [], "limit_s": 30, "expect": "CALIBRATION"}
+}

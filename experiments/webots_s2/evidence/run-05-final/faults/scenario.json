@@ -1,0 +1,46 @@
+{
+  "start": [
+    -1.8,
+    -0.8,
+    -1.5707963267948966
+  ],
+  "person": [
+    1.0,
+    -0.8
+  ],
+  "boxes": [],
+  "limit_s": 80,
+  "expect": "FOUND",
+  "faults": [
+    [
+      2,
+      2.8,
+      "invalid_scan"
+    ],
+    [
+      4,
+      4.8,
+      "stale_scan"
+    ],
+    [
+      6,
+      6.8,
+      "invalid_camera"
+    ],
+    [
+      8,
+      8.8,
+      "stale_camera"
+    ],
+    [
+      10,
+      10.8,
+      "invalid_pose"
+    ],
+    [
+      12,
+      12.8,
+      "stale_pose"
+    ]
+  ]
+}

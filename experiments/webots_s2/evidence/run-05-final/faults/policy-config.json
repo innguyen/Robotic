@@ -1,0 +1,38 @@
+{
+  "log": "C:/Projects/Robotic/experiments/webots_s2/evidence/run-05-final/faults/control.jsonl",
+  "limit_s": 80,
+  "faults": [
+    [
+      2,
+      2.8,
+      "invalid_scan"
+    ],
+    [
+      4,
+      4.8,
+      "stale_scan"
+    ],
+    [
+      6,
+      6.8,
+      "invalid_camera"
+    ],
+    [
+      8,
+      8.8,
+      "stale_camera"
+    ],
+    [
+      10,
+      10.8,
+      "invalid_pose"
+    ],
+    [
+      12,
+      12.8,
+      "stale_pose"
+    ]
+  ],
+  "epoch": 0,
+  "async_planning": false
+}

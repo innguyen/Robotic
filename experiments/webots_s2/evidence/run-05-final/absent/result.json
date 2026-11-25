@@ -1,0 +1,38 @@
+{
+  "episodes": [
+    {
+      "trial": 0,
+      "done": "EPISODE_LIMIT",
+      "done_sim_s": 100.032,
+      "elapsed_s": 100.032,
+      "states": [
+        "GOTO",
+        "SPIN"
+      ],
+      "reasons": [
+        "EPISODE_LIMIT",
+        "SEARCH_EXPLORE",
+        "SEARCH_SPIN"
+      ],
+      "monitors": [
+        "IDLE",
+        "PASS"
+      ],
+      "faults": [],
+      "pose": [
+        0.4802343906118977,
+        0.2176267586040388,
+        0.0992152
+      ],
+      "samples": 1053,
+      "max_lateral_m_s": 0.11086739277858187,
+      "max_detour_m": 1.9561010223469686,
+      "min_box_clearance_m": null,
+      "policy_steps": 1041,
+      "navigation_steps": 351,
+      "hold_s": 1.0560000000000116,
+      "closed_workers": 0,
+      "fault_physical_stop_checks": 0
+    }
+  ]
+}

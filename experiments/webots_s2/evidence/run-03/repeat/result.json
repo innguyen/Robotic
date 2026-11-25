@@ -1,0 +1,115 @@
+{
+  "episodes": [
+    {
+      "trial": 0,
+      "done": "FOUND",
+      "done_sim_s": 17.664,
+      "elapsed_s": 17.664,
+      "states": [
+        "APPROACH",
+        "FOUND",
+        "SPIN"
+      ],
+      "reasons": [
+        "ALIGN",
+        "FOLLOW",
+        "FOUND",
+        "PATH_BLOCKED",
+        "RECOVERY_ROTATE",
+        "SEARCH_SPIN"
+      ],
+      "monitors": [
+        "IDLE",
+        "PASS"
+      ],
+      "faults": [],
+      "pose": [
+        -0.035229197954353524,
+        -0.7700025235787025,
+        0.09921519999999999
+      ],
+      "samples": 195,
+      "max_lateral_m_s": 0.08927887664883279,
+      "max_detour_m": 0.029997476421297575,
+      "min_box_clearance_m": null,
+      "policy_steps": 184,
+      "navigation_steps": 128,
+      "hold_s": 1.0559999999999974,
+      "closed_workers": 0
+    },
+    {
+      "trial": 1,
+      "done": "FOUND",
+      "done_sim_s": 17.76,
+      "elapsed_s": 17.664,
+      "states": [
+        "APPROACH",
+        "FOUND",
+        "SPIN"
+      ],
+      "reasons": [
+        "ALIGN",
+        "FOLLOW",
+        "FOUND",
+        "PATH_BLOCKED",
+        "RECOVERY_ROTATE",
+        "SEARCH_SPIN"
+      ],
+      "monitors": [
+        "IDLE",
+        "PASS"
+      ],
+      "faults": [],
+      "pose": [
+        -0.035229197954353524,
+        -0.7700025235787025,
+        0.09921519999999998
+      ],
+      "samples": 195,
+      "max_lateral_m_s": 0.08927887664883279,
+      "max_detour_m": 0.029997476421297575,
+      "min_box_clearance_m": null,
+      "policy_steps": 184,
+      "navigation_steps": 128,
+      "hold_s": 1.0559999999999974,
+      "closed_workers": 0
+    },
+    {
+      "trial": 2,
+      "done": "FOUND",
+      "done_sim_s": 17.664,
+      "elapsed_s": 17.664,
+      "states": [
+        "APPROACH",
+        "FOUND",
+        "SPIN"
+      ],
+      "reasons": [
+        "ALIGN",
+        "FOLLOW",
+        "FOUND",
+        "PATH_BLOCKED",
+        "RECOVERY_ROTATE",
+        "SEARCH_SPIN"
+      ],
+      "monitors": [
+        "IDLE",
+        "PASS"
+      ],
+      "faults": [],
+      "pose": [
+        -0.035229197954353524,
+        -0.7700025235787025,
+        0.09921519999999999
+      ],
+      "samples": 195,
+      "max_lateral_m_s": 0.08927887664883279,
+      "max_detour_m": 0.029997476421297575,
+      "min_box_clearance_m": null,
+      "policy_steps": 184,
+      "navigation_steps": 128,
+      "hold_s": 1.0559999999999974,
+      "closed_workers": 0
+    }
+  ]
+}

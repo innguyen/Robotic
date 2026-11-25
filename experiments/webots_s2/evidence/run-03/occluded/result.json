@@ -1,0 +1,46 @@
+{
+  "episodes": [
+    {
+      "trial": 0,
+      "done": "FOUND",
+      "done_sim_s": 78.912,
+      "elapsed_s": 78.912,
+      "states": [
+        "APPROACH",
+        "FOUND",
+        "GOTO",
+        "SPIN"
+      ],
+      "reasons": [
+        "ALIGN",
+        "FOLLOW",
+        "FOUND",
+        "PATH_BLOCKED",
+        "RECOVERY_ROTATE",
+        "ROTATE",
+        "SEARCH_EXPLORE",
+        "SEARCH_SPIN"
+      ],
+      "monitors": [
+        "APPROACH",
+        "IDLE",
+        "PASS",
+        "SLOWDOWN"
+      ],
+      "faults": [],
+      "pose": [
+        0.2951318196095577,
+        -0.07841079555586852,
+        0.09921519999999999
+      ],
+      "samples": 833,
+      "max_lateral_m_s": 0.08585146063262514,
+      "max_detour_m": 0.9852027968898821,
+      "min_box_clearance_m": 0.062120130593027165,
+      "policy_steps": 822,
+      "navigation_steps": 551,
+      "hold_s": 1.0559999999999974,
+      "closed_workers": 0
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+#VRML_SIM R2025a utf8
+# S2 ideal holonomic velocity body. Collision dynamics, not roller/traction dynamics.
+WorldInfo {
+  basicTimeStep 32
+  coordinateSystem "ENU"
+  randomSeed 0
+  # Direct velocity actuation must remain awake through mission dwell/pauses.
+  physicsDisableTime 1000000
+  FPS 30
+  contactProperties [ ContactProperties {
+    material1 "omni"
+    material2 "default"
+    coulombFriction [0]
+    bounce 0
+    bumpSound ""
+    rollSound ""
+    slideSound ""
+  } ]
+}
+Viewpoint {
+  orientation 0.2 0.9 0.4 1.5
+  position 5 -6 7
+  ambientOcclusionRadius 0
+  bloomThreshold -1
+}
+Background { skyColor [0.18 0.22 0.28] }
+DirectionalLight { direction -1 -1 -2 ambientIntensity 0.3 }
+DEF FLOOR Solid {
+  translation 0 0 -0.05
+  name "FLOOR"
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.5 0.5 0.5 } }
+    geometry DEF FLOOR_BOX Box { size 6 6 0.1 }
+  } ]
+  boundingObject USE FLOOR_BOX
+  
+}
+DEF EAST Solid {
+  translation 3 0 0.4
+  name "EAST"
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.5 0.5 0.5 } }
+    geometry DEF EAST_BOX Box { size 0.1 6 0.8 }
+  } ]
+  boundingObject USE EAST_BOX
+  
+}
+DEF WEST Solid {
+  translation -3 0 0.4
+  name "WEST"
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.5 0.5 0.5 } }
+    geometry DEF WEST_BOX Box { size 0.1 6 0.8 }
+  } ]
+  boundingObject USE WEST_BOX
+  
+}
+DEF NORTH Solid {
+  translation 0 3 0.4
+  name "NORTH"
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.5 0.5 0.5 } }
+    geometry DEF NORTH_BOX Box { size 6 0.1 0.8 }
+  } ]
+  boundingObject USE NORTH_BOX
+  
+}
+DEF SOUTH Solid {
+  translation 0 -3 0.4
+  name "SOUTH"
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.5 0.5 0.5 } }
+    geometry DEF SOUTH_BOX Box { size 6 0.1 0.8 }
+  } ]
+  boundingObject USE SOUTH_BOX
+  
+}
+DEF BLOCK_0 Solid {
+  translation -0.1 0 0.2
+  name "BLOCK_0"
+  children [ Shape {
+    appearance Appearance { material Material { diffuseColor 0.5 0.3 0.1 } }
+    geometry DEF BLOCK_0_BOX Box { size 0.5 0.7 0.4 }
+  } ]
+  boundingObject USE BLOCK_0_BOX
+  
+}
+DEF PERSON Solid {
+  translation 1.2 0 0.9
+  children [
+    Pose {
+      translation 0 0 0.15
+      children [
+        Shape {
+          appearance DEF PERSON_COLOR Appearance {
+            material Material {
+              diffuseColor 0.8 0.1 0.2
+            }
+          }
+          geometry Box {
+            size 0.3 0.45 0.7
+          }
+        }
+      ]
+    }
+    Pose {
+      translation 0 0 0.7
+      children [
+        Shape {
+          appearance USE PERSON_COLOR
+          geometry Sphere {
+            radius 0.16
+          }
+        }
+      ]
+    }
+    Pose {
+      translation 0 0.12 -0.55
+      children [
+        Shape {
+          appearance USE PERSON_COLOR
+          geometry Box {
+            size 0.16 0.16 0.7
+          }
+        }
+      ]
+    }
+    Pose {
+      translation 0 -0.12 -0.55
+      children [
+        Shape {
+          appearance USE PERSON_COLOR
+          geometry Box {
+            size 0.16 0.16 0.7
+          }
+        }
+      ]
+    }
+  ]
+  name "person"
+  model "s0_person"
+  boundingObject Box {
+    size 0.32 0.48 1.8
+  }
+  recognitionColors [
+    0.8 0.1 0.2
+  ]
+}
+DEF S2_ROBOT Robot {
+  translation -1.8 0 0.1
+  rotation 0 0 1 0
+  name "S2 ideal omni"
+  contactMaterial "omni"
+  supervisor TRUE
+  controller "s2_core"
+  controllerArgs ["C:/Projects/Robotic/experiments/webots_s2/.runs/obstacle-15yubomq/policy.json"]
+  children [
+    Shape {
+      appearance Appearance { material Material { diffuseColor 0.1 0.3 0.8 } }
+      geometry DEF BODY Box { size 0.4 0.4 0.2 }
+    }
+    Camera {
+      name "camera"
+      translation 0.12 0 0.55
+      width 160
+      height 120
+      fieldOfView 1.012290966
+      near 0.02
+      far 6
+      recognition Recognition { maxRange 3.5 occlusion 1 }
+    }
+    Lidar {
+      name "lidar"
+      translation 0.12 0 0.15
+      type "fixed"
+      projection "cylindrical"
+      horizontalResolution 192
+      numberOfLayers 1
+      fieldOfView 6.283185307179586
+      verticalFieldOfView 0.01
+      near 0.02
+      minRange 0.05
+      maxRange 6
+      noise 0
+    }
+  ]
+  boundingObject USE BODY
+  physics Physics { density -1 mass 2 damping Damping { linear 0 angular 0 } }
+}
+
+Robot {
+  supervisor TRUE
+  controller "s2_audit"
+  controllerArgs ["C:/Projects/Robotic/experiments/webots_s2/.runs/obstacle-15yubomq/audit.json"]
+}
