@@ -1,0 +1,109 @@
+[
+  {
+    "name": "clock_and_reset",
+    "status": "PASS",
+    "metrics": {
+      "idle_ticks": 0,
+      "advanced_ticks": 60,
+      "reset_epoch": 2,
+      "synchronized_stamps": true
+    },
+    "wall_seconds": 1.4045168999998623
+  },
+  {
+    "name": "calibration",
+    "status": "PASS",
+    "metrics": {
+      "range_max_error_m": 5.576755608416306e-07,
+      "finite_rays": 144,
+      "actuator_max_error_m": 3.0051076890964687e-06,
+      "trials": 8
+    },
+    "wall_seconds": 16.649469500000123
+  },
+  {
+    "name": "collision",
+    "status": "PASS",
+    "metrics": {
+      "stop_x": 1.23986077308655,
+      "collision_count": 117,
+      "zero_hold_drift_m": 0
+    },
+    "wall_seconds": 5.081026400000155
+  },
+  {
+    "name": "repeat",
+    "status": "PASS",
+    "metrics": {
+      "episodes": 3,
+      "max_pose_error": 3.874301910122835e-07,
+      "max_scan_error": 1.430511470168483e-06,
+      "rgb_identical": true
+    },
+    "wall_seconds": 4.799371500000007
+  },
+  {
+    "name": "protocol",
+    "status": "PASS",
+    "metrics": {
+      "rejected": [
+        "stale_epoch",
+        "invalid_velocity",
+        "invalid_ticks",
+        "invalid_step"
+      ],
+      "reconnect_pose_held": true
+    },
+    "wall_seconds": 0.7487277000000176
+  },
+  {
+    "name": "visibility",
+    "status": "PASS",
+    "metrics": {
+      "hidden_initial": true,
+      "revealed_rgb": {
+        "pixels": 1134,
+        "u": 77.51940035273368,
+        "bearing": 0.013722442493077691
+      },
+      "absent_false_detection": false,
+      "reveal": "scripted 2m lateral maneuver"
+    },
+    "wall_seconds": 6.132970600000135
+  },
+  {
+    "name": "mission",
+    "status": "PASS",
+    "metrics": {
+      "elapsed_sim_s": 6.4,
+      "states": [
+        "APPROACH",
+        "DETECT",
+        "SEARCH",
+        "STOP"
+      ],
+      "distance_base_to_person_m": 1.0509526630138935,
+      "hold_drift_m": 0.0,
+      "policy_steps": 64,
+      "perception": "RGB red pixels + angularly matched range rays; no target pose input"
+    },
+    "wall_seconds": 8.70804750000002
+  },
+  {
+    "name": "performance",
+    "status": "MEASURED",
+    "metrics": {
+      "simulated_s": 10,
+      "wall_s": 11.667451699999901,
+      "end_to_end_rtf": 0.8570851851051661,
+      "request_median_ms": 116.49135000004662,
+      "request_p95_ms": 121.1203000000296,
+      "reported_fps_min": 60.0,
+      "reported_fps_max": 60.0,
+      "peak_working_set_bytes": 253898752,
+      "scope": "100 lockstep requests, idle robot, full scan/RGB readback+JSON+logging; not standalone engine benchmark",
+      "hardware_performance_acceptance": "UNVERIFIED: short sample only, no matched Webots measurement or long soak"
+    },
+    "wall_seconds": 11.734382600000117
+  }
+]

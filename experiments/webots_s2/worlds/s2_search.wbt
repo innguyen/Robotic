@@ -1,77 +1,123 @@
 #VRML_SIM R2025a utf8
-# S2 ideal holonomic velocity body. Collision dynamics, not roller/traction dynamics.
+
 WorldInfo {
-  basicTimeStep 32
-  coordinateSystem "ENU"
-  randomSeed 0
-  # Direct velocity actuation must remain awake through mission dwell/pauses.
-  physicsDisableTime 1000000
   FPS 30
-  contactProperties [ ContactProperties {
-    material1 "omni"
-    material2 "default"
-    coulombFriction [0]
-    bounce 0
-    bumpSound ""
-    rollSound ""
-    slideSound ""
-  } ]
+  physicsDisableTime 1000000
+  contactProperties [
+    ContactProperties {
+      material1 "omni"
+      coulombFriction [
+        0
+      ]
+      bounce 0
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
 }
 Viewpoint {
-  orientation 0.2 0.9 0.4 1.5
-  position 5 -6 7
+  orientation 0.7235950732496566 0.5053363776554191 0.4701545654217597 0.7109349486886247
+  position -8.847245215128133 -2.692652453608793 4.139912345444854
   ambientOcclusionRadius 0
   bloomThreshold -1
 }
-Background { skyColor [0.18 0.22 0.28] }
-DirectionalLight { direction -1 -1 -2 ambientIntensity 0.3 }
+Background {
+  skyColor [
+    0.18 0.22 0.28
+  ]
+}
+DirectionalLight {
+  ambientIntensity 0.3
+  direction -1 -1 -2
+}
 DEF FLOOR Solid {
   translation 0 0 -0.05
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.5 0.5 0.5
+        }
+      }
+      geometry DEF FLOOR_BOX Box {
+        size 6 6 0.1
+      }
+    }
+  ]
   name "FLOOR"
-  children [ Shape {
-    appearance Appearance { material Material { diffuseColor 0.5 0.5 0.5 } }
-    geometry DEF FLOOR_BOX Box { size 6 6 0.1 }
-  } ]
   boundingObject USE FLOOR_BOX
 }
 DEF EAST Solid {
   translation 3 0 0.4
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.5 0.5 0.5
+        }
+      }
+      geometry DEF EAST_BOX Box {
+        size 0.1 6 0.8
+      }
+    }
+  ]
   name "EAST"
-  children [ Shape {
-    appearance Appearance { material Material { diffuseColor 0.5 0.5 0.5 } }
-    geometry DEF EAST_BOX Box { size 0.1 6 0.8 }
-  } ]
   boundingObject USE EAST_BOX
 }
 DEF WEST Solid {
   translation -3 0 0.4
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.5 0.5 0.5
+        }
+      }
+      geometry DEF WEST_BOX Box {
+        size 0.1 6 0.8
+      }
+    }
+  ]
   name "WEST"
-  children [ Shape {
-    appearance Appearance { material Material { diffuseColor 0.5 0.5 0.5 } }
-    geometry DEF WEST_BOX Box { size 0.1 6 0.8 }
-  } ]
   boundingObject USE WEST_BOX
 }
 DEF NORTH Solid {
   translation 0 3 0.4
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.5 0.5 0.5
+        }
+      }
+      geometry DEF NORTH_BOX Box {
+        size 6 0.1 0.8
+      }
+    }
+  ]
   name "NORTH"
-  children [ Shape {
-    appearance Appearance { material Material { diffuseColor 0.5 0.5 0.5 } }
-    geometry DEF NORTH_BOX Box { size 6 0.1 0.8 }
-  } ]
   boundingObject USE NORTH_BOX
 }
 DEF SOUTH Solid {
   translation 0 -3 0.4
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.5 0.5 0.5
+        }
+      }
+      geometry DEF SOUTH_BOX Box {
+        size 6 0.1 0.8
+      }
+    }
+  ]
   name "SOUTH"
-  children [ Shape {
-    appearance Appearance { material Material { diffuseColor 0.5 0.5 0.5 } }
-    geometry DEF SOUTH_BOX Box { size 6 0.1 0.8 }
-  } ]
   boundingObject USE SOUTH_BOX
 }
 DEF PERSON Solid {
-  translation 1.0 -0.8 0.9
+  translation 1 -0.8 0.9
   children [
     Pose {
       translation 0 0 0.15
@@ -132,43 +178,55 @@ DEF PERSON Solid {
   ]
 }
 DEF S2_ROBOT Robot {
-  translation -1.8 -0.8 0.1
-  rotation 0 0 1 -1.5707963267948966
-  name "S2 ideal omni"
-  contactMaterial "omni"
-  supervisor TRUE
-  controller "s2_core"
-  controllerArgs []
+  translation -0.035229197954353524 -0.7700025235787025 0.09921519999999999
+  rotation -2.5893926740554937e-17 8.902262228394237e-17 -0.9999999999999999 0.22086727814302723
   children [
     Shape {
-      appearance Appearance { material Material { diffuseColor 0.1 0.3 0.8 } }
-      geometry DEF BODY Box { size 0.4 0.4 0.2 }
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.1 0.3 0.8
+        }
+      }
+      geometry DEF BODY Box {
+        size 0.4 0.4 0.2
+      }
     }
     Camera {
-      name "camera"
       translation 0.12 0 0.55
+      fieldOfView 1.012290966
       width 160
       height 120
-      fieldOfView 1.012290966
       near 0.02
       far 6
-      recognition Recognition { maxRange 3.5 occlusion 1 }
+      recognition Recognition {
+        maxRange 3.5
+      }
     }
     Lidar {
-      name "lidar"
       translation 0.12 0 0.15
-      type "fixed"
-      projection "cylindrical"
       horizontalResolution 192
-      numberOfLayers 1
       fieldOfView 6.283185307179586
       verticalFieldOfView 0.01
+      numberOfLayers 1
       near 0.02
       minRange 0.05
       maxRange 6
-      noise 0
     }
   ]
+  name "S2 ideal omni"
+  contactMaterial "omni"
   boundingObject USE BODY
-  physics Physics { density -1 mass 2 damping Damping { linear 0 angular 0 } }
+  physics Physics {
+    density -1
+    mass 2
+    damping Damping {
+      linear 0
+      angular 0
+    }
+  }
+  controller "s2_core"
+  customData "{\"epoch\": 0, \"sim_s\": 57.888, \"pose\": [-0.029997476421297468, 1.7647708020456465, 1.3499290486518696], \"raw\": [0.0, 0.0, 0.0], \"limited\": [0.0, 0.0, 0.0], \"checked\": [0.0, 0.0, 0.0], \"applied\": [0.0, 0.0, 0.0], \"reason\": \"FOUND\", \"monitor\": \"IDLE\", \"target\": [-0.04175781261252273, 2.6140214359563125], \"target_source\": \"webots_recognition_oracle\", \"pose_source\": \"supervisor_ideal_pose\", \"mission\": {\"state\": \"FOUND\", \"found\": [-0.04175781261252273, 2.6140214359563125], \"goal\": null, \"goal_kind\": \"\", \"covered_cells\": 3295, \"covered_m2\": 11.86, \"spots\": 0, \"nav_reason\": \"ARRIVED\"}, \"policy_steps\": 184, \"navigation_steps\": 128, \"monitor_steps\": 603, \"stamps\": {\"pose\": 57.888, \"scan\": 57.888, \"camera\": 57.888}, \"event\": \"CONTROL\", \"episode_started_sim_s\": 0.0, \"fault\": null, \"done\": \"FOUND\", \"recognition_visible\": true, \"world_pose\": [-0.035229197954353524, -0.7700025235787025, -0.2208672781430272], \"closed_workers\": 0}"
+  supervisor TRUE
+  linearVelocity 2.037124811355844e-18 2.1725734439796446e-18 5.684341886080802e-17
+  angularVelocity 1.0658141036401501e-16 4.2632564145606e-16 -2.7524754212413693e-33
 }

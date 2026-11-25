@@ -1,0 +1,101 @@
+[
+  {
+    "name": "clock_and_reset",
+    "status": "PASS",
+    "metrics": {
+      "idle_ticks": 0,
+      "advanced_ticks": 60,
+      "reset_epoch": 2,
+      "synchronized_stamps": true
+    },
+    "wall_seconds": 1.3892017999999098
+  },
+  {
+    "name": "calibration",
+    "status": "PASS",
+    "metrics": {
+      "range_max_error_m": 5.576755608416306e-07,
+      "finite_rays": 144,
+      "actuator_max_error_m": 3.0051076890964687e-06,
+      "trials": 8
+    },
+    "wall_seconds": 16.64970059999996
+  },
+  {
+    "name": "collision",
+    "status": "PASS",
+    "metrics": {
+      "stop_x": 1.23986077308655,
+      "collision_count": 117,
+      "zero_hold_drift_m": 0
+    },
+    "wall_seconds": 5.082001199999922
+  },
+  {
+    "name": "repeat",
+    "status": "PASS",
+    "metrics": {
+      "episodes": 3,
+      "max_pose_error": 3.874301910122835e-07,
+      "max_scan_error": 1.430511470168483e-06,
+      "rgb_identical": true
+    },
+    "wall_seconds": 4.801767300000051
+  },
+  {
+    "name": "protocol",
+    "status": "PASS",
+    "metrics": {
+      "rejected": [
+        "stale_epoch",
+        "invalid_velocity",
+        "invalid_ticks",
+        "invalid_step"
+      ],
+      "reconnect_pose_held": true
+    },
+    "wall_seconds": 0.745945200000051
+  },
+  {
+    "name": "visibility",
+    "status": "FAIL",
+    "error": "",
+    "traceback": "Traceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\experiments\\godot_s0\\run_s0.py\", line 100, in check\n    metrics = function()\n              ^^^^^^^^^^\n  File \"C:\\Projects\\Robotic\\experiments\\godot_s0\\run_s0.py\", line 224, in visibility\n    assert detected is not None\n           ^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+    "wall_seconds": 4.114714100000015
+  },
+  {
+    "name": "mission",
+    "status": "PASS",
+    "metrics": {
+      "elapsed_sim_s": 6.4,
+      "states": [
+        "APPROACH",
+        "DETECT",
+        "SEARCH",
+        "STOP"
+      ],
+      "distance_base_to_person_m": 1.0509526630138935,
+      "hold_drift_m": 0.0,
+      "policy_steps": 64,
+      "perception": "RGB red pixels + angularly matched range rays; no target pose input"
+    },
+    "wall_seconds": 8.591779200000019
+  },
+  {
+    "name": "performance",
+    "status": "PASS",
+    "metrics": {
+      "simulated_s": 10,
+      "wall_s": 11.660637599999859,
+      "end_to_end_rtf": 0.857586038005342,
+      "request_median_ms": 116.42779999988306,
+      "request_p95_ms": 120.35170000001472,
+      "reported_fps_min": 60.0,
+      "reported_fps_max": 60.0,
+      "peak_working_set_bytes": 254554112,
+      "scope": "100 lockstep requests, idle robot, full scan/RGB readback+JSON+logging; not standalone engine benchmark",
+      "hardware_performance_acceptance": "UNVERIFIED: short sample only, no matched Webots measurement or long soak"
+    },
+    "wall_seconds": 11.707668799999965
+  }
+]

@@ -1,0 +1,86 @@
+[
+  {
+    "name": "clock_and_reset",
+    "status": "PASS",
+    "metrics": {
+      "idle_ticks": 0,
+      "advanced_ticks": 60,
+      "reset_epoch": 2,
+      "synchronized_stamps": true
+    },
+    "wall_seconds": 1.406275800000003
+  },
+  {
+    "name": "calibration",
+    "status": "PASS",
+    "metrics": {
+      "range_max_error_m": 5.576755608416306e-07,
+      "finite_rays": 144,
+      "actuator_max_error_m": 3.0051076890964687e-06,
+      "trials": 8
+    },
+    "wall_seconds": 16.69515709999996
+  },
+  {
+    "name": "collision",
+    "status": "PASS",
+    "metrics": {
+      "stop_x": 1.23986077308655,
+      "collision_count": 117,
+      "zero_hold_drift_m": 0
+    },
+    "wall_seconds": 5.078195300000061
+  },
+  {
+    "name": "repeat",
+    "status": "PASS",
+    "metrics": {
+      "episodes": 3,
+      "max_pose_error": 3.874301910122835e-07,
+      "max_scan_error": 1.430511470168483e-06,
+      "rgb_identical": false
+    },
+    "wall_seconds": 4.80077580000011
+  },
+  {
+    "name": "protocol",
+    "status": "PASS",
+    "metrics": {
+      "rejected": [
+        "stale_epoch",
+        "invalid_velocity",
+        "invalid_ticks",
+        "invalid_step"
+      ],
+      "reconnect_pose_held": true
+    },
+    "wall_seconds": 0.7481110999999601
+  },
+  {
+    "name": "visibility",
+    "status": "UNVERIFIED",
+    "reason": "headless dummy renderer has no RGB"
+  },
+  {
+    "name": "mission",
+    "status": "UNVERIFIED",
+    "reason": "headless dummy renderer has no RGB"
+  },
+  {
+    "name": "performance",
+    "status": "MEASURED",
+    "metrics": {
+      "simulated_s": 10,
+      "wall_s": 11.600432299999966,
+      "end_to_end_rtf": 0.8620368397822579,
+      "request_median_ms": 116.3586000000123,
+      "request_p95_ms": 117.47790000003988,
+      "reported_fps_min": 60.0,
+      "reported_fps_max": 60.0,
+      "peak_working_set_bytes": 101347328,
+      "scope": "100 lockstep requests, idle robot, scan + invalid camera (no rendering) + JSON/logging; not standalone engine benchmark",
+      "hardware_performance_acceptance": "UNVERIFIED: short sample only, no matched Webots measurement or long soak"
+    },
+    "wall_seconds": 11.651203200000054
+  }
+]

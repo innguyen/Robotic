@@ -1,0 +1,55 @@
+[
+  {
+    "name": "clock_and_reset",
+    "status": "FAIL",
+    "error": "unsupported operand type(s) for -: 'NoneType' and 'NoneType'",
+    "traceback": "Traceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\experiments\\godot_s0\\run_s0.py\", line 100, in check\n    metrics = function()\n              ^^^^^^^^^^\n  File \"C:\\Projects\\Robotic\\experiments\\godot_s0\\run_s0.py\", line 120, in clock_and_reset\n    assert max(abs(x - y) for x, y in zip(a[\"scan\"][\"ranges\"], d[\"scan\"][\"ranges\"])) < 1e-5\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Projects\\Robotic\\experiments\\godot_s0\\run_s0.py\", line 120, in <genexpr>\n    assert max(abs(x - y) for x, y in zip(a[\"scan\"][\"ranges\"], d[\"scan\"][\"ranges\"])) < 1e-5\n                   ~~^~~\nTypeError: unsupported operand type(s) for -: 'NoneType' and 'NoneType'\n",
+    "wall_seconds": 1.4295147999999926
+  },
+  {
+    "name": "calibration",
+    "status": "PASS",
+    "metrics": {
+      "range_max_error_m": 5.576755608416306e-07,
+      "finite_rays": 144,
+      "actuator_max_error_m": 3.0051076890964687e-06,
+      "trials": 8
+    },
+    "wall_seconds": 16.647381699999983
+  },
+  {
+    "name": "collision",
+    "status": "PASS",
+    "metrics": {
+      "stop_x": 1.23986077308655,
+      "collision_count": 117,
+      "zero_hold_drift_m": 0
+    },
+    "wall_seconds": 5.092983000000004
+  },
+  {
+    "name": "repeat",
+    "status": "PASS",
+    "metrics": {
+      "episodes": 3,
+      "max_pose_error": 3.874301910122835e-07,
+      "max_scan_error": 1.430511470168483e-06,
+      "rgb_identical": false
+    },
+    "wall_seconds": 4.798288700000057
+  },
+  {
+    "name": "protocol",
+    "status": "PASS",
+    "metrics": {
+      "rejected": [
+        "stale_epoch",
+        "invalid_velocity",
+        "invalid_ticks",
+        "invalid_step"
+      ],
+      "reconnect_pose_held": true
+    },
+    "wall_seconds": 0.7484914000000344
+  }
+]

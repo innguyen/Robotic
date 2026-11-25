@@ -1,0 +1,41 @@
+{
+  "started_utc": "2026-11-25T10:48:29.215471+00:00",
+  "command": [
+    "C:\\Godot\\Godot_v4.7.2-stable_win64.exe",
+    "--path",
+    "C:\\Projects\\Robotic\\experiments\\godot_s0",
+    "--audio-driver",
+    "Dummy",
+    "--log-file",
+    "C:\\Projects\\Robotic\\experiments\\godot_s0\\evidence\\run-02-rendered\\engine.log",
+    "--",
+    "--port=51512"
+  ],
+  "python": "3.12.11 (main, Jun  7 2025, 12:31:34)  [GCC UCRT 15.1.0 64 bit (AMD64)]",
+  "python_executable": "C:\\msys64\\ucrt64\\bin\\python.exe",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "identity_before": {
+    "bridge.py": "c272094dd999a11deb055b9c7709732e695ca6edf7e47da19c7714ee1cfd6e58",
+    "main.tscn": "84a372e858c73f27cf154338dd7c6e9fb226bc29fd539c52365a276e071a746d",
+    "project.godot": "e8c90f6092d84c33b8b6f7e393ae0ea4480a03112d1d700251497d6a02e0aa6b",
+    "run_s0.py": "cf0cffcc94f9158231549fdb5439c3f99b8541f9fedb8bb54877cc49396dcb77",
+    "simulator.gd": "f9da511f3de3d699c48eb18aa07c8dd1367995f615f245b119b1c3a34d249ee8"
+  },
+  "rendered": true,
+  "hardware_claim": "Windows 11 / Intel Iris Xe / 8 GB supplied by user; GPU verified in engine log when available",
+  "pid": 14284,
+  "exit_code": 0,
+  "runner_exit": 1,
+  "wall_seconds": 57.162217300000066,
+  "identity_after": {
+    "bridge.py": "c272094dd999a11deb055b9c7709732e695ca6edf7e47da19c7714ee1cfd6e58",
+    "main.tscn": "84a372e858c73f27cf154338dd7c6e9fb226bc29fd539c52365a276e071a746d",
+    "project.godot": "e8c90f6092d84c33b8b6f7e393ae0ea4480a03112d1d700251497d6a02e0aa6b",
+    "run_s0.py": "cf0cffcc94f9158231549fdb5439c3f99b8541f9fedb8bb54877cc49396dcb77",
+    "simulator.gd": "f9da511f3de3d699c48eb18aa07c8dd1367995f615f245b119b1c3a34d249ee8"
+  },
+  "process_memory": {
+    "working_set_bytes": 32768,
+    "peak_working_set_bytes": 254554112
+  }
+}
