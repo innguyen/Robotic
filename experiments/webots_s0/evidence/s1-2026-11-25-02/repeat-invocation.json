@@ -1,0 +1,28 @@
+{
+  "command": [
+    "C:\\Program Files\\Webots\\msys64\\mingw64\\bin\\webots.exe",
+    "--batch",
+    "--minimize",
+    "--no-rendering",
+    "--mode=fast",
+    "--stdout",
+    "--stderr",
+    "C:\\Projects\\Robotic\\experiments\\webots_s0\\.s1-runs\\audit-c2a5p6s6\\worlds\\s1_repeat.wbt"
+  ],
+  "started_utc": "2026-11-25T05:36:52.680632+00:00",
+  "python": "C:\\Users\\lemin\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "python_version": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+  "main_view_rendering": false,
+  "sensor_rendering": true,
+  "performance_measurement": false,
+  "runtime_world_sha256": "dbd25c44f1315376760781f356a3fbe2f863b1f83612ed8e3fb6fa7770c4b2ae",
+  "controller_sha256": {
+    "controllers/s0_smoke/s0_smoke.py": "dee594cab80be27b4a283a90c7068ff8d751e96f8b814faa52017146367100ef",
+    "controllers/s1_occlusion/s1_occlusion.py": "6cc173293000112aca2e03837ffb6a27f799bdcce4a446e29c5a1a70c0480c32",
+    "controllers/s1_repeat/s1_repeat.py": "6365774d2e6d5032fddeff3ca265b7e3b28f4ed23c9c950eb11087dac2764ccd"
+  },
+  "pid": 7392,
+  "returncode": 1,
+  "wall_elapsed_s": 4.797348400001283,
+  "ended_utc": "2026-11-25T05:36:57.508796+00:00"
+}

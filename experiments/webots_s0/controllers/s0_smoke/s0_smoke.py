@@ -5,6 +5,8 @@ JSON lines on stdout are observations, not automatic hardware acceptance.
 """
 import json
 import math
+from pathlib import Path
+import sys
 import time
 
 from controller import Robot
@@ -15,10 +17,15 @@ RADIUS_M = 0.1
 TRACK_M = 0.36
 STOP_RANGE_M = 0.8  # Camera origin to recognition centre, ground-plane distance.
 TIMEOUT_S = 90.0
+_audit_log = None
 
 
 def emit(**fields):
-    print(json.dumps(fields, allow_nan=False), flush=True)
+    line = json.dumps(fields, allow_nan=False)
+    print(line, flush=True)
+    if _audit_log is not None:
+        with _audit_log.open("a", encoding="utf-8") as stream:
+            stream.write(line + "\n")
 
 
 def drive(left, right, vx, wz):
@@ -27,7 +34,11 @@ def drive(left, right, vx, wz):
 
 
 def main():
+    global _audit_log
     robot = Robot()
+    audit = "--audit" in sys.argv
+    if "--audit-log" in sys.argv:
+        _audit_log = Path(sys.argv[sys.argv.index("--audit-log") + 1])
     if SENSOR_MS % int(robot.getBasicTimeStep()):
         raise ValueError("Sensor period must be a multiple of basicTimeStep")
     left = robot.getDevice("left wheel")
@@ -41,8 +52,14 @@ def main():
     camera.recognitionEnable(SENSOR_MS)
     lidar.enable(SENSOR_MS)
     emit(event="START", sensor_period_ms=SENSOR_MS,
+         basic_time_step_ms=robot.getBasicTimeStep(),
          camera=[camera.getWidth(), camera.getHeight()],
-         rays=lidar.getHorizontalResolution(), detector="webots_recognition_oracle")
+         camera_fov_rad=camera.getFov(), camera_period_ms=camera.getSamplingPeriod(),
+         recognition_period_ms=camera.getRecognitionSamplingPeriod(),
+         rays=lidar.getHorizontalResolution(), layers=lidar.getNumberOfLayers(),
+         lidar_fov_rad=lidar.getFov(), lidar_period_ms=lidar.getSamplingPeriod(),
+         lidar_range_m=[lidar.getMinRange(), lidar.getMaxRange()],
+         detector="webots_recognition_oracle")
     started_sim = window_sim = robot.getTime()
     window_wall = time.perf_counter()
     samples = 0
@@ -96,6 +113,11 @@ def main():
             if vx > 0 and front_min < 0.45:
                 vx, wz, state = 0.0, 0.0, "OBSTACLE_STOP"
             drive(left, right, vx, wz)
+            if audit:
+                # Test telemetry only. The policy never reads Supervisor ground truth.
+                robot.setCustomData(json.dumps(dict(state=state, valid=valid,
+                    sim_s=now, epoch_started_sim_s=started_sim,
+                    command=[vx, 0.0, wz], range_m=distance)))
             if state != last_state:
                 emit(event="STATE", sim_s=now, state=state, command=[vx, 0.0, wz])
                 last_state = state

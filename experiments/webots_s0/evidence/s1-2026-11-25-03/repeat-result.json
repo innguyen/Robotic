@@ -1,0 +1,28 @@
+{
+  "trials": [
+    {
+      "trial": 0,
+      "initial_position_m": [
+        -2.0,
+        -1.0,
+        0.1
+      ],
+      "initial_yaw_rad": -1.5707963267948966,
+      "states": [
+        "SEARCH_SPIN",
+        "APPROACH",
+        "FOUND"
+      ],
+      "found_observed_sim_s": 20.64,
+      "stopped_position_m": [
+        -0.08872173346720114,
+        -1.0083086146858928,
+        0.09940541073877032
+      ],
+      "hold_s": 2.0159999999999982,
+      "hold_drift_m": 5.985809346710054e-05,
+      "stopped_max_velocity": 4.901689277753436e-09,
+      "valid_samples": 235
+    }
+  ]
+}

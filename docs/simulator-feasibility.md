@@ -1,5 +1,7 @@
 # S0 — Simulator Feasibility
 
+> Cập nhật sau S0: xem [S1 — Webots PoC Hardening](webots-s1-audit.md) cho fixture initial pose đã guard, logs reset/reload và ca occlusion chạy thật ngày 2026-11-25. Các mục UNVERIFIED lịch sử bên dưới giữ nguyên theo thời điểm S0; kết quả S1 và giới hạn hiện hành được ghi riêng trong báo cáo mới.
+
 Ngày khảo sát: **2026-11-25**. Repository: `innguyen/Robotic`, nhánh `feat/benchmark`.
 Mốc source được đọc: `57ab7e65fcfbac9d573321feb2e5afdccbf5f6d7`.
 Đối tượng trình bày: giảng viên hướng dẫn; quyết định cần chốt là có đầu tư tích hợp simulator 3D hay không.

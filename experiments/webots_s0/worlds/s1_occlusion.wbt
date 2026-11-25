@@ -1,0 +1,351 @@
+#VRML_SIM R2025a utf8
+
+WorldInfo {
+  basicTimeStep 32
+  coordinateSystem "ENU"
+  randomSeed 0
+  FPS 30
+}
+Viewpoint {
+  orientation 0.10727366616216553 0.9712786025920408 -0.21239170580552574 0.9590544281417454
+  position -6.157540022691327 2.204575504930788 8.565676304642295
+  ambientOcclusionRadius 0
+  bloomThreshold -1
+}
+Background {
+  skyColor [
+    0.18 0.22 0.28
+  ]
+}
+DirectionalLight {
+  direction -1 -1 -2
+}
+Solid {
+  translation 0 0 -0.05
+  children [
+    Shape {
+      appearance DEF FLOOR Appearance {
+        material Material {
+          diffuseColor 0.55 0.55 0.55
+        }
+      }
+      geometry DEF FLOOR_BOX Box {
+        size 8 6 0.1
+      }
+    }
+  ]
+  name "floor"
+  boundingObject USE FLOOR_BOX
+}
+Solid {
+  translation 4 0 0.3
+  children [
+    Shape {
+      appearance USE FLOOR
+      geometry DEF WALL_X Box {
+        size 0.1 6 0.6
+      }
+    }
+  ]
+  name "east wall"
+  boundingObject USE WALL_X
+}
+Solid {
+  translation -4 0 0.3
+  children [
+    Shape {
+      appearance USE FLOOR
+      geometry USE WALL_X
+    }
+  ]
+  name "west wall"
+  boundingObject USE WALL_X
+}
+Solid {
+  translation 0 3 0.3
+  children [
+    Shape {
+      appearance USE FLOOR
+      geometry DEF WALL_Y Box {
+        size 8 0.1 0.6
+      }
+    }
+  ]
+  name "north wall"
+  boundingObject USE WALL_Y
+}
+Solid {
+  translation 0 -3 0.3
+  children [
+    Shape {
+      appearance USE FLOOR
+      geometry USE WALL_Y
+    }
+  ]
+  name "south wall"
+  boundingObject USE WALL_Y
+}
+DEF OBSTACLE Solid {
+  translation 0.3 0.8 0.6
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.55 0.3 0.1
+        }
+      }
+      geometry DEF OBSTACLE_BOX Box {
+        size 0.6 0.6 1.2
+      }
+    }
+  ]
+  name "obstacle"
+  boundingObject USE OBSTACLE_BOX
+}
+DEF PERSON Solid {
+  translation 1 -1 0.9
+  children [
+    Pose {
+      translation 0 0 0.15
+      children [
+        Shape {
+          appearance DEF PERSON_COLOR Appearance {
+            material Material {
+              diffuseColor 0.8 0.1 0.2
+            }
+          }
+          geometry Box {
+            size 0.3 0.45 0.7
+          }
+        }
+      ]
+    }
+    Pose {
+      translation 0 0 0.7
+      children [
+        Shape {
+          appearance USE PERSON_COLOR
+          geometry Sphere {
+            radius 0.16
+          }
+        }
+      ]
+    }
+    Pose {
+      translation 0 0.12 -0.55
+      children [
+        Shape {
+          appearance USE PERSON_COLOR
+          geometry Box {
+            size 0.16 0.16 0.7
+          }
+        }
+      ]
+    }
+    Pose {
+      translation 0 -0.12 -0.55
+      children [
+        Shape {
+          appearance USE PERSON_COLOR
+          geometry Box {
+            size 0.16 0.16 0.7
+          }
+        }
+      ]
+    }
+  ]
+  name "person"
+  model "s0_person"
+  boundingObject Box {
+    size 0.32 0.48 1.8
+  }
+  recognitionColors [
+    0.8 0.1 0.2
+  ]
+}
+DEF S0_ROBOT Robot {
+  translation -2 -1 0.1
+  rotation 0 0 1 0
+  children [
+    Pose {
+      translation 0 0 0.06
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.1 0.3 0.8
+            }
+          }
+          geometry Box {
+            size 0.4 0.28 0.12
+          }
+        }
+      ]
+    }
+    Camera {
+      translation 0.12 0 0.55
+      name "camera"
+      fieldOfView 1.012290966
+      width 160
+      height 120
+      near 0.02
+      far 6
+      recognition Recognition {
+        maxRange 3.5
+        occlusion 1
+      }
+    }
+    Lidar {
+      translation 0.12 0 0.15
+      name "lidar"
+      type "fixed"
+      projection "cylindrical"
+      noise 0
+      horizontalResolution 180
+      fieldOfView 6.283185307179586
+      verticalFieldOfView 0.01
+      numberOfLayers 1
+      near 0.02
+      minRange 0.05
+      maxRange 6
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor 0 0.18 0
+      }
+      device [
+        RotationalMotor {
+          name "left wheel"
+          maxTorque 2
+        }
+      ]
+      endPoint Solid {
+        translation 0 0.18 0
+        rotation 1 0 0 1.5707963267948966
+        children [
+          Shape {
+            appearance DEF WHEEL_COLOR Appearance {
+              material Material {
+                diffuseColor 0.08 0.08 0.08
+              }
+            }
+            geometry DEF WHEEL Cylinder {
+              height 0.04
+              radius 0.1
+              subdivision 16
+            }
+          }
+        ]
+        name "left wheel solid"
+        boundingObject USE WHEEL
+        physics Physics {
+          density -1
+          mass 0.1
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor 0 -0.18 0
+      }
+      device [
+        RotationalMotor {
+          name "right wheel"
+          maxTorque 2
+        }
+      ]
+      endPoint Solid {
+        translation 0 -0.18 0
+        rotation 1 0 0 1.5707963267948966
+        children [
+          Shape {
+            appearance USE WHEEL_COLOR
+            geometry USE WHEEL
+          }
+        ]
+        name "right wheel solid"
+        boundingObject USE WHEEL
+        physics Physics {
+          density -1
+          mass 0.1
+        }
+      }
+    }
+    BallJoint {
+      jointParameters BallJointParameters {
+        anchor 0.16 0 -0.07
+      }
+      endPoint Solid {
+        translation 0.16 0 -0.07
+        children [
+          Shape {
+            appearance USE WHEEL_COLOR
+            geometry DEF CASTER Sphere {
+              radius 0.03
+            }
+          }
+        ]
+        name "front caster"
+        boundingObject USE CASTER
+        physics Physics {
+          density -1
+          mass 0.02
+        }
+      }
+    }
+    BallJoint {
+      jointParameters BallJointParameters {
+        anchor -0.16 0 -0.07
+      }
+      endPoint Solid {
+        translation -0.16 0 -0.07
+        children [
+          Shape {
+            appearance USE WHEEL_COLOR
+            geometry USE CASTER
+          }
+        ]
+        name "rear caster"
+        boundingObject USE CASTER
+        physics Physics {
+          density -1
+          mass 0.02
+        }
+      }
+    }
+  ]
+  name "S0 differential UGV"
+  boundingObject Pose {
+    translation 0 0 0.06
+    children [
+      Box {
+        size 0.4 0.28 0.12
+      }
+    ]
+  }
+  physics Physics {
+    density -1
+    mass 2
+  }
+  controller "s1_occlusion"
+  supervisor TRUE
+}
+
+# S1: visual AND collision geometry, opaque and taller/wider than the person.
+DEF OCCLUDER Solid {
+  translation -0.5 -1 1.1
+  children [
+    Shape {
+      appearance Appearance {
+        material Material { diffuseColor 0.25 0.35 0.45 }
+      }
+      geometry DEF OCCLUDER_BOX Box {
+        size 0.1 2 2.2
+      }
+    }
+  ]
+  name "S1 opaque wall"
+  boundingObject USE OCCLUDER_BOX
+}

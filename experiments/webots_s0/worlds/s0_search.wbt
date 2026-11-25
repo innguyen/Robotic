@@ -1,6 +1,9 @@
 #VRML_SIM R2025a utf8
 
 WorldInfo {
+  basicTimeStep 32
+  coordinateSystem "ENU"
+  randomSeed 0
   FPS 30
 }
 Viewpoint {
@@ -160,9 +163,9 @@ DEF PERSON Solid {
     0.8 0.1 0.2
   ]
 }
-Robot {
-  translation -0.0887217372117781 -1.008309413328813 0.09940541073684209
-  rotation 6.544079399563902e-12 -3.438011313089713e-14 0.9999999999999999 0.007632112648298891
+DEF S0_ROBOT Robot {
+  translation -2 -1 0.1
+  rotation 0 0 1 -1.5707963267948966
   children [
     Pose {
       translation 0 0 0.06
@@ -181,6 +184,7 @@ Robot {
     }
     Camera {
       translation 0.12 0 0.55
+      name "camera"
       fieldOfView 1.012290966
       width 160
       height 120
@@ -188,10 +192,15 @@ Robot {
       far 6
       recognition Recognition {
         maxRange 3.5
+        occlusion 1
       }
     }
     Lidar {
       translation 0.12 0 0.15
+      name "lidar"
+      type "fixed"
+      projection "cylindrical"
+      noise 0
       horizontalResolution 180
       fieldOfView 6.283185307179586
       verticalFieldOfView 0.01
@@ -202,7 +211,6 @@ Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 15.970214935252665
         axis 0 1 0
         anchor 0 0.18 0
       }
@@ -214,7 +222,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0 0.18 0
-        rotation 0.09285218437452114 0.7040520122340872 0.7040520122306396 3.326766081013602
+        rotation 1 0 0 1.5707963267948966
         children [
           Shape {
             appearance DEF WHEEL_COLOR Appearance {
@@ -235,13 +243,10 @@ Robot {
           density -1
           mass 0.1
         }
-        linearVelocity -1.1180874013291386e-16 1.190330425653063e-15 -2.83911905786041e-16
-        angularVelocity -9.719006376275795e-15 -1.1071804450614813e-15 2.3348243730391662e-17
       }
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        position 22.271446794864595
         axis 0 1 0
         anchor 0 -0.18 0
       }
@@ -253,7 +258,7 @@ Robot {
       ]
       endPoint Solid {
         translation 0 -0.18 0
-        rotation -0.09926170956240701 -0.7036146363669521 -0.7036146363635069 2.9437174164829676
+        rotation 1 0 0 1.5707963267948966
         children [
           Shape {
             appearance USE WHEEL_COLOR
@@ -266,18 +271,14 @@ Robot {
           density -1
           mass 0.1
         }
-        linearVelocity -8.625851614323149e-17 -5.006289329907174e-16 -2.8479985793651415e-16
-        angularVelocity 4.72463899871551e-15 -9.139700421854963e-16 2.1283307596461043e-16
       }
     }
     BallJoint {
       jointParameters BallJointParameters {
-        position 66.15675579618375
         anchor 0.16 0 -0.07
       }
       endPoint Solid {
-        translation 0.15999999999999992 2.220446049250313e-16 -0.06999442378947363
-        rotation 0.5093244924285649 -0.7059544835122183 -0.49215528913279166 -2.560281091292829
+        translation 0.16 0 -0.07
         children [
           Shape {
             appearance USE WHEEL_COLOR
@@ -292,18 +293,14 @@ Robot {
           density -1
           mass 0.02
         }
-        linearVelocity -4.674461369131408e-17 -1.1209672248618827e-15 9.325873406851315e-16
-        angularVelocity 3.811430706098752e-14 -1.5893103052904421e-15 -6.040534133283492e-30
       }
     }
     BallJoint {
       jointParameters BallJointParameters {
-        position 59.30592493530302
         anchor -0.16 0 -0.07
       }
       endPoint Solid {
-        translation -0.15999999999999998 4.440892098500626e-16 -0.06999442378947371
-        rotation -0.2974624193233328 -0.7058212480174774 0.6429093831461478 -2.5668002015912856
+        translation -0.16 0 -0.07
         children [
           Shape {
             appearance USE WHEEL_COLOR
@@ -316,8 +313,6 @@ Robot {
           density -1
           mass 0.02
         }
-        linearVelocity -2.0355503002542642e-16 -1.0575996562806923e-15 -4.884981308350689e-16
-        angularVelocity 3.59586887313886e-14 -6.921058167462407e-15 1.3384778239459674e-29
       }
     }
   ]
@@ -335,6 +330,4 @@ Robot {
     mass 2
   }
   controller "s0_smoke"
-  linearVelocity -8.11714271432627e-17 -9.812886817866625e-16 1.7053025658242405e-16
-  angularVelocity -9.238041229689533e-16 -7.51955886028271e-16 1.0430496974866468e-16
 }
