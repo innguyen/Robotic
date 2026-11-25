@@ -1,0 +1,35 @@
+{
+  "schema_version": "sar-s3-draft-0.1",
+  "design_only": true,
+  "episode_id": "dev-slice-001",
+  "public_profile": {
+    "task": "victim_search_report", "robot_profile": "ugv_omni_proxy_v1",
+    "sensor_profile": "RGBD-L-ODOM", "action_dt_ns": 100000000,
+    "physics_dt_ns": 10000000, "budget_ns": 300000000000,
+    "max_reports": 5, "report_frame": "episode", "sensor_model_provenance": "synthetic"
+  },
+  "private_scenario": {
+    "scene_id": "calibration-corridor-design", "scene_family_id": "own-room-family-01",
+    "source_site_id": "own-design-01", "split": "dev", "pair_id": "pair-dev-001",
+    "condition": {"perception_severity": 0, "odom_severity": 0},
+    "seed_streams": {"layout": 11, "victim": 22, "sensor": 33, "odom": 44, "algorithm": 55},
+    "start_pose": {"position_m": [0, 0, 0.1], "yaw_rad": 0},
+    "operating_bounds_xy_m": [-1, -3, 7, 3],
+    "victims": [
+      {"gt_id": "private-victim-01", "asset_id": "own-mannequin-design-01", "posture": "seated",
+       "torso_anchor_episode_m": [4, 1, 0.65], "observable": true, "approachable": true}
+    ],
+    "factors": {
+      "lighting_profile_id": "nominal-design", "depth_response_id": "synthetic-nominal-design",
+      "lidar_response_id": "ideal-planar-design", "odom_drift_fraction": 0,
+      "odom_yaw_bias_deg_per_m": 0
+    },
+    "admissibility": "unverified"
+  },
+  "provenance": {
+    "backend": "ue5_projectairsim", "upstream_ref": "v1.1.0-CANDIDATE-NOT-LOCKED",
+    "engine_version": "UE5.8-exact-build-UNVERIFIED", "binary_sha256": null,
+    "asset_manifest_id": "design-assets-not-created", "calibration_session_id": null,
+    "license_status": "unverified"
+  }
+}

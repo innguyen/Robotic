@@ -1,0 +1,88 @@
+{
+  "recorded_at_utc": "2026-11-25T12:02:48.334284+00:00",
+  "user_date": "2026-11-25",
+  "user_timezone": "Asia/Saigon",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "python": "3.12.11 (main, Jun  7 2025, 12:31:34)  [GCC UCRT 15.1.0 64 bit (AMD64)]",
+  "python_executable": "C:\\msys64\\ucrt64\\bin\\python.exe",
+  "discovery_scope": "PATH, three UE environment variables, common paths, tracked uprojects",
+  "programs": {
+    "UnrealEditor": null,
+    "UnrealEditor-Cmd": null,
+    "nvidia-smi": null
+  },
+  "engine_environment": {
+    "UE_ROOT": null,
+    "UE_ENGINE_ROOT": null,
+    "UNREAL_ENGINE": null
+  },
+  "paths": [
+    {
+      "path": "C:/Program Files/Epic Games",
+      "status": "not_found"
+    },
+    {
+      "path": "C:/Epic Games",
+      "status": "not_found"
+    },
+    {
+      "path": "C:/UnrealEngine",
+      "status": "not_found"
+    },
+    {
+      "path": "D:/Epic Games",
+      "status": "not_found"
+    },
+    {
+      "path": "C:/ProgramData/Epic/UnrealEngineLauncher/LauncherInstalled.dat",
+      "status": "not_found"
+    }
+  ],
+  "editor_candidates": [],
+  "memory": {
+    "status": "observed_local",
+    "total_physical_bytes": 8215101440,
+    "available_physical_bytes": 952971264
+  },
+  "gpu": {
+    "status": "unverified",
+    "graphics_context_test": "not_run",
+    "cim_probe": {
+      "args": [
+        "C:\\Users\\lemin\\.dotnet\\tools\\pwsh.EXE",
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "$ErrorActionPreference='Stop'; Get-CimInstance Win32_VideoController | Select-Object Name,DriverVersion,AdapterRAM | ConvertTo-Json -Compress"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Get-CimInstance: Access denied"
+    }
+  },
+  "rendered_camera_depth_control_reset_evaluator": "UNVERIFIED_NOT_RUN",
+  "tracked_uproject_probe": {
+    "args": [
+      "git",
+      "-C",
+      "C:\\Projects\\Robotic",
+      "ls-files",
+      "--",
+      "*.uproject"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "engine_discovery": "not_detected_in_checked_locations",
+  "historical_godot_evidence": {
+    "status": "reported_prior_not_live_gpu_probe",
+    "path": "experiments\\godot_s0\\evidence\\run-05-final-rendered\\invocation.json",
+    "started_utc": "2026-11-25T10:56:47.829439+00:00",
+    "host_memory": {
+      "total_physical_bytes": 8215101440,
+      "available_physical_bytes": 993402880
+    },
+    "gpu_source": "experiments/godot_s0/evidence/run-05-final-rendered/stdout.txt"
+  }
+}

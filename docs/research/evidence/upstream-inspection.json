@@ -1,0 +1,32 @@
+{
+  "accessed_user_date": "2026-11-25",
+  "status": "READ_ONLY_SOURCE_INSPECTION_NOT_EXECUTION",
+  "notes": "Git blob SHA identifies inspected file contents, not a frozen dependency commit or downloaded binary. Branches may change. Full upstream code is not vendored.",
+  "files": [
+    {
+      "url": "https://github.com/iamaisim/ProjectAirSim/blob/v1.1.0/client/python/example_user_scripts/hello_wheeled_vehicle_simpledrive.py",
+      "git_blob_sha": "42142fc3855cbadf4c6508c599d887b6ad3e98f8",
+      "finding": "Native AWheeledVehiclePawn example uses Rover, path control, brake and wait_until_stopped; no proof of Mecanum or rendered slice execution."
+    },
+    {
+      "url": "https://github.com/iamaisim/ProjectAirSim/blob/v1.1.0/client/python/example_user_scripts/clock_manual_step.py",
+      "git_blob_sha": "f3f218bb2c021345474e30fc12a25bd875e702c5",
+      "finding": "Manual stepping example uses a drone; does not establish pause/step of native Chaos UGV and all dynamic actors."
+    },
+    {
+      "url": "https://github.com/UnrealZoo/unrealzoo-gym/blob/v3.1/doc/user_guide_latest_v3_en.md",
+      "git_blob_sha": "ef9ed1937672b9b713e5c4176904276ff5aa75a9",
+      "finding": "Gym/UnrealCV interface and reset/configuration semantics; not a verified JetAuto implementation."
+    },
+    {
+      "url": "https://github.com/UnrealZoo/unrealzoo-gym/blob/v3.1/doc/CHANGELOG_v3.1.md",
+      "git_blob_sha": "cb58595311b10aab40fc516b8441b07271c0bf84",
+      "finding": "LiDAR XYZI exists in v3.1; world centimetres and LiDAR metres require explicit conversions."
+    },
+    {
+      "url": "https://github.com/UnrealZoo/RescueBench/blob/main/benchmark/utils/task_state_machine.py",
+      "git_blob_sha": "2ec9edcc940537de9b4ae951657845641aec4021",
+      "finding": "Task state machine receives target poses and uses interaction distance gates; audit wrapper/agent boundary before reuse. This does not prove all upstream planners receive target ground truth."
+    }
+  ]
+}

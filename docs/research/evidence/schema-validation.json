@@ -1,0 +1,62 @@
+{
+  "validator": "PowerShell Test-Json",
+  "powershell_version": "7.5.4",
+  "scope": "Structural JSON Schema validation and negative mutations; no simulation",
+  "status": "PASS",
+  "cases": [
+    {
+      "name": "valid_design",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "name": "unknown_top_level",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "private_field_in_public_profile",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "too_many_victims",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "unsupported_version",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "unsafe_identifier",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "empirical_without_calibration",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "runtime_without_freeze",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "invalid_condition_level",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    }
+  ]
+}

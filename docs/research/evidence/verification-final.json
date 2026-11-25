@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "scope": "artifact QA; not JSON Schema or UE5 runtime acceptance",
+  "protected_files_checked": 5196,
+  "head_unchanged": true,
+  "markdown_documents_checked": 7,
+  "local_links_checked": 51,
+  "contract_json_files_checked": 2,
+  "authored_files_sha256": {
+    "docs/research/architecture.md": "69021a97cff857040beed6da5c3e7de2d6517b91e8ea5126f3a9aeb05f8b1831",
+    "docs/research/benchmark-proposal.md": "7baf41dde5a649f42796ce83117e1a8577903862b191c3064b3d1c732dbfb451",
+    "docs/research/contracts/scenario.example.json": "f147c2107fde44ce3f10df40cc678617c198244546021f4c0fb5d542f80e120f",
+    "docs/research/contracts/scenario.schema.json": "0b34b5f7412bed2fec21dfbacfadff2848485952e71ef8e647d971ae5e40fc6c",
+    "docs/research/evaluation-protocol.md": "b2aff2de4c1186af7233c9408c67e2f76007234c78153f434b49cd7a08f64361",
+    "docs/research/literature-gap-matrix.md": "6b886fa675184dbf9a935170311af0bc511d1474f7d1770f647bd974afba9e97",
+    "docs/research/README.md": "ab874e2c9888b790464e371a7162e753178e751249be02ec35c217f952c2b1e2",
+    "docs/research/s3-audit.md": "3a9ce44e402011e407bbb9fdea4dc6087a680fd8f36f3970b292f273d5a8f168",
+    "docs/research/tools/check_scenario_schema.ps1": "f3024b4c0f34eb926de277c5c5e1c256a7c1726090a00469fadea4be35ab6472",
+    "docs/research/tools/preflight_ue5.py": "2f8f5a476fff51b883017168f85d8b4308a63d723ee0a3a5cb63978156999cb4",
+    "docs/research/tools/verify_s3.py": "adac03ea72d7e51d067861d07ed76b616b4e322f1997e5ffad41a265fd73f06a",
+    "docs/research/ue5-platform-decision.md": "84a33c7f538396c9d3f855dd72bb19f32d6ceeb9a05b2a29715d6b2af80fe451"
+  },
+  "errors": [],
+  "ue5_runtime": "UNVERIFIED_NOT_RUN"
+}

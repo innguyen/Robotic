@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:robotic:sar-s3-draft-0.1:scenario",
+  "title": "Private SAR authoring scenario; never mount in the agent sandbox",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "design_only", "episode_id", "public_profile", "private_scenario", "provenance"],
+  "properties": {
+    "schema_version": {"const": "sar-s3-draft-0.1"},
+    "design_only": {"type": "boolean"},
+    "episode_id": {"$ref": "#/$defs/id"},
+    "public_profile": {
+      "type": "object", "additionalProperties": false,
+      "required": ["task", "robot_profile", "sensor_profile", "action_dt_ns", "physics_dt_ns", "budget_ns", "max_reports", "report_frame", "sensor_model_provenance"],
+      "properties": {
+        "task": {"const": "victim_search_report"},
+        "robot_profile": {"enum": ["ugv_omni_proxy_v1", "jetauto_mecanum_physical_v1", "platform_rover_smoke_v1"]},
+        "sensor_profile": {"const": "RGBD-L-ODOM"},
+        "action_dt_ns": {"const": 100000000},
+        "physics_dt_ns": {"const": 10000000},
+        "budget_ns": {"const": 300000000000},
+        "max_reports": {"const": 5},
+        "report_frame": {"const": "episode"},
+        "sensor_model_provenance": {"enum": ["ideal", "synthetic", "empirical"]}
+      }
+    },
+    "private_scenario": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scene_id", "scene_family_id", "source_site_id", "split", "pair_id", "condition", "seed_streams", "start_pose", "operating_bounds_xy_m", "victims", "factors", "admissibility"],
+      "properties": {
+        "scene_id": {"$ref": "#/$defs/id"},
+        "scene_family_id": {"$ref": "#/$defs/id"},
+        "source_site_id": {"$ref": "#/$defs/id"},
+        "split": {"enum": ["train", "validation", "test", "dev"]},
+        "pair_id": {"$ref": "#/$defs/id"},
+        "condition": {
+          "type": "object", "additionalProperties": false,
+          "required": ["perception_severity", "odom_severity"],
+          "properties": {
+            "perception_severity": {"type": "integer", "minimum": 0, "maximum": 2},
+            "odom_severity": {"type": "integer", "minimum": 0, "maximum": 2}
+          }
+        },
+        "seed_streams": {
+          "type": "object", "additionalProperties": false,
+          "required": ["layout", "victim", "sensor", "odom", "algorithm"],
+          "properties": {
+            "layout": {"$ref": "#/$defs/seed"}, "victim": {"$ref": "#/$defs/seed"},
+            "sensor": {"$ref": "#/$defs/seed"}, "odom": {"$ref": "#/$defs/seed"},
+            "algorithm": {"$ref": "#/$defs/seed"}
+          }
+        },
+        "start_pose": {"$ref": "#/$defs/pose"},
+        "operating_bounds_xy_m": {
+          "type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "number"},
+          "description": "xmin,ymin,xmax,ymax; semantic validator must check ordering/reachability"
+        },
+        "victims": {
+          "type": "array", "minItems": 0, "maxItems": 3,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["gt_id", "asset_id", "posture", "torso_anchor_episode_m", "observable", "approachable"],
+            "properties": {
+              "gt_id": {"$ref": "#/$defs/id"}, "asset_id": {"$ref": "#/$defs/id"},
+              "posture": {"enum": ["standing", "seated", "prone"]},
+              "torso_anchor_episode_m": {"$ref": "#/$defs/vec3"},
+              "observable": {"type": "boolean"}, "approachable": {"type": "boolean"}
+            }
+          }
+        },
+        "factors": {
+          "type": "object", "additionalProperties": false,
+          "required": ["lighting_profile_id", "depth_response_id", "lidar_response_id", "odom_drift_fraction", "odom_yaw_bias_deg_per_m"],
+          "properties": {
+            "lighting_profile_id": {"$ref": "#/$defs/id"},
+            "depth_response_id": {"$ref": "#/$defs/id"},
+            "lidar_response_id": {"$ref": "#/$defs/id"},
+            "odom_drift_fraction": {"type": "number", "minimum": 0, "maximum": 0.2},
+            "odom_yaw_bias_deg_per_m": {"type": "number", "minimum": -10, "maximum": 10}
+          }
+        },
+        "admissibility": {"enum": ["unverified", "passed", "rejected"]}
+      }
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["backend", "upstream_ref", "engine_version", "binary_sha256", "asset_manifest_id", "calibration_session_id", "license_status"],
+      "properties": {
+        "backend": {"enum": ["ue5_projectairsim", "ue5_unrealcv", "webots_research"]},
+        "upstream_ref": {"type": "string", "minLength": 1},
+        "engine_version": {"type": "string", "minLength": 1},
+        "binary_sha256": {"anyOf": [{"type": "null"}, {"type": "string", "pattern": "^[0-9a-f]{64}$"}]},
+        "asset_manifest_id": {"$ref": "#/$defs/id"},
+        "calibration_session_id": {"anyOf": [{"type": "null"}, {"$ref": "#/$defs/id"}]},
+        "license_status": {"enum": ["unverified", "approved_for_intended_release", "restricted"]}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"design_only": {"const": false}}, "required": ["design_only"]},
+      "then": {
+        "properties": {
+          "private_scenario": {"properties": {"admissibility": {"const": "passed"}}},
+          "provenance": {
+            "properties": {
+              "upstream_ref": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+              "binary_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"public_profile": {"properties": {"sensor_model_provenance": {"const": "empirical"}}, "required": ["sensor_model_provenance"]}},
+        "required": ["public_profile"]
+      },
+      "then": {"properties": {"provenance": {"properties": {"calibration_session_id": {"$ref": "#/$defs/id"}}}}}
+    }
+  ],
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$"},
+    "seed": {"type": "integer", "minimum": 0, "maximum": 2147483647},
+    "vec3": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}},
+    "pose": {
+      "type": "object", "additionalProperties": false, "required": ["position_m", "yaw_rad"],
+      "properties": {"position_m": {"$ref": "#/$defs/vec3"}, "yaw_rad": {"type": "number", "minimum": -3.141592653589793, "maximum": 3.141592653589793}}
+    }
+  }
+}
