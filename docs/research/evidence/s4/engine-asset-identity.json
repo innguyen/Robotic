@@ -1,0 +1,50 @@
+{
+  "engine_root": "C:\\Program Files\\Epic Games\\UE_5.6",
+  "build": {
+    "MajorVersion": 5,
+    "MinorVersion": 6,
+    "PatchVersion": 1,
+    "Changelist": 44394996,
+    "CompatibleChangelist": 43139311,
+    "IsLicenseeVersion": 0,
+    "IsPromotedBuild": 1,
+    "BranchName": "++UE5+Release-5.6"
+  },
+  "files": {
+    "Engine/Build/Build.version": {
+      "sha256": "b6a16a262d0136d1812f134ebd83e81138546dcc705f5f088a96702c970d24a0",
+      "bytes": 215
+    },
+    "Engine/Binaries/Win64/UnrealEditor-Cmd.exe": {
+      "sha256": "d74d195246b64ea169353c4d3e49cfbdc9a5178a8550ba93c0999cdf06209a16",
+      "bytes": 584656
+    },
+    "Engine/Binaries/Win64/UnrealEditor-D3D11RHI.dll": {
+      "sha256": "e4718431c055eac540feba2ea521d2c3271517923c0aef3958c99c2225ab09d9",
+      "bytes": 1034704
+    },
+    "Engine/Plugins/Experimental/PythonScriptPlugin/PythonScriptPlugin.uplugin": {
+      "sha256": "bd796b32b69f8c4113e0b2547ee12e3620507c063f23090d5cc6042ad387b5cb",
+      "bytes": 1047
+    },
+    "Engine/Plugins/Experimental/PythonScriptPlugin/Binaries/Win64/UnrealEditor-PythonScriptPlugin.dll": {
+      "sha256": "bd0bb9446d13372f4cb0fdf3db9e5824cf908210cb89ba97707930d2ee165260",
+      "bytes": 2671568
+    },
+    "Engine/Content/BasicShapes/Cube.uasset": {
+      "sha256": "0647a386495c2a9a187e273a7f040eae635f25371023d4e360d82bffa52077c5",
+      "bytes": 16384
+    },
+    "Engine/Content/BasicShapes/Sphere.uasset": {
+      "sha256": "0870a30b75af88e6117261b1ce6138ed90da85c90fde9fc39380705ab1870b61",
+      "bytes": 61552
+    }
+  },
+  "missing": [],
+  "assets": "Engine files remain local; only hashes and scene-generation recipe are delivered",
+  "model_not_used_in_fixture_pilot": {
+    "path": "models/yolov5n.onnx",
+    "sha256": "7e0e714cfb144102167b3655e2e2db93ed5d20351cc790aed0cdc925664c1152",
+    "provenance_license": "unverified"
+  }
+}

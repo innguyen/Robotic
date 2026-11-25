@@ -1,5 +1,7 @@
 # S3 — Research Blueprint & Unreal Engine 5 Foundation
 
+S4 đã có implementation foundation và UE5 diagnostic slice; xem [S4 audit](s4-audit.md), [framework](../../sar_benchmark/README.md) và [hướng dẫn chạy](../../experiments/ue5_s4/README.md). Các nội dung S3 bên dưới giữ nguyên trạng thái thiết kế lịch sử.
+
 Ngày bàn giao: **2026-11-25, Asia/Saigon**. Repository `innguyen/Robotic`, nhánh `feat/benchmark`, source nền `671add0137a0ef2f06081bde402e7556e083b15d`.
 
 **S3 hoàn tất ở nhánh không có hạ tầng UE5 đã được xác minh: blueprint nghiên cứu, quyết định nền tảng, hợp đồng dữ liệu và quy trình nghiệm thu. Chưa có vertical slice UE5 chạy thật, benchmark kết quả hoặc novelty đã được chứng minh.** Không thay Webots S0–S2, Godot S0, production hoặc T1.

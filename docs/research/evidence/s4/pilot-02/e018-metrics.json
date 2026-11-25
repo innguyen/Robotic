@@ -1,0 +1,85 @@
+{
+  "episode": "e018",
+  "method": "random",
+  "family": "primitive_room",
+  "pair_id": "multi-0",
+  "kind": "multi",
+  "perception": 0,
+  "odometry": 0,
+  "metrics": {
+    "tp": 2,
+    "fp": 0,
+    "victims": 2,
+    "matches": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "recall": 1.0,
+    "safe_localization_recall": 1.0,
+    "precision": 1.0,
+    "duplicate_reports": 0,
+    "invalid_reports": 0,
+    "report_reasons": [
+      null,
+      null
+    ],
+    "safe": true,
+    "unsafe": false,
+    "mission_complete": true,
+    "absent_false_alarm": null,
+    "absent_specificity": null,
+    "time_integrated_recall": 0.8333333333333334,
+    "safe_time_integrated_recall": 0.8333333333333334,
+    "first_correct_ns": 100000000,
+    "restricted_first_ns": 100000000,
+    "localization_xy_m": [
+      0.1539149709220056,
+      0.15062486681660858
+    ],
+    "localization_median_m": 0.15226991886930707,
+    "localization_p90_m": 0.1539149709220056,
+    "covariance_matched_inliers_only": [],
+    "uncertainty_unavailable_count": 2,
+    "path_m": 0.318054437504336,
+    "brier": 0.009999999999999995,
+    "terminal_reason": "FINISH"
+  },
+  "agent_latency_s": [
+    0.004815899999812245,
+    0.0054013000008126255,
+    0.006767800001398427,
+    0.004740699998365017,
+    0.005384199997934047,
+    0.006523699998069787,
+    0.008946900001319591,
+    0.007392699997581076,
+    0.010919500000454718,
+    0.009215099998982623,
+    0.01052239999989979,
+    0.009839099999226164,
+    0.006946600002265768,
+    0.007237500001792796,
+    0.006541300001117634,
+    0.005715100000088569,
+    0.005341100000805454,
+    0.0058019999996759,
+    0.005562599999393569,
+    0.0055652999981248286,
+    0.005614499998046085,
+    0.00558880000244244,
+    0.005362300002161646,
+    0.006703499999275664,
+    0.005478099999891128,
+    0.005630999999993946,
+    0.005278200002067024,
+    0.007416299999022158,
+    0.0055701000019325875,
+    0.005055600002378924
+  ]
+}

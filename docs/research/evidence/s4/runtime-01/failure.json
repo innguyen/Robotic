@@ -1,0 +1,5 @@
+{
+  "status": "FAILED",
+  "traceback": "Traceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\runner.py\", line 149, in main\n    raw_stream = gzip.open(store.path / \"private/host.jsonl.gz\", \"xb\")\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\ue_backend.py\", line 17, in __init__\n    self.host_info = self.client.call(\"hello\")\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\transport.py\", line 34, in call\n    size = struct.unpack(\"!I\", receive_exact(self.socket, 4))[0]\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\transport.py\", line 15, in receive_exact\n    raise ConnectionError(\"peer disconnected\")\nConnectionError: peer disconnected\n",
+  "completed_episodes": 0
+}

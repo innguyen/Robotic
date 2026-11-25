@@ -1,0 +1,85 @@
+{
+  "episode": "e043",
+  "method": "sweep",
+  "family": "primitive_room",
+  "pair_id": "multi-1",
+  "kind": "multi",
+  "perception": 0,
+  "odometry": 0,
+  "metrics": {
+    "tp": 2,
+    "fp": 0,
+    "victims": 2,
+    "matches": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "recall": 1.0,
+    "safe_localization_recall": 1.0,
+    "precision": 1.0,
+    "duplicate_reports": 0,
+    "invalid_reports": 0,
+    "report_reasons": [
+      null,
+      null
+    ],
+    "safe": true,
+    "unsafe": false,
+    "mission_complete": true,
+    "absent_false_alarm": null,
+    "absent_specificity": null,
+    "time_integrated_recall": 0.85,
+    "safe_time_integrated_recall": 0.85,
+    "first_correct_ns": 100000000,
+    "restricted_first_ns": 100000000,
+    "localization_xy_m": [
+      0.1553779311494968,
+      0.15067881575623177
+    ],
+    "localization_median_m": 0.1530283734528643,
+    "localization_p90_m": 0.1553779311494968,
+    "covariance_matched_inliers_only": [],
+    "uncertainty_unavailable_count": 2,
+    "path_m": 0.0,
+    "brier": 0.009999999999999995,
+    "terminal_reason": "FINISH"
+  },
+  "agent_latency_s": [
+    0.007837299999664538,
+    0.007566599997517187,
+    0.0066290000031585805,
+    0.005386400000134017,
+    0.005355299999791896,
+    0.006392699997377349,
+    0.00582840000060969,
+    0.006000800000037998,
+    0.005195900001126574,
+    0.006014099999447353,
+    0.005672600000252714,
+    0.008827199999359436,
+    0.005938199999945937,
+    0.005183400000532856,
+    0.00749790000190842,
+    0.005422700000053737,
+    0.0068538999985321425,
+    0.005646600002364721,
+    0.006023400001140544,
+    0.006950599999981932,
+    0.0067796999974234495,
+    0.005694999999832362,
+    0.005710900000849506,
+    0.016805100000055972,
+    0.0064461000001756474,
+    0.006262499999138527,
+    0.005964100000710459,
+    0.005605300000752322,
+    0.0054825999977765605,
+    0.007735300001513679
+  ]
+}

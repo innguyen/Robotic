@@ -1,0 +1,14 @@
+Using bundled DotNet SDK version: 8.0.300 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" SarSliceEditor Win64 Development -Project=C:\Projects\Robotic\experiments\ue5_s4\SarSlice.uproject -WaitMutex -NoHotReloadFromIDE -MaxParallelActions=1 -NoUBA
+Log file: C:\Users\lemin\AppData\Local\UnrealBuildTool\Log.txt
+Creating makefile for SarSliceEditor (no existing makefile)
+C:\Projects\Robotic\experiments\ue5_s4\Plugins\UnrealCV\Source\UnrealCV\UnrealCV.Build.cs(70,4): warning CS0618: 'ModuleRules.bEnforceIWYU' is obsolete: 'Deprecated in UE5.2 - Use IWYUSupport instead.'
+Available x64 toolchains (1):
+ * C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207
+    (Family=14.44.35207, FamilyRank=1, Version=14.44.35229, HostArchitecture=x64, ReleaseChannel=Latest, Architecture=x64)
+Visual Studio 2022 compiler version 14.44.35229 is not a preferred version. Please use the latest preferred version 14.38.33130
+Unable to instantiate module 'SwarmInterface': Could not find NetFxSDK install dir; this will prevent SwarmInterface from installing.  Install a version of .NET Framework SDK at 4.6.0 or higher.
+(referenced via Target -> Launch.Build.cs -> SessionServices.Build.cs -> Core.Build.cs -> Virtualization.Build.cs -> SourceControl.Build.cs -> RenderCore.Build.cs -> RHI.Build.cs -> D3D11RHI.Build.cs -> Engine.Build.cs -> PhysicsCore.Build.cs -> Chaos.Build.cs -> NNE.Build.cs -> NNEEditor.Build.cs -> UnrealEd.Build.cs)
+
+Result: Failed (RulesError)
+Total execution time: 6.87 seconds

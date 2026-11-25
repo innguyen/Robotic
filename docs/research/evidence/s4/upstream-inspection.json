@@ -1,0 +1,155 @@
+{
+  "access_date": "2026-11-26",
+  "scope": "official source read; NOT upstream runtime execution",
+  "files": [
+    {
+      "url": "https://github.com/UnrealZoo/RescueBench/blob/main/benchmark/core/episode_runner.py",
+      "lines": 210,
+      "excerpts": [
+        {
+          "line": 41,
+          "text": "        benchmark.agent.prepare_episode(task_context)"
+        },
+        {
+          "line": 81,
+          "text": "            step_obs, step_info = benchmark.agent.prepare_step_inputs(benchmark.env, obs, info)"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/UnrealZoo/RescueBench/blob/main/benchmark/agents/agent_base.py",
+      "lines": 41,
+      "excerpts": [
+        {
+          "line": 19,
+          "text": "    def prepare_episode(self, task_context: Dict[str, Any]) -> None:"
+        },
+        {
+          "line": 23,
+          "text": "    def prepare_step_inputs(self, env, observation: Any, info: Dict) -> Tuple[Any, Dict]:"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/UnrealZoo/RescueBench/blob/main/benchmark/core/env_manager.py",
+      "lines": 138,
+      "excerpts": [
+        {
+          "line": 106,
+          "text": "            return list(self.env.unwrapped.obj_poses[object_id])"
+        },
+        {
+          "line": 121,
+          "text": "            if drone_id is None or drone_id < 0 or drone_id >= len(env.obj_poses):"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/UnrealZoo/RescueBench/blob/main/benchmark/wrappers/state_machine_wrapper.py",
+      "lines": 181,
+      "excerpts": [
+        {
+          "line": 40,
+          "text": "        info[\"target_pose\"] = self.state_machine.get_current_target()"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/UnrealZoo/RescueBench/blob/main/benchmark/agents/sgnav_rescue_agent.py",
+      "lines": 290,
+      "excerpts": [
+        {
+          "line": 235,
+          "text": "            pose = list(env_u.obj_poses[env_u.protagonist_id])"
+        },
+        {
+          "line": 242,
+          "text": "    def prepare_step_inputs(self, env, observation, info):"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/UnrealZoo/RescueBench/blob/main/benchmark/agents/solution_agent.py",
+      "lines": 247,
+      "excerpts": []
+    },
+    {
+      "url": "https://github.com/UnrealZoo/unrealzoo-gym/blob/v3.0/doc/user_guide_latest_v3_en.md",
+      "lines": 511,
+      "excerpts": [
+        {
+          "line": 26,
+          "text": "Your Algorithm (Python)  ←→  Gym API  ←→  UnrealCV  ←→  UE5 Simulation Environment"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/unrealcv/unrealcv/blob/5.2/README.md",
+      "lines": 71,
+      "excerpts": [
+        {
+          "line": 1,
+          "text": "# UnrealCV"
+        },
+        {
+          "line": 9,
+          "text": "UnrealCV is a project to help computer vision researchers build virtual worlds using Unreal Engine (UE). It extends UE with a plugin by providing:"
+        },
+        {
+          "line": 11,
+          "text": "1. A set of UnrealCV commands to interact with the virtual world."
+        },
+        {
+          "line": 14,
+          "text": "UnrealCV can be used in two ways. "
+        },
+        {
+          "line": 15,
+          "text": "- The first one is using a compiled game binary with UnrealCV embedded. This is as simple as running a game, no knowledge of Unreal Engine is required. "
+        },
+        {
+          "line": 16,
+          "text": "- The second is installing the UnrealCV plugin into Unreal Engine and using the editor to build a new virtual world."
+        },
+        {
+          "line": 18,
+          "text": "Please read [Tutorial: Getting Started](http://unrealcv.github.io/tutorial/getting_started.html) to learn using UnrealCV."
+        },
+        {
+          "line": 32,
+          "text": "## UnrealCV Dev For UnrealZoo"
+        },
+        {
+          "line": 34,
+          "text": "[UnrealCV Dev For UnrealZoo](https://docs.unrealcv.org/en/latest/unrealcv_plus/index.html)"
+        },
+        {
+          "line": 43,
+          "text": "The Unreal Engine C++ Runtime MCP server is not currently open source."
+        },
+        {
+          "line": 45,
+          "text": "## How to install UnrealCV"
+        },
+        {
+          "line": 46,
+          "text": "To install the UnrealCV `Server`, you need:"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/iamaisim/ProjectAirSim/blob/v1.1.0/client/python/example_user_scripts/hello_wheeled_vehicle_simpledrive.py",
+      "lines": 87,
+      "excerpts": [
+        {
+          "line": 19,
+          "text": "    kin = rover.get_ground_truth_kinematics()"
+        },
+        {
+          "line": 66,
+          "text": "        brake_task = await rover.set_rover_controls("
+        }
+      ]
+    }
+  ]
+}

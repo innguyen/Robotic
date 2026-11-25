@@ -1,0 +1,85 @@
+{
+  "episode": "e020",
+  "method": "core",
+  "family": "primitive_room",
+  "pair_id": "multi-0",
+  "kind": "multi",
+  "perception": 0,
+  "odometry": 0,
+  "metrics": {
+    "tp": 2,
+    "fp": 0,
+    "victims": 2,
+    "matches": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "recall": 1.0,
+    "safe_localization_recall": 1.0,
+    "precision": 1.0,
+    "duplicate_reports": 0,
+    "invalid_reports": 0,
+    "report_reasons": [
+      null,
+      null
+    ],
+    "safe": true,
+    "unsafe": false,
+    "mission_complete": true,
+    "absent_false_alarm": null,
+    "absent_specificity": null,
+    "time_integrated_recall": 0.6333333333333333,
+    "safe_time_integrated_recall": 0.6333333333333333,
+    "first_correct_ns": 100000000,
+    "restricted_first_ns": 100000000,
+    "localization_xy_m": [
+      0.1528833599977457,
+      0.15167426007098928
+    ],
+    "localization_median_m": 0.1522788100343675,
+    "localization_p90_m": 0.1528833599977457,
+    "covariance_matched_inliers_only": [],
+    "uncertainty_unavailable_count": 2,
+    "path_m": 0.004999999999999999,
+    "brier": 0.009999999999999995,
+    "terminal_reason": "FINISH"
+  },
+  "agent_latency_s": [
+    0.02293629999985569,
+    0.0147225000000617,
+    0.013332599999557715,
+    0.014532299999700626,
+    0.015321800001402153,
+    0.021518300000025192,
+    0.02301910000096541,
+    0.026623199999448843,
+    0.024317100000189384,
+    0.01875600000130362,
+    0.01744690000123228,
+    0.014965000002121087,
+    0.015340499998274026,
+    0.015211099998850841,
+    0.015162100000452483,
+    0.022375099997589132,
+    0.017418200000975048,
+    0.020158400002401322,
+    0.02019310000105179,
+    0.02400810000108322,
+    0.02619090000007418,
+    0.024311700002726866,
+    0.02047099999981583,
+    0.032298800000717165,
+    0.02345419999983278,
+    0.03314269999827957,
+    0.019015100002434338,
+    0.02134710000245832,
+    0.020656500000768574,
+    0.018873599998187274
+  ]
+}

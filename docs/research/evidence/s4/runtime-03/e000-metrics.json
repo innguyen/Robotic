@@ -1,0 +1,61 @@
+{
+  "episode": "e000",
+  "method": "random",
+  "family": "primitive_room",
+  "pair_id": "clean-0",
+  "kind": "clean",
+  "perception": 0,
+  "odometry": 0,
+  "metrics": {
+    "tp": 1,
+    "fp": 0,
+    "victims": 1,
+    "matches": [
+      [
+        0,
+        0
+      ]
+    ],
+    "recall": 1.0,
+    "safe_localization_recall": 1.0,
+    "precision": 1.0,
+    "duplicate_reports": 0,
+    "invalid_reports": 0,
+    "report_reasons": [
+      null
+    ],
+    "safe": true,
+    "unsafe": false,
+    "mission_complete": true,
+    "absent_false_alarm": null,
+    "absent_specificity": null,
+    "time_integrated_recall": 0.6,
+    "safe_time_integrated_recall": 0.6,
+    "first_correct_ns": 600000000,
+    "restricted_first_ns": 600000000,
+    "localization_xy_m": [
+      0.18443856136367112
+    ],
+    "localization_median_m": 0.18443856136367112,
+    "path_m": 0.1852114813013047,
+    "brier": 0.009999999999999995,
+    "terminal_reason": "FINISH"
+  },
+  "agent_latency_s": [
+    0.021486899997398723,
+    0.021863399997528177,
+    0.019190700000763172,
+    0.020497199999226723,
+    0.018720100000791717,
+    0.07219210000039311,
+    0.03872880000199075,
+    0.04283750000104192,
+    0.026462500001798617,
+    0.03296119999868097,
+    0.02348610000262852,
+    0.03341829999772017,
+    0.01893029999700957,
+    0.0171370999996725,
+    0.016448299997136928
+  ]
+}

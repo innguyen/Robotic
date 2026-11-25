@@ -1,0 +1,170 @@
+{
+  "status": "PASS_ENGINE_CALIBRATION",
+  "checks": {
+    "forward": true,
+    "forward_zero": true,
+    "left": true,
+    "left_zero": true,
+    "yaw_left": true,
+    "yaw_left_zero": true,
+    "ten_reset_epochs": true,
+    "ten_reset_pose_scan_repeat": true,
+    "ten_reset_rgb_repeat": true,
+    "engine_sweep_blocks_wall": true,
+    "common_gate_stops_near_wall": true
+  },
+  "axes": [
+    {
+      "axis": "forward",
+      "expected": [
+        0.03,
+        0,
+        0
+      ],
+      "actual": [
+        0.030000000000000006,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "axis": "left",
+      "expected": [
+        0,
+        0.02,
+        0
+      ],
+      "actual": [
+        0.0,
+        0.020000000000000004,
+        0.0
+      ]
+    },
+    {
+      "axis": "yaw_left",
+      "expected": [
+        0,
+        0,
+        0.06
+      ],
+      "actual": [
+        0.0,
+        0.0,
+        0.05999999986813043
+      ]
+    }
+  ],
+  "reset_initial_states": [
+    {
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rgb_sha256": "c952e310827a23bdd204c3a57fdf59e88de074e3fa21fc1f4ad4d51b8fb5dc95",
+      "scan_sha256": "d8b78cff72868d2c5fccbadc56075681b6bd815d8aa20f5492229825f2febaec"
+    },
+    {
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rgb_sha256": "c952e310827a23bdd204c3a57fdf59e88de074e3fa21fc1f4ad4d51b8fb5dc95",
+      "scan_sha256": "d8b78cff72868d2c5fccbadc56075681b6bd815d8aa20f5492229825f2febaec"
+    },
+    {
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rgb_sha256": "c952e310827a23bdd204c3a57fdf59e88de074e3fa21fc1f4ad4d51b8fb5dc95",
+      "scan_sha256": "d8b78cff72868d2c5fccbadc56075681b6bd815d8aa20f5492229825f2febaec"
+    },
+    {
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rgb_sha256": "c952e310827a23bdd204c3a57fdf59e88de074e3fa21fc1f4ad4d51b8fb5dc95",
+      "scan_sha256": "d8b78cff72868d2c5fccbadc56075681b6bd815d8aa20f5492229825f2febaec"
+    },
+    {
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rgb_sha256": "c952e310827a23bdd204c3a57fdf59e88de074e3fa21fc1f4ad4d51b8fb5dc95",
+      "scan_sha256": "d8b78cff72868d2c5fccbadc56075681b6bd815d8aa20f5492229825f2febaec"
+    },
+    {
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rgb_sha256": "c952e310827a23bdd204c3a57fdf59e88de074e3fa21fc1f4ad4d51b8fb5dc95",
+      "scan_sha256": "d8b78cff72868d2c5fccbadc56075681b6bd815d8aa20f5492229825f2febaec"
+    },
+    {
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rgb_sha256": "c952e310827a23bdd204c3a57fdf59e88de074e3fa21fc1f4ad4d51b8fb5dc95",
+      "scan_sha256": "d8b78cff72868d2c5fccbadc56075681b6bd815d8aa20f5492229825f2febaec"
+    },
+    {
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rgb_sha256": "c952e310827a23bdd204c3a57fdf59e88de074e3fa21fc1f4ad4d51b8fb5dc95",
+      "scan_sha256": "d8b78cff72868d2c5fccbadc56075681b6bd815d8aa20f5492229825f2febaec"
+    },
+    {
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rgb_sha256": "c952e310827a23bdd204c3a57fdf59e88de074e3fa21fc1f4ad4d51b8fb5dc95",
+      "scan_sha256": "d8b78cff72868d2c5fccbadc56075681b6bd815d8aa20f5492229825f2febaec"
+    },
+    {
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rgb_sha256": "c952e310827a23bdd204c3a57fdf59e88de074e3fa21fc1f4ad4d51b8fb5dc95",
+      "scan_sha256": "d8b78cff72868d2c5fccbadc56075681b6bd815d8aa20f5492229825f2febaec"
+    }
+  ],
+  "epochs": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "collision_final_pose": [
+    0.3489970077574258,
+    0.0,
+    0.0
+  ],
+  "collision_events": [
+    "CONTACT"
+  ],
+  "scope": "static proxy axes, collision, zero and same-machine reset repeat only"
+}

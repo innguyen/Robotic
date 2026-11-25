@@ -1,0 +1,85 @@
+{
+  "episode": "e044",
+  "method": "core",
+  "family": "primitive_room",
+  "pair_id": "multi-1",
+  "kind": "multi",
+  "perception": 0,
+  "odometry": 0,
+  "metrics": {
+    "tp": 2,
+    "fp": 0,
+    "victims": 2,
+    "matches": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "recall": 1.0,
+    "safe_localization_recall": 1.0,
+    "precision": 1.0,
+    "duplicate_reports": 0,
+    "invalid_reports": 0,
+    "report_reasons": [
+      null,
+      null
+    ],
+    "safe": true,
+    "unsafe": false,
+    "mission_complete": true,
+    "absent_false_alarm": null,
+    "absent_specificity": null,
+    "time_integrated_recall": 0.6333333333333333,
+    "safe_time_integrated_recall": 0.6333333333333333,
+    "first_correct_ns": 100000000,
+    "restricted_first_ns": 100000000,
+    "localization_xy_m": [
+      0.1528833599977457,
+      0.15167426007098928
+    ],
+    "localization_median_m": 0.1522788100343675,
+    "localization_p90_m": 0.1528833599977457,
+    "covariance_matched_inliers_only": [],
+    "uncertainty_unavailable_count": 2,
+    "path_m": 0.004999999999999999,
+    "brier": 0.009999999999999995,
+    "terminal_reason": "FINISH"
+  },
+  "agent_latency_s": [
+    0.02674450000267825,
+    0.018217299999378156,
+    0.01793550000002142,
+    0.016666600000462495,
+    0.013445399999909569,
+    0.014055999999982305,
+    0.018498599998565624,
+    0.016194100000575418,
+    0.01576779999959399,
+    0.01468620000014198,
+    0.014883899999404093,
+    0.015761399998154957,
+    0.016950200002611382,
+    0.014637399999628542,
+    0.015698999999585794,
+    0.023909700001240708,
+    0.01832769999964512,
+    0.018926400000054855,
+    0.01877279999825987,
+    0.01844609999898239,
+    0.024059899998974288,
+    0.025552700000844197,
+    0.018723600001976592,
+    0.01861080000162474,
+    0.02046179999888409,
+    0.018270000000484288,
+    0.018181300001742784,
+    0.021348499998566695,
+    0.015825300000869902,
+    0.019436799997492926
+  ]
+}

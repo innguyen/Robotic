@@ -1,0 +1,17 @@
+Using bundled DotNet SDK version: 8.0.300 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" SarSliceEditor Win64 Development -Project=C:\Projects\Robotic\experiments\ue5_s4\SarSlice.uproject -WaitMutex -NoHotReloadFromIDE -MaxParallelActions=1 -NoUBA
+Log file: C:\Users\lemin\AppData\Local\UnrealBuildTool\Log.txt
+Unhandled exception: UnauthorizedAccessException: Access to the path 'C:\Users\lemin\AppData\Local\UnrealBuildTool' is denied.
+   at System.IO.FileSystem.CreateDirectory(String fullPath, Byte[] securityDescriptor)
+   at System.IO.Directory.CreateDirectory(String path)
+   at EpicGames.Core.DirectoryReference.CreateDirectory(DirectoryReference location)
+   at EpicGames.Core.DefaultLogger.AddFileWriter(String name, FileReference outputFile)Wrapped by Exception: Error while creating log file "C:\Users\lemin\AppData\Local\UnrealBuildTool\Log.txt"
+   at EpicGames.Core.DefaultLogger.AddFileWriter(String name, FileReference outputFile)
+   at EpicGames.Core.DefaultLogger.AddFileWriterWithoutBackup(String name, FileReference outputFile)
+   at EpicGames.Core.Log.AddFileWriterWithoutBackup(String name, FileReference outputFile)
+   at EpicGames.Core.Log.AddFileWriter(String name, FileReference outputFile)
+   at UnrealBuildTool.BuildMode.ExecuteAsync(CommandLineArguments Arguments, ILogger Logger)
+   at UnrealBuildTool.UnrealBuildTool.Main(String[] ArgumentsArray)
+
+Result: Failed (OtherCompilationError)
+Total execution time: 1.08 seconds

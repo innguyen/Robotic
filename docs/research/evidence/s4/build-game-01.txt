@@ -1,0 +1,148 @@
+Using bundled DotNet SDK version: 8.0.300 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" SarSlice Win64 Development -Project=C:\Projects\Robotic\experiments\ue5_s4\SarSlice.uproject -WaitMutex -NoHotReloadFromIDE -MaxParallelActions=1 -NoUBA
+Log file: C:\Users\lemin\AppData\Local\UnrealBuildTool\Log.txt
+Creating makefile for SarSlice (no existing makefile)
+Available x64 toolchains (1):
+ * C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207
+    (Family=14.44.35207, FamilyRank=1, Version=14.44.35229, HostArchitecture=x64, ReleaseChannel=Latest, Architecture=x64)
+Visual Studio 2022 compiler version 14.44.35229 is not a preferred version. Please use the latest preferred version 14.38.33130
+Parsing headers for SarSlice
+  Running Internal UnrealHeaderTool C:\Projects\Robotic\experiments\ue5_s4\SarSlice.uproject C:\Projects\Robotic\experiments\ue5_s4\Intermediate\Build\Win64\SarSlice\Development\SarSlice.uhtmanifest -WarningsAsErrors -installed
+Total of 60 written
+Reflection code generated for SarSlice in 5.7040826 seconds
+Building SarSlice...
+Using Visual Studio 2022 14.44.35229 toolchain (C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207) and Windows 10.0.26100.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+Warning: Visual Studio 2022 compiler is not a preferred version
+[Upgrade]
+[Upgrade] Using backward-compatible include order. The latest version of UE has changed the order of includes, which may require code changes. The current setting is:
+[Upgrade]     IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3
+[Upgrade] Suppress this message by setting 'IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_6;' in SarSlice.Target.cs.
+[Upgrade] Alternatively you can set this to 'EngineIncludeOrderVersion.Latest' to always use the latest include order. This will potentially cause compile errors when integrating new versions of the engine.
+[Upgrade]
+[Adaptive Build] Excluded from UnrealCV unity file: UnrealcvGameMode.cpp, UnrealcvLog.cpp, UnrealcvModule.cpp, CamSensorActor.cpp, CubeActor.cpp, DataCaptureActor.cpp, FusionCameraActor.cpp, Puppeteer.cpp, StereoCameraActor.cpp, AnimationBPLib.cpp, JsonObjectBP.cpp, SensorBPLib.cpp, SerializeBPLib.cpp, VisionBPLib.cpp, ActionHandler.cpp, AliasHandler.cpp, CameraHandler.cpp, ObjectHandler.cpp, PluginHandler.cpp, AnnotationComponent.cpp, KeypointComponent.cpp, ActorController.cpp, ObjectAnnotator.cpp, PlayerViewMode.cpp, WorldController.cpp, cnpy.cpp, BoneSensor.cpp, ImageWorker.cpp, TextureReader.cpp, VertexSensor.cpp, ViewMode.cpp, AnnotationCamSensor.cpp, BaseCameraSensor.cpp, DepthCamSensor.cpp, FlowCamSensor.cpp, FusionCamSensor.cpp, LitCamSensor.cpp, NormalCamSensor.cpp, PawnCamSensor.cpp, CommandDispatcher.cpp, CommandHandler.cpp, ConsoleHelper.cpp, ExecStatus.cpp, ServerConfig.cpp, SocketUtils.cpp, TcpServer.cpp, UnixTcpServer.cpp, UnrealcvServer.cpp, AliasMultiCommandTest.cpp, CommandDispatcherRound3Test.cpp, CommandDispatcherTest.cpp, ConsoleHelperTest.cpp, ExecStatusRound3Test.cpp, ExecStatusTest.cpp, LoggerTest.cpp, ServerConfigTest.cpp, SocketUtilsTest.cpp, ImageUtil.cpp, ReflectionUtils.cpp, Serialization.cpp, SharedMemoryManager.cpp, UObjectUtils.cpp
+Executing up to 1 actions based on MaxProcessorCount override
+Using Parallel executor to run 76 action(s)
+------ Building 76 action(s) started ------
+[1/76] Compile [x64] SharedPCH.Engine.Project.ValApi.ValExpApi.Cpp20.InclOrderUnreal5_3.cpp
+[2/76] Resource Default.rc2
+[3/76] Compile [x64] Module.SarSlice.gen.cpp
+C:\Projects\Robotic\experiments\ue5_s4\Source\SarSlice\SarHost.h(27,13): warning C4263: 'FString ASarHost::Reset(const FString &)': member function does not override any base class virtual member function
+    FString Reset(const FString& Encoded);
+            ^
+C:\Projects\Robotic\experiments\ue5_s4\Source\SarSlice\SarHost.h(13,20): warning C4264: 'void AActor::Reset(void)': no override available for virtual member function from base 'AActor'; function is hidden
+class SARSLICE_API ASarHost : public AActor {
+                   ^
+C:\Program Files\Epic Games\UE_5.6\Engine\Source\Runtime\Engine\Classes\GameFramework\Actor.h(3655,26): note: see declaration of 'AActor::Reset'
+	ENGINE_API virtual void Reset();
+	                        ^
+C:\Program Files\Epic Games\UE_5.6\Engine\Source\Runtime\Engine\Classes\GameFramework\Actor.h(253,7): note: see declaration of 'AActor'
+class AActor : public UObject
+      ^
+[4/76] Compile [x64] SarHost.cpp
+C:\Projects\Robotic\experiments\ue5_s4\Source\SarSlice\SarHost.h(27,13): warning C4263: 'FString ASarHost::Reset(const FString &)': member function does not override any base class virtual member function
+    FString Reset(const FString& Encoded);
+            ^
+C:\Projects\Robotic\experiments\ue5_s4\Source\SarSlice\SarHost.h(13,20): warning C4264: 'void AActor::Reset(void)': no override available for virtual member function from base 'AActor'; function is hidden
+class SARSLICE_API ASarHost : public AActor {
+                   ^
+C:\Program Files\Epic Games\UE_5.6\Engine\Source\Runtime\Engine\Classes\GameFramework\Actor.h(3655,26): note: see declaration of 'AActor::Reset'
+	ENGINE_API virtual void Reset();
+	                        ^
+C:\Program Files\Epic Games\UE_5.6\Engine\Source\Runtime\Engine\Classes\GameFramework\Actor.h(253,7): note: see declaration of 'AActor'
+class AActor : public UObject
+      ^
+C:\Projects\Robotic\experiments\ue5_s4\Source\SarSlice\SarHost.cpp(11,1): fatal error C1083: Cannot open include file: 'UnrealcvServer.h': No such file or directory
+#include "UnrealcvServer.h"
+^
+[5/76] Compile [x64] SarSlice.cpp
+[6/76] Compile [x64] ActionHandler.cpp
+C:\Projects\Robotic\experiments\ue5_s4\Plugins\UnrealCV\Source\UnrealCV\Private\Commands\ActionHandler.cpp(151,9): warning C4996: 'FInputKeyParams': Use FInputKeyEventArgs instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+		const FInputKeyParams KeyParams(Key, EInputEvent::IE_Released, 0, false);
+		      ^
+C:\Projects\Robotic\experiments\ue5_s4\Plugins\UnrealCV\Source\UnrealCV\Private\Commands\ActionHandler.cpp(151,34): warning C4996: 'FInputKeyParams::FInputKeyParams': Use FInputKeyEventArgs instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+		const FInputKeyParams KeyParams(Key, EInputEvent::IE_Released, 0, false);
+		                               ^
+C:\Projects\Robotic\experiments\ue5_s4\Plugins\UnrealCV\Source\UnrealCV\Private\Commands\ActionHandler.cpp(152,7): warning C4996: 'APlayerController::InputKey': Use the version which takes a FInputKeyEventArgs instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+		PC->InputKey(KeyParams);
+		    ^
+C:\Projects\Robotic\experiments\ue5_s4\Plugins\UnrealCV\Source\UnrealCV\Private\Commands\ActionHandler.cpp(179,2): warning C4996: 'FInputKeyParams': Use FInputKeyEventArgs instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	FInputKeyParams KeyParams(Key, Delta, DeltaTime, NumSamples, bGamepad);
+	^
+C:\Projects\Robotic\experiments\ue5_s4\Plugins\UnrealCV\Source\UnrealCV\Private\Commands\ActionHandler.cpp(179,27): warning C4996: 'FInputKeyParams::FInputKeyParams': Use FInputKeyEventArgs instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	FInputKeyParams KeyParams(Key, Delta, DeltaTime, NumSamples, bGamepad);
+	                         ^
+C:\Projects\Robotic\experiments\ue5_s4\Plugins\UnrealCV\Source\UnrealCV\Private\Commands\ActionHandler.cpp(180,37): warning C4996: 'APlayerController::InputKey': Use the version which takes a FInputKeyEventArgs instead. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.
+	World->GetFirstPlayerController()->InputKey(KeyParams);
+	                                   ^
+[7/76] Compile [x64] ActorController.cpp
+[8/76] Compile [x64] AliasHandler.cpp
+[9/76] Compile [x64] AliasMultiCommandTest.cpp
+[10/76] Compile [x64] AnimationBPLib.cpp
+[11/76] Compile [x64] AnnotationCamSensor.cpp
+[12/76] Compile [x64] AnnotationComponent.cpp
+[13/76] Compile [x64] BaseCameraSensor.cpp
+[14/76] Compile [x64] BoneSensor.cpp
+[15/76] Compile [x64] CamSensorActor.cpp
+[16/76] Compile [x64] CameraHandler.cpp
+[17/76] Compile [x64] CommandDispatcher.cpp
+[18/76] Compile [x64] CommandDispatcherRound3Test.cpp
+[19/76] Compile [x64] CommandDispatcherTest.cpp
+[20/76] Compile [x64] CommandHandler.cpp
+[21/76] Compile [x64] ConsoleHelper.cpp
+[22/76] Compile [x64] ConsoleHelperTest.cpp
+[23/76] Compile [x64] CubeActor.cpp
+[24/76] Compile [x64] DataCaptureActor.cpp
+[25/76] Compile [x64] DepthCamSensor.cpp
+[26/76] Compile [x64] ExecStatus.cpp
+[27/76] Compile [x64] ExecStatusRound3Test.cpp
+[28/76] Compile [x64] ExecStatusTest.cpp
+[29/76] Compile [x64] FlowCamSensor.cpp
+[30/76] Compile [x64] FusionCamSensor.cpp
+[31/76] Compile [x64] FusionCameraActor.cpp
+[32/76] Compile [x64] ImageUtil.cpp
+[33/76] Compile [x64] ImageWorker.cpp
+[34/76] Compile [x64] JsonObjectBP.cpp
+[35/76] Compile [x64] KeypointComponent.cpp
+[36/76] Compile [x64] LitCamSensor.cpp
+[37/76] Compile [x64] LoggerTest.cpp
+[38/76] Compile [x64] Module.UnrealCV.1.cpp
+[39/76] Compile [x64] Module.UnrealCV.2.cpp
+[40/76] Compile [x64] NormalCamSensor.cpp
+[41/76] Compile [x64] ObjectAnnotator.cpp
+[42/76] Compile [x64] ObjectHandler.cpp
+[43/76] Compile [x64] PawnCamSensor.cpp
+[44/76] Compile [x64] PlayerViewMode.cpp
+[45/76] Compile [x64] PluginHandler.cpp
+[46/76] Compile [x64] Puppeteer.cpp
+[47/76] Compile [x64] ReflectionUtils.cpp
+[48/76] Compile [x64] SensorBPLib.cpp
+[49/76] Compile [x64] Serialization.cpp
+[50/76] Compile [x64] SerializeBPLib.cpp
+[51/76] Compile [x64] ServerConfig.cpp
+[52/76] Compile [x64] ServerConfigTest.cpp
+[53/76] Compile [x64] SharedMemoryManager.cpp
+[54/76] Compile [x64] SocketUtils.cpp
+[55/76] Compile [x64] SocketUtilsTest.cpp
+[56/76] Compile [x64] StereoCameraActor.cpp
+[57/76] Compile [x64] TcpServer.cpp
+[58/76] Compile [x64] TextureReader.cpp
+[59/76] Compile [x64] UObjectUtils.cpp
+[60/76] Compile [x64] UnixTcpServer.cpp
+[61/76] Compile [x64] UnrealcvGameMode.cpp
+[62/76] Compile [x64] UnrealcvLog.cpp
+[63/76] Compile [x64] UnrealcvModule.cpp
+[64/76] Compile [x64] UnrealcvServer.cpp
+[65/76] Compile [x64] VertexSensor.cpp
+[66/76] Compile [x64] ViewMode.cpp
+[67/76] Compile [x64] VisionBPLib.cpp
+[68/76] Compile [x64] WorldController.cpp
+[69/76] Compile [x64] cnpy.cpp
+[70/76] Copy D3D12Core.dll
+[71/76] Copy d3d12SDKLayers.dll
+[72/76] Copy DirectML.dll
+[73/76] Copy tbb12.dll
+[74/76] Copy tbbmalloc.dll
+Total time in Parallel executor: 634.84 seconds
+
+Result: Failed (OtherCompilationError)
+Total execution time: 689.39 seconds

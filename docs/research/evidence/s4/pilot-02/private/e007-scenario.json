@@ -1,0 +1,54 @@
+{
+  "schema_version": "sar-s4-mvp-0.1",
+  "kind": "clean",
+  "seed": 0,
+  "perception": 0,
+  "odometry": 1,
+  "family": "primitive_room",
+  "pair_id": "clean-0",
+  "start_m": [
+    0.0,
+    0.0,
+    0.2
+  ],
+  "start_yaw": -0.75,
+  "boxes": [
+    {
+      "id": "back_wall",
+      "center_m": [
+        5.5,
+        0,
+        1.0
+      ],
+      "size_m": [
+        0.2,
+        7.0,
+        2.0
+      ]
+    },
+    {
+      "id": "rubble",
+      "center_m": [
+        1.8,
+        -1.8,
+        0.2
+      ],
+      "size_m": [
+        0.7,
+        0.5,
+        0.4
+      ]
+    }
+  ],
+  "victims": [
+    {
+      "gt_id": "v0",
+      "anchor_m": [
+        3.0,
+        0.4,
+        0.65
+      ]
+    }
+  ],
+  "sensor_black": false
+}
