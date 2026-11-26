@@ -1,0 +1,18 @@
+{
+  "kind": "PARTIAL_LOCAL_RAW_INDEX",
+  "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-legacy-pilot-completion-01",
+  "source_inventory_sha256": "7698b16d3bf5529a0374d63c34406dd2e245cbfa24dc22d4368b6c246b2e8b5b",
+  "source_run_repository_relative": "experiments/ue5_s4/runs/s4-legacy-pilot-completion-01",
+  "omitted": {
+    "private/host.jsonl.gz": {
+      "sha256": "117af2d2d8bf577438f4d72051be6207146e12b29f5c8c869e974b4d2909b118",
+      "bytes": 388074148
+    },
+    "public/observations.jsonl.gz": {
+      "sha256": "64b47bd5d950ed2d3db3bbb48a944bc755771d20a1b65afe233035763e1134d2",
+      "bytes": 1022232463
+    }
+  },
+  "raw_streams_included": false,
+  "note": "Original run untouched. Scratch captures are already losslessly embedded in raw host stream. A partial index requires original local raw files for audit/replay."
+}

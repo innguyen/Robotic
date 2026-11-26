@@ -19,10 +19,12 @@ def scenario(kind="clean", seed=0, perception=0, odometry=0):
             "boxes": boxes, "victims": victims, "sensor_black": kind == "sensor_black"}
 
 
-def sar_scenario(kind="clean", seed=0, perception=0, odometry=0, environment="indoor", posture="standing", depth_model="structured"):
+def sar_scenario(kind="clean", seed=0, perception=0, odometry=0, environment="indoor", posture="standing", depth_model="structured", scene_set="legacy"):
     import json
     from pathlib import Path
-    poses = json.loads((Path(__file__).resolve().parents[1] / "experiments/ue5_s4/assets/derived/poses.json").read_text())
+    if scene_set not in ("legacy","assets"):raise ValueError("unknown scene set")
+    pose_path="anatomy/dressed/poses.json" if scene_set=="assets" else "derived/poses.json"
+    poses = json.loads((Path(__file__).resolve().parents[1] / "experiments/ue5_s4/assets" / pose_path).read_text())
     config = scenario("clean" if kind in ("obstacles", "blocked") else kind, seed, perception, odometry)
     config.update(kind=kind, profile="sar_human_v1", environment=environment, depth_model=depth_model,
                   family="original_rescue_layout_v1",
@@ -40,7 +42,12 @@ def sar_scenario(kind="clean", seed=0, perception=0, odometry=0, environment="in
     if environment == "outdoor":
         config["boxes"][1]["size_m"][2] = .65
         config["boxes"][1]["center_m"][2] = .325
+    if scene_set=="assets":
+        from .asset_scenarios import asset_layout
+        config["boxes"],target = asset_layout(environment)
+        config.update(scene_variant=environment+"_damaged_assets_v2",family=environment+"_damaged_assets_v2")
     config["victims"] = [] if kind == "absent" else [{"gt_id": "v0", "anchor_m": [4., .5, poses[posture]["torso_height_m"]], "posture": posture, "yaw_deg": 90. if posture == "prone" else 180.}]
+    if scene_set=="assets" and config["victims"]:config["victims"][0]["anchor_m"][:2]=target
     if kind == "multi":
         config["victims"].append({"gt_id": "v1", "anchor_m": [3., -2.8, poses["seated"]["torso_height_m"]], "posture": "seated", "yaw_deg": 140.})
     if kind == "occluded":

@@ -1,0 +1,138 @@
+{
+  "schema_version": "sar-s4-mvp-0.1",
+  "kind": "clean",
+  "seed": 0,
+  "perception": 0,
+  "odometry": 0,
+  "family": "original_rescue_layout_v1",
+  "pair_id": "outdoor-clean-standing-0",
+  "start_m": [
+    0.0,
+    0.0,
+    0.2
+  ],
+  "start_yaw": 0.0,
+  "boxes": [
+    {
+      "id": "wall_back",
+      "center_m": [
+        6.5,
+        0,
+        1.3
+      ],
+      "size_m": [
+        0.2,
+        8.0,
+        2.6
+      ],
+      "material": "Brick"
+    },
+    {
+      "id": "wall_left",
+      "center_m": [
+        3,
+        4.0,
+        0.325
+      ],
+      "size_m": [
+        7.0,
+        0.2,
+        0.65
+      ]
+    },
+    {
+      "id": "broken_wall_right",
+      "center_m": [
+        4.8,
+        -4.0,
+        0.7
+      ],
+      "size_m": [
+        3.0,
+        0.2,
+        1.4
+      ]
+    },
+    {
+      "id": "rubble_a",
+      "center_m": [
+        2.0,
+        -1.6,
+        0.16
+      ],
+      "size_m": [
+        0.9,
+        0.7,
+        0.32
+      ]
+    },
+    {
+      "id": "rubble_b",
+      "center_m": [
+        3.1,
+        2.0,
+        0.22
+      ],
+      "size_m": [
+        0.6,
+        0.8,
+        0.44
+      ]
+    },
+    {
+      "id": "column",
+      "center_m": [
+        4.0,
+        -2.0,
+        1.2
+      ],
+      "size_m": [
+        0.3,
+        0.3,
+        2.4
+      ]
+    },
+    {
+      "id": "rear_wall",
+      "center_m": [
+        -0.8,
+        0,
+        1.3
+      ],
+      "size_m": [
+        0.15,
+        8.4,
+        2.6
+      ]
+    },
+    {
+      "id": "right_boundary",
+      "center_m": [
+        3,
+        -4.2,
+        0.35
+      ],
+      "size_m": [
+        7.8,
+        0.15,
+        0.7
+      ]
+    }
+  ],
+  "victims": [
+    {
+      "gt_id": "v0",
+      "anchor_m": [
+        4.0,
+        0.5,
+        1.2569248733683454
+      ],
+      "posture": "standing",
+      "yaw_deg": 180.0
+    }
+  ],
+  "sensor_black": false,
+  "profile": "sar_human_v1",
+  "environment": "outdoor",
+  "depth_model": "structured"
+}

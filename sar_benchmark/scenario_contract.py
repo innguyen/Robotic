@@ -3,17 +3,22 @@ import math
 
 from . import PROTOCOL
 from .contracts import fields, finite, identifier, integer, require, vector
+from .asset_scenarios import PROP_IDS
 
 
 def validate_scenario(config):
     fields(config, ("schema_version", "kind", "seed", "perception", "odometry", "family", "pair_id",
-                    "start_m", "start_yaw", "boxes", "victims", "sensor_black"), ("profile", "environment", "depth_model"))
+                    "start_m", "start_yaw", "boxes", "victims", "sensor_black"), ("profile", "environment", "depth_model", "scene_variant"))
     human = config.get("profile") == "sar_human_v1"
     if "profile" in config:
         require(human and config.get("environment") in ("indoor", "outdoor"), "invalid SAR profile")
         require(config.get("depth_model", "structured") in ("ideal","gaussian","structured"), "invalid depth model")
     else:
-        require("environment" not in config and "depth_model" not in config, "human settings require SAR profile")
+        require("environment" not in config and "depth_model" not in config and "scene_variant" not in config, "human settings require SAR profile")
+    assets="scene_variant" in config
+    if assets:
+        require(config["scene_variant"] in (config["environment"]+"_damaged_assets_v1",
+                                             config["environment"]+"_damaged_assets_v2"), "invalid asset scene")
     require(config["schema_version"] == PROTOCOL, "unsupported scenario version")
     require(config["kind"] in ("clean", "occluded", "absent", "multi", "sensor_black", "obstacles", "blocked"), "unsupported scenario kind")
     require(human or config["kind"] not in ("obstacles","blocked"), "navigation challenges require human profile")
@@ -27,9 +32,12 @@ def validate_scenario(config):
     require(type(config["boxes"]) is list and len(config["boxes"]) <= 30, "invalid boxes")
     seen = set()
     for box in config["boxes"]:
-        fields(box, ("id", "center_m", "size_m"), ("material",) if human else ())
+        fields(box, ("id", "center_m", "size_m"), (("material","mesh") if assets else ("material",)) if human else ())
         if "material" in box:
-            require(box["material"] in ("Concrete", "Brick", "Metal"), "invalid material")
+            require(box["material"] in ("Concrete", "Brick", "Metal") + (("Debris",)+PROP_IDS if assets else ()), "invalid material")
+        if "mesh" in box:
+            from .asset_scenarios import MESH_IDS
+            require(box["mesh"] in MESH_IDS,"unreviewed scene mesh")
         require(identifier(box["id"]) and box["id"] not in seen, "invalid box identity")
         seen.add(box["id"])
         require(vector(box["center_m"], 3) and vector(box["size_m"], 3) and all(0 < v <= 20 for v in box["size_m"]), "invalid box geometry")

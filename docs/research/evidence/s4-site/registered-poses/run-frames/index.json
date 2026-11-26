@@ -1,0 +1,8076 @@
+{
+  "source_run": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-site-registered-poses",
+  "run_inventory_sha256": "466ef1bcc633e44e98b419cb930f0a36c61c818905ea31a4e6e9adf393211ea1",
+  "frames": [
+    {
+      "label": "e000",
+      "role": "INITIAL_POLICY_FRAME",
+      "epoch": 18,
+      "tick": 0,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "native_png_sha256": "31bd1cdd89e7bdfaf02fec78c19867906aba08348a0a90899e22f196e1a000a3",
+      "visible": {},
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "b7d19df0990aae9159c48af671e9d73f89b5c3d3d339250f10a723d10dc0d75f",
+      "episode": "e000",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "indoor_damaged_assets_v2",
+        "pair_id": "indoor-clean-standing-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_masonry",
+            "center_m": [
+              3,
+              3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "south_masonry",
+            "center_m": [
+              3,
+              -3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "east_fracture",
+            "center_m": [
+              6.4,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              7.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_bay",
+            "center_m": [
+              -0.7,
+              2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "west_bay_lower",
+            "center_m": [
+              -0.7,
+              -2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "collapsed_entry",
+            "center_m": [
+              -0.7,
+              0,
+              0.75
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              1.5
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "search_partition",
+            "center_m": [
+              2.6,
+              0.4,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "office_divider",
+            "center_m": [
+              4.7,
+              1.9,
+              1.3
+            ],
+            "size_m": [
+              3.2,
+              0.22,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "fallen_ceiling",
+            "center_m": [
+              4.9,
+              2.8,
+              0.17
+            ],
+            "size_m": [
+              1.9,
+              1.15,
+              0.34
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "masonry_heap",
+            "center_m": [
+              2.65,
+              1.5,
+              0.17
+            ],
+            "size_m": [
+              1.0,
+              0.8,
+              0.34
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "entry_debris",
+            "center_m": [
+              0.8,
+              -2.65,
+              0.13
+            ],
+            "size_m": [
+              1.1,
+              0.85,
+              0.26
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "office_crate",
+            "center_m": [
+              5.7,
+              -2.8,
+              0.45
+            ],
+            "size_m": [
+              0.8,
+              0.75,
+              0.9
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "damaged_chair",
+            "center_m": [
+              4.7,
+              -1.9,
+              0.48
+            ],
+            "size_m": [
+              0.55,
+              0.6,
+              0.96
+            ],
+            "material": "painted_wooden_chair_02",
+            "mesh": "painted_wooden_chair_02"
+          },
+          {
+            "id": "door_hinge_jamb",
+            "center_m": [
+              2.565,
+              -1.93,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "door_latch_jamb",
+            "center_m": [
+              2.565,
+              -0.91,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "reception_desk",
+            "center_m": [
+              -0.07,
+              -2.42,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "records_desk",
+            "center_m": [
+              5.73,
+              0.5,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "distribution_cabinet",
+            "center_m": [
+              2.23,
+              0.76,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.5,
+              -0.1,
+              1.1690808777640584
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "structured",
+        "scene_variant": "indoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e000-last",
+      "role": "LAST_DELIVERED_POLICY_FRAME",
+      "epoch": 18,
+      "tick": 3,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        0.7500000253993603
+      ],
+      "native_png_sha256": "9e01212657d8dff90005965a5ca56a69a7ae381c844fe42ab32e7329fc574648",
+      "visible": {},
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "5c0a40e9ab9643dfd7d10dc089ab4e3f4af52cc04ca45620e4a9d1e83c59cd19",
+      "episode": "e000",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "indoor_damaged_assets_v2",
+        "pair_id": "indoor-clean-standing-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_masonry",
+            "center_m": [
+              3,
+              3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "south_masonry",
+            "center_m": [
+              3,
+              -3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "east_fracture",
+            "center_m": [
+              6.4,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              7.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_bay",
+            "center_m": [
+              -0.7,
+              2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "west_bay_lower",
+            "center_m": [
+              -0.7,
+              -2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "collapsed_entry",
+            "center_m": [
+              -0.7,
+              0,
+              0.75
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              1.5
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "search_partition",
+            "center_m": [
+              2.6,
+              0.4,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "office_divider",
+            "center_m": [
+              4.7,
+              1.9,
+              1.3
+            ],
+            "size_m": [
+              3.2,
+              0.22,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "fallen_ceiling",
+            "center_m": [
+              4.9,
+              2.8,
+              0.17
+            ],
+            "size_m": [
+              1.9,
+              1.15,
+              0.34
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "masonry_heap",
+            "center_m": [
+              2.65,
+              1.5,
+              0.17
+            ],
+            "size_m": [
+              1.0,
+              0.8,
+              0.34
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "entry_debris",
+            "center_m": [
+              0.8,
+              -2.65,
+              0.13
+            ],
+            "size_m": [
+              1.1,
+              0.85,
+              0.26
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "office_crate",
+            "center_m": [
+              5.7,
+              -2.8,
+              0.45
+            ],
+            "size_m": [
+              0.8,
+              0.75,
+              0.9
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "damaged_chair",
+            "center_m": [
+              4.7,
+              -1.9,
+              0.48
+            ],
+            "size_m": [
+              0.55,
+              0.6,
+              0.96
+            ],
+            "material": "painted_wooden_chair_02",
+            "mesh": "painted_wooden_chair_02"
+          },
+          {
+            "id": "door_hinge_jamb",
+            "center_m": [
+              2.565,
+              -1.93,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "door_latch_jamb",
+            "center_m": [
+              2.565,
+              -0.91,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "reception_desk",
+            "center_m": [
+              -0.07,
+              -2.42,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "records_desk",
+            "center_m": [
+              5.73,
+              0.5,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "distribution_cabinet",
+            "center_m": [
+              2.23,
+              0.76,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.5,
+              -0.1,
+              1.1690808777640584
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "structured",
+        "scene_variant": "indoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e001",
+      "role": "INITIAL_POLICY_FRAME",
+      "epoch": 19,
+      "tick": 0,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "native_png_sha256": "31bd1cdd89e7bdfaf02fec78c19867906aba08348a0a90899e22f196e1a000a3",
+      "visible": {},
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "b7d19df0990aae9159c48af671e9d73f89b5c3d3d339250f10a723d10dc0d75f",
+      "episode": "e001",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "indoor_damaged_assets_v2",
+        "pair_id": "indoor-clean-seated-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_masonry",
+            "center_m": [
+              3,
+              3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "south_masonry",
+            "center_m": [
+              3,
+              -3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "east_fracture",
+            "center_m": [
+              6.4,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              7.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_bay",
+            "center_m": [
+              -0.7,
+              2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "west_bay_lower",
+            "center_m": [
+              -0.7,
+              -2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "collapsed_entry",
+            "center_m": [
+              -0.7,
+              0,
+              0.75
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              1.5
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "search_partition",
+            "center_m": [
+              2.6,
+              0.4,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "office_divider",
+            "center_m": [
+              4.7,
+              1.9,
+              1.3
+            ],
+            "size_m": [
+              3.2,
+              0.22,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "fallen_ceiling",
+            "center_m": [
+              4.9,
+              2.8,
+              0.17
+            ],
+            "size_m": [
+              1.9,
+              1.15,
+              0.34
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "masonry_heap",
+            "center_m": [
+              2.65,
+              1.5,
+              0.17
+            ],
+            "size_m": [
+              1.0,
+              0.8,
+              0.34
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "entry_debris",
+            "center_m": [
+              0.8,
+              -2.65,
+              0.13
+            ],
+            "size_m": [
+              1.1,
+              0.85,
+              0.26
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "office_crate",
+            "center_m": [
+              5.7,
+              -2.8,
+              0.45
+            ],
+            "size_m": [
+              0.8,
+              0.75,
+              0.9
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "damaged_chair",
+            "center_m": [
+              4.7,
+              -1.9,
+              0.48
+            ],
+            "size_m": [
+              0.55,
+              0.6,
+              0.96
+            ],
+            "material": "painted_wooden_chair_02",
+            "mesh": "painted_wooden_chair_02"
+          },
+          {
+            "id": "door_hinge_jamb",
+            "center_m": [
+              2.565,
+              -1.93,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "door_latch_jamb",
+            "center_m": [
+              2.565,
+              -0.91,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "reception_desk",
+            "center_m": [
+              -0.07,
+              -2.42,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "records_desk",
+            "center_m": [
+              5.73,
+              0.5,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "distribution_cabinet",
+            "center_m": [
+              2.23,
+              0.76,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.5,
+              -0.1,
+              0.7678530133877882
+            ],
+            "posture": "seated",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "structured",
+        "scene_variant": "indoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e001-last",
+      "role": "LAST_DELIVERED_POLICY_FRAME",
+      "epoch": 19,
+      "tick": 3,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        0.7500000253993603
+      ],
+      "native_png_sha256": "9e01212657d8dff90005965a5ca56a69a7ae381c844fe42ab32e7329fc574648",
+      "visible": {},
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "5c0a40e9ab9643dfd7d10dc089ab4e3f4af52cc04ca45620e4a9d1e83c59cd19",
+      "episode": "e001",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "indoor_damaged_assets_v2",
+        "pair_id": "indoor-clean-seated-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_masonry",
+            "center_m": [
+              3,
+              3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "south_masonry",
+            "center_m": [
+              3,
+              -3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "east_fracture",
+            "center_m": [
+              6.4,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              7.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_bay",
+            "center_m": [
+              -0.7,
+              2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "west_bay_lower",
+            "center_m": [
+              -0.7,
+              -2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "collapsed_entry",
+            "center_m": [
+              -0.7,
+              0,
+              0.75
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              1.5
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "search_partition",
+            "center_m": [
+              2.6,
+              0.4,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "office_divider",
+            "center_m": [
+              4.7,
+              1.9,
+              1.3
+            ],
+            "size_m": [
+              3.2,
+              0.22,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "fallen_ceiling",
+            "center_m": [
+              4.9,
+              2.8,
+              0.17
+            ],
+            "size_m": [
+              1.9,
+              1.15,
+              0.34
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "masonry_heap",
+            "center_m": [
+              2.65,
+              1.5,
+              0.17
+            ],
+            "size_m": [
+              1.0,
+              0.8,
+              0.34
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "entry_debris",
+            "center_m": [
+              0.8,
+              -2.65,
+              0.13
+            ],
+            "size_m": [
+              1.1,
+              0.85,
+              0.26
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "office_crate",
+            "center_m": [
+              5.7,
+              -2.8,
+              0.45
+            ],
+            "size_m": [
+              0.8,
+              0.75,
+              0.9
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "damaged_chair",
+            "center_m": [
+              4.7,
+              -1.9,
+              0.48
+            ],
+            "size_m": [
+              0.55,
+              0.6,
+              0.96
+            ],
+            "material": "painted_wooden_chair_02",
+            "mesh": "painted_wooden_chair_02"
+          },
+          {
+            "id": "door_hinge_jamb",
+            "center_m": [
+              2.565,
+              -1.93,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "door_latch_jamb",
+            "center_m": [
+              2.565,
+              -0.91,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "reception_desk",
+            "center_m": [
+              -0.07,
+              -2.42,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "records_desk",
+            "center_m": [
+              5.73,
+              0.5,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "distribution_cabinet",
+            "center_m": [
+              2.23,
+              0.76,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.5,
+              -0.1,
+              0.7678530133877882
+            ],
+            "posture": "seated",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "structured",
+        "scene_variant": "indoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e002",
+      "role": "INITIAL_POLICY_FRAME",
+      "epoch": 20,
+      "tick": 0,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "native_png_sha256": "31bd1cdd89e7bdfaf02fec78c19867906aba08348a0a90899e22f196e1a000a3",
+      "visible": {},
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "b7d19df0990aae9159c48af671e9d73f89b5c3d3d339250f10a723d10dc0d75f",
+      "episode": "e002",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "indoor_damaged_assets_v2",
+        "pair_id": "indoor-clean-prone-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_masonry",
+            "center_m": [
+              3,
+              3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "south_masonry",
+            "center_m": [
+              3,
+              -3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "east_fracture",
+            "center_m": [
+              6.4,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              7.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_bay",
+            "center_m": [
+              -0.7,
+              2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "west_bay_lower",
+            "center_m": [
+              -0.7,
+              -2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "collapsed_entry",
+            "center_m": [
+              -0.7,
+              0,
+              0.75
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              1.5
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "search_partition",
+            "center_m": [
+              2.6,
+              0.4,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "office_divider",
+            "center_m": [
+              4.7,
+              1.9,
+              1.3
+            ],
+            "size_m": [
+              3.2,
+              0.22,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "fallen_ceiling",
+            "center_m": [
+              4.9,
+              2.8,
+              0.17
+            ],
+            "size_m": [
+              1.9,
+              1.15,
+              0.34
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "masonry_heap",
+            "center_m": [
+              2.65,
+              1.5,
+              0.17
+            ],
+            "size_m": [
+              1.0,
+              0.8,
+              0.34
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "entry_debris",
+            "center_m": [
+              0.8,
+              -2.65,
+              0.13
+            ],
+            "size_m": [
+              1.1,
+              0.85,
+              0.26
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "office_crate",
+            "center_m": [
+              5.7,
+              -2.8,
+              0.45
+            ],
+            "size_m": [
+              0.8,
+              0.75,
+              0.9
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "damaged_chair",
+            "center_m": [
+              4.7,
+              -1.9,
+              0.48
+            ],
+            "size_m": [
+              0.55,
+              0.6,
+              0.96
+            ],
+            "material": "painted_wooden_chair_02",
+            "mesh": "painted_wooden_chair_02"
+          },
+          {
+            "id": "door_hinge_jamb",
+            "center_m": [
+              2.565,
+              -1.93,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "door_latch_jamb",
+            "center_m": [
+              2.565,
+              -0.91,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "reception_desk",
+            "center_m": [
+              -0.07,
+              -2.42,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "records_desk",
+            "center_m": [
+              5.73,
+              0.5,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "distribution_cabinet",
+            "center_m": [
+              2.23,
+              0.76,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.5,
+              -0.1,
+              0.19937826346558368
+            ],
+            "posture": "prone",
+            "yaw_deg": 90.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "structured",
+        "scene_variant": "indoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e002-last",
+      "role": "LAST_DELIVERED_POLICY_FRAME",
+      "epoch": 20,
+      "tick": 3,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        0.7500000253993603
+      ],
+      "native_png_sha256": "9e01212657d8dff90005965a5ca56a69a7ae381c844fe42ab32e7329fc574648",
+      "visible": {},
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "5c0a40e9ab9643dfd7d10dc089ab4e3f4af52cc04ca45620e4a9d1e83c59cd19",
+      "episode": "e002",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "indoor_damaged_assets_v2",
+        "pair_id": "indoor-clean-prone-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_masonry",
+            "center_m": [
+              3,
+              3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "south_masonry",
+            "center_m": [
+              3,
+              -3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "east_fracture",
+            "center_m": [
+              6.4,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              7.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_bay",
+            "center_m": [
+              -0.7,
+              2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "west_bay_lower",
+            "center_m": [
+              -0.7,
+              -2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "collapsed_entry",
+            "center_m": [
+              -0.7,
+              0,
+              0.75
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              1.5
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "search_partition",
+            "center_m": [
+              2.6,
+              0.4,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "office_divider",
+            "center_m": [
+              4.7,
+              1.9,
+              1.3
+            ],
+            "size_m": [
+              3.2,
+              0.22,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "fallen_ceiling",
+            "center_m": [
+              4.9,
+              2.8,
+              0.17
+            ],
+            "size_m": [
+              1.9,
+              1.15,
+              0.34
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "masonry_heap",
+            "center_m": [
+              2.65,
+              1.5,
+              0.17
+            ],
+            "size_m": [
+              1.0,
+              0.8,
+              0.34
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "entry_debris",
+            "center_m": [
+              0.8,
+              -2.65,
+              0.13
+            ],
+            "size_m": [
+              1.1,
+              0.85,
+              0.26
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "office_crate",
+            "center_m": [
+              5.7,
+              -2.8,
+              0.45
+            ],
+            "size_m": [
+              0.8,
+              0.75,
+              0.9
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "damaged_chair",
+            "center_m": [
+              4.7,
+              -1.9,
+              0.48
+            ],
+            "size_m": [
+              0.55,
+              0.6,
+              0.96
+            ],
+            "material": "painted_wooden_chair_02",
+            "mesh": "painted_wooden_chair_02"
+          },
+          {
+            "id": "door_hinge_jamb",
+            "center_m": [
+              2.565,
+              -1.93,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "door_latch_jamb",
+            "center_m": [
+              2.565,
+              -0.91,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "reception_desk",
+            "center_m": [
+              -0.07,
+              -2.42,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "records_desk",
+            "center_m": [
+              5.73,
+              0.5,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "distribution_cabinet",
+            "center_m": [
+              2.23,
+              0.76,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.5,
+              -0.1,
+              0.19937826346558368
+            ],
+            "posture": "prone",
+            "yaw_deg": 90.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "structured",
+        "scene_variant": "indoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e003",
+      "role": "INITIAL_POLICY_FRAME",
+      "epoch": 21,
+      "tick": 0,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "native_png_sha256": "609857ce9251cb5009dc1aa49c6ca013e6ec648ab706c93be304a8cf2568dc4e",
+      "visible": {
+        "v0": {
+          "pixels": 803,
+          "bbox": [
+            187,
+            159,
+            222,
+            196
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [
+        {
+          "box": [
+            185.0547637939453,
+            158.9673309326172,
+            222.70420837402344,
+            196.8474884033203
+          ],
+          "confidence": 0.6595050692558289,
+          "position": [
+            4.6485,
+            1.5892400951862338,
+            1.5486768619966509
+          ],
+          "depth_spread_m": 0.0405000000000002
+        }
+      ],
+      "delivered_png_sha256": "27417b01712f71428cfd1e3295a6cb12bdad1b9a00ef4a2b8f9b8cf72465d3e6",
+      "episode": "e003",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-standing-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              1.1690808777640584
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "structured",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.75,
+        "safe_time_integrated_recall": 0.75,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.05166071121972256
+        ],
+        "localization_median_m": 0.05166071121972256,
+        "localization_p90_m": 0.05166071121972256,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.2668829083727568,
+            "nll_xy": -2.6338516653923674,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": 0.08170750688540895,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e003-report-t0001",
+      "role": "MATCHED_REPORT_DELIVERED_FRAME",
+      "epoch": 21,
+      "tick": 1,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        0.2500000029182011
+      ],
+      "native_png_sha256": "9677dfbe25f0363fcaa1e5525b7fb80e6e83bae7f98cdd83c41461a3d6946a10",
+      "visible": {
+        "v0": {
+          "pixels": 694,
+          "bbox": [
+            277,
+            163,
+            310,
+            199
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [
+        {
+          "box": [
+            275.8934326171875,
+            163.51406860351562,
+            309.76885986328125,
+            200.03518676757812
+          ],
+          "confidence": 0.7688044309616089,
+          "position": [
+            4.650845671010525,
+            1.5874356172450412,
+            1.5416997616386416
+          ],
+          "depth_spread_m": 0.05200000000000049
+        }
+      ],
+      "delivered_png_sha256": "ef54b883733303d731dfe3f68988a48266266006b2e110de2c9994fdec672f3e",
+      "episode": "e003",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-standing-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              1.1690808777640584
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "structured",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.75,
+        "safe_time_integrated_recall": 0.75,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.05166071121972256
+        ],
+        "localization_median_m": 0.05166071121972256,
+        "localization_p90_m": 0.05166071121972256,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.2668829083727568,
+            "nll_xy": -2.6338516653923674,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": 0.08170750688540895,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e003-last",
+      "role": "LAST_DELIVERED_POLICY_FRAME",
+      "epoch": 21,
+      "tick": 3,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        0.7500000253993603
+      ],
+      "native_png_sha256": "c884b53b8432887795145b1b802cc890bce0f9357263d098c6f833e11b22c39c",
+      "visible": {
+        "v0": {
+          "pixels": 937,
+          "bbox": [
+            454,
+            156,
+            492,
+            197
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [
+        {
+          "box": [
+            448.9540309906006,
+            156.5386562347412,
+            494.8511447906494,
+            197.4211826324463
+          ],
+          "confidence": 0.5676453113555908,
+          "position": [
+            4.64589462975151,
+            1.578036238023913,
+            1.5294381493628024
+          ],
+          "depth_spread_m": 0.03599999999999959
+        }
+      ],
+      "delivered_png_sha256": "c7fce7ef9ae73bc0385c4f3769c09ef4fa9bfee7079405fb42b84ce11d6f31ab",
+      "episode": "e003",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-standing-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              1.1690808777640584
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "structured",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.75,
+        "safe_time_integrated_recall": 0.75,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.05166071121972256
+        ],
+        "localization_median_m": 0.05166071121972256,
+        "localization_p90_m": 0.05166071121972256,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.2668829083727568,
+            "nll_xy": -2.6338516653923674,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": 0.08170750688540895,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e004",
+      "role": "INITIAL_POLICY_FRAME",
+      "epoch": 22,
+      "tick": 0,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "native_png_sha256": "e37b16cd5f95b86928dcaeb4f3368d69a19a9239cb616bef1c8a787bac6bb751",
+      "visible": {
+        "v0": {
+          "pixels": 97,
+          "bbox": [
+            197,
+            188,
+            212,
+            196
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "ff5b94db6f91d0e3088f89610f0eb06d31497bef17fb8437bfaaff4181cad940",
+      "episode": "e004",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-seated-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              0.7678530133877882
+            ],
+            "posture": "seated",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "structured",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e004-last",
+      "role": "LAST_DELIVERED_POLICY_FRAME",
+      "epoch": 22,
+      "tick": 3,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        0.7500000253993603
+      ],
+      "native_png_sha256": "270332b9547dc45afd0c983043e34090df780f2f68c0ea70431361a1c1af56a6",
+      "visible": {
+        "v0": {
+          "pixels": 126,
+          "bbox": [
+            463,
+            186,
+            480,
+            196
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "4a63937b1a3b4c42a817705a5bace8fb5d5082dec58586e4b698508ee9c17cf2",
+      "episode": "e004",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-seated-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              0.7678530133877882
+            ],
+            "posture": "seated",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "structured",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e005",
+      "role": "INITIAL_POLICY_FRAME",
+      "epoch": 23,
+      "tick": 0,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "native_png_sha256": "3b7ed36e74301e92c878fa65f20fe34e57aa6e5645c2a7d0353d3c00149c3fde",
+      "visible": {},
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "71287aff687a58485dbca71feaf70af621df23c36569b2fc3f4b357ad3781268",
+      "episode": "e005",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-prone-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              0.19937826346558368
+            ],
+            "posture": "prone",
+            "yaw_deg": 90.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "structured",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e005-last",
+      "role": "LAST_DELIVERED_POLICY_FRAME",
+      "epoch": 23,
+      "tick": 3,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        0.7500000253993603
+      ],
+      "native_png_sha256": "114c74510733ab0fc495d8aa71874dbbbc306c7ee0e5c9af3a31c94da3d7a62d",
+      "visible": {},
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "00892d7db797c35d61fd8356cfcf2c4af2b2a3ef945275d783a8b1f8f5636c57",
+      "episode": "e005",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-prone-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              0.19937826346558368
+            ],
+            "posture": "prone",
+            "yaw_deg": 90.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "structured",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "qa-00-indoor-standing-P0",
+      "role": "PRIVILEGED_CALIBRATION_VIEW_NEVER_DELIVERED_TO_POLICY",
+      "epoch": 41,
+      "tick": 0,
+      "camera_pose_world_m": [
+        3.6,
+        -2.0,
+        1.1284221002312511
+      ],
+      "native_png_sha256": "6e772aabf4fcae3a128476fb4fa1103661b600248abcf2147e371901d4471238",
+      "visible": {
+        "v0": {
+          "pixels": 15907,
+          "bbox": [
+            275,
+            42,
+            358,
+            375
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "indoor_damaged_assets_v2",
+        "pair_id": "indoor-clean-standing-0",
+        "start_m": [
+          3.6,
+          -2.0,
+          0.2
+        ],
+        "start_yaw": 1.1284221038181517,
+        "boxes": [
+          {
+            "id": "north_masonry",
+            "center_m": [
+              3,
+              3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "south_masonry",
+            "center_m": [
+              3,
+              -3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "east_fracture",
+            "center_m": [
+              6.4,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              7.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_bay",
+            "center_m": [
+              -0.7,
+              2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "west_bay_lower",
+            "center_m": [
+              -0.7,
+              -2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "collapsed_entry",
+            "center_m": [
+              -0.7,
+              0,
+              0.75
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              1.5
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "search_partition",
+            "center_m": [
+              2.6,
+              0.4,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "office_divider",
+            "center_m": [
+              4.7,
+              1.9,
+              1.3
+            ],
+            "size_m": [
+              3.2,
+              0.22,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "fallen_ceiling",
+            "center_m": [
+              4.9,
+              2.8,
+              0.17
+            ],
+            "size_m": [
+              1.9,
+              1.15,
+              0.34
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "masonry_heap",
+            "center_m": [
+              2.65,
+              1.5,
+              0.17
+            ],
+            "size_m": [
+              1.0,
+              0.8,
+              0.34
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "entry_debris",
+            "center_m": [
+              0.8,
+              -2.65,
+              0.13
+            ],
+            "size_m": [
+              1.1,
+              0.85,
+              0.26
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "office_crate",
+            "center_m": [
+              5.7,
+              -2.8,
+              0.45
+            ],
+            "size_m": [
+              0.8,
+              0.75,
+              0.9
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "damaged_chair",
+            "center_m": [
+              4.7,
+              -1.9,
+              0.48
+            ],
+            "size_m": [
+              0.55,
+              0.6,
+              0.96
+            ],
+            "material": "painted_wooden_chair_02",
+            "mesh": "painted_wooden_chair_02"
+          },
+          {
+            "id": "door_hinge_jamb",
+            "center_m": [
+              2.565,
+              -1.93,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "door_latch_jamb",
+            "center_m": [
+              2.565,
+              -0.91,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "reception_desk",
+            "center_m": [
+              -0.07,
+              -2.42,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "records_desk",
+            "center_m": [
+              5.73,
+              0.5,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "distribution_cabinet",
+            "center_m": [
+              2.23,
+              0.76,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.5,
+              -0.1,
+              1.1690808777640584
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "ideal",
+        "scene_variant": "indoor_damaged_assets_v2"
+      },
+      "offline_person_boxes": [
+        {
+          "box": [
+            284.39416885375977,
+            44.81245422363281,
+            360.40905380249023,
+            366.28636169433594
+          ],
+          "confidence": 0.7074990272521973
+        }
+      ]
+    },
+    {
+      "label": "qa-01-indoor-standing-P1",
+      "role": "PRIVILEGED_CALIBRATION_VIEW_NEVER_DELIVERED_TO_POLICY",
+      "epoch": 44,
+      "tick": 0,
+      "camera_pose_world_m": [
+        3.6,
+        -2.0,
+        1.1284221002312511
+      ],
+      "native_png_sha256": "c43ad93dc5cba4b5ece146f4e710da30a200935c992fdd0a8d77210eda7e6f30",
+      "visible": {
+        "v0": {
+          "pixels": 15907,
+          "bbox": [
+            275,
+            42,
+            358,
+            375
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.07000000029802322,
+        "intensities": [
+          0.5,
+          4.0
+        ]
+      },
+      "scan_hits": 720,
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 1,
+        "odometry": 0,
+        "family": "indoor_damaged_assets_v2",
+        "pair_id": "indoor-clean-standing-0",
+        "start_m": [
+          3.6,
+          -2.0,
+          0.2
+        ],
+        "start_yaw": 1.1284221038181517,
+        "boxes": [
+          {
+            "id": "north_masonry",
+            "center_m": [
+              3,
+              3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "south_masonry",
+            "center_m": [
+              3,
+              -3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "east_fracture",
+            "center_m": [
+              6.4,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              7.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_bay",
+            "center_m": [
+              -0.7,
+              2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "west_bay_lower",
+            "center_m": [
+              -0.7,
+              -2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "collapsed_entry",
+            "center_m": [
+              -0.7,
+              0,
+              0.75
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              1.5
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "search_partition",
+            "center_m": [
+              2.6,
+              0.4,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "office_divider",
+            "center_m": [
+              4.7,
+              1.9,
+              1.3
+            ],
+            "size_m": [
+              3.2,
+              0.22,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "fallen_ceiling",
+            "center_m": [
+              4.9,
+              2.8,
+              0.17
+            ],
+            "size_m": [
+              1.9,
+              1.15,
+              0.34
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "masonry_heap",
+            "center_m": [
+              2.65,
+              1.5,
+              0.17
+            ],
+            "size_m": [
+              1.0,
+              0.8,
+              0.34
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "entry_debris",
+            "center_m": [
+              0.8,
+              -2.65,
+              0.13
+            ],
+            "size_m": [
+              1.1,
+              0.85,
+              0.26
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "office_crate",
+            "center_m": [
+              5.7,
+              -2.8,
+              0.45
+            ],
+            "size_m": [
+              0.8,
+              0.75,
+              0.9
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "damaged_chair",
+            "center_m": [
+              4.7,
+              -1.9,
+              0.48
+            ],
+            "size_m": [
+              0.55,
+              0.6,
+              0.96
+            ],
+            "material": "painted_wooden_chair_02",
+            "mesh": "painted_wooden_chair_02"
+          },
+          {
+            "id": "door_hinge_jamb",
+            "center_m": [
+              2.565,
+              -1.93,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "door_latch_jamb",
+            "center_m": [
+              2.565,
+              -0.91,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "reception_desk",
+            "center_m": [
+              -0.07,
+              -2.42,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "records_desk",
+            "center_m": [
+              5.73,
+              0.5,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "distribution_cabinet",
+            "center_m": [
+              2.23,
+              0.76,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.5,
+              -0.1,
+              1.1690808777640584
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "ideal",
+        "scene_variant": "indoor_damaged_assets_v2"
+      },
+      "offline_person_boxes": [
+        {
+          "box": [
+            285.84259033203125,
+            30.8392333984375,
+            435.162841796875,
+            350.68463134765625
+          ],
+          "confidence": 0.4971894919872284
+        }
+      ]
+    },
+    {
+      "label": "qa-02-indoor-seated-P0",
+      "role": "PRIVILEGED_CALIBRATION_VIEW_NEVER_DELIVERED_TO_POLICY",
+      "epoch": 47,
+      "tick": 0,
+      "camera_pose_world_m": [
+        3.6,
+        -2.0,
+        1.1284221002312511
+      ],
+      "native_png_sha256": "08aaaebb7fdcbe3ac6966458224d1c30b1c1ad281c057ebcc28f47eb1adad5f3",
+      "visible": {
+        "v0": {
+          "pixels": 15181,
+          "bbox": [
+            196,
+            114,
+            347,
+            392
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "indoor_damaged_assets_v2",
+        "pair_id": "indoor-clean-seated-0",
+        "start_m": [
+          3.6,
+          -2.0,
+          0.2
+        ],
+        "start_yaw": 1.1284221038181517,
+        "boxes": [
+          {
+            "id": "north_masonry",
+            "center_m": [
+              3,
+              3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "south_masonry",
+            "center_m": [
+              3,
+              -3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "east_fracture",
+            "center_m": [
+              6.4,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              7.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_bay",
+            "center_m": [
+              -0.7,
+              2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "west_bay_lower",
+            "center_m": [
+              -0.7,
+              -2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "collapsed_entry",
+            "center_m": [
+              -0.7,
+              0,
+              0.75
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              1.5
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "search_partition",
+            "center_m": [
+              2.6,
+              0.4,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "office_divider",
+            "center_m": [
+              4.7,
+              1.9,
+              1.3
+            ],
+            "size_m": [
+              3.2,
+              0.22,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "fallen_ceiling",
+            "center_m": [
+              4.9,
+              2.8,
+              0.17
+            ],
+            "size_m": [
+              1.9,
+              1.15,
+              0.34
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "masonry_heap",
+            "center_m": [
+              2.65,
+              1.5,
+              0.17
+            ],
+            "size_m": [
+              1.0,
+              0.8,
+              0.34
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "entry_debris",
+            "center_m": [
+              0.8,
+              -2.65,
+              0.13
+            ],
+            "size_m": [
+              1.1,
+              0.85,
+              0.26
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "office_crate",
+            "center_m": [
+              5.7,
+              -2.8,
+              0.45
+            ],
+            "size_m": [
+              0.8,
+              0.75,
+              0.9
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "damaged_chair",
+            "center_m": [
+              4.7,
+              -1.9,
+              0.48
+            ],
+            "size_m": [
+              0.55,
+              0.6,
+              0.96
+            ],
+            "material": "painted_wooden_chair_02",
+            "mesh": "painted_wooden_chair_02"
+          },
+          {
+            "id": "door_hinge_jamb",
+            "center_m": [
+              2.565,
+              -1.93,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "door_latch_jamb",
+            "center_m": [
+              2.565,
+              -0.91,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "reception_desk",
+            "center_m": [
+              -0.07,
+              -2.42,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "records_desk",
+            "center_m": [
+              5.73,
+              0.5,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "distribution_cabinet",
+            "center_m": [
+              2.23,
+              0.76,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.5,
+              -0.1,
+              0.7678530133877882
+            ],
+            "posture": "seated",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "ideal",
+        "scene_variant": "indoor_damaged_assets_v2"
+      },
+      "offline_person_boxes": [
+        {
+          "box": [
+            196.39700317382812,
+            115.5054931640625,
+            364.8022766113281,
+            389.18145751953125
+          ],
+          "confidence": 0.8076712489128113
+        }
+      ]
+    },
+    {
+      "label": "qa-03-indoor-seated-P1",
+      "role": "PRIVILEGED_CALIBRATION_VIEW_NEVER_DELIVERED_TO_POLICY",
+      "epoch": 50,
+      "tick": 0,
+      "camera_pose_world_m": [
+        3.6,
+        -2.0,
+        1.1284221002312511
+      ],
+      "native_png_sha256": "d1f1c6f656fc4243f46bbe9e18096c9ef3415cc22b7bf97a3b6d8a7865353a5e",
+      "visible": {
+        "v0": {
+          "pixels": 15181,
+          "bbox": [
+            196,
+            114,
+            347,
+            392
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.07000000029802322,
+        "intensities": [
+          0.5,
+          4.0
+        ]
+      },
+      "scan_hits": 720,
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 1,
+        "odometry": 0,
+        "family": "indoor_damaged_assets_v2",
+        "pair_id": "indoor-clean-seated-0",
+        "start_m": [
+          3.6,
+          -2.0,
+          0.2
+        ],
+        "start_yaw": 1.1284221038181517,
+        "boxes": [
+          {
+            "id": "north_masonry",
+            "center_m": [
+              3,
+              3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "south_masonry",
+            "center_m": [
+              3,
+              -3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "east_fracture",
+            "center_m": [
+              6.4,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              7.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_bay",
+            "center_m": [
+              -0.7,
+              2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "west_bay_lower",
+            "center_m": [
+              -0.7,
+              -2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "collapsed_entry",
+            "center_m": [
+              -0.7,
+              0,
+              0.75
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              1.5
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "search_partition",
+            "center_m": [
+              2.6,
+              0.4,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "office_divider",
+            "center_m": [
+              4.7,
+              1.9,
+              1.3
+            ],
+            "size_m": [
+              3.2,
+              0.22,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "fallen_ceiling",
+            "center_m": [
+              4.9,
+              2.8,
+              0.17
+            ],
+            "size_m": [
+              1.9,
+              1.15,
+              0.34
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "masonry_heap",
+            "center_m": [
+              2.65,
+              1.5,
+              0.17
+            ],
+            "size_m": [
+              1.0,
+              0.8,
+              0.34
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "entry_debris",
+            "center_m": [
+              0.8,
+              -2.65,
+              0.13
+            ],
+            "size_m": [
+              1.1,
+              0.85,
+              0.26
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "office_crate",
+            "center_m": [
+              5.7,
+              -2.8,
+              0.45
+            ],
+            "size_m": [
+              0.8,
+              0.75,
+              0.9
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "damaged_chair",
+            "center_m": [
+              4.7,
+              -1.9,
+              0.48
+            ],
+            "size_m": [
+              0.55,
+              0.6,
+              0.96
+            ],
+            "material": "painted_wooden_chair_02",
+            "mesh": "painted_wooden_chair_02"
+          },
+          {
+            "id": "door_hinge_jamb",
+            "center_m": [
+              2.565,
+              -1.93,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "door_latch_jamb",
+            "center_m": [
+              2.565,
+              -0.91,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "reception_desk",
+            "center_m": [
+              -0.07,
+              -2.42,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "records_desk",
+            "center_m": [
+              5.73,
+              0.5,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "distribution_cabinet",
+            "center_m": [
+              2.23,
+              0.76,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.5,
+              -0.1,
+              0.7678530133877882
+            ],
+            "posture": "seated",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "ideal",
+        "scene_variant": "indoor_damaged_assets_v2"
+      },
+      "offline_person_boxes": []
+    },
+    {
+      "label": "qa-04-indoor-prone-P0",
+      "role": "PRIVILEGED_CALIBRATION_VIEW_NEVER_DELIVERED_TO_POLICY",
+      "epoch": 53,
+      "tick": 0,
+      "camera_pose_world_m": [
+        3.6,
+        -2.0,
+        1.1284221002312511
+      ],
+      "native_png_sha256": "5809ab667f42711249fa24f74903a2eb6c899dd255f027bfec49192bec985424",
+      "visible": {
+        "v0": {
+          "pixels": 24890,
+          "bbox": [
+            269,
+            291,
+            585,
+            480
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "indoor_damaged_assets_v2",
+        "pair_id": "indoor-clean-prone-0",
+        "start_m": [
+          3.6,
+          -2.0,
+          0.2
+        ],
+        "start_yaw": 1.1284221038181517,
+        "boxes": [
+          {
+            "id": "north_masonry",
+            "center_m": [
+              3,
+              3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "south_masonry",
+            "center_m": [
+              3,
+              -3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "east_fracture",
+            "center_m": [
+              6.4,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              7.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_bay",
+            "center_m": [
+              -0.7,
+              2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "west_bay_lower",
+            "center_m": [
+              -0.7,
+              -2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "collapsed_entry",
+            "center_m": [
+              -0.7,
+              0,
+              0.75
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              1.5
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "search_partition",
+            "center_m": [
+              2.6,
+              0.4,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "office_divider",
+            "center_m": [
+              4.7,
+              1.9,
+              1.3
+            ],
+            "size_m": [
+              3.2,
+              0.22,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "fallen_ceiling",
+            "center_m": [
+              4.9,
+              2.8,
+              0.17
+            ],
+            "size_m": [
+              1.9,
+              1.15,
+              0.34
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "masonry_heap",
+            "center_m": [
+              2.65,
+              1.5,
+              0.17
+            ],
+            "size_m": [
+              1.0,
+              0.8,
+              0.34
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "entry_debris",
+            "center_m": [
+              0.8,
+              -2.65,
+              0.13
+            ],
+            "size_m": [
+              1.1,
+              0.85,
+              0.26
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "office_crate",
+            "center_m": [
+              5.7,
+              -2.8,
+              0.45
+            ],
+            "size_m": [
+              0.8,
+              0.75,
+              0.9
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "damaged_chair",
+            "center_m": [
+              4.7,
+              -1.9,
+              0.48
+            ],
+            "size_m": [
+              0.55,
+              0.6,
+              0.96
+            ],
+            "material": "painted_wooden_chair_02",
+            "mesh": "painted_wooden_chair_02"
+          },
+          {
+            "id": "door_hinge_jamb",
+            "center_m": [
+              2.565,
+              -1.93,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "door_latch_jamb",
+            "center_m": [
+              2.565,
+              -0.91,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "reception_desk",
+            "center_m": [
+              -0.07,
+              -2.42,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "records_desk",
+            "center_m": [
+              5.73,
+              0.5,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "distribution_cabinet",
+            "center_m": [
+              2.23,
+              0.76,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.5,
+              -0.1,
+              0.19937826346558368
+            ],
+            "posture": "prone",
+            "yaw_deg": 90.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "ideal",
+        "scene_variant": "indoor_damaged_assets_v2"
+      },
+      "offline_person_boxes": [
+        {
+          "box": [
+            270.7118377685547,
+            282.4995880126953,
+            596.0121002197266,
+            478.5997772216797
+          ],
+          "confidence": 0.6968837380409241
+        }
+      ]
+    },
+    {
+      "label": "qa-05-indoor-prone-P1",
+      "role": "PRIVILEGED_CALIBRATION_VIEW_NEVER_DELIVERED_TO_POLICY",
+      "epoch": 56,
+      "tick": 0,
+      "camera_pose_world_m": [
+        3.6,
+        -2.0,
+        1.1284221002312511
+      ],
+      "native_png_sha256": "5e6fdf144f1b1e030ddbbeea2c80472acf1ad165366dfc99e0f014628b3442c8",
+      "visible": {
+        "v0": {
+          "pixels": 24890,
+          "bbox": [
+            269,
+            291,
+            585,
+            480
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.07000000029802322,
+        "intensities": [
+          0.5,
+          4.0
+        ]
+      },
+      "scan_hits": 720,
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 1,
+        "odometry": 0,
+        "family": "indoor_damaged_assets_v2",
+        "pair_id": "indoor-clean-prone-0",
+        "start_m": [
+          3.6,
+          -2.0,
+          0.2
+        ],
+        "start_yaw": 1.1284221038181517,
+        "boxes": [
+          {
+            "id": "north_masonry",
+            "center_m": [
+              3,
+              3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "south_masonry",
+            "center_m": [
+              3,
+              -3.7,
+              1.3
+            ],
+            "size_m": [
+              7.3,
+              0.24,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "east_fracture",
+            "center_m": [
+              6.4,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              7.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_bay",
+            "center_m": [
+              -0.7,
+              2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "west_bay_lower",
+            "center_m": [
+              -0.7,
+              -2.5,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.6,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "collapsed_entry",
+            "center_m": [
+              -0.7,
+              0,
+              0.75
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              1.5
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "search_partition",
+            "center_m": [
+              2.6,
+              0.4,
+              1.3
+            ],
+            "size_m": [
+              0.24,
+              2.5,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "office_divider",
+            "center_m": [
+              4.7,
+              1.9,
+              1.3
+            ],
+            "size_m": [
+              3.2,
+              0.22,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "fallen_ceiling",
+            "center_m": [
+              4.9,
+              2.8,
+              0.17
+            ],
+            "size_m": [
+              1.9,
+              1.15,
+              0.34
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "masonry_heap",
+            "center_m": [
+              2.65,
+              1.5,
+              0.17
+            ],
+            "size_m": [
+              1.0,
+              0.8,
+              0.34
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "entry_debris",
+            "center_m": [
+              0.8,
+              -2.65,
+              0.13
+            ],
+            "size_m": [
+              1.1,
+              0.85,
+              0.26
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "office_crate",
+            "center_m": [
+              5.7,
+              -2.8,
+              0.45
+            ],
+            "size_m": [
+              0.8,
+              0.75,
+              0.9
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "damaged_chair",
+            "center_m": [
+              4.7,
+              -1.9,
+              0.48
+            ],
+            "size_m": [
+              0.55,
+              0.6,
+              0.96
+            ],
+            "material": "painted_wooden_chair_02",
+            "mesh": "painted_wooden_chair_02"
+          },
+          {
+            "id": "door_hinge_jamb",
+            "center_m": [
+              2.565,
+              -1.93,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "door_latch_jamb",
+            "center_m": [
+              2.565,
+              -0.91,
+              1.08
+            ],
+            "size_m": [
+              0.17,
+              0.07,
+              2.16
+            ],
+            "material": "Metal"
+          },
+          {
+            "id": "reception_desk",
+            "center_m": [
+              -0.07,
+              -2.42,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "records_desk",
+            "center_m": [
+              5.73,
+              0.5,
+              0.394
+            ],
+            "size_m": [
+              0.947,
+              2.0,
+              0.788
+            ],
+            "material": "metal_office_desk",
+            "mesh": "metal_office_desk"
+          },
+          {
+            "id": "distribution_cabinet",
+            "center_m": [
+              2.23,
+              0.76,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.5,
+              -0.1,
+              0.19937826346558368
+            ],
+            "posture": "prone",
+            "yaw_deg": 90.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "ideal",
+        "scene_variant": "indoor_damaged_assets_v2"
+      },
+      "offline_person_boxes": []
+    },
+    {
+      "label": "qa-06-outdoor-standing-P0",
+      "role": "PRIVILEGED_CALIBRATION_VIEW_NEVER_DELIVERED_TO_POLICY",
+      "epoch": 59,
+      "tick": 0,
+      "camera_pose_world_m": [
+        4.7,
+        -0.4,
+        1.5707963267948968
+      ],
+      "native_png_sha256": "f2709bb53291b3dd55c03b6202fa16442ef457bb12ee429d96d6ab99abb7f252",
+      "visible": {
+        "v0": {
+          "pixels": 13776,
+          "bbox": [
+            278,
+            32,
+            349,
+            382
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-standing-0",
+        "start_m": [
+          4.7,
+          -0.4,
+          0.2
+        ],
+        "start_yaw": 1.5707963267948966,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              1.1690808777640584
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "ideal",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "offline_person_boxes": [
+        {
+          "box": [
+            278.2589988708496,
+            30.48406982421875,
+            355.3869972229004,
+            371.82464599609375
+          ],
+          "confidence": 0.7357509732246399
+        }
+      ]
+    },
+    {
+      "label": "qa-07-outdoor-standing-P1",
+      "role": "PRIVILEGED_CALIBRATION_VIEW_NEVER_DELIVERED_TO_POLICY",
+      "epoch": 62,
+      "tick": 0,
+      "camera_pose_world_m": [
+        4.7,
+        -0.4,
+        1.5707963267948968
+      ],
+      "native_png_sha256": "7732083a4bf9688e72a30957888827b1f3686ec15ddfd39f44f2177e84739789",
+      "visible": {
+        "v0": {
+          "pixels": 13776,
+          "bbox": [
+            278,
+            32,
+            349,
+            382
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.07000000029802322,
+        "intensities": [
+          0.5,
+          4.0
+        ]
+      },
+      "scan_hits": 720,
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 1,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-standing-0",
+        "start_m": [
+          4.7,
+          -0.4,
+          0.2
+        ],
+        "start_yaw": 1.5707963267948966,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              1.1690808777640584
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "ideal",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "offline_person_boxes": [
+        {
+          "box": [
+            279.35657119750977,
+            34.046875,
+            352.5306968688965,
+            371.66522216796875
+          ],
+          "confidence": 0.5635859370231628
+        }
+      ]
+    },
+    {
+      "label": "qa-08-outdoor-seated-P0",
+      "role": "PRIVILEGED_CALIBRATION_VIEW_NEVER_DELIVERED_TO_POLICY",
+      "epoch": 65,
+      "tick": 0,
+      "camera_pose_world_m": [
+        4.7,
+        -0.4,
+        1.5707963267948968
+      ],
+      "native_png_sha256": "11be6eb239cfa29d0335295b17325a6f8606b6ab93803ab77b0c7e5c7ad389b9",
+      "visible": {
+        "v0": {
+          "pixels": 13945,
+          "bbox": [
+            183,
+            107,
+            346,
+            380
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-seated-0",
+        "start_m": [
+          4.7,
+          -0.4,
+          0.2
+        ],
+        "start_yaw": 1.5707963267948966,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              0.7678530133877882
+            ],
+            "posture": "seated",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "ideal",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "offline_person_boxes": [
+        {
+          "box": [
+            198.59434509277344,
+            103.40452575683594,
+            344.5779571533203,
+            376.5974884033203
+          ],
+          "confidence": 0.6211658120155334
+        }
+      ]
+    },
+    {
+      "label": "qa-09-outdoor-seated-P1",
+      "role": "PRIVILEGED_CALIBRATION_VIEW_NEVER_DELIVERED_TO_POLICY",
+      "epoch": 68,
+      "tick": 0,
+      "camera_pose_world_m": [
+        4.7,
+        -0.4,
+        1.5707963267948968
+      ],
+      "native_png_sha256": "2a2aefb544bec9da2f3cddbaa52b250cf9f239a9b0a56d6dfc7ebf49fb45153e",
+      "visible": {
+        "v0": {
+          "pixels": 13945,
+          "bbox": [
+            183,
+            107,
+            346,
+            380
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.07000000029802322,
+        "intensities": [
+          0.5,
+          4.0
+        ]
+      },
+      "scan_hits": 720,
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 1,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-seated-0",
+        "start_m": [
+          4.7,
+          -0.4,
+          0.2
+        ],
+        "start_yaw": 1.5707963267948966,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              0.7678530133877882
+            ],
+            "posture": "seated",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "ideal",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "offline_person_boxes": [
+        {
+          "box": [
+            253.34021377563477,
+            105.953125,
+            342.6569175720215,
+            371.817626953125
+          ],
+          "confidence": 0.4729141592979431
+        }
+      ]
+    },
+    {
+      "label": "qa-10-outdoor-prone-P0",
+      "role": "PRIVILEGED_CALIBRATION_VIEW_NEVER_DELIVERED_TO_POLICY",
+      "epoch": 71,
+      "tick": 0,
+      "camera_pose_world_m": [
+        4.7,
+        -0.4,
+        1.5707963267948968
+      ],
+      "native_png_sha256": "2940863023ba1910669e5f8c6c4a8fb5d8979d80f5ab9f46c30ab9ca9ce26ad0",
+      "visible": {
+        "v0": {
+          "pixels": 22079,
+          "bbox": [
+            169,
+            292,
+            471,
+            480
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.7200000286102295,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 720,
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-prone-0",
+        "start_m": [
+          4.7,
+          -0.4,
+          0.2
+        ],
+        "start_yaw": 1.5707963267948966,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              0.19937826346558368
+            ],
+            "posture": "prone",
+            "yaw_deg": 90.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "ideal",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "offline_person_boxes": [
+        {
+          "box": [
+            156.4138946533203,
+            295.664794921875,
+            478.5320281982422,
+            478.6448974609375
+          ],
+          "confidence": 0.8310063481330872
+        }
+      ]
+    },
+    {
+      "label": "qa-11-outdoor-prone-P1",
+      "role": "PRIVILEGED_CALIBRATION_VIEW_NEVER_DELIVERED_TO_POLICY",
+      "epoch": 74,
+      "tick": 0,
+      "camera_pose_world_m": [
+        4.7,
+        -0.4,
+        1.5707963267948968
+      ],
+      "native_png_sha256": "e23fcddf60c8a5ab2f49ea06863b877f1b974b903efb6f8416379f450b103dc6",
+      "visible": {
+        "v0": {
+          "pixels": 22079,
+          "bbox": [
+            169,
+            292,
+            471,
+            480
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "fixed_sky_intensity": 0.07000000029802322,
+        "intensities": [
+          0.5,
+          4.0
+        ]
+      },
+      "scan_hits": 720,
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 1,
+        "odometry": 0,
+        "family": "outdoor_damaged_assets_v2",
+        "pair_id": "outdoor-clean-prone-0",
+        "start_m": [
+          4.7,
+          -0.4,
+          0.2
+        ],
+        "start_yaw": 1.5707963267948966,
+        "boxes": [
+          {
+            "id": "north_collapsed_facade",
+            "center_m": [
+              3.0,
+              3.65,
+              1.3
+            ],
+            "size_m": [
+              7.2,
+              0.3,
+              2.6
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "retaining_south",
+            "center_m": [
+              3.0,
+              -3.9,
+              0.35
+            ],
+            "size_m": [
+              7.4,
+              0.3,
+              0.7
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "east_loading_wall",
+            "center_m": [
+              6.5,
+              1.5,
+              0.7
+            ],
+            "size_m": [
+              0.3,
+              4.7,
+              1.4
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "west_retaining",
+            "center_m": [
+              -0.7,
+              1.9,
+              0.45
+            ],
+            "size_m": [
+              0.25,
+              3.8,
+              0.9
+            ],
+            "material": "Concrete"
+          },
+          {
+            "id": "west_wreckage",
+            "center_m": [
+              -0.7,
+              -1.95,
+              0.6
+            ],
+            "size_m": [
+              0.3,
+              4.1,
+              1.2
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "east_wreckage",
+            "center_m": [
+              6.5,
+              -2.4,
+              0.65
+            ],
+            "size_m": [
+              0.3,
+              3.1,
+              1.3
+            ],
+            "material": "Brick",
+            "mesh": "fractured_wall"
+          },
+          {
+            "id": "island_debris",
+            "center_m": [
+              2.8,
+              -0.9,
+              0.28
+            ],
+            "size_m": [
+              1.7,
+              1.3,
+              0.56
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "jersey_barrier",
+            "center_m": [
+              2.7,
+              0.55,
+              0.55
+            ],
+            "size_m": [
+              0.52,
+              1.65,
+              1.1
+            ],
+            "material": "concrete_road_barrier_02",
+            "mesh": "concrete_road_barrier_02"
+          },
+          {
+            "id": "loading_crate",
+            "center_m": [
+              5.5,
+              -2.9,
+              0.5
+            ],
+            "size_m": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "material": "wooden_crate_01",
+            "mesh": "wooden_crate_01"
+          },
+          {
+            "id": "slab_stack",
+            "center_m": [
+              4.9,
+              2.85,
+              0.22
+            ],
+            "size_m": [
+              1.8,
+              1.1,
+              0.44
+            ],
+            "material": "Concrete",
+            "mesh": "fallen_slab"
+          },
+          {
+            "id": "north_heap",
+            "center_m": [
+              2.1,
+              2.9,
+              0.2
+            ],
+            "size_m": [
+              1.3,
+              1.0,
+              0.4
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "foreground_heap",
+            "center_m": [
+              0.5,
+              -2.7,
+              0.12
+            ],
+            "size_m": [
+              1.2,
+              0.85,
+              0.24
+            ],
+            "material": "Debris",
+            "mesh": "rubble_heap"
+          },
+          {
+            "id": "loading_rack",
+            "center_m": [
+              5.91,
+              -1.38,
+              1.07
+            ],
+            "size_m": [
+              0.502,
+              1.097,
+              2.14
+            ],
+            "material": "steel_frame_shelves_01",
+            "mesh": "steel_frame_shelves_01"
+          },
+          {
+            "id": "yard_power_cabinet",
+            "center_m": [
+              0.03,
+              2.87,
+              0.56
+            ],
+            "size_m": [
+              0.432,
+              0.52,
+              1.12
+            ],
+            "material": "utility_box_01",
+            "mesh": "utility_box_01"
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.7,
+              1.6,
+              0.19937826346558368
+            ],
+            "posture": "prone",
+            "yaw_deg": 90.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "ideal",
+        "scene_variant": "outdoor_damaged_assets_v2"
+      },
+      "offline_person_boxes": [
+        {
+          "box": [
+            169.91114807128906,
+            293.80924224853516,
+            498.60252380371094,
+            477.7945785522461
+          ],
+          "confidence": 0.8068506717681885
+        }
+      ]
+    }
+  ],
+  "native_captures": 118,
+  "engine_render_loop_fps": 8.685441634204984,
+  "fps_scope": "Average engine callback frames per wall second across captures/inference/resets; not GPU profiler FPS or sensor Hz",
+  "directional_light_counts": [
+    1
+  ],
+  "engine_peak_working_set_bytes": 1677750272,
+  "engine_max_private_commit_bytes": 3965992960,
+  "memory_status": "MEASURED",
+  "scope": "Actual UE PNG bytes; robot images are delivered RGB; depth PNG is measured optical Z in mm (0 invalid); masks are depth-tested visualizations; offline QA inference is not a scored episode"
+}

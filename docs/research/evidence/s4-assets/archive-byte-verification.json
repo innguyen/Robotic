@@ -1,0 +1,103 @@
+{
+  "status": "PASS",
+  "archives": [
+    {
+      "bundle": "startup-sandbox-failure",
+      "kind": "FAILED_STARTUP_METADATA_COPY",
+      "bytes_match": true
+    },
+    {
+      "bundle": "baseline-before",
+      "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+      "bytes_match": true
+    },
+    {
+      "bundle": "import-01",
+      "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+      "bytes_match": true
+    },
+    {
+      "bundle": "visual-02",
+      "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+      "bytes_match": true
+    },
+    {
+      "bundle": "search-open-90s",
+      "kind": "PARTIAL_LOCAL_RAW_INDEX",
+      "bytes_match": true
+    },
+    {
+      "bundle": "search-closed-90s",
+      "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+      "bytes_match": true
+    },
+    {
+      "bundle": "final-poses",
+      "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+      "bytes_match": true
+    },
+    {
+      "bundle": "legacy-comparison",
+      "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+      "bytes_match": true
+    },
+    {
+      "bundle": "outdoor-native",
+      "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+      "bytes_match": true
+    },
+    {
+      "bundle": "seated-alignment",
+      "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+      "bytes_match": true
+    }
+  ],
+  "frame_galleries": [
+    {
+      "gallery": "before-frames",
+      "files": 11,
+      "bytes_match": true
+    },
+    {
+      "gallery": "outdoor-native-frames",
+      "files": 51,
+      "bytes_match": true
+    },
+    {
+      "gallery": "seated-alignment-frames",
+      "files": 57,
+      "bytes_match": true
+    },
+    {
+      "gallery": "final-poses-frames",
+      "files": 225,
+      "bytes_match": true
+    },
+    {
+      "gallery": "import-01-frames",
+      "files": 37,
+      "bytes_match": true
+    },
+    {
+      "gallery": "legacy-comparison-frames",
+      "files": 21,
+      "bytes_match": true
+    },
+    {
+      "gallery": "search-closed-90s-frames",
+      "files": 69,
+      "bytes_match": true
+    },
+    {
+      "gallery": "search-open-90s-frames",
+      "files": 61,
+      "bytes_match": true
+    },
+    {
+      "gallery": "visual-02-frames",
+      "files": 73,
+      "bytes_match": true
+    }
+  ],
+  "scope": "Byte checks of available bundles, exported frames and original omitted raw streams. Failed runs retain their original non-acceptance status."
+}

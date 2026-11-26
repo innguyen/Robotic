@@ -87,3 +87,55 @@ def calibrate_human(backend):
     backend.stop()
     return {"status":"PASS_ENGINE_CALIBRATION" if all(checks.values()) else "FAIL_ENGINE_CALIBRATION", "checks":checks,"planes":records,
             "resets":states,"scope":"native PNG/EXR depth Z, renders, scan, epochs and ideal actuation; not empirical sensor or wheel dynamics calibration"}
+
+
+def calibrate_asset_scenes(backend):
+    """Trusted QA viewpoints, never used as episode starts or policy evidence."""
+    from .scenarios import sar_scenario
+    checks,records={},[]
+    for environment in ("indoor","outdoor"):
+        for posture in ("standing","seated","prone"):
+            for severity in (0,1):
+                config=sar_scenario("clean",perception=severity,environment=environment,posture=posture,
+                                    depth_model="ideal",scene_set="assets")
+                config["start_m"]=[3.6,-2.,.2] if environment=="indoor" else [4.7,-.4,.2]
+                target=config["victims"][0]["anchor_m"]
+                config["start_yaw"]=math.atan2(target[1]-config["start_m"][1],target[0]-config["start_m"][0])
+                states=[]
+                for _ in range(3):
+                    obs,truth=backend.reset(config,4)
+                    states.append({"epoch":obs["epoch"],"rgb_sha256":hashlib.sha256(canonical(obs["rgb"]["data"])).hexdigest(),
+                        "scan_sha256":hashlib.sha256(canonical(obs["scan"]["ranges_m"])).hexdigest(),
+                        "depth_sha256":hashlib.sha256(canonical(obs["depth_m"]["data"])).hexdigest(),
+                        "visible":truth["frame"]["visible"]})
+                name=f"{environment}_{posture}_P{severity}"
+                checks[name+"_repeat"]=all(len({s[field] for s in states})==1 for field in ("rgb_sha256","scan_sha256","depth_sha256"))
+                checks[name+"_visible"]=all(s["visible"].get("v0",{}).get("pixels",0)>=25 for s in states)
+                records.append({"environment":environment,"posture":posture,"perception":severity,"config":config,"states":states})
+    backend.stop()
+    return {"status":"PASS_ENGINE_CALIBRATION" if all(checks.values()) else "FAIL_ENGINE_CALIBRATION",
+            "checks":checks,"records":records,
+            "scope":"3 exact RGB/depth/scan reset repeats per asset scene, pose and light condition, from privileged QA views; not detector or empirical sensor acceptance"}
+
+
+def calibrate_asset_geometry(backend):
+    """Negative native probe: reject a start embedded in a non-box mesh."""
+    from .scenarios import sar_scenario
+    config=sar_scenario("absent",environment="outdoor",depth_model="ideal",scene_set="assets")
+    config["boxes"]=[{"id":"overlap_probe_wall","center_m":[0.,0.,.8],"size_m":[2.,.2,1.6],
+                      "material":"Brick","mesh":"fractured_wall"}]
+    error=None
+    try:
+        backend.reset(config,4)
+    except RuntimeError as exc:
+        error=str(exc)
+    rejected=error is not None and "reset native overlap:" in error and "overlap_probe_wall" in error
+    # Restore a valid world after the deliberate failed reset.
+    restored=sar_scenario("absent",environment="outdoor",depth_model="ideal",scene_set="assets")
+    obs,truth=backend.reset(restored,4)
+    checks={"embedded_nonbox_mesh_rejected_by_native_overlap":rejected,
+            "valid_reset_after_negative_probe":not truth["safety_events"]}
+    backend.stop()
+    return {"status":"PASS_ENGINE_CALIBRATION" if all(checks.values()) else "FAIL_ENGINE_CALIBRATION",
+            "checks":checks,"deliberate_invalid_config":config,"native_rejection":error,"restored_epoch":obs["epoch"],
+            "scope":"Trusted deliberate penetration probe, never a policy episode; no tolerance or safety-score relaxation"}

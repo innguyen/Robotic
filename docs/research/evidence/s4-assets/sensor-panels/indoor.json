@@ -1,0 +1,18 @@
+{
+  "source_gallery": "docs\\research\\evidence\\s4-assets\\search-closed-90s-frames",
+  "source_inventory_sha256": "3ce5efc6077fe6e9f6cc6691fa41ae7d6e06b555dd8aa5e747162c44e2766850",
+  "input_png_sha256": {
+    "e000-report-t0071-robot.png": "b40d6b907fdf0e37ce272abc58a8e83953224f5388bde171b87f0a43659c019e",
+    "e000-report-t0071-depth-mm.png": "21bb07ad683c7486af2f58cccd3847193b8b855ffbb10fef880a1ec0fd15bd1a",
+    "e000-report-t0071-v0-visible.png": "31b977b75487e2abbbb3b6cfacb7e2d33845ae13c93845aa1c7593293048e18f"
+  },
+  "epoch": 6,
+  "tick": 71,
+  "frame_role": "MATCHED_REPORT_DELIVERED_FRAME",
+  "depth_scale_mm": [
+    0,
+    10000
+  ],
+  "invalid_depth_color": "black",
+  "output_sha256": "5890b0cb278a1b644c0856f4f81f2dbf4a34204adf15a1fe7ba591078212d496"
+}

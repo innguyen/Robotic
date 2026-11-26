@@ -1,0 +1,422 @@
+{
+  "source_run": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-assets-before-authorized",
+  "run_inventory_sha256": "cec6ea7d2d54ab5f61d9f573617a45973e6499113659ad8c50363aa1eaf5628f",
+  "frames": [
+    {
+      "label": "e000",
+      "role": "INITIAL_POLICY_FRAME",
+      "epoch": 1,
+      "tick": 0,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "native_png_sha256": "8d36eacbccf1aa0c83dc2a6512302bb89257ee56a0d59c6fcd1976a31999d614",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      },
+      "lighting": null,
+      "scan_hits": 715,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "af7398a345f4e2c25605a3e0480b340e28d8611e621b2d452f07ff3b76ac4cd4",
+      "episode": "e000",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "original_rescue_layout_v1",
+        "pair_id": "indoor-clean-standing-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "wall_back",
+            "center_m": [
+              6.5,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.2,
+              8.0,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "wall_left",
+            "center_m": [
+              3,
+              4.0,
+              1.3
+            ],
+            "size_m": [
+              7.0,
+              0.2,
+              2.6
+            ]
+          },
+          {
+            "id": "broken_wall_right",
+            "center_m": [
+              4.8,
+              -4.0,
+              0.7
+            ],
+            "size_m": [
+              3.0,
+              0.2,
+              1.4
+            ]
+          },
+          {
+            "id": "rubble_a",
+            "center_m": [
+              2.0,
+              -1.6,
+              0.16
+            ],
+            "size_m": [
+              0.9,
+              0.7,
+              0.32
+            ]
+          },
+          {
+            "id": "rubble_b",
+            "center_m": [
+              3.1,
+              2.0,
+              0.22
+            ],
+            "size_m": [
+              0.6,
+              0.8,
+              0.44
+            ]
+          },
+          {
+            "id": "column",
+            "center_m": [
+              4.0,
+              -2.0,
+              1.2
+            ],
+            "size_m": [
+              0.3,
+              0.3,
+              2.4
+            ]
+          },
+          {
+            "id": "rear_wall",
+            "center_m": [
+              -0.8,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.15,
+              8.4,
+              2.6
+            ]
+          },
+          {
+            "id": "right_boundary",
+            "center_m": [
+              3,
+              -4.2,
+              0.35
+            ],
+            "size_m": [
+              7.8,
+              0.15,
+              0.7
+            ]
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.0,
+              0.5,
+              1.2569248733683454
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "structured"
+      },
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.25,
+        "safe_time_integrated_recall": 0.25,
+        "first_correct_ns": 1500000000,
+        "restricted_first_ns": 1500000000,
+        "localization_xy_m": [
+          0.07957011821613924
+        ],
+        "localization_median_m": 0.07957011821613924,
+        "localization_p90_m": 0.07957011821613924,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.6331403712930374,
+            "nll_xy": -2.450722933932227,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": 0.2269784161260171,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e001",
+      "role": "INITIAL_POLICY_FRAME",
+      "epoch": 2,
+      "tick": 0,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "native_png_sha256": "39bc17d5fb9000ced7c36367e0ffcbf9d833b7c76e1069e72604231e49f562c4",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      },
+      "lighting": null,
+      "scan_hits": 715,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "dbb72026b1d31509f2fbf85a6c32c7218e51d25f6ae1918a38f3cce39ef95efd",
+      "episode": "e001",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "original_rescue_layout_v1",
+        "pair_id": "outdoor-clean-standing-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "wall_back",
+            "center_m": [
+              6.5,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.2,
+              8.0,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "wall_left",
+            "center_m": [
+              3,
+              4.0,
+              0.325
+            ],
+            "size_m": [
+              7.0,
+              0.2,
+              0.65
+            ]
+          },
+          {
+            "id": "broken_wall_right",
+            "center_m": [
+              4.8,
+              -4.0,
+              0.7
+            ],
+            "size_m": [
+              3.0,
+              0.2,
+              1.4
+            ]
+          },
+          {
+            "id": "rubble_a",
+            "center_m": [
+              2.0,
+              -1.6,
+              0.16
+            ],
+            "size_m": [
+              0.9,
+              0.7,
+              0.32
+            ]
+          },
+          {
+            "id": "rubble_b",
+            "center_m": [
+              3.1,
+              2.0,
+              0.22
+            ],
+            "size_m": [
+              0.6,
+              0.8,
+              0.44
+            ]
+          },
+          {
+            "id": "column",
+            "center_m": [
+              4.0,
+              -2.0,
+              1.2
+            ],
+            "size_m": [
+              0.3,
+              0.3,
+              2.4
+            ]
+          },
+          {
+            "id": "rear_wall",
+            "center_m": [
+              -0.8,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.15,
+              8.4,
+              2.6
+            ]
+          },
+          {
+            "id": "right_boundary",
+            "center_m": [
+              3,
+              -4.2,
+              0.35
+            ],
+            "size_m": [
+              7.8,
+              0.15,
+              0.7
+            ]
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.0,
+              0.5,
+              1.2569248733683454
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "structured"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    }
+  ],
+  "native_captures": 31,
+  "engine_render_loop_fps": null,
+  "fps_scope": "Average engine callback frames per wall second across captures/inference/resets; not GPU profiler FPS or sensor Hz",
+  "directional_light_counts": [],
+  "engine_peak_working_set_bytes": null,
+  "engine_max_private_commit_bytes": null,
+  "memory_status": "NOT_RECORDED",
+  "scope": "Actual UE PNG bytes; robot images are delivered RGB; depth PNG is measured optical Z in mm (0 invalid); masks are depth-tested visualizations; offline QA inference is not a scored episode"
+}

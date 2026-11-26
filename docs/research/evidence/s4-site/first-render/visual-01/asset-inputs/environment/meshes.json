@@ -1,0 +1,698 @@
+{
+  "concrete_road_barrier_02": {
+    "file": "concrete_road_barrier_02.obj",
+    "sha256": "1d6caaa5dfc47992224af3a8c3ec1e04a5c3437f221bd738ac6f9825a685b8fe",
+    "vertices": 12499,
+    "triangles": 23822,
+    "bounds_ue_m": [
+      [
+        -0.22107099000000002,
+        -0.782704681,
+        0.0
+      ],
+      [
+        0.22107099000000002,
+        0.782704681,
+        1.111952932
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "https://polyhaven.com/a/concrete_road_barrier_02"
+  },
+  "exposed_rebar": {
+    "file": "exposed_rebar.obj",
+    "sha256": "b6bbfb13c6641519195ae7d287f2121e4e410664e8756aafdebfe3438e2de286",
+    "vertices": 1380,
+    "triangles": 460,
+    "bounds_ue_m": [
+      [
+        -0.45,
+        -0.11176696800000001,
+        -0.000239952
+      ],
+      [
+        0.600948762,
+        0.012,
+        1.253885535
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "fallen_slab": {
+    "file": "fallen_slab.obj",
+    "sha256": "9e4352e04ec2be26a71c7394cf6a110ef64be76959854a43cb3aa58854f89ed7",
+    "vertices": 156,
+    "triangles": 52,
+    "bounds_ue_m": [
+      [
+        -1.036032631,
+        -0.544809514,
+        0.0
+      ],
+      [
+        0.989215038,
+        0.6610917159999999,
+        0.16
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "fractured_wall": {
+    "file": "fractured_wall.obj",
+    "sha256": "a4f13042dd274e531e1c78c8cfb5063780d37e26222cb3e0e144dfdd6b63fd09",
+    "vertices": 432,
+    "triangles": 144,
+    "bounds_ue_m": [
+      [
+        -1.5,
+        -0.12,
+        0.0
+      ],
+      [
+        1.5,
+        0.12,
+        2.6
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "painted_wooden_chair_02": {
+    "file": "painted_wooden_chair_02.obj",
+    "sha256": "207cdb282be813e36ad4e67b34bc6895f82b19d662b00327656c17890509e9c6",
+    "vertices": 986,
+    "triangles": 1246,
+    "bounds_ue_m": [
+      [
+        -0.33104892300000005,
+        -0.319694786,
+        0.0
+      ],
+      [
+        0.33104892300000005,
+        0.319694786,
+        1.26377109
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "https://polyhaven.com/a/painted_wooden_chair_02"
+  },
+  "panel_indoor_door_hinge_jamb": {
+    "file": "panel_indoor_door_hinge_jamb.obj",
+    "sha256": "95a14cc64674f23f3cf1fc374d9d8d38e9436ba2ee596c79c7ac450976029173",
+    "vertices": 36,
+    "triangles": 12,
+    "bounds_ue_m": [
+      [
+        -0.085,
+        -0.035,
+        0.0
+      ],
+      [
+        0.085,
+        0.035,
+        2.16
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "panel_indoor_door_latch_jamb": {
+    "file": "panel_indoor_door_latch_jamb.obj",
+    "sha256": "95a14cc64674f23f3cf1fc374d9d8d38e9436ba2ee596c79c7ac450976029173",
+    "vertices": 36,
+    "triangles": 12,
+    "bounds_ue_m": [
+      [
+        -0.085,
+        -0.035,
+        0.0
+      ],
+      [
+        0.085,
+        0.035,
+        2.16
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "panel_indoor_ground": {
+    "file": "panel_indoor_ground.obj",
+    "sha256": "492365fdeff59ee227b65cdb59f27a8c8fe16096223530b745ee9733e30feeec",
+    "vertices": 36,
+    "triangles": 12,
+    "bounds_ue_m": [
+      [
+        -4.5,
+        -4.2,
+        0.0
+      ],
+      [
+        4.5,
+        4.2,
+        0.12
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "panel_indoor_north_masonry": {
+    "file": "panel_indoor_north_masonry.obj",
+    "sha256": "98a6998665fff1921a9c916e5128968fe22d1fbda6c46ded1bc0294591ce2e72",
+    "vertices": 36,
+    "triangles": 12,
+    "bounds_ue_m": [
+      [
+        -3.65,
+        -0.12,
+        0.0
+      ],
+      [
+        3.65,
+        0.12,
+        2.6
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "panel_indoor_office_divider": {
+    "file": "panel_indoor_office_divider.obj",
+    "sha256": "516645e5677438e976799cff4f93cbb158bb2a6d673dc28bb8c32f4dd2b9251b",
+    "vertices": 36,
+    "triangles": 12,
+    "bounds_ue_m": [
+      [
+        -1.6,
+        -0.11,
+        0.0
+      ],
+      [
+        1.6,
+        0.11,
+        2.6
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "panel_indoor_south_masonry": {
+    "file": "panel_indoor_south_masonry.obj",
+    "sha256": "98a6998665fff1921a9c916e5128968fe22d1fbda6c46ded1bc0294591ce2e72",
+    "vertices": 36,
+    "triangles": 12,
+    "bounds_ue_m": [
+      [
+        -3.65,
+        -0.12,
+        0.0
+      ],
+      [
+        3.65,
+        0.12,
+        2.6
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "panel_indoor_west_bay": {
+    "file": "panel_indoor_west_bay.obj",
+    "sha256": "531cc65a7150903013141b2395e016ef3976276958deea36363ae538034e3c75",
+    "vertices": 36,
+    "triangles": 12,
+    "bounds_ue_m": [
+      [
+        -0.12,
+        -1.3,
+        0.0
+      ],
+      [
+        0.12,
+        1.3,
+        2.6
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "panel_indoor_west_bay_lower": {
+    "file": "panel_indoor_west_bay_lower.obj",
+    "sha256": "531cc65a7150903013141b2395e016ef3976276958deea36363ae538034e3c75",
+    "vertices": 36,
+    "triangles": 12,
+    "bounds_ue_m": [
+      [
+        -0.12,
+        -1.3,
+        0.0
+      ],
+      [
+        0.12,
+        1.3,
+        2.6
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "panel_outdoor_ground": {
+    "file": "panel_outdoor_ground.obj",
+    "sha256": "492365fdeff59ee227b65cdb59f27a8c8fe16096223530b745ee9733e30feeec",
+    "vertices": 36,
+    "triangles": 12,
+    "bounds_ue_m": [
+      [
+        -4.5,
+        -4.2,
+        0.0
+      ],
+      [
+        4.5,
+        4.2,
+        0.12
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "panel_outdoor_retaining_south": {
+    "file": "panel_outdoor_retaining_south.obj",
+    "sha256": "cfd505b49cfeb3df64dbed337c91a937515241fc2b66d74a6bcf78fbadc94eb7",
+    "vertices": 36,
+    "triangles": 12,
+    "bounds_ue_m": [
+      [
+        -3.7,
+        -0.15,
+        0.0
+      ],
+      [
+        3.7,
+        0.15,
+        0.7
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "panel_outdoor_west_retaining": {
+    "file": "panel_outdoor_west_retaining.obj",
+    "sha256": "3fea54293bdac79bf5cb98f2d543e930136f55f1704ca3e10b6eaab200cb1ff5",
+    "vertices": 36,
+    "triangles": 12,
+    "bounds_ue_m": [
+      [
+        -0.125,
+        -1.9,
+        0.0
+      ],
+      [
+        0.125,
+        1.9,
+        0.9
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "rubble_heap": {
+    "file": "rubble_heap.obj",
+    "sha256": "869505904006d7df8ebab07fae77e4d89686feb34271d9115752e585bd05897b",
+    "vertices": 4368,
+    "triangles": 1456,
+    "bounds_ue_m": [
+      [
+        -0.61912375,
+        -0.45305395,
+        0.0014285709999999998
+      ],
+      [
+        0.644094893,
+        0.44277163700000005,
+        0.27
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh"
+  },
+  "site_indoor_cracked_concrete": {
+    "file": "site_indoor_cracked_concrete.obj",
+    "sha256": "96af5c365d137f8a178c01ae6f4f64f2b8c3175c8261f3a0f5cc8da9d18b7c08",
+    "vertices": 576,
+    "triangles": 192,
+    "bounds_ue_m": [
+      [
+        -0.85,
+        -5.4,
+        0.84
+      ],
+      [
+        12.0,
+        4.8,
+        3.57
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "indoor",
+      "finish": "cracked_concrete"
+    }
+  },
+  "site_indoor_Diffuser": {
+    "file": "site_indoor_Diffuser.obj",
+    "sha256": "dbad7b247cd6698360420b29606bbbcfd936b09b18b3925367c4c3419e5e1d28",
+    "vertices": 72,
+    "triangles": 24,
+    "bounds_ue_m": [
+      [
+        0.21,
+        1.76,
+        2.375
+      ],
+      [
+        4.0,
+        1.96,
+        2.4
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "indoor",
+      "finish": "Diffuser"
+    }
+  },
+  "site_indoor_Metal": {
+    "file": "site_indoor_Metal.obj",
+    "sha256": "6799d2628b846c788b45af9b8f982604d54544e9aa81053799900f5c3f385cd7",
+    "vertices": 3456,
+    "triangles": 1152,
+    "bounds_ue_m": [
+      [
+        -0.4985,
+        -4.775,
+        0.895
+      ],
+      [
+        8.27,
+        3.925,
+        4.975
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "indoor",
+      "finish": "Metal"
+    }
+  },
+  "site_indoor_plastered_wall_02": {
+    "file": "site_indoor_plastered_wall_02.obj",
+    "sha256": "cd7783ee006e3c9ff72dc4498bc8999f2167fa05e6ec524d731f574cbcea84ba",
+    "vertices": 1152,
+    "triangles": 384,
+    "bounds_ue_m": [
+      [
+        -0.49,
+        -5.4,
+        0.0
+      ],
+      [
+        12.0,
+        4.8,
+        5.65
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "indoor",
+      "finish": "plastered_wall_02"
+    }
+  },
+  "site_indoor_Window": {
+    "file": "site_indoor_Window.obj",
+    "sha256": "d6262e03f5d38cc85cc3a3cba5222a9d39d480a66bab52c9e85d624986db5b58",
+    "vertices": 1188,
+    "triangles": 396,
+    "bounds_ue_m": [
+      [
+        8.3,
+        -4.725,
+        0.945
+      ],
+      [
+        8.315,
+        3.875,
+        4.925
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "indoor",
+      "finish": "Window"
+    }
+  },
+  "site_outdoor_asphalt_04": {
+    "file": "site_outdoor_asphalt_04.obj",
+    "sha256": "5028cb07e77e8d019768e1ce2c13b63516309dcb0aba04eafe1116effed5d86d",
+    "vertices": 72,
+    "triangles": 24,
+    "bounds_ue_m": [
+      [
+        -21.0,
+        -22.0,
+        -0.23
+      ],
+      [
+        30.0,
+        19.0,
+        0.006
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "outdoor",
+      "finish": "asphalt_04"
+    }
+  },
+  "site_outdoor_broken_brick_wall": {
+    "file": "site_outdoor_broken_brick_wall.obj",
+    "sha256": "093e8337d8b5cc8344fada879bb1efaf912b8a9fafab6a66524e0854bcad9856",
+    "vertices": 432,
+    "triangles": 144,
+    "bounds_ue_m": [
+      [
+        10.25,
+        -10.4,
+        0.0
+      ],
+      [
+        18.0,
+        10.4,
+        5.28
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "outdoor",
+      "finish": "broken_brick_wall"
+    }
+  },
+  "site_outdoor_corrugated_iron_03": {
+    "file": "site_outdoor_corrugated_iron_03.obj",
+    "sha256": "641ca763c4518086648c00e305ba6230dc42364a5556dc323bf48b43adf9cca3",
+    "vertices": 312,
+    "triangles": 104,
+    "bounds_ue_m": [
+      [
+        10.12,
+        -9.98,
+        0.48
+      ],
+      [
+        17.9,
+        10.0,
+        6.65
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "outdoor",
+      "finish": "corrugated_iron_03"
+    }
+  },
+  "site_outdoor_cracked_concrete": {
+    "file": "site_outdoor_cracked_concrete.obj",
+    "sha256": "d32e3b25f793e957a75c3af3454afaed70a9adf1e3957383cfd2b520f19cb898",
+    "vertices": 1080,
+    "triangles": 360,
+    "bounds_ue_m": [
+      [
+        6.62,
+        -13.0,
+        -0.145
+      ],
+      [
+        11.99,
+        18.94,
+        7.24
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "outdoor",
+      "finish": "cracked_concrete"
+    }
+  },
+  "site_outdoor_Diffuser": {
+    "file": "site_outdoor_Diffuser.obj",
+    "sha256": "1520ca8ed9f2c989f8afb28183eb2a9d68ea84e646249178dddc702e6e7c32d5",
+    "vertices": 36,
+    "triangles": 12,
+    "bounds_ue_m": [
+      [
+        7.55,
+        4.3,
+        4.52
+      ],
+      [
+        7.97,
+        4.54,
+        4.55
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "outdoor",
+      "finish": "Diffuser"
+    }
+  },
+  "site_outdoor_Metal": {
+    "file": "site_outdoor_Metal.obj",
+    "sha256": "0e823f64cf31df45ee5d0109cf9c9946e94e0af524185f9f4b17134824a55b24",
+    "vertices": 5820,
+    "triangles": 1940,
+    "bounds_ue_m": [
+      [
+        1.61,
+        -9.91,
+        0.006
+      ],
+      [
+        10.43,
+        17.925,
+        5.955
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "outdoor",
+      "finish": "Metal"
+    }
+  },
+  "site_outdoor_Paint": {
+    "file": "site_outdoor_Paint.obj",
+    "sha256": "f22535efed42f276c3be8f6cd0a0d9f945b103cdb26d6343e5259d8ddec55217",
+    "vertices": 180,
+    "triangles": 60,
+    "bounds_ue_m": [
+      [
+        -0.58,
+        -3.25,
+        0.006
+      ],
+      [
+        -0.5,
+        2.1,
+        0.011000000000000001
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "outdoor",
+      "finish": "Paint"
+    }
+  },
+  "site_outdoor_plastered_wall_02": {
+    "file": "site_outdoor_plastered_wall_02.obj",
+    "sha256": "da9734e3aeb972bc8d079a2a968decb1fd134bdd7755392b9703baf9f11993b5",
+    "vertices": 1440,
+    "triangles": 480,
+    "bounds_ue_m": [
+      [
+        6.85,
+        -10.2,
+        0.0
+      ],
+      [
+        11.8,
+        18.85,
+        7.1
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "outdoor",
+      "finish": "plastered_wall_02"
+    }
+  },
+  "site_outdoor_Window": {
+    "file": "site_outdoor_Window.obj",
+    "sha256": "7ec584d0004686dd9e183cfd64869c3cd2aa7b703cb8e4cd619d7cfe930742db",
+    "vertices": 2556,
+    "triangles": 852,
+    "bounds_ue_m": [
+      [
+        7.05,
+        -9.785,
+        1.075
+      ],
+      [
+        10.465,
+        17.875,
+        5.905
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "Original Robotic S4 authored mesh",
+    "site_layer": {
+      "environment": "outdoor",
+      "finish": "Window"
+    }
+  },
+  "wooden_crate_01": {
+    "file": "wooden_crate_01.obj",
+    "sha256": "0c564321ca76db90f199b57df6a515e667e8d5ae636e8dd1cab71f717fd670af",
+    "vertices": 4686,
+    "triangles": 6576,
+    "bounds_ue_m": [
+      [
+        -0.204476871,
+        -0.412636459,
+        0.0
+      ],
+      [
+        0.204476871,
+        0.412636459,
+        0.34961828300000003
+      ]
+    ],
+    "license": "CC0-1.0",
+    "source": "https://polyhaven.com/a/wooden_crate_01"
+  }
+}

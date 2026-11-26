@@ -1,0 +1,836 @@
+{
+  "source_run": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-legacy-comparison",
+  "run_inventory_sha256": "c428805d5dca9d17c96edbaf4fbe1be5acbf423d929b2fc0112e8bb5f1991392",
+  "frames": [
+    {
+      "label": "e000",
+      "role": "INITIAL_POLICY_FRAME",
+      "epoch": 1,
+      "tick": 0,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "native_png_sha256": "e324e18ac54b8776aec09e80ab71a8cd159f32349edec05654c746964e509e83",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 715,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "eabcc478a6c877bdacb10c27018c8ef3f9e4da47145e36247d17cf9bd324d492",
+      "episode": "e000",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "original_rescue_layout_v1",
+        "pair_id": "indoor-clean-standing-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "wall_back",
+            "center_m": [
+              6.5,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.2,
+              8.0,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "wall_left",
+            "center_m": [
+              3,
+              4.0,
+              1.3
+            ],
+            "size_m": [
+              7.0,
+              0.2,
+              2.6
+            ]
+          },
+          {
+            "id": "broken_wall_right",
+            "center_m": [
+              4.8,
+              -4.0,
+              0.7
+            ],
+            "size_m": [
+              3.0,
+              0.2,
+              1.4
+            ]
+          },
+          {
+            "id": "rubble_a",
+            "center_m": [
+              2.0,
+              -1.6,
+              0.16
+            ],
+            "size_m": [
+              0.9,
+              0.7,
+              0.32
+            ]
+          },
+          {
+            "id": "rubble_b",
+            "center_m": [
+              3.1,
+              2.0,
+              0.22
+            ],
+            "size_m": [
+              0.6,
+              0.8,
+              0.44
+            ]
+          },
+          {
+            "id": "column",
+            "center_m": [
+              4.0,
+              -2.0,
+              1.2
+            ],
+            "size_m": [
+              0.3,
+              0.3,
+              2.4
+            ]
+          },
+          {
+            "id": "rear_wall",
+            "center_m": [
+              -0.8,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.15,
+              8.4,
+              2.6
+            ]
+          },
+          {
+            "id": "right_boundary",
+            "center_m": [
+              3,
+              -4.2,
+              0.35
+            ],
+            "size_m": [
+              7.8,
+              0.15,
+              0.7
+            ]
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.0,
+              0.5,
+              1.2569248733683454
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "structured"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e000-last",
+      "role": "LAST_DELIVERED_POLICY_FRAME",
+      "epoch": 1,
+      "tick": 3,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        0.7500000253993603
+      ],
+      "native_png_sha256": "0266b14514ffdf63dc34cc4712c4dcb8a87782dd61c5c5e4f0df4f1bd1538367",
+      "visible": {
+        "v0": {
+          "pixels": 6258,
+          "bbox": [
+            547,
+            124,
+            597,
+            311
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 715,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "1ed7bb679dccf4db76d80673c0a473d67f1d6e09f96d2c4fd83807d16b940fb1",
+      "episode": "e000",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "original_rescue_layout_v1",
+        "pair_id": "indoor-clean-standing-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "wall_back",
+            "center_m": [
+              6.5,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.2,
+              8.0,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "wall_left",
+            "center_m": [
+              3,
+              4.0,
+              1.3
+            ],
+            "size_m": [
+              7.0,
+              0.2,
+              2.6
+            ]
+          },
+          {
+            "id": "broken_wall_right",
+            "center_m": [
+              4.8,
+              -4.0,
+              0.7
+            ],
+            "size_m": [
+              3.0,
+              0.2,
+              1.4
+            ]
+          },
+          {
+            "id": "rubble_a",
+            "center_m": [
+              2.0,
+              -1.6,
+              0.16
+            ],
+            "size_m": [
+              0.9,
+              0.7,
+              0.32
+            ]
+          },
+          {
+            "id": "rubble_b",
+            "center_m": [
+              3.1,
+              2.0,
+              0.22
+            ],
+            "size_m": [
+              0.6,
+              0.8,
+              0.44
+            ]
+          },
+          {
+            "id": "column",
+            "center_m": [
+              4.0,
+              -2.0,
+              1.2
+            ],
+            "size_m": [
+              0.3,
+              0.3,
+              2.4
+            ]
+          },
+          {
+            "id": "rear_wall",
+            "center_m": [
+              -0.8,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.15,
+              8.4,
+              2.6
+            ]
+          },
+          {
+            "id": "right_boundary",
+            "center_m": [
+              3,
+              -4.2,
+              0.35
+            ],
+            "size_m": [
+              7.8,
+              0.15,
+              0.7
+            ]
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.0,
+              0.5,
+              1.2569248733683454
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "indoor",
+        "depth_model": "structured"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e001",
+      "role": "INITIAL_POLICY_FRAME",
+      "epoch": 2,
+      "tick": 0,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "native_png_sha256": "e93a49fbea7c03ab61063b93bc1ab52219fa5c1529452373edfe6df3fc28cd35",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 715,
+      "offline_detection_localization": [],
+      "delivered_png_sha256": "b3e755be72c29d709644cf5ee963c459e02540a8d492858c06061cfe7ff61117",
+      "episode": "e001",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "original_rescue_layout_v1",
+        "pair_id": "outdoor-clean-standing-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "wall_back",
+            "center_m": [
+              6.5,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.2,
+              8.0,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "wall_left",
+            "center_m": [
+              3,
+              4.0,
+              0.325
+            ],
+            "size_m": [
+              7.0,
+              0.2,
+              0.65
+            ]
+          },
+          {
+            "id": "broken_wall_right",
+            "center_m": [
+              4.8,
+              -4.0,
+              0.7
+            ],
+            "size_m": [
+              3.0,
+              0.2,
+              1.4
+            ]
+          },
+          {
+            "id": "rubble_a",
+            "center_m": [
+              2.0,
+              -1.6,
+              0.16
+            ],
+            "size_m": [
+              0.9,
+              0.7,
+              0.32
+            ]
+          },
+          {
+            "id": "rubble_b",
+            "center_m": [
+              3.1,
+              2.0,
+              0.22
+            ],
+            "size_m": [
+              0.6,
+              0.8,
+              0.44
+            ]
+          },
+          {
+            "id": "column",
+            "center_m": [
+              4.0,
+              -2.0,
+              1.2
+            ],
+            "size_m": [
+              0.3,
+              0.3,
+              2.4
+            ]
+          },
+          {
+            "id": "rear_wall",
+            "center_m": [
+              -0.8,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.15,
+              8.4,
+              2.6
+            ]
+          },
+          {
+            "id": "right_boundary",
+            "center_m": [
+              3,
+              -4.2,
+              0.35
+            ],
+            "size_m": [
+              7.8,
+              0.15,
+              0.7
+            ]
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.0,
+              0.5,
+              1.2569248733683454
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "structured"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "label": "e001-last",
+      "role": "LAST_DELIVERED_POLICY_FRAME",
+      "epoch": 2,
+      "tick": 3,
+      "camera_pose_world_m": [
+        0.0,
+        -0.0,
+        0.7500000253993603
+      ],
+      "native_png_sha256": "83d29fbf08c0f4b57046eef23b5e0883b6936327af82fad96b77549a098550df",
+      "visible": {
+        "v0": {
+          "pixels": 6258,
+          "bbox": [
+            547,
+            124,
+            597,
+            311
+          ]
+        }
+      },
+      "lighting": {
+        "directional_count": 1,
+        "intensities": [
+          2.5,
+          24.0
+        ]
+      },
+      "scan_hits": 715,
+      "offline_detection_localization": [
+        {
+          "box": [
+            549.3020477294922,
+            130.27991485595703,
+            592.4435577392578,
+            320.7037887573242
+          ],
+          "confidence": 0.49807029962539673,
+          "position": [
+            3.917193764161097,
+            0.48534943102300954,
+            0.9543747761392591
+          ],
+          "depth_spread_m": 0.0129999999999999
+        }
+      ],
+      "delivered_png_sha256": "709ed32444d4a9ac272d8d0e5d926b03ef2eae2c4816a6c2c10daa647dc42cbb",
+      "episode": "e001",
+      "config": {
+        "schema_version": "sar-s4-mvp-0.1",
+        "kind": "clean",
+        "seed": 0,
+        "perception": 0,
+        "odometry": 0,
+        "family": "original_rescue_layout_v1",
+        "pair_id": "outdoor-clean-standing-0",
+        "start_m": [
+          0.0,
+          0.0,
+          0.2
+        ],
+        "start_yaw": 0.0,
+        "boxes": [
+          {
+            "id": "wall_back",
+            "center_m": [
+              6.5,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.2,
+              8.0,
+              2.6
+            ],
+            "material": "Brick"
+          },
+          {
+            "id": "wall_left",
+            "center_m": [
+              3,
+              4.0,
+              0.325
+            ],
+            "size_m": [
+              7.0,
+              0.2,
+              0.65
+            ]
+          },
+          {
+            "id": "broken_wall_right",
+            "center_m": [
+              4.8,
+              -4.0,
+              0.7
+            ],
+            "size_m": [
+              3.0,
+              0.2,
+              1.4
+            ]
+          },
+          {
+            "id": "rubble_a",
+            "center_m": [
+              2.0,
+              -1.6,
+              0.16
+            ],
+            "size_m": [
+              0.9,
+              0.7,
+              0.32
+            ]
+          },
+          {
+            "id": "rubble_b",
+            "center_m": [
+              3.1,
+              2.0,
+              0.22
+            ],
+            "size_m": [
+              0.6,
+              0.8,
+              0.44
+            ]
+          },
+          {
+            "id": "column",
+            "center_m": [
+              4.0,
+              -2.0,
+              1.2
+            ],
+            "size_m": [
+              0.3,
+              0.3,
+              2.4
+            ]
+          },
+          {
+            "id": "rear_wall",
+            "center_m": [
+              -0.8,
+              0,
+              1.3
+            ],
+            "size_m": [
+              0.15,
+              8.4,
+              2.6
+            ]
+          },
+          {
+            "id": "right_boundary",
+            "center_m": [
+              3,
+              -4.2,
+              0.35
+            ],
+            "size_m": [
+              7.8,
+              0.15,
+              0.7
+            ]
+          }
+        ],
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.0,
+              0.5,
+              1.2569248733683454
+            ],
+            "posture": "standing",
+            "yaw_deg": 180.0
+          }
+        ],
+        "sensor_black": false,
+        "profile": "sar_human_v1",
+        "environment": "outdoor",
+        "depth_model": "structured"
+      },
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    }
+  ],
+  "native_captures": 31,
+  "engine_render_loop_fps": 9.371716023222561,
+  "fps_scope": "Average engine callback frames per wall second across captures/inference/resets; not GPU profiler FPS or sensor Hz",
+  "directional_light_counts": [
+    1
+  ],
+  "engine_peak_working_set_bytes": 1504874496,
+  "engine_max_private_commit_bytes": 2940338176,
+  "memory_status": "MEASURED",
+  "scope": "Actual UE PNG bytes; robot images are delivered RGB; depth PNG is measured optical Z in mm (0 invalid); masks are depth-tested visualizations; offline QA inference is not a scored episode"
+}

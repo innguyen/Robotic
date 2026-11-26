@@ -1,0 +1,16 @@
+{
+  "retry_manifest_sha256": "b7407c822f3b5794b61e8256d935866939814dda7b2c0978b3b40b661a14bafd",
+  "same_runner_arguments": true,
+  "same_scenario_bytes": true,
+  "schedule_sha256": "2d1a769c0099ea97e2a2733830509ea66bdfd5a9ad74178eda55e67995ebf9ee",
+  "matching_detector": true,
+  "matching_editor": true,
+  "methods": [
+    "frontier",
+    "core",
+    "verify"
+  ],
+  "scenarios": 18,
+  "scheduled": 54,
+  "scope": "Preflight input equality only"
+}

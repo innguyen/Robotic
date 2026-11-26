@@ -1,0 +1,41 @@
+{
+  "scope": "descriptive development pilot only; no significance, generalization or fixed-FAR claim",
+  "run_status": "COMPLETED_HUMAN_DEV_UE_RUNTIME",
+  "completed_episodes": 2,
+  "engine_exit_code": 0,
+  "results_sha256": "5c36a39d6f42194f04009d6668469e42b513c68d612dc4cdd85b89d51cc5f271",
+  "source_inventory_sha256": "cec6ea7d2d54ab5f61d9f573617a45973e6499113659ad8c50363aa1eaf5628f",
+  "table": [
+    {
+      "method": "frontier",
+      "kind": "clean",
+      "P": 0,
+      "N": 0,
+      "episodes": 2,
+      "auxiliary_failure_challenge": false,
+      "safe_localization_recall": 0.5,
+      "tp": 1,
+      "fp": 0,
+      "unsafe_episodes": 0,
+      "absent_false_alarm_rate": null,
+      "path_mean_m": 0.0,
+      "localization_matched_count": 1,
+      "localization_median_m": 0.07957011821613924,
+      "localization_p90_m": 0.07957011821613924,
+      "time_integrated_recall": 0.125,
+      "action_latency_p50_s": 1.1596676500012109,
+      "action_latency_p95_s": 1.683877200000279
+    }
+  ],
+  "rq1": null,
+  "rq2_joint_verify_minus_frontier": {
+    "family_deltas": {},
+    "mean": null,
+    "ci95": null,
+    "reason": "dev corpus is not an independent held-out family sample"
+  },
+  "wall_duration_s": 110.01210719999654,
+  "task_budget_s": 2.0,
+  "action_dt_ns": 500000000,
+  "scientific_main_eligible": false
+}

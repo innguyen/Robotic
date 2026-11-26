@@ -1,0 +1,52 @@
+{
+  "admissible": true,
+  "accepted_victims": [
+    "v0",
+    "v1"
+  ],
+  "reachable_grid_cells": 471,
+  "probes": [
+    {
+      "gt_id": "v0",
+      "start_m": [
+        0.0,
+        0.0,
+        0.2
+      ],
+      "yaw": 0.12435499454676144,
+      "grid_path_m": 0.0,
+      "epoch": 3,
+      "ticks": [
+        0,
+        1
+      ],
+      "visible_pixels": [
+        784,
+        784
+      ],
+      "accepted": true
+    },
+    {
+      "gt_id": "v1",
+      "start_m": [
+        0.0,
+        0.0,
+        0.2
+      ],
+      "yaw": -0.7509290623979402,
+      "grid_path_m": 0.0,
+      "epoch": 4,
+      "ticks": [
+        0,
+        1
+      ],
+      "visible_pixels": [
+        590,
+        590
+      ],
+      "accepted": true
+    }
+  ],
+  "scope": "Native two-capture visibility plus conservative 2D circular-footprint connectivity; not wheel-dynamics reachability",
+  "auxiliary_expected_infeasible": false
+}

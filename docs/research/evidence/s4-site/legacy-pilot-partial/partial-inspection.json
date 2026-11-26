@@ -1,0 +1,2239 @@
+{
+  "status": "INTERRUPTED_PARTIAL_NOT_ACCEPTED",
+  "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-legacy-pilot-revalidation",
+  "scheduled_episodes": 54,
+  "completed_ledgers_independently_recomputed": 28,
+  "ledgers_without_final_metrics": [],
+  "source_snapshot_matches_manifest": true,
+  "journal_chain_errors": [],
+  "engine_exit_events": [],
+  "last_journal_event": {
+    "ack": [],
+    "action": {
+      "epoch": 83,
+      "finish": false,
+      "reports": [],
+      "sequence": 44,
+      "tick": 44,
+      "twist": [
+        0.0,
+        0.0,
+        0.15
+      ]
+    },
+    "capture_timing": {
+      "available_wall_ns": 5970906000000,
+      "capture_end_wall_ns": 5970875000000,
+      "capture_start_wall_ns": 5970828000000,
+      "measurements_ready_wall_ns": 5971296000000,
+      "rpc_decode_complete_wall_ns": 5970937000000
+    },
+    "episode": "e028",
+    "policy_timing": {
+      "input_write_complete_wall_ns": 5971531000000,
+      "input_write_start_wall_ns": 5971484000000,
+      "response_received_wall_ns": 5972031000000
+    },
+    "type": "agent_submission"
+  },
+  "calibration_present": false,
+  "results_present": false,
+  "original_inventory_present": false,
+  "streams": {
+    "public/observations.jsonl.gz": {
+      "bytes": 568845229,
+      "sha256": "fbcfe04ac752ce5aba2d0df5780b0fcff81f0eed6bf9d4fc6ea418a3c9097c35",
+      "parseable_records": 1726,
+      "last_record": {
+        "epoch": 83,
+        "tick": 45
+      },
+      "stream_complete": false,
+      "error": "EOFError: Compressed file ended before the end-of-stream marker was reached"
+    },
+    "private/host.jsonl.gz": {
+      "bytes": 220993649,
+      "sha256": "0616b6227c542d25a7a086d0f9093cadf5f220bac505633523cbf4387a7904a0",
+      "parseable_records": 1834,
+      "last_record": {
+        "epoch": 83,
+        "tick": 45
+      },
+      "stream_complete": false,
+      "error": "EOFError: Compressed file ended before the end-of-stream marker was reached"
+    }
+  },
+  "episodes": [
+    {
+      "episode": "e000",
+      "method": "frontier",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.95,
+        "safe_time_integrated_recall": 0.95,
+        "first_correct_ns": 1500000000,
+        "restricted_first_ns": 1500000000,
+        "localization_xy_m": [
+          0.07675978554499269
+        ],
+        "localization_median_m": 0.07675978554499269,
+        "localization_p90_m": 0.07675978554499269,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.5892064676913269,
+            "nll_xy": -2.4726898857330823,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": 0.14511303589985172,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e001",
+      "method": "core",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.07376667502382653
+        ],
+        "localization_median_m": 0.07376667502382653,
+        "localization_p90_m": 0.07376667502382653,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.5441522344070833,
+            "nll_xy": -2.495217002375204,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.175,
+        "brier": 0.20529829640981512,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e002",
+      "method": "verify",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e003",
+      "method": "frontier",
+      "kind": "occluded",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.5833333333333334,
+        "safe_time_integrated_recall": 0.5833333333333334,
+        "first_correct_ns": 12500000000,
+        "restricted_first_ns": 12500000000,
+        "localization_xy_m": [
+          0.08450810920300493
+        ],
+        "localization_median_m": 0.08450810920300493,
+        "localization_p90_m": 0.08450810920300493,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.7141620521067008,
+            "nll_xy": -2.410212093525395,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": 0.1722211342909299,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e004",
+      "method": "core",
+      "kind": "occluded",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.5333333333333333,
+        "safe_time_integrated_recall": 0.5333333333333333,
+        "first_correct_ns": 14000000000,
+        "restricted_first_ns": 14000000000,
+        "localization_xy_m": [
+          0.0803995493417929
+        ],
+        "localization_median_m": 0.0803995493417929,
+        "localization_p90_m": 0.0803995493417929,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.6464087534363391,
+            "nll_xy": -2.444088742860576,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.8063258458189089,
+        "brier": 0.22396114956532132,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e005",
+      "method": "verify",
+      "kind": "occluded",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.14990706213406843,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e006",
+      "method": "frontier",
+      "kind": "absent",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 0,
+        "matches": [],
+        "recall": null,
+        "safe_localization_recall": null,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": null,
+        "absent_false_alarm": false,
+        "absent_specificity": true,
+        "time_integrated_recall": null,
+        "safe_time_integrated_recall": null,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e007",
+      "method": "core",
+      "kind": "absent",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 0,
+        "matches": [],
+        "recall": null,
+        "safe_localization_recall": null,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": null,
+        "absent_false_alarm": false,
+        "absent_specificity": true,
+        "time_integrated_recall": null,
+        "safe_time_integrated_recall": null,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.23873401942549016,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e008",
+      "method": "verify",
+      "kind": "absent",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 0,
+        "matches": [],
+        "recall": null,
+        "safe_localization_recall": null,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": null,
+        "absent_false_alarm": false,
+        "absent_specificity": true,
+        "time_integrated_recall": null,
+        "safe_time_integrated_recall": null,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e009",
+      "method": "frontier",
+      "kind": "multi",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 2,
+        "fp": 0,
+        "victims": 2,
+        "matches": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.8,
+        "safe_time_integrated_recall": 0.8,
+        "first_correct_ns": 1500000000,
+        "restricted_first_ns": 1500000000,
+        "localization_xy_m": [
+          0.07675978554499269,
+          0.09019137330346892
+        ],
+        "localization_median_m": 0.08347557942423081,
+        "localization_p90_m": 0.09019137330346892,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.5892064676913269,
+            "nll_xy": -2.4726898857330823,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          },
+          {
+            "report": 1,
+            "mahalanobis2": 0.8134483818365688,
+            "nll_xy": -2.360568928660461,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": 0.09608889142246606,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e010",
+      "method": "core",
+      "kind": "multi",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 2,
+        "fp": 0,
+        "victims": 2,
+        "matches": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.06476499991149413,
+          0.13220254860940106
+        ],
+        "localization_median_m": 0.0984837742604476,
+        "localization_p90_m": 0.13220254860940106,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.4194505213535835,
+            "nll_xy": -2.5575678589019537,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          },
+          {
+            "report": 1,
+            "mahalanobis2": 1.7477513858821054,
+            "nll_xy": -1.8934174266376929,
+            "within_50": false,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.175,
+        "brier": 0.19592379057656872,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e011",
+      "method": "verify",
+      "kind": "multi",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 2,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.14790415545625918,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e012",
+      "method": "frontier",
+      "kind": "obstacles",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.269281649238814,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e013",
+      "method": "core",
+      "kind": "obstacles",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.23873401942549016,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e014",
+      "method": "verify",
+      "kind": "obstacles",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.269281649238814,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e015",
+      "method": "frontier",
+      "kind": "blocked",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.269281649238814,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e016",
+      "method": "core",
+      "kind": "blocked",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.23873401942549016,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e017",
+      "method": "verify",
+      "kind": "blocked",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.269281649238814,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e018",
+      "method": "frontier",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.06439411100806872
+        ],
+        "localization_median_m": 0.06439411100806872,
+        "localization_p90_m": 0.06439411100806872,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.41466015325194777,
+            "nll_xy": -2.5599630429527718,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": 0.12156534881008785,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e019",
+      "method": "core",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.05887958130969605
+        ],
+        "localization_median_m": 0.05887958130969605,
+        "localization_p90_m": 0.05887958130969605,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.3466805095205108,
+            "nll_xy": -2.59395286481849,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.175,
+        "brier": 0.08296708291983013,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e020",
+      "method": "verify",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.07499100810143539,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e021",
+      "method": "frontier",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 2,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 0.3333333333333333,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.95,
+        "safe_time_integrated_recall": 0.95,
+        "first_correct_ns": 1500000000,
+        "restricted_first_ns": 1500000000,
+        "localization_xy_m": [
+          0.23428875290225717
+        ],
+        "localization_median_m": 0.23428875290225717,
+        "localization_p90_m": 0.23428875290225717,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 3.1130364386224545,
+            "nll_xy": -0.8170774004307708,
+            "within_50": false,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.0000000000000098,
+        "brier": 0.41460941733632933,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e022",
+      "method": "core",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.07050176146774277
+        ],
+        "localization_median_m": 0.07050176146774277,
+        "localization_p90_m": 0.07050176146774277,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.49704983700545,
+            "nll_xy": -2.5187682010760204,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.024999999999999977,
+        "brier": 0.20529829640981512,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e023",
+      "method": "verify",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9,
+        "safe_time_integrated_recall": 0.9,
+        "first_correct_ns": 3000000000,
+        "restricted_first_ns": 3000000000,
+        "localization_xy_m": [
+          0.28592888221525864
+        ],
+        "localization_median_m": 0.28592888221525864,
+        "localization_p90_m": 0.28592888221525864,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 8.175532568486725,
+            "nll_xy": 1.3204731646646168,
+            "within_50": false,
+            "within_90": false,
+            "within_95": false
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.0047791753143613,
+        "brier": 0.12660205296985527,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e024",
+      "method": "frontier",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 1,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 0.5,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.07765885181303978
+        ],
+        "localization_median_m": 0.07765885181303978,
+        "localization_p90_m": 0.07765885181303978,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.6030897264919671,
+            "nll_xy": -2.465748256332762,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.0000000000000098,
+        "brier": 0.32840641427864714,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e025",
+      "method": "core",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.05664584268038695
+        ],
+        "localization_median_m": 0.05664584268038695,
+        "localization_p90_m": 0.05664584268038695,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.32087514929711486,
+            "nll_xy": -2.606855544930188,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.024999999999999977,
+        "brier": 0.08296708291983013,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e026",
+      "method": "verify",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.7850000000000066,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e027",
+      "method": "frontier",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.95,
+        "safe_time_integrated_recall": 0.95,
+        "first_correct_ns": 1500000000,
+        "restricted_first_ns": 1500000000,
+        "localization_xy_m": [
+          0.06883932388383622
+        ],
+        "localization_median_m": 0.06883932388383622,
+        "localization_p90_m": 0.06883932388383622,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.47388525127837033,
+            "nll_xy": -2.5303504939395602,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": 0.11006932762903099,
+        "terminal_reason": "FINISH"
+      }
+    }
+  ],
+  "all_original_file_hashes": {
+    "asset-manifest.json": {
+      "sha256": "8c2bebea3cbe937d9ac22552d2ab656e426a147d6bb7f19ed73174d6eda7ea6c",
+      "bytes": 2340
+    },
+    "e000-metrics.json": {
+      "sha256": "81469e5c165b6a9093054a08956e219c0c5034e354d564ac3df911464a71ca5f",
+      "bytes": 2790
+    },
+    "e001-metrics.json": {
+      "sha256": "7579690891beda50ba0f16314435743084b409a7ac0cbfb0ff3f844e13645200",
+      "bytes": 2799
+    },
+    "e002-metrics.json": {
+      "sha256": "3525780b7117dc610c3c58085aa42ccbf18dd3c863b3617815d73874c341ca95",
+      "bytes": 2430
+    },
+    "e003-metrics.json": {
+      "sha256": "7a9b441a61c0607883169697546bc5e4f1ac183f0bf059b2507af8ad1f04ce53",
+      "bytes": 2822
+    },
+    "e004-metrics.json": {
+      "sha256": "ca46d46d768ad30b0edd480294c9ff74dc5794bf57e73d4f5f2d05803ea6ab72",
+      "bytes": 2809
+    },
+    "e005-metrics.json": {
+      "sha256": "2f6ef28bfb8583372ded25eb375fd1abba9862d3fd27d3d20b68b080e38632e7",
+      "bytes": 2440
+    },
+    "e006-metrics.json": {
+      "sha256": "594f6b69d5ebf5974957cd855b882d47f0ef94787db29b5ee755ee90ed2f20f7",
+      "bytes": 2448
+    },
+    "e007-metrics.json": {
+      "sha256": "0c782bb91c86748cbd4087827f66b3ae59c25851563501ad698c39f7ff554562",
+      "bytes": 2430
+    },
+    "e008-metrics.json": {
+      "sha256": "aaa1b1a70df66bf4a443f147ec994a1eac626026933d49f1f10bc7a895c2d8cf",
+      "bytes": 2438
+    },
+    "e009-metrics.json": {
+      "sha256": "ffb7a7af0dab5bdb8012cf7b6b10839f14e6589bab478f920c313187a1f91b26",
+      "bytes": 3054
+    },
+    "e010-metrics.json": {
+      "sha256": "d96398a10357a2e2c354aee5e3dd60e76963808e18dc0ffb27ccaf2134d493a5",
+      "bytes": 3077
+    },
+    "e011-metrics.json": {
+      "sha256": "6da83983cf113802d8d3d2bd37a5f775c2f3f2eeb6cff230250b7aecd32df3a5",
+      "bytes": 2441
+    },
+    "e012-metrics.json": {
+      "sha256": "589ff77b2055a28885021f5165b1739ccd42b3e23dd26d47bad4c05bb8895ed8",
+      "bytes": 2434
+    },
+    "e013-metrics.json": {
+      "sha256": "1aa2fa80d942ab32c4e9d236408b35b48e6246f4d7bb5e3d9f98b3a04a833a41",
+      "bytes": 2436
+    },
+    "e014-metrics.json": {
+      "sha256": "7438b437b20c11eddac246a20f3d0aac717b35414c55c1656f7083e611189bad",
+      "bytes": 2434
+    },
+    "e015-metrics.json": {
+      "sha256": "21a367967519387eaaaea9cb9df7c0759a78f198b602cdcdfe6e94a7702332aa",
+      "bytes": 2434
+    },
+    "e016-metrics.json": {
+      "sha256": "7e3c1bb320b12d5e44aa5abf8c66b94b3e970cdc479c8887aa094630a068bf47",
+      "bytes": 2427
+    },
+    "e017-metrics.json": {
+      "sha256": "bfaf6fac83408029003d14111c1d1aabd2702baf504065d25465b67c86f5c6fc",
+      "bytes": 2441
+    },
+    "e018-metrics.json": {
+      "sha256": "2a424266ccca7f02eb8defbfdc7703465c7f0b191015b14c8fbefb5268a7b9e8",
+      "bytes": 2798
+    },
+    "e019-metrics.json": {
+      "sha256": "1e15c123c69f1a7497bbd1cbd065628088526ffcf0bb8ef4a9442c9307700a9b",
+      "bytes": 2790
+    },
+    "e020-metrics.json": {
+      "sha256": "dc077029ed9cc3c834f4ad7436f270b5a6c5f8392d5ae8ee8e31c721929976f4",
+      "bytes": 2437
+    },
+    "e021-metrics.json": {
+      "sha256": "fbbd92c082abd1b98202fa51c7da9814806d32e31deb4825cc4183212d10d014",
+      "bytes": 2824
+    },
+    "e022-metrics.json": {
+      "sha256": "c9421873a8b1cebcc8051cf88b61fc1d1c2c2cdc9789572a749aec1d1c2e8055",
+      "bytes": 2813
+    },
+    "e023-metrics.json": {
+      "sha256": "beb705851461984194535f5986e2b457c72f53760f582268b83b22d265b84f5d",
+      "bytes": 2792
+    },
+    "e024-metrics.json": {
+      "sha256": "d7e55cc64b194d43f0331139e8670daf1c7369064cae2e50cb335634fc0d2ecb",
+      "bytes": 2822
+    },
+    "e025-metrics.json": {
+      "sha256": "84146613c6d5e30bb77a1137026904342ada56105f990604cc4f90f28e96a429",
+      "bytes": 2819
+    },
+    "e026-metrics.json": {
+      "sha256": "06b476c56065f47baa974e75e7dfd154669ecf32f339cc414894ffd6a1821ef1",
+      "bytes": 2439
+    },
+    "e027-metrics.json": {
+      "sha256": "94c3a101cb00feb164642d8d696283a665ca82b308afa0086be897e472d22532",
+      "bytes": 2782
+    },
+    "engine-stdout.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "engine.log": {
+      "sha256": "82526e2d1654b8328a1a926a205f7dbefd40d61a2b78d6d434f3b043bb95b68a",
+      "bytes": 314730
+    },
+    "host-capabilities.json": {
+      "sha256": "d65299111d60e73a0c8e31e0eca1c3a0649831c2a53260790f7a67f6b2ac6048",
+      "bytes": 778
+    },
+    "host-ready.json": {
+      "sha256": "62a426e56162cb6dcf8132379aa01a8ed720b4bba35ba5d967c92d941880ce24",
+      "bytes": 307
+    },
+    "human-pose-manifest.json": {
+      "sha256": "16df1a3b6001f83c851a9f9109a334da45301c8e7a9f48285ffaf8b5f661ef5d",
+      "bytes": 1422
+    },
+    "journal.jsonl": {
+      "sha256": "e7be7206c379bcf8bcccc449ff30bbbdaecd7b95b22b988282a749f42c19d421",
+      "bytes": 1234099
+    },
+    "manifest.json": {
+      "sha256": "a47b0bdbd39414ea0766efb8052a680d945d31565c867524abf136b6a11853da",
+      "bytes": 8088
+    },
+    "private/admission-000.json": {
+      "sha256": "71a9235f86ec8aeaf65a2f8954d796f5fcee89de401eb748cd8ee0c9ec905167",
+      "bytes": 592
+    },
+    "private/admission-001.json": {
+      "sha256": "057dbd2dceb61a781635a970e4011d284d2ff89a9656d635eaaa7c336f7210d1",
+      "bytes": 592
+    },
+    "private/admission-002.json": {
+      "sha256": "6751eda4ddf1c75af3c17117a828a94fb81e5960782101e30ec601a2634eac6d",
+      "bytes": 270
+    },
+    "private/admission-003.json": {
+      "sha256": "1b8611947d7d5fa3dce37f75570471f2ad17b137513183344c72c0c92ae49d3c",
+      "bytes": 910
+    },
+    "private/admission-004.json": {
+      "sha256": "3b1c2956ea43817db4bddb6284e03e7994e84102398ec5486ec36acca76b9997",
+      "bytes": 1539
+    },
+    "private/admission-005.json": {
+      "sha256": "2a5ce00f7dbfdf2aaf3a4875ffbb5e775a26235d795a362eb013c4af7e50b962",
+      "bytes": 5235
+    },
+    "private/admission-006.json": {
+      "sha256": "cc443c1d339d795d6839dd527d3ce9f534126c70ed71daf4cf648fc05dede680",
+      "bytes": 593
+    },
+    "private/admission-007.json": {
+      "sha256": "332abb8e700e1371a4c8c7f867121f50c1def1830ba7f95bf13f494215f5707f",
+      "bytes": 593
+    },
+    "private/admission-008.json": {
+      "sha256": "fe951323eadb57dd7b7ad836b14a088a3c2bc068dff5068881c414388b55bc5e",
+      "bytes": 593
+    },
+    "private/admission-009.json": {
+      "sha256": "206a5cdff1c1df9c526c64d019b4e5a598f5363f1d5d50bd6460e61c5560315b",
+      "bytes": 593
+    },
+    "private/admission-010.json": {
+      "sha256": "b888f000a5a288ed200ebdea69f02e55d12cbf8d40831741675105db69ae8c51",
+      "bytes": 593
+    },
+    "private/admission-011.json": {
+      "sha256": "6751eda4ddf1c75af3c17117a828a94fb81e5960782101e30ec601a2634eac6d",
+      "bytes": 270
+    },
+    "private/admission-012.json": {
+      "sha256": "957dbb66aadd52a59167d7ce0cc66999cb8f947302cf84ba25e1b6b6aae964f6",
+      "bytes": 912
+    },
+    "private/admission-013.json": {
+      "sha256": "07072318a6f2496a8cd346d77621a5e5d2eb3530e3abe4f76a9896975d532e09",
+      "bytes": 1543
+    },
+    "private/admission-014.json": {
+      "sha256": "0dc68fc7cdc43239f18209ccf83debfd7ae0060e3232854174f00a9eb6238b34",
+      "bytes": 5236
+    },
+    "private/admission-015.json": {
+      "sha256": "9279a620e14cf1e7100637cad11c0417c316fd0655ed86f80e9a51ed747ec0fe",
+      "bytes": 593
+    },
+    "private/admission-016.json": {
+      "sha256": "c6c1c768eb0810e6d6257afdc38bc4b213e09105af9c0bc40d8f68d1b2f46de0",
+      "bytes": 593
+    },
+    "private/admission-017.json": {
+      "sha256": "e4585535413d968657ecf8102992d75d5bf7023c40d2c0db28a676cdd5bf9e44",
+      "bytes": 593
+    },
+    "private/e000-commands.json": {
+      "sha256": "9425c634c48f392205f2398c87e385995889c0c978504fa09d7e78e9e1f260dd",
+      "bytes": 19467
+    },
+    "private/e000-ledger.json": {
+      "sha256": "17571d075391092d25f11cf7a00ba9bce409570d88ea3ccf304445aee50d312a",
+      "bytes": 24170
+    },
+    "private/e000-scenario.json": {
+      "sha256": "10da90ef7417033ea55e5f2e7fe453035592cfc6cde1d8cf55bc9d949ffe49ba",
+      "bytes": 1963
+    },
+    "private/e000-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e001-commands.json": {
+      "sha256": "4a667e0fe6fb8622d12b4e059d0f5a4ce180ee13162d2e18949cb6abf9a77db2",
+      "bytes": 19115
+    },
+    "private/e001-ledger.json": {
+      "sha256": "ae62fa500987d4bd02c75057899ace8fc468e6106ec7cc1f95a9e11561a8d757",
+      "bytes": 20433
+    },
+    "private/e001-scenario.json": {
+      "sha256": "10da90ef7417033ea55e5f2e7fe453035592cfc6cde1d8cf55bc9d949ffe49ba",
+      "bytes": 1963
+    },
+    "private/e001-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e002-commands.json": {
+      "sha256": "787bb7021a8897d8d8dfa0bbd4f019619362cda03780ba3954c91d2837d60a9a",
+      "bytes": 19115
+    },
+    "private/e002-ledger.json": {
+      "sha256": "b356230a308597c359b2f619a19fc78575709eedca97d46643b37d278321c617",
+      "bytes": 20719
+    },
+    "private/e002-scenario.json": {
+      "sha256": "10da90ef7417033ea55e5f2e7fe453035592cfc6cde1d8cf55bc9d949ffe49ba",
+      "bytes": 1963
+    },
+    "private/e002-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e003-commands.json": {
+      "sha256": "51506c21ef81644ea3a5e3bf1e6bdd350aa293a6cd54f5292d13a703d0f97bee",
+      "bytes": 19467
+    },
+    "private/e003-ledger.json": {
+      "sha256": "8c3f05da5bf6ae5c3bade8622161fe5c6b521d9525c2a004b0e992087bcb677e",
+      "bytes": 24171
+    },
+    "private/e003-scenario.json": {
+      "sha256": "ace83edcedc9a6db6795b796625bfe966d38835edea8d012d49756a54c863934",
+      "bytes": 2140
+    },
+    "private/e003-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e004-commands.json": {
+      "sha256": "b8c7d0b262cab7410e01f80238902b15b7de794786c740b489c8942d122e2fd2",
+      "bytes": 20361
+    },
+    "private/e004-ledger.json": {
+      "sha256": "1175c065dd6e26c56611647b938cbfa7899bca6be1aa0fef476f049a68d7979a",
+      "bytes": 23738
+    },
+    "private/e004-scenario.json": {
+      "sha256": "ace83edcedc9a6db6795b796625bfe966d38835edea8d012d49756a54c863934",
+      "bytes": 2140
+    },
+    "private/e004-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e005-commands.json": {
+      "sha256": "986c64532415416714fc139eff753d4619f5f87cc9f2cd74d835c4e8ea942114",
+      "bytes": 19329
+    },
+    "private/e005-ledger.json": {
+      "sha256": "765b89642fb103dd8375429ddc08628a4ab6cb3fb270131ae22d352088a6f998",
+      "bytes": 21973
+    },
+    "private/e005-scenario.json": {
+      "sha256": "ace83edcedc9a6db6795b796625bfe966d38835edea8d012d49756a54c863934",
+      "bytes": 2140
+    },
+    "private/e005-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e006-commands.json": {
+      "sha256": "ab6ea15efa1912554dfbbb0d52dd47cf0efd2b8b44f7cce4eb718a857c23d0df",
+      "bytes": 19467
+    },
+    "private/e006-ledger.json": {
+      "sha256": "e33abbf80e4738a2ddd605bb34c356681cac7f94ad0281f7f0c651fa19c83460",
+      "bytes": 17333
+    },
+    "private/e006-scenario.json": {
+      "sha256": "4e9a096af87ef6e6faa7ee7ca60698066aed6afde956ea943961241ce9707985",
+      "bytes": 1795
+    },
+    "private/e006-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e007-commands.json": {
+      "sha256": "30dd8f0844ed9c3cfd694086ecf47ad3d53ae82884cbae9220e14eb85fd10811",
+      "bytes": 19027
+    },
+    "private/e007-ledger.json": {
+      "sha256": "8e6bd9596a52a7618994f3cbf6ccfe0065a6a6f76974b9c313e3adabf1e0431a",
+      "bytes": 17334
+    },
+    "private/e007-scenario.json": {
+      "sha256": "4e9a096af87ef6e6faa7ee7ca60698066aed6afde956ea943961241ce9707985",
+      "bytes": 1795
+    },
+    "private/e007-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e008-commands.json": {
+      "sha256": "c15da04dba0d8c982cd507f92fc74db822d0a19ed0457612c412d99ee296c5a0",
+      "bytes": 19467
+    },
+    "private/e008-ledger.json": {
+      "sha256": "bc1c2894b95e0864f3cdf422f9c3707b3f54817856e3935ec34fcaeb4254c222",
+      "bytes": 17333
+    },
+    "private/e008-scenario.json": {
+      "sha256": "4e9a096af87ef6e6faa7ee7ca60698066aed6afde956ea943961241ce9707985",
+      "bytes": 1795
+    },
+    "private/e008-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e009-commands.json": {
+      "sha256": "00ac1176789ddde540ec65197f5de8afb550df17d75a0c10c70fa12696f879b7",
+      "bytes": 19467
+    },
+    "private/e009-ledger.json": {
+      "sha256": "a89aa375da69dc6d0c8a62edaf3d2aa2d07e41c2e00326b446c9851166d79616",
+      "bytes": 29188
+    },
+    "private/e009-scenario.json": {
+      "sha256": "6d74345486c718378816b9a785ff718c068282ef40aaa3f62f5a23cc3cbe2bdc",
+      "bytes": 2129
+    },
+    "private/e009-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e010-commands.json": {
+      "sha256": "1914074644ba440951d421ab019e5aa216ede6d365717d028aa622971a0accc1",
+      "bytes": 19115
+    },
+    "private/e010-ledger.json": {
+      "sha256": "d8dec40b0487e91ccb4946745b08e55b9f7a3e14a0aff0278c38f3de8f67f958",
+      "bytes": 24118
+    },
+    "private/e010-scenario.json": {
+      "sha256": "6d74345486c718378816b9a785ff718c068282ef40aaa3f62f5a23cc3cbe2bdc",
+      "bytes": 2129
+    },
+    "private/e010-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e011-commands.json": {
+      "sha256": "17f4b254a243cd4308cad19496de23713b31c183f5ae4fb7cef37b5d22f08430",
+      "bytes": 19227
+    },
+    "private/e011-ledger.json": {
+      "sha256": "b6a6a36a776c969f8308adac762a2caeb26b23f818fc3e65f26ae025352cc448",
+      "bytes": 23002
+    },
+    "private/e011-scenario.json": {
+      "sha256": "6d74345486c718378816b9a785ff718c068282ef40aaa3f62f5a23cc3cbe2bdc",
+      "bytes": 2129
+    },
+    "private/e011-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e012-commands.json": {
+      "sha256": "d82f9fb564aba08c17110bfc5f3f9b25dc81f2f0712d772ef59878f81b3267d2",
+      "bytes": 19143
+    },
+    "private/e012-ledger.json": {
+      "sha256": "a5576d55b568aa219347d219dc0ddb760325d17247b405381f22a48486f8b8b4",
+      "bytes": 17449
+    },
+    "private/e012-scenario.json": {
+      "sha256": "dd5a19fdd26cb374d2934eb3f8565cf6d13f876fd891a61cbf9cdfa9b99a3ffc",
+      "bytes": 2145
+    },
+    "private/e012-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e013-commands.json": {
+      "sha256": "df2da91bea979270cb22a84e3f91a154b43dd20bba95dff003827915604c1f68",
+      "bytes": 19027
+    },
+    "private/e013-ledger.json": {
+      "sha256": "b3bf6ac390fc1a9c28be8318a62e5625951303f8338a91103db8579301b241de",
+      "bytes": 17451
+    },
+    "private/e013-scenario.json": {
+      "sha256": "dd5a19fdd26cb374d2934eb3f8565cf6d13f876fd891a61cbf9cdfa9b99a3ffc",
+      "bytes": 2145
+    },
+    "private/e013-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e014-commands.json": {
+      "sha256": "a9a739411fc91504e5149577a0168cbffbba3c8a82327abd52cb61d19b23ce64",
+      "bytes": 19143
+    },
+    "private/e014-ledger.json": {
+      "sha256": "177bfd17765196a50e2dc57d6d80d4aaa9d20a6f28e0eda9f3a0c0e4936e581b",
+      "bytes": 17449
+    },
+    "private/e014-scenario.json": {
+      "sha256": "dd5a19fdd26cb374d2934eb3f8565cf6d13f876fd891a61cbf9cdfa9b99a3ffc",
+      "bytes": 2145
+    },
+    "private/e014-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e015-commands.json": {
+      "sha256": "312b91002006f0da970877af5293144f22eac915a2612ac4569fd2d48f222e97",
+      "bytes": 19143
+    },
+    "private/e015-ledger.json": {
+      "sha256": "0cb9be79c51df098da131592dbcb29c760c867bad5453bcbf91e4dd90debd4dd",
+      "bytes": 17449
+    },
+    "private/e015-scenario.json": {
+      "sha256": "8ff1301a9a7623565f89925054675a3ab93e62297b37963bb196899055dc9f35",
+      "bytes": 2145
+    },
+    "private/e015-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e016-commands.json": {
+      "sha256": "5d0b0337b0d7ec924b72a65bf1b115fdc46c602fdbad06a888fb24a0b24c6ebb",
+      "bytes": 19027
+    },
+    "private/e016-ledger.json": {
+      "sha256": "3e97e21499292eadcaec08ee9fde580227515034b38c42b9c062643bde259ea3",
+      "bytes": 17451
+    },
+    "private/e016-scenario.json": {
+      "sha256": "8ff1301a9a7623565f89925054675a3ab93e62297b37963bb196899055dc9f35",
+      "bytes": 2145
+    },
+    "private/e016-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e017-commands.json": {
+      "sha256": "8ff09b04b3370a5738ece5dc2d9b4843d94fc7edde67a16283a58bcf909e0a92",
+      "bytes": 19143
+    },
+    "private/e017-ledger.json": {
+      "sha256": "67fa1badc34cc1fdc5374f47fc5f17da330406c6cfd69d07a9877cd818d4ae0a",
+      "bytes": 17449
+    },
+    "private/e017-scenario.json": {
+      "sha256": "8ff1301a9a7623565f89925054675a3ab93e62297b37963bb196899055dc9f35",
+      "bytes": 2145
+    },
+    "private/e017-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e018-commands.json": {
+      "sha256": "d0c3dbcb6936d455aeaca2c468eda0467a115d6107674b8bec7311ef27969cc1",
+      "bytes": 19467
+    },
+    "private/e018-ledger.json": {
+      "sha256": "a7520f1e19026f617ce8d067bf2598a32634beb8ada53581bbcabaf11dd0ca08",
+      "bytes": 24168
+    },
+    "private/e018-scenario.json": {
+      "sha256": "e14618d3a49112ac9c925d2773afc3fc73359b9de1e5c5e1b5d491e82b0de0df",
+      "bytes": 1963
+    },
+    "private/e018-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e019-commands.json": {
+      "sha256": "9a0f3b4a2ab17db6f741e2383ccf0d36e8d90318ef08a196daf9dc2f57f4e591",
+      "bytes": 19115
+    },
+    "private/e019-ledger.json": {
+      "sha256": "f132488435e1e1eaf1dabd8f39c5357a852afa64d231ce04f0f9e2b22d542d82",
+      "bytes": 20436
+    },
+    "private/e019-scenario.json": {
+      "sha256": "e14618d3a49112ac9c925d2773afc3fc73359b9de1e5c5e1b5d491e82b0de0df",
+      "bytes": 1963
+    },
+    "private/e019-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e020-commands.json": {
+      "sha256": "f8ae76e7cd6648622ec1a6b424a6cbbb731e0f04b453eb168eae53cc63ca93c1",
+      "bytes": 19127
+    },
+    "private/e020-ledger.json": {
+      "sha256": "d6d55854f8f34592b473841c36f91da0ce992ec0fa573446860eb46ba4170119",
+      "bytes": 21989
+    },
+    "private/e020-scenario.json": {
+      "sha256": "e14618d3a49112ac9c925d2773afc3fc73359b9de1e5c5e1b5d491e82b0de0df",
+      "bytes": 1963
+    },
+    "private/e020-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e021-commands.json": {
+      "sha256": "d1e4b9403f276a689e8ff9ae96d3e46d068e7f512422f15a9227628b02e10ce2",
+      "bytes": 17321
+    },
+    "private/e021-ledger.json": {
+      "sha256": "1bb1445c19d695d78060a8ca31e3895129b5da0737f7e9259b0b5f376ccab7b0",
+      "bytes": 23165
+    },
+    "private/e021-scenario.json": {
+      "sha256": "99d48b929ddfad419e13774259ee4060c640b7355293941cefe40091b09816f0",
+      "bytes": 1963
+    },
+    "private/e021-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e022-commands.json": {
+      "sha256": "1e73ba8e9eaf236677887dca1c80571cb58bc9efe1fcd59f3b0e12b546cc8f30",
+      "bytes": 18759
+    },
+    "private/e022-ledger.json": {
+      "sha256": "4de5922dd557a50bb2cbc3196b5153f90f7c5189987beb650975c57a0ca32662",
+      "bytes": 20447
+    },
+    "private/e022-scenario.json": {
+      "sha256": "99d48b929ddfad419e13774259ee4060c640b7355293941cefe40091b09816f0",
+      "bytes": 1963
+    },
+    "private/e022-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e023-commands.json": {
+      "sha256": "a92f5065a3d1f0cd209c56b1b350c458dcb05cda8571d0fd90589d30204801c1",
+      "bytes": 18201
+    },
+    "private/e023-ledger.json": {
+      "sha256": "16dee448f2cc42bf9fc707623aa9ab254f06978566da7fb7644cbd9182d3ee67",
+      "bytes": 20913
+    },
+    "private/e023-scenario.json": {
+      "sha256": "99d48b929ddfad419e13774259ee4060c640b7355293941cefe40091b09816f0",
+      "bytes": 1963
+    },
+    "private/e023-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e024-commands.json": {
+      "sha256": "6be3ea4db9f09de98fd0c3bb3f3ff183016a4c894dde84b157ed50fd6bb9745e",
+      "bytes": 17321
+    },
+    "private/e024-ledger.json": {
+      "sha256": "9be7ed60ced83851cb2c9b8e526b3b9417527aed15f1111811191714377f1008",
+      "bytes": 22026
+    },
+    "private/e024-scenario.json": {
+      "sha256": "939e8ada50a1d5a691e525bfaf6dd5231f814a22ff19e9d02dc64f7cb0ab584a",
+      "bytes": 1963
+    },
+    "private/e024-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e025-commands.json": {
+      "sha256": "480528c85203e75eec5a62e3839a62a63d0a1800db6daeb09bee1a2ef8294f2a",
+      "bytes": 18759
+    },
+    "private/e025-ledger.json": {
+      "sha256": "bdfaa6acfb31a4c792d5736ad44204296bbd4591f685ab65c6bb369bddd02475",
+      "bytes": 20449
+    },
+    "private/e025-scenario.json": {
+      "sha256": "939e8ada50a1d5a691e525bfaf6dd5231f814a22ff19e9d02dc64f7cb0ab584a",
+      "bytes": 1963
+    },
+    "private/e025-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e026-commands.json": {
+      "sha256": "acbf449329b7df8a5fd8bc7c26668fe5336ce889bee56f7107203274a8b29a9e",
+      "bytes": 18179
+    },
+    "private/e026-ledger.json": {
+      "sha256": "b9013cfe74e82174b3d781cb49b17ebcb329eb852e9146f92ce79d397a04779a",
+      "bytes": 19945
+    },
+    "private/e026-scenario.json": {
+      "sha256": "939e8ada50a1d5a691e525bfaf6dd5231f814a22ff19e9d02dc64f7cb0ab584a",
+      "bytes": 1963
+    },
+    "private/e026-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e027-commands.json": {
+      "sha256": "9f51be98ca3422ee61bd456cf7c78ff8b1532662f53750d86714f846db546e67",
+      "bytes": 19467
+    },
+    "private/e027-ledger.json": {
+      "sha256": "516fa430732c2f0738ca8270c5dc66882781a126f21719815ff2a303c6c009c9",
+      "bytes": 24170
+    },
+    "private/e027-scenario.json": {
+      "sha256": "dcd053365cff8c575ff7bb43301f79694549f9978ef38fa4bad82ef4b6a33b58",
+      "bytes": 1968
+    },
+    "private/e027-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e028-scenario.json": {
+      "sha256": "dcd053365cff8c575ff7bb43301f79694549f9978ef38fa4bad82ef4b6a33b58",
+      "bytes": 1968
+    },
+    "private/host.jsonl.gz": {
+      "sha256": "0616b6227c542d25a7a086d0f9093cadf5f220bac505633523cbf4387a7904a0",
+      "bytes": 220993649
+    },
+    "private/scheduled-scenarios.json": {
+      "sha256": "2d1a769c0099ea97e2a2733830509ea66bdfd5a9ad74178eda55e67995ebf9ee",
+      "bytes": 41598
+    },
+    "public/observations.jsonl.gz": {
+      "sha256": "fbcfe04ac752ce5aba2d0df5780b0fcff81f0eed6bf9d4fc6ea418a3c9097c35",
+      "bytes": 568845229
+    },
+    "source/experiments/ue5_s4/asset_scene.py": {
+      "sha256": "a6091ed849ba2a21eb8f3d428c498f0900436ec23c7ca7ccc784419ad142a350",
+      "bytes": 8138
+    },
+    "source/experiments/ue5_s4/bake_anatomy.py": {
+      "sha256": "5589c77065fc2187be1659b0e0b87a17a8fc7341da21d76fa25f8edbf65e3226",
+      "bytes": 6808
+    },
+    "source/experiments/ue5_s4/bake_environment.py": {
+      "sha256": "e9e1c0b3e1551a31388d58b9518c7f464549485a8e39313df77708046a6fa98c",
+      "bytes": 8636
+    },
+    "source/experiments/ue5_s4/bake_humans.py": {
+      "sha256": "4e65cdc752507a439912b2a81d9cc76fe19ea5568b311133de7b0b4ded2758cc",
+      "bytes": 7732
+    },
+    "source/experiments/ue5_s4/editor_host/Config/DefaultEngine.ini": {
+      "sha256": "c86db38881c06d4fc3ab10bccb49798bd0fd305080a23e1ff18f411b6cc3e366",
+      "bytes": 650
+    },
+    "source/experiments/ue5_s4/editor_host/Config/DefaultInput.ini": {
+      "sha256": "2644f3ee3ecafc30e7a00d1f4a3d6ba116ac4c75a84f5444c3cd04e9512d666a",
+      "bytes": 9068
+    },
+    "source/experiments/ue5_s4/editor_host/SarEditorSlice.uproject": {
+      "sha256": "b29389f8c4a1a2dec75e3097bd876d5652fb05f46548d9feb158925be600a37f",
+      "bytes": 323
+    },
+    "source/experiments/ue5_s4/editor_server.py": {
+      "sha256": "a724085df000df09d786b9f3e564c0c59b802821a7e3843a30481ceac25cb540",
+      "bytes": 23352
+    },
+    "source/experiments/ue5_s4/human_scene.py": {
+      "sha256": "1452182d0bde15c14bb7e17017b2f03f98c29aba42d34582a4df5ac418a7500a",
+      "bytes": 17236
+    },
+    "source/experiments/ue5_s4/prepare_assets.py": {
+      "sha256": "96267d7964f4b946e522a0bcbd1648e959eae664932093020e1f9640d70ba90b",
+      "bytes": 3097
+    },
+    "source/experiments/ue5_s4/prepare_environment.py": {
+      "sha256": "41911814d3de9471b67fd3b85bfc499f99c04711b01b763191a9570c53c114ce",
+      "bytes": 5503
+    },
+    "source/experiments/ue5_s4/probe_editor.py": {
+      "sha256": "c509cbeb64182b89992fb4bbb957e44ed14c9f99d10976b535e5693770f7685c",
+      "bytes": 2097
+    },
+    "source/experiments/webots_s2/geometry.py": {
+      "sha256": "3337b365bd2667c6e1b007ab195a5ea0a5afdf916880e8e7c050b28ee543f078",
+      "bytes": 790
+    },
+    "source/sar_benchmark/__init__.py": {
+      "sha256": "d1803781442a6b0a2c796fd26011cc8bf714e2a50759bce5e98bdf4fdfb653cd",
+      "bytes": 117
+    },
+    "source/sar_benchmark/admissibility.py": {
+      "sha256": "614b61e409ed5ede24782f5dac586f39e873e2bc893cd5a9fb9bc9f57822705f",
+      "bytes": 3396
+    },
+    "source/sar_benchmark/agent_worker.py": {
+      "sha256": "bca3dce8a692b1b6873c48d146ea2663f6edf2dec15b81dddf9e855c7b35f5f0",
+      "bytes": 1441
+    },
+    "source/sar_benchmark/archive_run.py": {
+      "sha256": "acfc9857e48949ca340529713ff59ebd30dda33ca53fd6e61a2243983041bfa4",
+      "bytes": 3117
+    },
+    "source/sar_benchmark/artifacts.py": {
+      "sha256": "0104b912b6e0681bec39392260d7b15cbfcf1fc377be0a5a06f6dcca17596b70",
+      "bytes": 2078
+    },
+    "source/sar_benchmark/asset_scenarios.py": {
+      "sha256": "c9340f285681a5439862bb993951c776627820a70d0bc24b6ea5057b6af05e4a",
+      "bytes": 3150
+    },
+    "source/sar_benchmark/audit_run.py": {
+      "sha256": "0036a6085cf27c33e89187ad0fa0feb8f7aa47b642bb83afc6fec88bdaddcf0c",
+      "bytes": 18181
+    },
+    "source/sar_benchmark/calibration.py": {
+      "sha256": "b303c54ad09d24203c44361ad0256a89230c801ce114e9f3a653f5b9f1649410",
+      "bytes": 8812
+    },
+    "source/sar_benchmark/capture.py": {
+      "sha256": "585f89f2ae6895f6e19e5807ab2a5e552f3975b5dfcc178961af6257bd36d725",
+      "bytes": 1949
+    },
+    "source/sar_benchmark/contracts.py": {
+      "sha256": "96b79fcaf763f5f4fb134fd756d77be2bc0525a17596bca3950983e38485b817",
+      "bytes": 9513
+    },
+    "source/sar_benchmark/core_policy.py": {
+      "sha256": "9cae2ab6ce83cb90899190a95b57415aa82a56a12978b432a1c87f5b3c2d9a48",
+      "bytes": 2322
+    },
+    "source/sar_benchmark/embodiment.py": {
+      "sha256": "882aeb73e836beb4aeb54572d54b7443079a816316946f83d4405abe48ab60f9",
+      "bytes": 1177
+    },
+    "source/sar_benchmark/episode.py": {
+      "sha256": "59c6222a05c6b9e10d16d4ecaff44a91ee906e5d8e9c5152fdf61548f920be9e",
+      "bytes": 4689
+    },
+    "source/sar_benchmark/evaluator.py": {
+      "sha256": "b94a08d25b4146b618330aa5d84fd3d3576a29eda201cbc9cadd37c82525d0c5",
+      "bytes": 10189
+    },
+    "source/sar_benchmark/frontier_policy.py": {
+      "sha256": "a833fe412229ebc099f6a2413bc1006ad568c3ed3e50dc1efedac7a031f2d2e9",
+      "bytes": 4767
+    },
+    "source/sar_benchmark/geometry.py": {
+      "sha256": "11fa20e362691c37fb027d65068b3b92219a4b19841affefd2a8494498b81316",
+      "bytes": 1189
+    },
+    "source/sar_benchmark/imageio.py": {
+      "sha256": "6a7bd1cc32b610964a3c417e8264bc3f31e85c8d820ab4190d1a5e41c180a646",
+      "bytes": 762
+    },
+    "source/sar_benchmark/perception.py": {
+      "sha256": "f6d2cfd716bf2a45dd62347b7aa4220f8ae1624be28b8cffbd30e39ee071589c",
+      "bytes": 2795
+    },
+    "source/sar_benchmark/policies.py": {
+      "sha256": "cc69b625956ab808a63b2884575a9d91b8b03c980b32d66b0e8b3bac0c3906b3",
+      "bytes": 6285
+    },
+    "source/sar_benchmark/reference.py": {
+      "sha256": "0c770d6d5585a72d365d4df5c8292482e50ccada73feba96d5f71d1915ea9efc",
+      "bytes": 4778
+    },
+    "source/sar_benchmark/runner.py": {
+      "sha256": "e3fbb5deceb7fd6da6251d1704eeb87d48206ee5b57a767caa51f07c72831c5d",
+      "bytes": 24603
+    },
+    "source/sar_benchmark/runtime_metrics.py": {
+      "sha256": "1ed4f94f0fc22e8b6836a8d11f06d3250bd0d1e6176336c9746110ac9d275da0",
+      "bytes": 2207
+    },
+    "source/sar_benchmark/safety.py": {
+      "sha256": "e9ea56222e27b75c3355bea507854bce1c1ee6542bf6065af02c80487cbbb9cb",
+      "bytes": 3724
+    },
+    "source/sar_benchmark/scenario_contract.py": {
+      "sha256": "9da5f0e0e81f9f34a0108362d7bdbc8fc4e2962a9a7849b2197cbf15a5bbd21d",
+      "bytes": 3729
+    },
+    "source/sar_benchmark/scenarios.py": {
+      "sha256": "5f481ad9d488dca52f78b2272363430c47715e83f184ba19adf4465f89a987f8",
+      "bytes": 4132
+    },
+    "source/sar_benchmark/sensor_response.py": {
+      "sha256": "53553740e41bd40d18c3f2003551aa1218f92310de183db22f9487a8ad91125e",
+      "bytes": 1322
+    },
+    "source/sar_benchmark/sensor_study.py": {
+      "sha256": "3bd71c9de6b797495f329ebbad04cd1c542fd34c0431f9c38595f0328c8d1bdc",
+      "bytes": 5112
+    },
+    "source/sar_benchmark/statistics.py": {
+      "sha256": "c1391a45b2b40bcee780225eb8f0872349fb733fb27129ccbe6ef8265c15d49e",
+      "bytes": 1907
+    },
+    "source/sar_benchmark/summarize_run.py": {
+      "sha256": "9c6318c73d3a5d5ca8de05c76c4ac8eccd351905b1a3684aabaa29859a5e19a0",
+      "bytes": 5756
+    },
+    "source/sar_benchmark/tracking.py": {
+      "sha256": "4391dbdc534736bb53f7150dcad61131c5494f5c2f44b75d71bed9fa406b6150",
+      "bytes": 3158
+    },
+    "source/sar_benchmark/transport.py": {
+      "sha256": "aa2b575f91df8cd327377921725471e170ac74cede6b2470a02c3fc63e6f8039",
+      "bytes": 1994
+    },
+    "source/sar_benchmark/ue_backend.py": {
+      "sha256": "4614301964cdcc5848ca918c0a7f53671549deb86b7726f0318f27f68f4a54f2",
+      "bytes": 6504
+    },
+    "source/sar_benchmark/visual_qa.py": {
+      "sha256": "54bca7c4551aad63c0c33c1fff0af90a0735c0b58d84ccf1913c04e84f0004cb",
+      "bytes": 7777
+    },
+    "source/test version/collision_monitor_ros1.py": {
+      "sha256": "7324eb1117f7762cbe77db796311f629355ebd8f9234c99f0603c2a0dbb66f12",
+      "bytes": 15141
+    },
+    "source/test version/navigation_core_ros1.py": {
+      "sha256": "822e6a647cfc58747a4af117f77e8ad700a4c2a758bbf4245601cb80af0024d6",
+      "bytes": 41442
+    },
+    "source/test version/search_core_ros1.py": {
+      "sha256": "cc7dd129140737fdd486e1020a90dc4a78f56f9433fe4ab1c108a976582cd1ff",
+      "bytes": 13715
+    }
+  },
+  "archive_kind": "PARTIAL_LOCAL_RAW_INDEX_NO_ACCEPTANCE_INVENTORY",
+  "note": "Original attempt unchanged; parseable records/recomputed metrics do not establish clean lifecycle, full delivery audit or run acceptance. Interruption cause is unknown."
+}

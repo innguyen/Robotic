@@ -1,0 +1,41 @@
+{
+  "scope": "descriptive development pilot only; no significance, generalization or fixed-FAR claim",
+  "run_status": "FAILED_CALIBRATION",
+  "completed_episodes": 2,
+  "engine_exit_code": 0,
+  "results_sha256": "a17f08cbf72f71e0cf064d72f4f0a18ec11bd8fb314b1b1b24e3f0d2113ad5a5",
+  "source_inventory_sha256": "58a34b2f9c569664c796831224361af2c4ee0e11322dbe2e419d1848434d5a86",
+  "table": [
+    {
+      "method": "frontier",
+      "kind": "clean",
+      "P": 0,
+      "N": 0,
+      "episodes": 2,
+      "auxiliary_failure_challenge": false,
+      "safe_localization_recall": 0.0,
+      "tp": 2,
+      "fp": 0,
+      "unsafe_episodes": 2,
+      "absent_false_alarm_rate": null,
+      "path_mean_m": 2.6551033504492882,
+      "localization_matched_count": 2,
+      "localization_median_m": 0.06305625471713638,
+      "localization_p90_m": 0.06532084017043213,
+      "time_integrated_recall": 0.8972222222222223,
+      "action_latency_p50_s": 0.5852085999995325,
+      "action_latency_p95_s": 1.3734008800000084
+    }
+  ],
+  "rq1": null,
+  "rq2_joint_verify_minus_frontier": {
+    "family_deltas": {},
+    "mean": null,
+    "ci95": null,
+    "reason": "dev corpus is not an independent held-out family sample"
+  },
+  "wall_duration_s": 437.0844274000001,
+  "task_budget_s": 90.0,
+  "action_dt_ns": 500000000,
+  "scientific_main_eligible": false
+}

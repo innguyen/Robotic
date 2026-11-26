@@ -1,6 +1,39 @@
 # Native UE SAR benchmark
 
-Một backend UE 5.6.1 / D3D11 / PythonScriptPlugin. Primitive diagnostic và human SAR dev dùng chung runtime/evaluator. Human profile có indoor/outdoor nguyên bản, damaged walls, debris, occluders, người đứng/ngồi/nằm, UGV visual và Mecanum kinematics. Người còn stylized, sensors synthetic, robot swept kinematic; chưa phải photorealistic corpus hay physical JetAuto. [Audit và evidence](../../docs/research/s4-audit.md).
+Một backend UE 5.6.1 / D3D11 / PythonScriptPlugin. Primitive diagnostic, legacy Cesium scenes và **asset-based scenes** dùng chung runtime/evaluator. `--scene-set assets` chọn damaged building hai khoang hoặc semi-outdoor service courtyard có bố cục khác nhau, mesh/PBR CC0, structural fractures, rubble và anatomical humans. `--scene-set legacy` (mặc định để tương thích) giữ fixtures cũ. Sensors vẫn synthetic, robot swept kinematic; chưa phải photorealistic corpus hay physical JetAuto. [Audit và evidence](../../docs/research/s4-audit.md), [visual QA trước/sau](../../docs/research/s4-visual-qa.md).
+
+## Asset scenes
+
+Hai cảnh hiện dùng sáu mesh Poly Haven, sáu bộ PBR 1K và một HDRI. Cánh văn phòng có mái vỡ, hai bàn làm việc và tủ điện. Khu giao nhận có kho mái răng cưa, cửa cuốn, kệ hàng và đường dịch vụ. Nhân vật MakeHuman mang áo, quần, giày, tóc và mắt với UV riêng. Runner đóng băng nguồn, 52 input môi trường, 26 input nhân vật và các mesh dẫn xuất trước khi khởi động UE. [Nguồn và giấy phép môi trường](assets/environment/README.md), [nhân vật](assets/anatomy/README.md)
+
+```powershell
+# Chọn interpreter có NumPy/OpenCV DNN + EXR. Phiên nghiệm thu dùng UE Python 3.11
+# với packages trong .s4-cache/python-packages, tách khỏi production.
+$sarPython = 'C:/Program Files/Epic Games/UE_5.6/Engine/Binaries/ThirdParty/Python3/Win64/python.exe'
+$env:PYTHONPATH = "$PWD/.s4-cache/python-packages"
+& $sarPython experiments/ue5_s4/prepare_environment.py
+& $sarPython -m experiments.ue5_s4.bake_environment
+& $sarPython -m experiments.ue5_s4.bake_anatomy
+& $sarPython -m sar_benchmark.runner `
+  --editor 'C:/Program Files/Epic Games/UE_5.6/Engine/Binaries/Win64/UnrealEditor-Cmd.exe' `
+  --out experiments/ue5_s4/runs/my-asset-search --suite sar-smoke --scene-set assets `
+  --environments indoor outdoor --cases clean --methods frontier `
+  --ticks 180 --action-dt .5 --size 320x240 --scan-rays 360 --render-quality standard `
+  --admissibility --calibrate --overview
+& $sarPython -m sar_benchmark.audit_run experiments/ue5_s4/runs/my-asset-search `
+  --out experiments/ue5_s4/runs/my-asset-search-audit.json
+& $sarPython -m sar_benchmark.visual_qa experiments/ue5_s4/runs/my-asset-search `
+  --out experiments/ue5_s4/runs/my-asset-search-frames `
+  --model experiments/ue5_s4/assets/source/yolov5n-v7.onnx
+& $sarPython -m sar_benchmark.episode_video experiments/ue5_s4/runs/my-asset-search e000 `
+  --out experiments/ue5_s4/runs/my-asset-search-indoor-video
+```
+
+Đây là **90 s task clock / 2 Hz transaction clock**, không phải 90 s wall time hoặc chứng minh real-time 2 Hz. Lượt ngắn kiểm poses có thể dùng `--ticks 4 --postures standing seated prone --methods frontier core verify --size 640x480 --scan-rays 720`. Nó kiểm pipeline/ảnh, không thay navigation acceptance.
+
+Native calibration thêm 24 checks cho asset scenes: 2 môi trường × 3 poses × 2 lighting conditions, mỗi tổ hợp có exact RGB/depth/scan repeat và rendered visibility qua ba resets. Các góc calibration dùng GT để đặt **trusted QA camera**, có nhãn private và không được chuyển cho policy hoặc ghi thành scored detection. Camera robot và PNG depth/visibility trong báo cáo có epoch/tick/hash riêng.
+
+Lighting dùng một directional sun và một rect fill, registration giữ cố định qua resets. Standard là raster FXAA/shadows; không có Lumen/Nanite/photorealism acceptance. Robot sweeps dùng imported convex hulls; scan dùng complex triangles, depth dùng rendered geometry. Các hốc concave nhỏ không được coi là đường đi đã chứng nhận; rebar và ghế hỗ trợ victim là visual-only. Xem giới hạn đo thực ở báo cáo QA.
 
 ## Chuẩn bị và chạy
 
@@ -22,7 +55,7 @@ $sarPython = 'C:/Users/lemin/AppData/Local/Programs/Python/Python310/python.exe'
 
 Downloader có byte caps và expected SHA256: CesiumMan khoảng 0,46 MB, official ONNX khoảng 3,98 MB cùng license notices. Không tải environment packs hoặc thay production checkpoint. [Attribution](assets/README.md) đi cùng source/derived OBJ. Imported assets/materials dùng tên theo content hash; generated uasset/shader caches ignored.
 
-sar-pilot thêm clean/P/N/P+N ghép cặp bên cạnh cases đã chọn. Mặc định một seed, standing; --postures standing seated prone mở cả ba tư thế. sar-smoke chỉ chạy cases chọn. --size 640x480 --scan-rays 720 cấu hình độ phân giải thiết kế; --depth-model ideal|gaussian|structured chọn response synthetic. Indoor/outdoor hiện chung một layout lineage. blocked là auxiliary infeasible navigation challenge, báo riêng khỏi feasible positive corpus.
+sar-pilot thêm clean/P/N/P+N ghép cặp bên cạnh cases đã chọn. Mặc định một seed, standing; --postures standing seated prone mở cả ba tư thế. sar-smoke chỉ chạy cases chọn. --size 640x480 --scan-rays 720 cấu hình độ phân giải thiết kế; --depth-model ideal|gaussian|structured chọn response synthetic. Legacy indoor/outdoor chung một layout lineage; asset scenes có hai topology khác nhau nhưng vẫn chung asset library, chưa là held-out independent lineage corpus. blocked là auxiliary infeasible navigation challenge, báo riêng khỏi feasible positive corpus.
 
 Lệnh trên là **30 s dev task tại 2 Hz**, khác S3 300 s/10 Hz. Trên graphics worker đủ tài nguyên, lệnh sau yêu cầu cấu hình dài; phải đo throughput/watchdogs và nghiệm thu trước khi dùng kết quả nghiên cứu:
 
@@ -39,7 +72,7 @@ Lệnh trên là **30 s dev task tại 2 Hz**, khác S3 300 s/10 Hz. Trên graph
 
 Render preset preview giữ scalability thấp cho Iris Xe; standard bật scalability level 2 và FXAA/shadows, vẫn không phải photorealistic corpus hoặc Lumen acceptance. RHI mặc định D3D11; D3D12 là cấu hình worker chưa được nghiệm thu trên máy này. Actual CVars và requested RHI được lưu riêng; đối chiếu RHI thật trong engine log.
 
---overview lưu góc nhìn robot/scene riêng trong private, phục vụ QA; không chuyển cho policy và không dùng làm scoring evidence.
+--overview lưu overview riêng **cho từng episode** trong private, phục vụ QA; không chuyển cho policy và không dùng làm scoring evidence. Các source snapshot cũ chỉ có overview của episode đầu; không tự suy rằng góc overview đó thuộc cả hai scene.
 
 ## Runtime và dữ liệu
 

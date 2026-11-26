@@ -1,0 +1,48 @@
+{
+  "status": "PASS_ENGINE_CALIBRATION",
+  "checks": {
+    "embedded_nonbox_mesh_rejected_by_native_overlap": true,
+    "valid_reset_after_negative_probe": true
+  },
+  "deliberate_invalid_config": {
+    "schema_version": "sar-s4-mvp-0.1",
+    "kind": "absent",
+    "seed": 0,
+    "perception": 0,
+    "odometry": 0,
+    "family": "outdoor_damaged_assets_v1",
+    "pair_id": "outdoor-absent-standing-0",
+    "start_m": [
+      0.0,
+      0.0,
+      0.2
+    ],
+    "start_yaw": 0.0,
+    "boxes": [
+      {
+        "id": "overlap_probe_wall",
+        "center_m": [
+          0.0,
+          0.0,
+          0.8
+        ],
+        "size_m": [
+          2.0,
+          0.2,
+          1.6
+        ],
+        "material": "Brick",
+        "mesh": "fractured_wall"
+      }
+    ],
+    "victims": [],
+    "sensor_black": false,
+    "profile": "sar_human_v1",
+    "environment": "outdoor",
+    "depth_model": "ideal",
+    "scene_variant": "outdoor_damaged_assets_v1"
+  },
+  "native_rejection": "Traceback (most recent call last):\n  File \"C:/Projects/Robotic/experiments/ue5_s4/runs/s4-assets-native-geometry-retry/source/experiments/ue5_s4/editor_server.py\", line 385, in tick\n    self.world.reset(args)\n  File \"C:/Projects/Robotic/experiments/ue5_s4/runs/s4-assets-native-geometry-retry/source/experiments/ue5_s4/editor_server.py\", line 143, in reset\n    self._geometry_check(reset=True)\n  File \"C:/Projects/Robotic/experiments/ue5_s4/runs/s4-assets-native-geometry-retry/source/experiments/ue5_s4/editor_server.py\", line 158, in _geometry_check\n    if reset:raise RuntimeError(\"reset native overlap: \"+str(labels))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: reset native overlap: ['overlap_probe_wall']\n",
+  "restored_epoch": 57,
+  "scope": "Trusted deliberate penetration probe, never a policy episode; no tolerance or safety-score relaxation"
+}

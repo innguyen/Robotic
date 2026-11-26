@@ -1,0 +1,273 @@
+{
+  "status": "PASS_ENGINE_CALIBRATION",
+  "checks": {
+    "plane_0.6m": true,
+    "plane_1.0m": true,
+    "plane_2.0m": true,
+    "plane_4.0m": true,
+    "epoch_unique": true,
+    "reset_pose_scan_repeat": true,
+    "reset_render_repeat": true,
+    "visible_rendered_human": true,
+    "scan_count_matches_host": true,
+    "forward": true,
+    "forward_zero": true,
+    "left": true,
+    "left_zero": true,
+    "yaw": true,
+    "yaw_zero": true,
+    "asset_scenes_reset_visibility": true,
+    "asset_native_geometry_probe": true
+  },
+  "planes": [
+    {
+      "distance_m": 0.6,
+      "optical_Z_samples_m": [
+        0.5996875,
+        0.5996875,
+        0.5996875
+      ],
+      "max_error_m": 0.00031249999999993783
+    },
+    {
+      "distance_m": 1.0,
+      "optical_Z_samples_m": [
+        0.999375,
+        0.999375,
+        0.999375
+      ],
+      "max_error_m": 0.0006249999999999867
+    },
+    {
+      "distance_m": 2.0,
+      "optical_Z_samples_m": [
+        1.99875,
+        1.99875,
+        1.99875
+      ],
+      "max_error_m": 0.0012499999999999734
+    },
+    {
+      "distance_m": 4.0,
+      "optical_Z_samples_m": [
+        3.9975,
+        3.9975,
+        3.9975
+      ],
+      "max_error_m": 0.0024999999999999467
+    }
+  ],
+  "resets": [
+    {
+      "epoch": 28,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "06fbad97dffb97df15620e7b7fe6ad4581cbd27c2f3637600f7e8f63f9406e77",
+      "rgb_hash": "3051f3c8eb8a86c59c29533cd85a31c25e5e3b52fc9614c5343b777bae428ffd",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 29,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "06fbad97dffb97df15620e7b7fe6ad4581cbd27c2f3637600f7e8f63f9406e77",
+      "rgb_hash": "3051f3c8eb8a86c59c29533cd85a31c25e5e3b52fc9614c5343b777bae428ffd",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 30,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "06fbad97dffb97df15620e7b7fe6ad4581cbd27c2f3637600f7e8f63f9406e77",
+      "rgb_hash": "3051f3c8eb8a86c59c29533cd85a31c25e5e3b52fc9614c5343b777bae428ffd",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 31,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "06fbad97dffb97df15620e7b7fe6ad4581cbd27c2f3637600f7e8f63f9406e77",
+      "rgb_hash": "3051f3c8eb8a86c59c29533cd85a31c25e5e3b52fc9614c5343b777bae428ffd",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 32,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "06fbad97dffb97df15620e7b7fe6ad4581cbd27c2f3637600f7e8f63f9406e77",
+      "rgb_hash": "3051f3c8eb8a86c59c29533cd85a31c25e5e3b52fc9614c5343b777bae428ffd",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 33,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "06fbad97dffb97df15620e7b7fe6ad4581cbd27c2f3637600f7e8f63f9406e77",
+      "rgb_hash": "3051f3c8eb8a86c59c29533cd85a31c25e5e3b52fc9614c5343b777bae428ffd",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 34,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "06fbad97dffb97df15620e7b7fe6ad4581cbd27c2f3637600f7e8f63f9406e77",
+      "rgb_hash": "3051f3c8eb8a86c59c29533cd85a31c25e5e3b52fc9614c5343b777bae428ffd",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 35,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "06fbad97dffb97df15620e7b7fe6ad4581cbd27c2f3637600f7e8f63f9406e77",
+      "rgb_hash": "3051f3c8eb8a86c59c29533cd85a31c25e5e3b52fc9614c5343b777bae428ffd",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 36,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "06fbad97dffb97df15620e7b7fe6ad4581cbd27c2f3637600f7e8f63f9406e77",
+      "rgb_hash": "3051f3c8eb8a86c59c29533cd85a31c25e5e3b52fc9614c5343b777bae428ffd",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 37,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "06fbad97dffb97df15620e7b7fe6ad4581cbd27c2f3637600f7e8f63f9406e77",
+      "rgb_hash": "3051f3c8eb8a86c59c29533cd85a31c25e5e3b52fc9614c5343b777bae428ffd",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      }
+    }
+  ],
+  "scope": "native PNG/EXR depth Z, renders, scan, epochs and ideal actuation; not empirical sensor or wheel dynamics calibration"
+}

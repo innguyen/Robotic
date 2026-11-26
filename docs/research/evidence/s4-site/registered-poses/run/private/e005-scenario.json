@@ -1,0 +1,242 @@
+{
+  "schema_version": "sar-s4-mvp-0.1",
+  "kind": "clean",
+  "seed": 0,
+  "perception": 0,
+  "odometry": 0,
+  "family": "outdoor_damaged_assets_v2",
+  "pair_id": "outdoor-clean-prone-0",
+  "start_m": [
+    0.0,
+    0.0,
+    0.2
+  ],
+  "start_yaw": 0.0,
+  "boxes": [
+    {
+      "id": "north_collapsed_facade",
+      "center_m": [
+        3.0,
+        3.65,
+        1.3
+      ],
+      "size_m": [
+        7.2,
+        0.3,
+        2.6
+      ],
+      "material": "Brick",
+      "mesh": "fractured_wall"
+    },
+    {
+      "id": "retaining_south",
+      "center_m": [
+        3.0,
+        -3.9,
+        0.35
+      ],
+      "size_m": [
+        7.4,
+        0.3,
+        0.7
+      ],
+      "material": "Concrete"
+    },
+    {
+      "id": "east_loading_wall",
+      "center_m": [
+        6.5,
+        1.5,
+        0.7
+      ],
+      "size_m": [
+        0.3,
+        4.7,
+        1.4
+      ],
+      "material": "Brick",
+      "mesh": "fractured_wall"
+    },
+    {
+      "id": "west_retaining",
+      "center_m": [
+        -0.7,
+        1.9,
+        0.45
+      ],
+      "size_m": [
+        0.25,
+        3.8,
+        0.9
+      ],
+      "material": "Concrete"
+    },
+    {
+      "id": "west_wreckage",
+      "center_m": [
+        -0.7,
+        -1.95,
+        0.6
+      ],
+      "size_m": [
+        0.3,
+        4.1,
+        1.2
+      ],
+      "material": "Brick",
+      "mesh": "fractured_wall"
+    },
+    {
+      "id": "east_wreckage",
+      "center_m": [
+        6.5,
+        -2.4,
+        0.65
+      ],
+      "size_m": [
+        0.3,
+        3.1,
+        1.3
+      ],
+      "material": "Brick",
+      "mesh": "fractured_wall"
+    },
+    {
+      "id": "island_debris",
+      "center_m": [
+        2.8,
+        -0.9,
+        0.28
+      ],
+      "size_m": [
+        1.7,
+        1.3,
+        0.56
+      ],
+      "material": "Debris",
+      "mesh": "rubble_heap"
+    },
+    {
+      "id": "jersey_barrier",
+      "center_m": [
+        2.7,
+        0.55,
+        0.55
+      ],
+      "size_m": [
+        0.52,
+        1.65,
+        1.1
+      ],
+      "material": "concrete_road_barrier_02",
+      "mesh": "concrete_road_barrier_02"
+    },
+    {
+      "id": "loading_crate",
+      "center_m": [
+        5.5,
+        -2.9,
+        0.5
+      ],
+      "size_m": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "material": "wooden_crate_01",
+      "mesh": "wooden_crate_01"
+    },
+    {
+      "id": "slab_stack",
+      "center_m": [
+        4.9,
+        2.85,
+        0.22
+      ],
+      "size_m": [
+        1.8,
+        1.1,
+        0.44
+      ],
+      "material": "Concrete",
+      "mesh": "fallen_slab"
+    },
+    {
+      "id": "north_heap",
+      "center_m": [
+        2.1,
+        2.9,
+        0.2
+      ],
+      "size_m": [
+        1.3,
+        1.0,
+        0.4
+      ],
+      "material": "Debris",
+      "mesh": "rubble_heap"
+    },
+    {
+      "id": "foreground_heap",
+      "center_m": [
+        0.5,
+        -2.7,
+        0.12
+      ],
+      "size_m": [
+        1.2,
+        0.85,
+        0.24
+      ],
+      "material": "Debris",
+      "mesh": "rubble_heap"
+    },
+    {
+      "id": "loading_rack",
+      "center_m": [
+        5.91,
+        -1.38,
+        1.07
+      ],
+      "size_m": [
+        0.502,
+        1.097,
+        2.14
+      ],
+      "material": "steel_frame_shelves_01",
+      "mesh": "steel_frame_shelves_01"
+    },
+    {
+      "id": "yard_power_cabinet",
+      "center_m": [
+        0.03,
+        2.87,
+        0.56
+      ],
+      "size_m": [
+        0.432,
+        0.52,
+        1.12
+      ],
+      "material": "utility_box_01",
+      "mesh": "utility_box_01"
+    }
+  ],
+  "victims": [
+    {
+      "gt_id": "v0",
+      "anchor_m": [
+        4.7,
+        1.6,
+        0.19937826346558368
+      ],
+      "posture": "prone",
+      "yaw_deg": 90.0
+    }
+  ],
+  "sensor_black": false,
+  "profile": "sar_human_v1",
+  "environment": "outdoor",
+  "depth_model": "structured",
+  "scene_variant": "outdoor_damaged_assets_v2"
+}

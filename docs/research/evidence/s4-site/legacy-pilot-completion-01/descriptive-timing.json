@@ -1,0 +1,62 @@
+{
+  "run_inventory_sha256": "7698b16d3bf5529a0374d63c34406dd2e245cbfa24dc22d4368b6c246b2e8b5b",
+  "audit_sha256": "1d2db1cdd7ade95cf732f897da9f9d49aaa02ff4708d9e06250f7a251c49f9f1",
+  "total_wall_s": 7406.288547799999,
+  "action_dt_sim_s": 0.5,
+  "per_baseline_descriptive_totals": {
+    "frontier": {
+      "episodes": 18,
+      "tp": 14,
+      "fp": 6,
+      "unsafe": 0,
+      "terminals": {
+        "FINISH": 18
+      }
+    },
+    "core": {
+      "episodes": 18,
+      "tp": 14,
+      "fp": 0,
+      "unsafe": 0,
+      "terminals": {
+        "FINISH": 18
+      }
+    },
+    "verify": {
+      "episodes": 18,
+      "tp": 4,
+      "fp": 0,
+      "unsafe": 0,
+      "terminals": {
+        "FINISH": 18
+      }
+    }
+  },
+  "wall_time_seconds": {
+    "rgbd_readback": {
+      "samples": 3240,
+      "median": 0.078,
+      "p95": 0.125
+    },
+    "capture_to_measurements_ready": {
+      "samples": 3240,
+      "median": 0.656,
+      "p95": 1.109
+    },
+    "policy_request_to_response": {
+      "samples": 3240,
+      "median": 0.8125,
+      "p95": 1.4379999999999997
+    },
+    "successive_capture_starts": {
+      "samples": 3186,
+      "median": 2.047,
+      "p95": 3.188
+    }
+  },
+  "raw_bytes": {
+    "public/observations.jsonl.gz": 1022232463,
+    "private/host.jsonl.gz": 388074148
+  },
+  "scope": "Same-episode capture-start intervals exclude reset and admission. RGB-D readback is part of capture-to-ready. Policy request/response includes transfer and inference. Raw streams and per-episode metrics are retained."
+}

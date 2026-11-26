@@ -1,0 +1,18 @@
+{
+  "source_gallery": "docs\\research\\evidence\\s4-site\\frontier\\search-frames",
+  "source_inventory_sha256": "822edeb79f66a0a712c1a87d0e9fc0e8be27969e4e827f213ac7af67806ffef9",
+  "input_png_sha256": {
+    "e000-report-t0036-robot.png": "086fea3704cf285b94debc9be8d07bf9de49fb66a27b943f817da9f59d520ac0",
+    "e000-report-t0036-depth-mm.png": "360f771ab6d6dba8a977ad89f67cae6079c50b34283cce076ca606b0c0520b98",
+    "e000-report-t0036-v0-visible.png": "78f2d067e16a81cb8126114588039a5140928f1a70a1338f2c64a55061d07a2b"
+  },
+  "epoch": 6,
+  "tick": 36,
+  "frame_role": "MATCHED_REPORT_DELIVERED_FRAME",
+  "depth_scale_mm": [
+    0,
+    10000
+  ],
+  "invalid_depth_color": "black",
+  "output_sha256": "4c8293589b94ff848bc689ee5d8db8925de0e77fdc11ee4c5f617fd4fcf02ef1"
+}

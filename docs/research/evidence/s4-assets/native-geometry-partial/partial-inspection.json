@@ -1,0 +1,584 @@
+{
+  "status": "INTERRUPTED_PARTIAL_NOT_ACCEPTED",
+  "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-assets-native-geometry-90s",
+  "scheduled_episodes": 1,
+  "completed_ledgers_independently_recomputed": 0,
+  "ledgers_without_final_metrics": [
+    "e000"
+  ],
+  "source_snapshot_matches_manifest": true,
+  "journal_chain_errors": [],
+  "engine_exit_events": [],
+  "last_journal_event": {
+    "error": "[WinError 10053] An established connection was aborted by the software in your host machine",
+    "type": "shutdown_error"
+  },
+  "calibration_present": false,
+  "results_present": false,
+  "original_inventory_present": false,
+  "streams": {
+    "public/observations.jsonl.gz": {
+      "bytes": 1243843,
+      "sha256": "5df982c21705b70406b248d5048bdde6742b28b3b4295a30cd7b24826afac9fc",
+      "parseable_records": 4,
+      "last_record": {
+        "epoch": 2,
+        "tick": 3
+      },
+      "stream_complete": false,
+      "error": "EOFError: Compressed file ended before the end-of-stream marker was reached"
+    },
+    "private/host.jsonl.gz": {
+      "bytes": 836035,
+      "sha256": "e53b0c090f60889a78179769c20e46265607f20ff84cc0240746317badbe0be0",
+      "parseable_records": 5,
+      "last_record": {
+        "epoch": 2,
+        "tick": 2
+      },
+      "stream_complete": false,
+      "error": "EOFError: Compressed file ended before the end-of-stream marker was reached"
+    }
+  },
+  "episodes": [],
+  "all_original_file_hashes": {
+    "anatomy-derived-poses.json": {
+      "sha256": "a7441614e157a52f3a14479bfa746df6cd866eba67c6a6867daef54104b8b540",
+      "bytes": 2010
+    },
+    "anatomy-lock.json": {
+      "sha256": "38926e285ea540a48e6cf7db6696cf285840799222199be7c1d0f87bde8c6979",
+      "bytes": 1701
+    },
+    "asset-inputs/anatomy/.gitattributes": {
+      "sha256": "0ccd7ff213cb390624d6e38bab8f428442766d1a55817e1b2853d53ce5cc8c73",
+      "bytes": 84
+    },
+    "asset-inputs/anatomy/derived/poses.json": {
+      "sha256": "a7441614e157a52f3a14479bfa746df6cd866eba67c6a6867daef54104b8b540",
+      "bytes": 2010
+    },
+    "asset-inputs/anatomy/derived/prone.obj": {
+      "sha256": "fa09328349b327bf9fda1b78265ed4bcbe8859086805aefe1f573de19e2de352",
+      "bytes": 949204
+    },
+    "asset-inputs/anatomy/derived/seated.obj": {
+      "sha256": "4ef024f6633008da46deb5e4cd7b1151d611694541808f69f5b812e2ebd0620d",
+      "bytes": 942150
+    },
+    "asset-inputs/anatomy/derived/standing.obj": {
+      "sha256": "5d1c3218267bbd203865d75f28e682e80fb8ccd0d44a9c9bf1d12c37be068341",
+      "bytes": 941046
+    },
+    "asset-inputs/anatomy/lock.json": {
+      "sha256": "38926e285ea540a48e6cf7db6696cf285840799222199be7c1d0f87bde8c6979",
+      "bytes": 1701
+    },
+    "asset-inputs/anatomy/README.md": {
+      "sha256": "d29db16ba519ae15fbc2a2ebbe2549254b818cf72627fdfcec46b3448a522bd8",
+      "bytes": 2600
+    },
+    "asset-inputs/anatomy/source/base.obj": {
+      "sha256": "8e761e6624b8f54536409135d1636da63b32486a90d4897f84e121d144f6fb4c",
+      "bytes": 1749303
+    },
+    "asset-inputs/anatomy/source/default.mhskel": {
+      "sha256": "99f179bce0aa850b45d4191a1d0d234c5851f881c057439470ded3bddf729a24",
+      "bytes": 117790
+    },
+    "asset-inputs/anatomy/source/default_weights.mhw": {
+      "sha256": "0f3641d651ae3d00ad6b4ccee43142edb109d3bd909d27d9e4139ef1beed8625",
+      "bytes": 897521
+    },
+    "asset-inputs/anatomy/source/LICENSE.ASSETS.md": {
+      "sha256": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c",
+      "bytes": 6962
+    },
+    "asset-inputs/anatomy/source/license.txt": {
+      "sha256": "edd99571ca62698f78c943fd4fffb159a413c315fa0d4819d3cec5cadaf8b4f1",
+      "bytes": 3598
+    },
+    "asset-inputs/derived/poses.json": {
+      "sha256": "16df1a3b6001f83c851a9f9109a334da45301c8e7a9f48285ffaf8b5f661ef5d",
+      "bytes": 1422
+    },
+    "asset-inputs/derived/prone.obj": {
+      "sha256": "0b193d66b95b2c6e9af3d235410b4c35dd3d60d89469ef3fc11876a0a325cd3b",
+      "bytes": 197486
+    },
+    "asset-inputs/derived/seated.obj": {
+      "sha256": "b4431d59925783bef5986eaa385f0fc6e4224a150238aa9efa4cdad4dec5315e",
+      "bytes": 197755
+    },
+    "asset-inputs/derived/standing.obj": {
+      "sha256": "3ffecefe0e12ff4d8e4c03b7856ff1b26869d348ad4038ff29d1c85ca7e6247e",
+      "bytes": 197669
+    },
+    "asset-inputs/environment/.gitattributes": {
+      "sha256": "0ccd7ff213cb390624d6e38bab8f428442766d1a55817e1b2853d53ce5cc8c73",
+      "bytes": 84
+    },
+    "asset-inputs/environment/attribution.json": {
+      "sha256": "a4be3d8f9b0e681b9e7ef5481102fd5e8591c3c7869b0028c00980420041196d",
+      "bytes": 3094
+    },
+    "asset-inputs/environment/derived/concrete_road_barrier_02.obj": {
+      "sha256": "1d6caaa5dfc47992224af3a8c3ec1e04a5c3437f221bd738ac6f9825a685b8fe",
+      "bytes": 1507214
+    },
+    "asset-inputs/environment/derived/exposed_rebar.obj": {
+      "sha256": "b6bbfb13c6641519195ae7d287f2121e4e410664e8756aafdebfe3438e2de286",
+      "bytes": 93720
+    },
+    "asset-inputs/environment/derived/fallen_slab.obj": {
+      "sha256": "9e4352e04ec2be26a71c7394cf6a110ef64be76959854a43cb3aa58854f89ed7",
+      "bytes": 10420
+    },
+    "asset-inputs/environment/derived/fractured_wall.obj": {
+      "sha256": "a4f13042dd274e531e1c78c8cfb5063780d37e26222cb3e0e144dfdd6b63fd09",
+      "bytes": 29482
+    },
+    "asset-inputs/environment/derived/painted_wooden_chair_02.obj": {
+      "sha256": "207cdb282be813e36ad4e67b34bc6895f82b19d662b00327656c17890509e9c6",
+      "bytes": 90274
+    },
+    "asset-inputs/environment/derived/panel_indoor_ground.obj": {
+      "sha256": "492365fdeff59ee227b65cdb59f27a8c8fe16096223530b745ee9733e30feeec",
+      "bytes": 2500
+    },
+    "asset-inputs/environment/derived/panel_indoor_north_masonry.obj": {
+      "sha256": "98a6998665fff1921a9c916e5128968fe22d1fbda6c46ded1bc0294591ce2e72",
+      "bytes": 2482
+    },
+    "asset-inputs/environment/derived/panel_indoor_office_divider.obj": {
+      "sha256": "516645e5677438e976799cff4f93cbb158bb2a6d673dc28bb8c32f4dd2b9251b",
+      "bytes": 2482
+    },
+    "asset-inputs/environment/derived/panel_indoor_south_masonry.obj": {
+      "sha256": "98a6998665fff1921a9c916e5128968fe22d1fbda6c46ded1bc0294591ce2e72",
+      "bytes": 2482
+    },
+    "asset-inputs/environment/derived/panel_indoor_west_bay.obj": {
+      "sha256": "531cc65a7150903013141b2395e016ef3976276958deea36363ae538034e3c75",
+      "bytes": 2482
+    },
+    "asset-inputs/environment/derived/panel_indoor_west_bay_lower.obj": {
+      "sha256": "531cc65a7150903013141b2395e016ef3976276958deea36363ae538034e3c75",
+      "bytes": 2482
+    },
+    "asset-inputs/environment/derived/panel_outdoor_ground.obj": {
+      "sha256": "492365fdeff59ee227b65cdb59f27a8c8fe16096223530b745ee9733e30feeec",
+      "bytes": 2500
+    },
+    "asset-inputs/environment/derived/panel_outdoor_retaining_south.obj": {
+      "sha256": "cfd505b49cfeb3df64dbed337c91a937515241fc2b66d74a6bcf78fbadc94eb7",
+      "bytes": 2464
+    },
+    "asset-inputs/environment/derived/panel_outdoor_west_retaining.obj": {
+      "sha256": "3fea54293bdac79bf5cb98f2d543e930136f55f1704ca3e10b6eaab200cb1ff5",
+      "bytes": 2464
+    },
+    "asset-inputs/environment/derived/rubble_heap.obj": {
+      "sha256": "869505904006d7df8ebab07fae77e4d89686feb34271d9115752e585bd05897b",
+      "bytes": 301235
+    },
+    "asset-inputs/environment/derived/wooden_crate_01.obj": {
+      "sha256": "0c564321ca76db90f199b57df6a515e667e8d5ae636e8dd1cab71f717fd670af",
+      "bytes": 474808
+    },
+    "asset-inputs/environment/lock.json": {
+      "sha256": "713b324979acc955b971496dc898a908f839bd7a61e694ffa24e84fa2af7f85a",
+      "bytes": 9868
+    },
+    "asset-inputs/environment/meshes.json": {
+      "sha256": "f36260d926861219a2fbd52f808c72bcd3e011519515fa7cefd1f59868462cfe",
+      "bytes": 7311
+    },
+    "asset-inputs/environment/README.md": {
+      "sha256": "a73699b56feecee36459cfb976b9a74bb00d3ca6c193aea4edef2a5cc0598d58",
+      "bytes": 4481
+    },
+    "asset-inputs/environment/source/broken_brick_wall/Diffuse.jpg": {
+      "sha256": "9d011dfc8364e9925a3bab418b53f35755badebd289149a7b2b3dae9c2e02fea",
+      "bytes": 740797
+    },
+    "asset-inputs/environment/source/broken_brick_wall/nor_dx.jpg": {
+      "sha256": "06c063a9aefaf5228d339094da65239b21aa73eb6e5239ae68e687f4f7d7d8ca",
+      "bytes": 1199756
+    },
+    "asset-inputs/environment/source/broken_brick_wall/Rough.jpg": {
+      "sha256": "ef7ff996c5e4ab21cd556d2f4e650c8ee4b8ab4d3ce677069f0ffd36c79c9794",
+      "bytes": 333615
+    },
+    "asset-inputs/environment/source/concrete_debris/Diffuse.jpg": {
+      "sha256": "5d30b24d4e01a784f521f0f78486e41e94bd2397a2743dacec543494852954f9",
+      "bytes": 811730
+    },
+    "asset-inputs/environment/source/concrete_debris/nor_dx.jpg": {
+      "sha256": "c92c7b1d25d133062216a3655664b3aea3cf139ba1707c3685fbd339fe8a39a1",
+      "bytes": 1462622
+    },
+    "asset-inputs/environment/source/concrete_debris/Rough.jpg": {
+      "sha256": "bbdf4da5c579b1d7282021e265a0bda3df87ca2cb9972f93d0caa5c3aeca47e4",
+      "bytes": 530326
+    },
+    "asset-inputs/environment/source/concrete_road_barrier_02/concrete_road_barrier_02.bin": {
+      "sha256": "254ee05467733e224e127dc76e019e5b5211c0da4248fa3fc75117ec005d7c90",
+      "bytes": 542900
+    },
+    "asset-inputs/environment/source/concrete_road_barrier_02/Diffuse.jpg": {
+      "sha256": "9329260ebfc8632a5d47d9b344ab6f916e26604e73ebd2c495fee544df4bdefa",
+      "bytes": 741673
+    },
+    "asset-inputs/environment/source/concrete_road_barrier_02/model.gltf": {
+      "sha256": "52d13b5105ce861db5dd1413a1a924ad5594dee5a8eb37dbe1a9df441fcd7caf",
+      "bytes": 2910
+    },
+    "asset-inputs/environment/source/concrete_road_barrier_02/nor_dx.jpg": {
+      "sha256": "f37f9c90f2145640b9a94d5a1251704c5c69f032bb19fc1d331074d9557b299f",
+      "bytes": 921090
+    },
+    "asset-inputs/environment/source/concrete_road_barrier_02/Rough.jpg": {
+      "sha256": "bd8e6dfdabbc490f533b9984939dadaba148061eff634af5c980ccc6aabc54c2",
+      "bytes": 579261
+    },
+    "asset-inputs/environment/source/cracked_concrete/Diffuse.jpg": {
+      "sha256": "26b268b23dc71accc627cc25d889bdb56287518a5abb27565bb71bda26cec5c5",
+      "bytes": 849369
+    },
+    "asset-inputs/environment/source/cracked_concrete/nor_dx.jpg": {
+      "sha256": "35e2b8d587c631e8048a69f7a051693b7a8bef586ee324de3a331529790d8732",
+      "bytes": 828550
+    },
+    "asset-inputs/environment/source/cracked_concrete/Rough.jpg": {
+      "sha256": "bbd02d2cc5eade911c82503dbe49e91d5d3564431964e2f15d4f0ef963462347",
+      "bytes": 637187
+    },
+    "asset-inputs/environment/source/painted_wooden_chair_02/Diffuse.jpg": {
+      "sha256": "bc944fc83f440198658199080d761b19c3e2f42daa793062aa283563683a732b",
+      "bytes": 662120
+    },
+    "asset-inputs/environment/source/painted_wooden_chair_02/model.gltf": {
+      "sha256": "e69f4558d236e0fcc9d31a85ab75117e75d224d21e04836aa438821ccf1fd2c1",
+      "bytes": 2972
+    },
+    "asset-inputs/environment/source/painted_wooden_chair_02/nor_dx.jpg": {
+      "sha256": "895374ad17bdc5130e4de08dd62a7b017a31ade62a9ef56aeb287b85b872bd35",
+      "bytes": 972332
+    },
+    "asset-inputs/environment/source/painted_wooden_chair_02/painted_wooden_chair_02.bin": {
+      "sha256": "6125c4ac10e1b53803bf468eb21769fd43a3669564bfc8885a9346c8302e121f",
+      "bytes": 39028
+    },
+    "asset-inputs/environment/source/painted_wooden_chair_02/Rough.jpg": {
+      "sha256": "a3a27279778b41e8eee95d9daa7713f98db27db35b3812ca2bd1bf747ac7e10c",
+      "bytes": 590171
+    },
+    "asset-inputs/environment/source/wooden_crate_01/Diffuse.jpg": {
+      "sha256": "16653f4abaf4c1d9bca94bde3bd8c54d0ea9a5298d1648abcf57de1f7ecc34cc",
+      "bytes": 711292
+    },
+    "asset-inputs/environment/source/wooden_crate_01/model.gltf": {
+      "sha256": "fd9c6073acfc671e12b64666053f2805ae33aff5d3dbbcfe5c97c08c06644927",
+      "bytes": 5612
+    },
+    "asset-inputs/environment/source/wooden_crate_01/nor_dx.jpg": {
+      "sha256": "7c5b36d04f4fb36a1ff6a62354a2e78c2fe0be477fe4dd896454ac3832086300",
+      "bytes": 594994
+    },
+    "asset-inputs/environment/source/wooden_crate_01/Rough.jpg": {
+      "sha256": "5a8a461c23bed897e6d1ec77592efc007d5b49872076f6ed6901b486cdab5cfa",
+      "bytes": 644947
+    },
+    "asset-inputs/environment/source/wooden_crate_01/wooden_crate_01.bin": {
+      "sha256": "85f381f8035f7a6f2f3b848640894c6d3333b261946dd8a338c0fe19e0bea21e",
+      "bytes": 189408
+    },
+    "asset-manifest.json": {
+      "sha256": "8c2bebea3cbe937d9ac22552d2ab656e426a147d6bb7f19ed73174d6eda7ea6c",
+      "bytes": 2340
+    },
+    "engine-stdout.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "engine.log": {
+      "sha256": "43c5ee4f4edd2454f09757aee69bffc5af282fc03a0ae6380d45fa6d83f5b36c",
+      "bytes": 132118
+    },
+    "environment-lock.json": {
+      "sha256": "713b324979acc955b971496dc898a908f839bd7a61e694ffa24e84fa2af7f85a",
+      "bytes": 9868
+    },
+    "environment-meshes.json": {
+      "sha256": "f36260d926861219a2fbd52f808c72bcd3e011519515fa7cefd1f59868462cfe",
+      "bytes": 7311
+    },
+    "failure.json": {
+      "sha256": "a7f921e8aefe3dd7058516fc637692a052a7924a3b16f8eeebfb3340f1029198",
+      "bytes": 2059
+    },
+    "host-capabilities.json": {
+      "sha256": "03a0c94bdaf1441882c2105514ad9c1cdda0b67a7e10723b5f1ebf96e174aae5",
+      "bytes": 779
+    },
+    "host-ready.json": {
+      "sha256": "f917d00c85eb806e3a7e516db035cda402a820b74bf4ed08c2315480cd85ab00",
+      "bytes": 307
+    },
+    "human-pose-manifest.json": {
+      "sha256": "a7441614e157a52f3a14479bfa746df6cd866eba67c6a6867daef54104b8b540",
+      "bytes": 2010
+    },
+    "journal.jsonl": {
+      "sha256": "cfbff580049affe42751836df7dabf78b1b7ba3e94b83aaa1f7196bb0a500152",
+      "bytes": 5784
+    },
+    "manifest.json": {
+      "sha256": "dc1add59765c408714b840ca8220a4107b807970aafc8c0e65ef759e6639c669",
+      "bytes": 8390
+    },
+    "private/admission-000.json": {
+      "sha256": "358e447abf782537dcf802f31a49de809884d9192ff7cf00af65d0e18255ad13",
+      "bytes": 592
+    },
+    "private/e000-commands.json": {
+      "sha256": "9e92a1892c3addaeccfa043e15934c1538fda997006f50b6ec443fbc230a29af",
+      "bytes": 1107
+    },
+    "private/e000-ledger.json": {
+      "sha256": "6b79ca7fce93316498904349add57b6d2f107555f3adafbe260efbbf58b9ec01",
+      "bytes": 3191
+    },
+    "private/e000-scenario.json": {
+      "sha256": "7bdd90a52fedf2301a60228a9b79812d6ef9a73b5b1b84a6e9a8871b893810ad",
+      "bytes": 3421
+    },
+    "private/e000-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/host.jsonl.gz": {
+      "sha256": "e53b0c090f60889a78179769c20e46265607f20ff84cc0240746317badbe0be0",
+      "bytes": 836035
+    },
+    "private/overview-camera.json": {
+      "sha256": "8b69c1cab646d07666617b34edb7ff97ddbe64b317d900453c8a4a53969addd8",
+      "bytes": 1531
+    },
+    "private/overview.png": {
+      "sha256": "346368f997aea7b4085c8d6151716a63b967890ecdba27d85d9257cdea37b43e",
+      "bytes": 89788
+    },
+    "private/scheduled-scenarios.json": {
+      "sha256": "556b14dfe96f60809a7707f375db5c0ac3ddb3503075a024c95844cd4c22d184",
+      "bytes": 3849
+    },
+    "public/observations.jsonl.gz": {
+      "sha256": "5df982c21705b70406b248d5048bdde6742b28b3b4295a30cd7b24826afac9fc",
+      "bytes": 1243843
+    },
+    "runtime-memory.json": {
+      "sha256": "ad7da77f3eccbe2fb9512e2eb1a35b56fdfc4fed796dc0db875844b8d75be8b4",
+      "bytes": 13770
+    },
+    "source/experiments/ue5_s4/asset_scene.py": {
+      "sha256": "fa12e9f4ce89d48d182cf513778cdcedac8f0c9097bb056d54400793c9840e42",
+      "bytes": 7602
+    },
+    "source/experiments/ue5_s4/bake_anatomy.py": {
+      "sha256": "5589c77065fc2187be1659b0e0b87a17a8fc7341da21d76fa25f8edbf65e3226",
+      "bytes": 6808
+    },
+    "source/experiments/ue5_s4/bake_environment.py": {
+      "sha256": "e9e1c0b3e1551a31388d58b9518c7f464549485a8e39313df77708046a6fa98c",
+      "bytes": 8636
+    },
+    "source/experiments/ue5_s4/bake_humans.py": {
+      "sha256": "4e65cdc752507a439912b2a81d9cc76fe19ea5568b311133de7b0b4ded2758cc",
+      "bytes": 7732
+    },
+    "source/experiments/ue5_s4/editor_host/Config/DefaultEngine.ini": {
+      "sha256": "c86db38881c06d4fc3ab10bccb49798bd0fd305080a23e1ff18f411b6cc3e366",
+      "bytes": 650
+    },
+    "source/experiments/ue5_s4/editor_host/Config/DefaultInput.ini": {
+      "sha256": "2644f3ee3ecafc30e7a00d1f4a3d6ba116ac4c75a84f5444c3cd04e9512d666a",
+      "bytes": 9068
+    },
+    "source/experiments/ue5_s4/editor_host/SarEditorSlice.uproject": {
+      "sha256": "b29389f8c4a1a2dec75e3097bd876d5652fb05f46548d9feb158925be600a37f",
+      "bytes": 323
+    },
+    "source/experiments/ue5_s4/editor_server.py": {
+      "sha256": "a724085df000df09d786b9f3e564c0c59b802821a7e3843a30481ceac25cb540",
+      "bytes": 23352
+    },
+    "source/experiments/ue5_s4/human_scene.py": {
+      "sha256": "1452182d0bde15c14bb7e17017b2f03f98c29aba42d34582a4df5ac418a7500a",
+      "bytes": 17236
+    },
+    "source/experiments/ue5_s4/prepare_assets.py": {
+      "sha256": "96267d7964f4b946e522a0bcbd1648e959eae664932093020e1f9640d70ba90b",
+      "bytes": 3097
+    },
+    "source/experiments/ue5_s4/prepare_environment.py": {
+      "sha256": "41911814d3de9471b67fd3b85bfc499f99c04711b01b763191a9570c53c114ce",
+      "bytes": 5503
+    },
+    "source/experiments/ue5_s4/probe_editor.py": {
+      "sha256": "c509cbeb64182b89992fb4bbb957e44ed14c9f99d10976b535e5693770f7685c",
+      "bytes": 2097
+    },
+    "source/experiments/webots_s2/geometry.py": {
+      "sha256": "3337b365bd2667c6e1b007ab195a5ea0a5afdf916880e8e7c050b28ee543f078",
+      "bytes": 790
+    },
+    "source/sar_benchmark/__init__.py": {
+      "sha256": "d1803781442a6b0a2c796fd26011cc8bf714e2a50759bce5e98bdf4fdfb653cd",
+      "bytes": 117
+    },
+    "source/sar_benchmark/admissibility.py": {
+      "sha256": "614b61e409ed5ede24782f5dac586f39e873e2bc893cd5a9fb9bc9f57822705f",
+      "bytes": 3396
+    },
+    "source/sar_benchmark/agent_worker.py": {
+      "sha256": "bca3dce8a692b1b6873c48d146ea2663f6edf2dec15b81dddf9e855c7b35f5f0",
+      "bytes": 1441
+    },
+    "source/sar_benchmark/archive_run.py": {
+      "sha256": "acfc9857e48949ca340529713ff59ebd30dda33ca53fd6e61a2243983041bfa4",
+      "bytes": 3117
+    },
+    "source/sar_benchmark/artifacts.py": {
+      "sha256": "0104b912b6e0681bec39392260d7b15cbfcf1fc377be0a5a06f6dcca17596b70",
+      "bytes": 2078
+    },
+    "source/sar_benchmark/asset_scenarios.py": {
+      "sha256": "c9340f285681a5439862bb993951c776627820a70d0bc24b6ea5057b6af05e4a",
+      "bytes": 3150
+    },
+    "source/sar_benchmark/audit_run.py": {
+      "sha256": "0036a6085cf27c33e89187ad0fa0feb8f7aa47b642bb83afc6fec88bdaddcf0c",
+      "bytes": 18181
+    },
+    "source/sar_benchmark/calibration.py": {
+      "sha256": "b303c54ad09d24203c44361ad0256a89230c801ce114e9f3a653f5b9f1649410",
+      "bytes": 8812
+    },
+    "source/sar_benchmark/capture.py": {
+      "sha256": "585f89f2ae6895f6e19e5807ab2a5e552f3975b5dfcc178961af6257bd36d725",
+      "bytes": 1949
+    },
+    "source/sar_benchmark/contracts.py": {
+      "sha256": "96b79fcaf763f5f4fb134fd756d77be2bc0525a17596bca3950983e38485b817",
+      "bytes": 9513
+    },
+    "source/sar_benchmark/core_policy.py": {
+      "sha256": "9cae2ab6ce83cb90899190a95b57415aa82a56a12978b432a1c87f5b3c2d9a48",
+      "bytes": 2322
+    },
+    "source/sar_benchmark/embodiment.py": {
+      "sha256": "882aeb73e836beb4aeb54572d54b7443079a816316946f83d4405abe48ab60f9",
+      "bytes": 1177
+    },
+    "source/sar_benchmark/episode.py": {
+      "sha256": "59c6222a05c6b9e10d16d4ecaff44a91ee906e5d8e9c5152fdf61548f920be9e",
+      "bytes": 4689
+    },
+    "source/sar_benchmark/evaluator.py": {
+      "sha256": "b94a08d25b4146b618330aa5d84fd3d3576a29eda201cbc9cadd37c82525d0c5",
+      "bytes": 10189
+    },
+    "source/sar_benchmark/frontier_policy.py": {
+      "sha256": "a833fe412229ebc099f6a2413bc1006ad568c3ed3e50dc1efedac7a031f2d2e9",
+      "bytes": 4767
+    },
+    "source/sar_benchmark/geometry.py": {
+      "sha256": "11fa20e362691c37fb027d65068b3b92219a4b19841affefd2a8494498b81316",
+      "bytes": 1189
+    },
+    "source/sar_benchmark/imageio.py": {
+      "sha256": "6a7bd1cc32b610964a3c417e8264bc3f31e85c8d820ab4190d1a5e41c180a646",
+      "bytes": 762
+    },
+    "source/sar_benchmark/perception.py": {
+      "sha256": "f6d2cfd716bf2a45dd62347b7aa4220f8ae1624be28b8cffbd30e39ee071589c",
+      "bytes": 2795
+    },
+    "source/sar_benchmark/policies.py": {
+      "sha256": "cc69b625956ab808a63b2884575a9d91b8b03c980b32d66b0e8b3bac0c3906b3",
+      "bytes": 6285
+    },
+    "source/sar_benchmark/reference.py": {
+      "sha256": "0c770d6d5585a72d365d4df5c8292482e50ccada73feba96d5f71d1915ea9efc",
+      "bytes": 4778
+    },
+    "source/sar_benchmark/runner.py": {
+      "sha256": "e3fbb5deceb7fd6da6251d1704eeb87d48206ee5b57a767caa51f07c72831c5d",
+      "bytes": 24603
+    },
+    "source/sar_benchmark/runtime_metrics.py": {
+      "sha256": "1ed4f94f0fc22e8b6836a8d11f06d3250bd0d1e6176336c9746110ac9d275da0",
+      "bytes": 2207
+    },
+    "source/sar_benchmark/safety.py": {
+      "sha256": "e9ea56222e27b75c3355bea507854bce1c1ee6542bf6065af02c80487cbbb9cb",
+      "bytes": 3724
+    },
+    "source/sar_benchmark/scenario_contract.py": {
+      "sha256": "9da5f0e0e81f9f34a0108362d7bdbc8fc4e2962a9a7849b2197cbf15a5bbd21d",
+      "bytes": 3729
+    },
+    "source/sar_benchmark/scenarios.py": {
+      "sha256": "5f481ad9d488dca52f78b2272363430c47715e83f184ba19adf4465f89a987f8",
+      "bytes": 4132
+    },
+    "source/sar_benchmark/sensor_response.py": {
+      "sha256": "53553740e41bd40d18c3f2003551aa1218f92310de183db22f9487a8ad91125e",
+      "bytes": 1322
+    },
+    "source/sar_benchmark/sensor_study.py": {
+      "sha256": "3bd71c9de6b797495f329ebbad04cd1c542fd34c0431f9c38595f0328c8d1bdc",
+      "bytes": 5112
+    },
+    "source/sar_benchmark/statistics.py": {
+      "sha256": "c1391a45b2b40bcee780225eb8f0872349fb733fb27129ccbe6ef8265c15d49e",
+      "bytes": 1907
+    },
+    "source/sar_benchmark/summarize_run.py": {
+      "sha256": "9c6318c73d3a5d5ca8de05c76c4ac8eccd351905b1a3684aabaa29859a5e19a0",
+      "bytes": 5756
+    },
+    "source/sar_benchmark/tracking.py": {
+      "sha256": "4391dbdc534736bb53f7150dcad61131c5494f5c2f44b75d71bed9fa406b6150",
+      "bytes": 3158
+    },
+    "source/sar_benchmark/transport.py": {
+      "sha256": "aa2b575f91df8cd327377921725471e170ac74cede6b2470a02c3fc63e6f8039",
+      "bytes": 1994
+    },
+    "source/sar_benchmark/ue_backend.py": {
+      "sha256": "4614301964cdcc5848ca918c0a7f53671549deb86b7726f0318f27f68f4a54f2",
+      "bytes": 6504
+    },
+    "source/sar_benchmark/visual_qa.py": {
+      "sha256": "54bca7c4551aad63c0c33c1fff0af90a0735c0b58d84ccf1913c04e84f0004cb",
+      "bytes": 7777
+    },
+    "source/test version/collision_monitor_ros1.py": {
+      "sha256": "7324eb1117f7762cbe77db796311f629355ebd8f9234c99f0603c2a0dbb66f12",
+      "bytes": 15141
+    },
+    "source/test version/navigation_core_ros1.py": {
+      "sha256": "822e6a647cfc58747a4af117f77e8ad700a4c2a758bbf4245601cb80af0024d6",
+      "bytes": 41442
+    },
+    "source/test version/search_core_ros1.py": {
+      "sha256": "cc7dd129140737fdd486e1020a90dc4a78f56f9433fe4ab1c108a976582cd1ff",
+      "bytes": 13715
+    }
+  },
+  "archive_kind": "PARTIAL_LOCAL_RAW_INDEX_NO_ACCEPTANCE_INVENTORY",
+  "note": "Original attempt unchanged; parseable records/recomputed metrics do not establish clean lifecycle, full delivery audit or run acceptance. Interruption cause is unknown."
+}

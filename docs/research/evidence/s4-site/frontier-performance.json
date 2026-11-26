@@ -1,0 +1,34 @@
+{
+  "runs": [
+    {
+      "run": "s4-v2-search-90s",
+      "inventory_sha256": "58a34b2f9c569664c796831224361af2c4ee0e11322dbe2e419d1848434d5a86",
+      "host_runner_clock_matches": true,
+      "scenes": [
+        {
+          "environment": "indoor",
+          "episodes": 1,
+          "captures": 75,
+          "wall_s": 160.453,
+          "engine_callbacks": 1545,
+          "callback_fps": 9.628987927929051,
+          "memory_samples": 156,
+          "max_sampled_working_set_bytes": 684470272,
+          "max_sampled_private_commit_bytes": 3225382912
+        },
+        {
+          "environment": "outdoor",
+          "episodes": 1,
+          "captures": 116,
+          "wall_s": 190.234,
+          "engine_callbacks": 1842,
+          "callback_fps": 9.682811695070281,
+          "memory_samples": 186,
+          "max_sampled_working_set_bytes": 373104640,
+          "max_sampled_private_commit_bytes": 3240673280
+        }
+      ]
+    }
+  ],
+  "scope": "Sum of first-to-last capture windows of scored epochs only. Excludes setup, admission, inter-episode gaps and calibration. Memory is sampled UE process memory, not GPU or lifetime peaks."
+}

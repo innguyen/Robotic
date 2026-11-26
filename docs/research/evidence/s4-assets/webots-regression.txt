@@ -1,0 +1,19 @@
+test_search_navigator_monitor_complete_with_synthetic_sensor_loop (test_adapter.ActualCoreIntegrationTests.test_search_navigator_monitor_complete_with_synthetic_sensor_loop) ... ok
+test_actuator_preserves_lateral_and_curvature (test_adapter.FramesTests.test_actuator_preserves_lateral_and_curvature) ... ok
+test_camera_and_odom_multiple_rotations (test_adapter.FramesTests.test_camera_and_odom_multiple_rotations) ... ok
+test_fixture_is_canonical_and_no_policy_scene_truth (test_adapter.FramesTests.test_fixture_is_canonical_and_no_policy_scene_truth) ... ok
+test_sat_avoids_false_rotated_corner_collision (test_adapter.FramesTests.test_sat_avoids_false_rotated_corner_collision) ... ok
+test_scan_pixel_centers_no_duplicate_endpoints (test_adapter.FramesTests.test_scan_pixel_centers_no_duplicate_endpoints) ... ok
+test_explicit_episode_reset_clears_all_core_state (test_adapter.SafetyTests.test_explicit_episode_reset_clears_all_core_state) ... ok
+test_held_buffer_is_not_retimestamped_or_used_by_policy (test_adapter.SafetyTests.test_held_buffer_is_not_retimestamped_or_used_by_policy) ... ok
+test_invalid_and_stale_fail_closed_before_policy (test_adapter.SafetyTests.test_invalid_and_stale_fail_closed_before_policy) ... ok
+test_monitor_stops_obstacle_and_limited_commands_are_rechecked (test_adapter.SafetyTests.test_monitor_stops_obstacle_and_limited_commands_are_rechecked) ... ok
+test_oracle_confirmation_needs_two_new_frames_same_id (test_adapter.SafetyTests.test_oracle_confirmation_needs_two_new_frames_same_id) ... ok
+test_partially_visible_oracle_center_outside_fov_is_accepted (test_adapter.SafetyTests.test_partially_visible_oracle_center_outside_fov_is_accepted) ... ok
+test_repeated_clock_or_buffer_does_not_confirm (test_adapter.SafetyTests.test_repeated_clock_or_buffer_does_not_confirm) ... ok
+test_reset_joins_actual_async_planner_worker (test_adapter.SafetyTests.test_reset_joins_actual_async_planner_worker) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 12.589s
+
+OK

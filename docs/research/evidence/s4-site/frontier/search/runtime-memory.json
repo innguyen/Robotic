@@ -1,0 +1,2921 @@
+{
+  "status": "MEASURED",
+  "sample_interval_s": 1.0,
+  "engine_peak_working_set_bytes": 1530978304,
+  "engine_max_private_commit_bytes": 3276533760,
+  "samples": [
+    {
+      "monotonic_ns": 7210359000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1789952,
+      "peak_working_set_bytes": 1789952,
+      "private_commit_bytes": 393216
+    },
+    {
+      "monotonic_ns": 7211375000000,
+      "status": "MEASURED",
+      "working_set_bytes": 200114176,
+      "peak_working_set_bytes": 201232384,
+      "private_commit_bytes": 125698048
+    },
+    {
+      "monotonic_ns": 7212390000000,
+      "status": "MEASURED",
+      "working_set_bytes": 396845056,
+      "peak_working_set_bytes": 462221312,
+      "private_commit_bytes": 322617344
+    },
+    {
+      "monotonic_ns": 7213390000000,
+      "status": "MEASURED",
+      "working_set_bytes": 665653248,
+      "peak_working_set_bytes": 695103488,
+      "private_commit_bytes": 633409536
+    },
+    {
+      "monotonic_ns": 7214390000000,
+      "status": "MEASURED",
+      "working_set_bytes": 803561472,
+      "peak_working_set_bytes": 806211584,
+      "private_commit_bytes": 782422016
+    },
+    {
+      "monotonic_ns": 7215406000000,
+      "status": "MEASURED",
+      "working_set_bytes": 910426112,
+      "peak_working_set_bytes": 922841088,
+      "private_commit_bytes": 881729536
+    },
+    {
+      "monotonic_ns": 7216406000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1003536384,
+      "peak_working_set_bytes": 1003536384,
+      "private_commit_bytes": 982257664
+    },
+    {
+      "monotonic_ns": 7217468000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1029840896,
+      "peak_working_set_bytes": 1030971392,
+      "private_commit_bytes": 1004204032
+    },
+    {
+      "monotonic_ns": 7218484000000,
+      "status": "MEASURED",
+      "working_set_bytes": 668135424,
+      "peak_working_set_bytes": 1030971392,
+      "private_commit_bytes": 1004204032
+    },
+    {
+      "monotonic_ns": 7219500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 751484928,
+      "peak_working_set_bytes": 1030971392,
+      "private_commit_bytes": 1079271424
+    },
+    {
+      "monotonic_ns": 7220500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 839454720,
+      "peak_working_set_bytes": 1030971392,
+      "private_commit_bytes": 1161621504
+    },
+    {
+      "monotonic_ns": 7221500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 967364608,
+      "peak_working_set_bytes": 1030971392,
+      "private_commit_bytes": 1302331392
+    },
+    {
+      "monotonic_ns": 7222515000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1028042752,
+      "peak_working_set_bytes": 1030971392,
+      "private_commit_bytes": 1344471040
+    },
+    {
+      "monotonic_ns": 7223531000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1085415424,
+      "peak_working_set_bytes": 1085415424,
+      "private_commit_bytes": 1395847168
+    },
+    {
+      "monotonic_ns": 7224546000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1105924096,
+      "peak_working_set_bytes": 1105924096,
+      "private_commit_bytes": 1411280896
+    },
+    {
+      "monotonic_ns": 7225562000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1196937216,
+      "peak_working_set_bytes": 1196937216,
+      "private_commit_bytes": 1485189120
+    },
+    {
+      "monotonic_ns": 7226562000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1179693056,
+      "peak_working_set_bytes": 1235492864,
+      "private_commit_bytes": 1523900416
+    },
+    {
+      "monotonic_ns": 7227578000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1234051072,
+      "peak_working_set_bytes": 1235492864,
+      "private_commit_bytes": 1610256384
+    },
+    {
+      "monotonic_ns": 7228578000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1367019520,
+      "peak_working_set_bytes": 1367019520,
+      "private_commit_bytes": 1796370432
+    },
+    {
+      "monotonic_ns": 7229593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1428262912,
+      "peak_working_set_bytes": 1428262912,
+      "private_commit_bytes": 1913831424
+    },
+    {
+      "monotonic_ns": 7230656000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1495625728,
+      "peak_working_set_bytes": 1514221568,
+      "private_commit_bytes": 2035822592
+    },
+    {
+      "monotonic_ns": 7231671000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1529327616,
+      "peak_working_set_bytes": 1529327616,
+      "private_commit_bytes": 2064564224
+    },
+    {
+      "monotonic_ns": 7232687000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1355612160,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2212700160
+    },
+    {
+      "monotonic_ns": 7233781000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1137405952,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2385133568
+    },
+    {
+      "monotonic_ns": 7234796000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1034551296,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2491232256
+    },
+    {
+      "monotonic_ns": 7235812000000,
+      "status": "MEASURED",
+      "working_set_bytes": 950423552,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2422431744
+    },
+    {
+      "monotonic_ns": 7236812000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1193181184,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2463981568
+    },
+    {
+      "monotonic_ns": 7237843000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1195700224,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2490056704
+    },
+    {
+      "monotonic_ns": 7238859000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1050599424,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2585714688
+    },
+    {
+      "monotonic_ns": 7239875000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1080889344,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2644881408
+    },
+    {
+      "monotonic_ns": 7241015000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1153351680,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2654638080
+    },
+    {
+      "monotonic_ns": 7242140000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1189228544,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2674479104
+    },
+    {
+      "monotonic_ns": 7243140000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1033367552,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2718081024
+    },
+    {
+      "monotonic_ns": 7244171000000,
+      "status": "MEASURED",
+      "working_set_bytes": 1046167552,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2731569152
+    },
+    {
+      "monotonic_ns": 7245171000000,
+      "status": "MEASURED",
+      "working_set_bytes": 993337344,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2858741760
+    },
+    {
+      "monotonic_ns": 7246187000000,
+      "status": "MEASURED",
+      "working_set_bytes": 625147904,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3000475648
+    },
+    {
+      "monotonic_ns": 7247203000000,
+      "status": "MEASURED",
+      "working_set_bytes": 646406144,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2875572224
+    },
+    {
+      "monotonic_ns": 7248203000000,
+      "status": "MEASURED",
+      "working_set_bytes": 665026560,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2877542400
+    },
+    {
+      "monotonic_ns": 7249203000000,
+      "status": "MEASURED",
+      "working_set_bytes": 685744128,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2888343552
+    },
+    {
+      "monotonic_ns": 7250218000000,
+      "status": "MEASURED",
+      "working_set_bytes": 696479744,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2897670144
+    },
+    {
+      "monotonic_ns": 7251234000000,
+      "status": "MEASURED",
+      "working_set_bytes": 730316800,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 2934099968
+    },
+    {
+      "monotonic_ns": 7252250000000,
+      "status": "MEASURED",
+      "working_set_bytes": 765915136,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3056820224
+    },
+    {
+      "monotonic_ns": 7253281000000,
+      "status": "MEASURED",
+      "working_set_bytes": 929529856,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3152347136
+    },
+    {
+      "monotonic_ns": 7254343000000,
+      "status": "MEASURED",
+      "working_set_bytes": 941928448,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3173040128
+    },
+    {
+      "monotonic_ns": 7255406000000,
+      "status": "MEASURED",
+      "working_set_bytes": 951275520,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3176185856
+    },
+    {
+      "monotonic_ns": 7256421000000,
+      "status": "MEASURED",
+      "working_set_bytes": 952778752,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3176976384
+    },
+    {
+      "monotonic_ns": 7257484000000,
+      "status": "MEASURED",
+      "working_set_bytes": 961253376,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3185344512
+    },
+    {
+      "monotonic_ns": 7258515000000,
+      "status": "MEASURED",
+      "working_set_bytes": 961683456,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3185352704
+    },
+    {
+      "monotonic_ns": 7259593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 967827456,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3185164288
+    },
+    {
+      "monotonic_ns": 7260625000000,
+      "status": "MEASURED",
+      "working_set_bytes": 968114176,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3184844800
+    },
+    {
+      "monotonic_ns": 7261640000000,
+      "status": "MEASURED",
+      "working_set_bytes": 978669568,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3209850880
+    },
+    {
+      "monotonic_ns": 7262671000000,
+      "status": "MEASURED",
+      "working_set_bytes": 976531456,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3210264576
+    },
+    {
+      "monotonic_ns": 7263718000000,
+      "status": "MEASURED",
+      "working_set_bytes": 884310016,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216658432
+    },
+    {
+      "monotonic_ns": 7264781000000,
+      "status": "MEASURED",
+      "working_set_bytes": 884957184,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216461824
+    },
+    {
+      "monotonic_ns": 7265843000000,
+      "status": "MEASURED",
+      "working_set_bytes": 849063936,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216388096
+    },
+    {
+      "monotonic_ns": 7266906000000,
+      "status": "MEASURED",
+      "working_set_bytes": 684470272,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216388096
+    },
+    {
+      "monotonic_ns": 7267953000000,
+      "status": "MEASURED",
+      "working_set_bytes": 436359168,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216384000
+    },
+    {
+      "monotonic_ns": 7268968000000,
+      "status": "MEASURED",
+      "working_set_bytes": 351715328,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216596992
+    },
+    {
+      "monotonic_ns": 7269968000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306515968,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216150528
+    },
+    {
+      "monotonic_ns": 7270984000000,
+      "status": "MEASURED",
+      "working_set_bytes": 314396672,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216769024
+    },
+    {
+      "monotonic_ns": 7272031000000,
+      "status": "MEASURED",
+      "working_set_bytes": 269189120,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216515072
+    },
+    {
+      "monotonic_ns": 7273046000000,
+      "status": "MEASURED",
+      "working_set_bytes": 270516224,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215925248
+    },
+    {
+      "monotonic_ns": 7274062000000,
+      "status": "MEASURED",
+      "working_set_bytes": 278577152,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216777216
+    },
+    {
+      "monotonic_ns": 7275093000000,
+      "status": "MEASURED",
+      "working_set_bytes": 279556096,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216715776
+    },
+    {
+      "monotonic_ns": 7276156000000,
+      "status": "MEASURED",
+      "working_set_bytes": 285548544,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216322560
+    },
+    {
+      "monotonic_ns": 7277156000000,
+      "status": "MEASURED",
+      "working_set_bytes": 286109696,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215798272
+    },
+    {
+      "monotonic_ns": 7278187000000,
+      "status": "MEASURED",
+      "working_set_bytes": 292741120,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215798272
+    },
+    {
+      "monotonic_ns": 7279218000000,
+      "status": "MEASURED",
+      "working_set_bytes": 293486592,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215798272
+    },
+    {
+      "monotonic_ns": 7280234000000,
+      "status": "MEASURED",
+      "working_set_bytes": 298749952,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215798272
+    },
+    {
+      "monotonic_ns": 7281265000000,
+      "status": "MEASURED",
+      "working_set_bytes": 299245568,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215798272
+    },
+    {
+      "monotonic_ns": 7282281000000,
+      "status": "MEASURED",
+      "working_set_bytes": 304037888,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215798272
+    },
+    {
+      "monotonic_ns": 7283343000000,
+      "status": "MEASURED",
+      "working_set_bytes": 304410624,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215798272
+    },
+    {
+      "monotonic_ns": 7284359000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307032064,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216125952
+    },
+    {
+      "monotonic_ns": 7285375000000,
+      "status": "MEASURED",
+      "working_set_bytes": 308215808,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216125952
+    },
+    {
+      "monotonic_ns": 7286375000000,
+      "status": "MEASURED",
+      "working_set_bytes": 308752384,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216125952
+    },
+    {
+      "monotonic_ns": 7287406000000,
+      "status": "MEASURED",
+      "working_set_bytes": 309661696,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215994880
+    },
+    {
+      "monotonic_ns": 7288468000000,
+      "status": "MEASURED",
+      "working_set_bytes": 310906880,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215601664
+    },
+    {
+      "monotonic_ns": 7289468000000,
+      "status": "MEASURED",
+      "working_set_bytes": 311574528,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215601664
+    },
+    {
+      "monotonic_ns": 7290468000000,
+      "status": "MEASURED",
+      "working_set_bytes": 312819712,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215863808
+    },
+    {
+      "monotonic_ns": 7291500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 313524224,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215863808
+    },
+    {
+      "monotonic_ns": 7292500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 314003456,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215863808
+    },
+    {
+      "monotonic_ns": 7293500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 314241024,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215863808
+    },
+    {
+      "monotonic_ns": 7294515000000,
+      "status": "MEASURED",
+      "working_set_bytes": 314679296,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215863808
+    },
+    {
+      "monotonic_ns": 7295546000000,
+      "status": "MEASURED",
+      "working_set_bytes": 315371520,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215863808
+    },
+    {
+      "monotonic_ns": 7296546000000,
+      "status": "MEASURED",
+      "working_set_bytes": 315924480,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215863808
+    },
+    {
+      "monotonic_ns": 7297593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 291041280,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215863808
+    },
+    {
+      "monotonic_ns": 7298609000000,
+      "status": "MEASURED",
+      "working_set_bytes": 235032576,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215863808
+    },
+    {
+      "monotonic_ns": 7299656000000,
+      "status": "MEASURED",
+      "working_set_bytes": 217403392,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215863808
+    },
+    {
+      "monotonic_ns": 7300687000000,
+      "status": "MEASURED",
+      "working_set_bytes": 232611840,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215785984
+    },
+    {
+      "monotonic_ns": 7301734000000,
+      "status": "MEASURED",
+      "working_set_bytes": 235380736,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215785984
+    },
+    {
+      "monotonic_ns": 7302750000000,
+      "status": "MEASURED",
+      "working_set_bytes": 236916736,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215785984
+    },
+    {
+      "monotonic_ns": 7303781000000,
+      "status": "MEASURED",
+      "working_set_bytes": 245538816,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215785984
+    },
+    {
+      "monotonic_ns": 7304828000000,
+      "status": "MEASURED",
+      "working_set_bytes": 246329344,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215785984
+    },
+    {
+      "monotonic_ns": 7305843000000,
+      "status": "MEASURED",
+      "working_set_bytes": 247140352,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215785984
+    },
+    {
+      "monotonic_ns": 7306890000000,
+      "status": "MEASURED",
+      "working_set_bytes": 253927424,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215261696
+    },
+    {
+      "monotonic_ns": 7307937000000,
+      "status": "MEASURED",
+      "working_set_bytes": 254820352,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3205713920
+    },
+    {
+      "monotonic_ns": 7308968000000,
+      "status": "MEASURED",
+      "working_set_bytes": 261386240,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3205386240
+    },
+    {
+      "monotonic_ns": 7309984000000,
+      "status": "MEASURED",
+      "working_set_bytes": 262193152,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3205386240
+    },
+    {
+      "monotonic_ns": 7310984000000,
+      "status": "MEASURED",
+      "working_set_bytes": 267681792,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3205255168
+    },
+    {
+      "monotonic_ns": 7312015000000,
+      "status": "MEASURED",
+      "working_set_bytes": 272269312,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3205058560
+    },
+    {
+      "monotonic_ns": 7313046000000,
+      "status": "MEASURED",
+      "working_set_bytes": 273813504,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3205058560
+    },
+    {
+      "monotonic_ns": 7314046000000,
+      "status": "MEASURED",
+      "working_set_bytes": 274391040,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7315093000000,
+      "status": "MEASURED",
+      "working_set_bytes": 278294528,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7316140000000,
+      "status": "MEASURED",
+      "working_set_bytes": 278654976,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7317156000000,
+      "status": "MEASURED",
+      "working_set_bytes": 268374016,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7318156000000,
+      "status": "MEASURED",
+      "working_set_bytes": 269156352,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7319171000000,
+      "status": "MEASURED",
+      "working_set_bytes": 274219008,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7320218000000,
+      "status": "MEASURED",
+      "working_set_bytes": 274669568,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7321234000000,
+      "status": "MEASURED",
+      "working_set_bytes": 277995520,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7322281000000,
+      "status": "MEASURED",
+      "working_set_bytes": 278773760,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7323296000000,
+      "status": "MEASURED",
+      "working_set_bytes": 280043520,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7324312000000,
+      "status": "MEASURED",
+      "working_set_bytes": 282341376,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7325343000000,
+      "status": "MEASURED",
+      "working_set_bytes": 282615808,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7326359000000,
+      "status": "MEASURED",
+      "working_set_bytes": 285126656,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3204530176
+    },
+    {
+      "monotonic_ns": 7327375000000,
+      "status": "MEASURED",
+      "working_set_bytes": 285417472,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3201908736
+    },
+    {
+      "monotonic_ns": 7328406000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306008064,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3201908736
+    },
+    {
+      "monotonic_ns": 7329437000000,
+      "status": "MEASURED",
+      "working_set_bytes": 314286080,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3201908736
+    },
+    {
+      "monotonic_ns": 7330453000000,
+      "status": "MEASURED",
+      "working_set_bytes": 318853120,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3201974272
+    },
+    {
+      "monotonic_ns": 7331484000000,
+      "status": "MEASURED",
+      "working_set_bytes": 321908736,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3201974272
+    },
+    {
+      "monotonic_ns": 7332515000000,
+      "status": "MEASURED",
+      "working_set_bytes": 325869568,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202674688
+    },
+    {
+      "monotonic_ns": 7333546000000,
+      "status": "MEASURED",
+      "working_set_bytes": 326180864,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202674688
+    },
+    {
+      "monotonic_ns": 7334562000000,
+      "status": "MEASURED",
+      "working_set_bytes": 329416704,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202768896
+    },
+    {
+      "monotonic_ns": 7335593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 331751424,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202908160
+    },
+    {
+      "monotonic_ns": 7336640000000,
+      "status": "MEASURED",
+      "working_set_bytes": 333410304,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202908160
+    },
+    {
+      "monotonic_ns": 7337656000000,
+      "status": "MEASURED",
+      "working_set_bytes": 334368768,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202514944
+    },
+    {
+      "monotonic_ns": 7338671000000,
+      "status": "MEASURED",
+      "working_set_bytes": 335486976,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202523136
+    },
+    {
+      "monotonic_ns": 7339812000000,
+      "status": "MEASURED",
+      "working_set_bytes": 337281024,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202523136
+    },
+    {
+      "monotonic_ns": 7340812000000,
+      "status": "MEASURED",
+      "working_set_bytes": 338423808,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202523136
+    },
+    {
+      "monotonic_ns": 7341828000000,
+      "status": "MEASURED",
+      "working_set_bytes": 339226624,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202523136
+    },
+    {
+      "monotonic_ns": 7342843000000,
+      "status": "MEASURED",
+      "working_set_bytes": 340516864,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202523136
+    },
+    {
+      "monotonic_ns": 7343890000000,
+      "status": "MEASURED",
+      "working_set_bytes": 341282816,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202523136
+    },
+    {
+      "monotonic_ns": 7344906000000,
+      "status": "MEASURED",
+      "working_set_bytes": 349765632,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202469888
+    },
+    {
+      "monotonic_ns": 7345921000000,
+      "status": "MEASURED",
+      "working_set_bytes": 350646272,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202469888
+    },
+    {
+      "monotonic_ns": 7346937000000,
+      "status": "MEASURED",
+      "working_set_bytes": 351350784,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202469888
+    },
+    {
+      "monotonic_ns": 7347953000000,
+      "status": "MEASURED",
+      "working_set_bytes": 357568512,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202732032
+    },
+    {
+      "monotonic_ns": 7349000000000,
+      "status": "MEASURED",
+      "working_set_bytes": 358518784,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202732032
+    },
+    {
+      "monotonic_ns": 7350031000000,
+      "status": "MEASURED",
+      "working_set_bytes": 359321600,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202826240
+    },
+    {
+      "monotonic_ns": 7351078000000,
+      "status": "MEASURED",
+      "working_set_bytes": 359882752,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202826240
+    },
+    {
+      "monotonic_ns": 7352109000000,
+      "status": "MEASURED",
+      "working_set_bytes": 360513536,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202826240
+    },
+    {
+      "monotonic_ns": 7353109000000,
+      "status": "MEASURED",
+      "working_set_bytes": 360935424,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3202826240
+    },
+    {
+      "monotonic_ns": 7354125000000,
+      "status": "MEASURED",
+      "working_set_bytes": 361664512,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3203350528
+    },
+    {
+      "monotonic_ns": 7355140000000,
+      "status": "MEASURED",
+      "working_set_bytes": 362627072,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3203559424
+    },
+    {
+      "monotonic_ns": 7356203000000,
+      "status": "MEASURED",
+      "working_set_bytes": 363724800,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3203526656
+    },
+    {
+      "monotonic_ns": 7357234000000,
+      "status": "MEASURED",
+      "working_set_bytes": 364449792,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3203526656
+    },
+    {
+      "monotonic_ns": 7358265000000,
+      "status": "MEASURED",
+      "working_set_bytes": 375496704,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3207761920
+    },
+    {
+      "monotonic_ns": 7359265000000,
+      "status": "MEASURED",
+      "working_set_bytes": 376758272,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208286208
+    },
+    {
+      "monotonic_ns": 7360265000000,
+      "status": "MEASURED",
+      "working_set_bytes": 377442304,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208286208
+    },
+    {
+      "monotonic_ns": 7361281000000,
+      "status": "MEASURED",
+      "working_set_bytes": 377884672,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208286208
+    },
+    {
+      "monotonic_ns": 7362312000000,
+      "status": "MEASURED",
+      "working_set_bytes": 378613760,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208351744
+    },
+    {
+      "monotonic_ns": 7363359000000,
+      "status": "MEASURED",
+      "working_set_bytes": 379113472,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208351744
+    },
+    {
+      "monotonic_ns": 7364390000000,
+      "status": "MEASURED",
+      "working_set_bytes": 378490880,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208351744
+    },
+    {
+      "monotonic_ns": 7365406000000,
+      "status": "MEASURED",
+      "working_set_bytes": 378679296,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208351744
+    },
+    {
+      "monotonic_ns": 7366421000000,
+      "status": "MEASURED",
+      "working_set_bytes": 379203584,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208335360
+    },
+    {
+      "monotonic_ns": 7367484000000,
+      "status": "MEASURED",
+      "working_set_bytes": 379494400,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208335360
+    },
+    {
+      "monotonic_ns": 7368484000000,
+      "status": "MEASURED",
+      "working_set_bytes": 378884096,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208335360
+    },
+    {
+      "monotonic_ns": 7369500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 379224064,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208335360
+    },
+    {
+      "monotonic_ns": 7370531000000,
+      "status": "MEASURED",
+      "working_set_bytes": 379494400,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208335360
+    },
+    {
+      "monotonic_ns": 7371546000000,
+      "status": "MEASURED",
+      "working_set_bytes": 379830272,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208335360
+    },
+    {
+      "monotonic_ns": 7372546000000,
+      "status": "MEASURED",
+      "working_set_bytes": 380092416,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208089600
+    },
+    {
+      "monotonic_ns": 7373562000000,
+      "status": "MEASURED",
+      "working_set_bytes": 380350464,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208089600
+    },
+    {
+      "monotonic_ns": 7374578000000,
+      "status": "MEASURED",
+      "working_set_bytes": 380534784,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208089600
+    },
+    {
+      "monotonic_ns": 7375593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 380854272,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208089600
+    },
+    {
+      "monotonic_ns": 7376625000000,
+      "status": "MEASURED",
+      "working_set_bytes": 381247488,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208089600
+    },
+    {
+      "monotonic_ns": 7377656000000,
+      "status": "MEASURED",
+      "working_set_bytes": 373055488,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208089600
+    },
+    {
+      "monotonic_ns": 7378656000000,
+      "status": "MEASURED",
+      "working_set_bytes": 335892480,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208089600
+    },
+    {
+      "monotonic_ns": 7379687000000,
+      "status": "MEASURED",
+      "working_set_bytes": 337108992,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7380750000000,
+      "status": "MEASURED",
+      "working_set_bytes": 337747968,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7381765000000,
+      "status": "MEASURED",
+      "working_set_bytes": 338468864,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7382765000000,
+      "status": "MEASURED",
+      "working_set_bytes": 339116032,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7383781000000,
+      "status": "MEASURED",
+      "working_set_bytes": 339734528,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7384812000000,
+      "status": "MEASURED",
+      "working_set_bytes": 340566016,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7385843000000,
+      "status": "MEASURED",
+      "working_set_bytes": 341020672,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7386859000000,
+      "status": "MEASURED",
+      "working_set_bytes": 341540864,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7387875000000,
+      "status": "MEASURED",
+      "working_set_bytes": 342044672,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7388921000000,
+      "status": "MEASURED",
+      "working_set_bytes": 342634496,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7389937000000,
+      "status": "MEASURED",
+      "working_set_bytes": 343040000,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7390953000000,
+      "status": "MEASURED",
+      "working_set_bytes": 343465984,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7391968000000,
+      "status": "MEASURED",
+      "working_set_bytes": 345444352,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7393046000000,
+      "status": "MEASURED",
+      "working_set_bytes": 345878528,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7394062000000,
+      "status": "MEASURED",
+      "working_set_bytes": 335241216,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7395078000000,
+      "status": "MEASURED",
+      "working_set_bytes": 335695872,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7396125000000,
+      "status": "MEASURED",
+      "working_set_bytes": 336130048,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7397140000000,
+      "status": "MEASURED",
+      "working_set_bytes": 336560128,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7398156000000,
+      "status": "MEASURED",
+      "working_set_bytes": 337297408,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7399171000000,
+      "status": "MEASURED",
+      "working_set_bytes": 337608704,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7400203000000,
+      "status": "MEASURED",
+      "working_set_bytes": 338014208,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7401218000000,
+      "status": "MEASURED",
+      "working_set_bytes": 338268160,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208622080
+    },
+    {
+      "monotonic_ns": 7402218000000,
+      "status": "MEASURED",
+      "working_set_bytes": 338776064,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208753152
+    },
+    {
+      "monotonic_ns": 7403234000000,
+      "status": "MEASURED",
+      "working_set_bytes": 339165184,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208753152
+    },
+    {
+      "monotonic_ns": 7404234000000,
+      "status": "MEASURED",
+      "working_set_bytes": 339632128,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208753152
+    },
+    {
+      "monotonic_ns": 7405265000000,
+      "status": "MEASURED",
+      "working_set_bytes": 340041728,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208753152
+    },
+    {
+      "monotonic_ns": 7406312000000,
+      "status": "MEASURED",
+      "working_set_bytes": 340393984,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208753152
+    },
+    {
+      "monotonic_ns": 7407328000000,
+      "status": "MEASURED",
+      "working_set_bytes": 340819968,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208753152
+    },
+    {
+      "monotonic_ns": 7408328000000,
+      "status": "MEASURED",
+      "working_set_bytes": 341557248,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208753152
+    },
+    {
+      "monotonic_ns": 7409328000000,
+      "status": "MEASURED",
+      "working_set_bytes": 342175744,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208753152
+    },
+    {
+      "monotonic_ns": 7410343000000,
+      "status": "MEASURED",
+      "working_set_bytes": 342568960,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208753152
+    },
+    {
+      "monotonic_ns": 7411359000000,
+      "status": "MEASURED",
+      "working_set_bytes": 358469632,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208753152
+    },
+    {
+      "monotonic_ns": 7412468000000,
+      "status": "MEASURED",
+      "working_set_bytes": 349638656,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208753152
+    },
+    {
+      "monotonic_ns": 7413468000000,
+      "status": "MEASURED",
+      "working_set_bytes": 349655040,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3208753152
+    },
+    {
+      "monotonic_ns": 7414484000000,
+      "status": "MEASURED",
+      "working_set_bytes": 361287680,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3225382912
+    },
+    {
+      "monotonic_ns": 7415484000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352104448,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3225382912
+    },
+    {
+      "monotonic_ns": 7416500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352292864,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3225382912
+    },
+    {
+      "monotonic_ns": 7417500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 327733248,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219570688
+    },
+    {
+      "monotonic_ns": 7418546000000,
+      "status": "MEASURED",
+      "working_set_bytes": 325971968,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219570688
+    },
+    {
+      "monotonic_ns": 7419593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 326103040,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219505152
+    },
+    {
+      "monotonic_ns": 7420593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 325132288,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3212156928
+    },
+    {
+      "monotonic_ns": 7421593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 325746688,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3212156928
+    },
+    {
+      "monotonic_ns": 7422609000000,
+      "status": "MEASURED",
+      "working_set_bytes": 325799936,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3211730944
+    },
+    {
+      "monotonic_ns": 7423625000000,
+      "status": "MEASURED",
+      "working_set_bytes": 326426624,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3211730944
+    },
+    {
+      "monotonic_ns": 7424640000000,
+      "status": "MEASURED",
+      "working_set_bytes": 326541312,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3211730944
+    },
+    {
+      "monotonic_ns": 7425656000000,
+      "status": "MEASURED",
+      "working_set_bytes": 327061504,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3211730944
+    },
+    {
+      "monotonic_ns": 7426703000000,
+      "status": "MEASURED",
+      "working_set_bytes": 327770112,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3211468800
+    },
+    {
+      "monotonic_ns": 7427750000000,
+      "status": "MEASURED",
+      "working_set_bytes": 327794688,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3211468800
+    },
+    {
+      "monotonic_ns": 7428781000000,
+      "status": "MEASURED",
+      "working_set_bytes": 354648064,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219873792
+    },
+    {
+      "monotonic_ns": 7429781000000,
+      "status": "MEASURED",
+      "working_set_bytes": 356261888,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219873792
+    },
+    {
+      "monotonic_ns": 7430781000000,
+      "status": "MEASURED",
+      "working_set_bytes": 313196544,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219873792
+    },
+    {
+      "monotonic_ns": 7431796000000,
+      "status": "MEASURED",
+      "working_set_bytes": 315609088,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219873792
+    },
+    {
+      "monotonic_ns": 7432812000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307994624,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219873792
+    },
+    {
+      "monotonic_ns": 7433843000000,
+      "status": "MEASURED",
+      "working_set_bytes": 308924416,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219873792
+    },
+    {
+      "monotonic_ns": 7434859000000,
+      "status": "MEASURED",
+      "working_set_bytes": 309022720,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219873792
+    },
+    {
+      "monotonic_ns": 7435875000000,
+      "status": "MEASURED",
+      "working_set_bytes": 300957696,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219873792
+    },
+    {
+      "monotonic_ns": 7436890000000,
+      "status": "MEASURED",
+      "working_set_bytes": 302428160,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219873792
+    },
+    {
+      "monotonic_ns": 7437906000000,
+      "status": "MEASURED",
+      "working_set_bytes": 302624768,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219873792
+    },
+    {
+      "monotonic_ns": 7438921000000,
+      "status": "MEASURED",
+      "working_set_bytes": 303181824,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219480576
+    },
+    {
+      "monotonic_ns": 7439953000000,
+      "status": "MEASURED",
+      "working_set_bytes": 304648192,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219480576
+    },
+    {
+      "monotonic_ns": 7440968000000,
+      "status": "MEASURED",
+      "working_set_bytes": 304775168,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219480576
+    },
+    {
+      "monotonic_ns": 7441968000000,
+      "status": "MEASURED",
+      "working_set_bytes": 305582080,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219480576
+    },
+    {
+      "monotonic_ns": 7443000000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306298880,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219480576
+    },
+    {
+      "monotonic_ns": 7444031000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306401280,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219480576
+    },
+    {
+      "monotonic_ns": 7445046000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307040256,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219480576
+    },
+    {
+      "monotonic_ns": 7446109000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307167232,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219480576
+    },
+    {
+      "monotonic_ns": 7447125000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307957760,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219480576
+    },
+    {
+      "monotonic_ns": 7448125000000,
+      "status": "MEASURED",
+      "working_set_bytes": 309047296,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3219480576
+    },
+    {
+      "monotonic_ns": 7449156000000,
+      "status": "MEASURED",
+      "working_set_bytes": 309624832,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218825216
+    },
+    {
+      "monotonic_ns": 7450171000000,
+      "status": "MEASURED",
+      "working_set_bytes": 309661696,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218825216
+    },
+    {
+      "monotonic_ns": 7451187000000,
+      "status": "MEASURED",
+      "working_set_bytes": 310255616,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218825216
+    },
+    {
+      "monotonic_ns": 7452203000000,
+      "status": "MEASURED",
+      "working_set_bytes": 311001088,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218825216
+    },
+    {
+      "monotonic_ns": 7453250000000,
+      "status": "MEASURED",
+      "working_set_bytes": 311091200,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218825216
+    },
+    {
+      "monotonic_ns": 7454265000000,
+      "status": "MEASURED",
+      "working_set_bytes": 311193600,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218825216
+    },
+    {
+      "monotonic_ns": 7455281000000,
+      "status": "MEASURED",
+      "working_set_bytes": 313389056,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7456296000000,
+      "status": "MEASURED",
+      "working_set_bytes": 313999360,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7457312000000,
+      "status": "MEASURED",
+      "working_set_bytes": 314490880,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7458312000000,
+      "status": "MEASURED",
+      "working_set_bytes": 314748928,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7459328000000,
+      "status": "MEASURED",
+      "working_set_bytes": 315326464,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7460359000000,
+      "status": "MEASURED",
+      "working_set_bytes": 315928576,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7461375000000,
+      "status": "MEASURED",
+      "working_set_bytes": 316456960,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7462437000000,
+      "status": "MEASURED",
+      "working_set_bytes": 317083648,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7463437000000,
+      "status": "MEASURED",
+      "working_set_bytes": 317161472,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7464453000000,
+      "status": "MEASURED",
+      "working_set_bytes": 317751296,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7465468000000,
+      "status": "MEASURED",
+      "working_set_bytes": 318259200,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7466484000000,
+      "status": "MEASURED",
+      "working_set_bytes": 318427136,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7467484000000,
+      "status": "MEASURED",
+      "working_set_bytes": 319434752,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215642624
+    },
+    {
+      "monotonic_ns": 7468500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 328044544,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215777792
+    },
+    {
+      "monotonic_ns": 7469500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 329764864,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216437248
+    },
+    {
+      "monotonic_ns": 7470531000000,
+      "status": "MEASURED",
+      "working_set_bytes": 330354688,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216437248
+    },
+    {
+      "monotonic_ns": 7471562000000,
+      "status": "MEASURED",
+      "working_set_bytes": 330424320,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216437248
+    },
+    {
+      "monotonic_ns": 7472562000000,
+      "status": "MEASURED",
+      "working_set_bytes": 330723328,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216437248
+    },
+    {
+      "monotonic_ns": 7473578000000,
+      "status": "MEASURED",
+      "working_set_bytes": 323756032,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216437248
+    },
+    {
+      "monotonic_ns": 7474593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 323862528,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216437248
+    },
+    {
+      "monotonic_ns": 7475671000000,
+      "status": "MEASURED",
+      "working_set_bytes": 320765952,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216240640
+    },
+    {
+      "monotonic_ns": 7476703000000,
+      "status": "MEASURED",
+      "working_set_bytes": 319836160,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216240640
+    },
+    {
+      "monotonic_ns": 7477718000000,
+      "status": "MEASURED",
+      "working_set_bytes": 319119360,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3236950016
+    },
+    {
+      "monotonic_ns": 7478796000000,
+      "status": "MEASURED",
+      "working_set_bytes": 321662976,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216195584
+    },
+    {
+      "monotonic_ns": 7479812000000,
+      "status": "MEASURED",
+      "working_set_bytes": 321810432,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216195584
+    },
+    {
+      "monotonic_ns": 7480812000000,
+      "status": "MEASURED",
+      "working_set_bytes": 321806336,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3240673280
+    },
+    {
+      "monotonic_ns": 7481843000000,
+      "status": "MEASURED",
+      "working_set_bytes": 320684032,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216228352
+    },
+    {
+      "monotonic_ns": 7482875000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306761728,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216228352
+    },
+    {
+      "monotonic_ns": 7483875000000,
+      "status": "MEASURED",
+      "working_set_bytes": 305545216,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216228352
+    },
+    {
+      "monotonic_ns": 7484890000000,
+      "status": "MEASURED",
+      "working_set_bytes": 305553408,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216228352
+    },
+    {
+      "monotonic_ns": 7485890000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306126848,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216228352
+    },
+    {
+      "monotonic_ns": 7486906000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306073600,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215568896
+    },
+    {
+      "monotonic_ns": 7487906000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306110464,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215568896
+    },
+    {
+      "monotonic_ns": 7488937000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307257344,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216224256
+    },
+    {
+      "monotonic_ns": 7489953000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307646464,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216224256
+    },
+    {
+      "monotonic_ns": 7491000000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307630080,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216224256
+    },
+    {
+      "monotonic_ns": 7492015000000,
+      "status": "MEASURED",
+      "working_set_bytes": 308027392,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216224256
+    },
+    {
+      "monotonic_ns": 7493062000000,
+      "status": "MEASURED",
+      "working_set_bytes": 308023296,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216224256
+    },
+    {
+      "monotonic_ns": 7494078000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306565120,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216224256
+    },
+    {
+      "monotonic_ns": 7495109000000,
+      "status": "MEASURED",
+      "working_set_bytes": 304676864,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7496109000000,
+      "status": "MEASURED",
+      "working_set_bytes": 305246208,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7497125000000,
+      "status": "MEASURED",
+      "working_set_bytes": 305373184,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7498140000000,
+      "status": "MEASURED",
+      "working_set_bytes": 305963008,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7499187000000,
+      "status": "MEASURED",
+      "working_set_bytes": 305958912,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7500187000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306438144,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7501234000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307015680,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7502250000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307195904,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7503265000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307621888,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7504296000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307933184,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7505328000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307445760,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7506390000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307372032,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7507406000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307785728,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7508453000000,
+      "status": "MEASURED",
+      "working_set_bytes": 308113408,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7509468000000,
+      "status": "MEASURED",
+      "working_set_bytes": 308281344,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215695872
+    },
+    {
+      "monotonic_ns": 7510500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 308817920,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215699968
+    },
+    {
+      "monotonic_ns": 7511531000000,
+      "status": "MEASURED",
+      "working_set_bytes": 310530048,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215699968
+    },
+    {
+      "monotonic_ns": 7512562000000,
+      "status": "MEASURED",
+      "working_set_bytes": 310874112,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215699968
+    },
+    {
+      "monotonic_ns": 7513562000000,
+      "status": "MEASURED",
+      "working_set_bytes": 311255040,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7514562000000,
+      "status": "MEASURED",
+      "working_set_bytes": 311681024,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7515578000000,
+      "status": "MEASURED",
+      "working_set_bytes": 309039104,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7516593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 308330496,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7517593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 308740096,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7518593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306765824,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7519609000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307183616,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7520640000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307060736,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7521703000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306057216,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7522703000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306188288,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7523750000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306565120,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7524750000000,
+      "status": "MEASURED",
+      "working_set_bytes": 306909184,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7525765000000,
+      "status": "MEASURED",
+      "working_set_bytes": 307011584,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7526765000000,
+      "status": "MEASURED",
+      "working_set_bytes": 305733632,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7527781000000,
+      "status": "MEASURED",
+      "working_set_bytes": 303292416,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7528906000000,
+      "status": "MEASURED",
+      "working_set_bytes": 293687296,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7529906000000,
+      "status": "MEASURED",
+      "working_set_bytes": 320626688,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3215732736
+    },
+    {
+      "monotonic_ns": 7530937000000,
+      "status": "MEASURED",
+      "working_set_bytes": 327356416,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217584128
+    },
+    {
+      "monotonic_ns": 7531968000000,
+      "status": "MEASURED",
+      "working_set_bytes": 331952128,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217584128
+    },
+    {
+      "monotonic_ns": 7532984000000,
+      "status": "MEASURED",
+      "working_set_bytes": 334155776,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217584128
+    },
+    {
+      "monotonic_ns": 7534000000000,
+      "status": "MEASURED",
+      "working_set_bytes": 336330752,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217530880
+    },
+    {
+      "monotonic_ns": 7535046000000,
+      "status": "MEASURED",
+      "working_set_bytes": 338436096,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217530880
+    },
+    {
+      "monotonic_ns": 7536046000000,
+      "status": "MEASURED",
+      "working_set_bytes": 340201472,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217530880
+    },
+    {
+      "monotonic_ns": 7537078000000,
+      "status": "MEASURED",
+      "working_set_bytes": 342208512,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217858560
+    },
+    {
+      "monotonic_ns": 7538140000000,
+      "status": "MEASURED",
+      "working_set_bytes": 343597056,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217858560
+    },
+    {
+      "monotonic_ns": 7539156000000,
+      "status": "MEASURED",
+      "working_set_bytes": 344866816,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217858560
+    },
+    {
+      "monotonic_ns": 7540171000000,
+      "status": "MEASURED",
+      "working_set_bytes": 345747456,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217858560
+    },
+    {
+      "monotonic_ns": 7541203000000,
+      "status": "MEASURED",
+      "working_set_bytes": 346763264,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217858560
+    },
+    {
+      "monotonic_ns": 7542203000000,
+      "status": "MEASURED",
+      "working_set_bytes": 347467776,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217858560
+    },
+    {
+      "monotonic_ns": 7543265000000,
+      "status": "MEASURED",
+      "working_set_bytes": 348368896,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217858560
+    },
+    {
+      "monotonic_ns": 7544265000000,
+      "status": "MEASURED",
+      "working_set_bytes": 349040640,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217858560
+    },
+    {
+      "monotonic_ns": 7545281000000,
+      "status": "MEASURED",
+      "working_set_bytes": 349806592,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217727488
+    },
+    {
+      "monotonic_ns": 7546296000000,
+      "status": "MEASURED",
+      "working_set_bytes": 350380032,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217727488
+    },
+    {
+      "monotonic_ns": 7547296000000,
+      "status": "MEASURED",
+      "working_set_bytes": 350851072,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217727488
+    },
+    {
+      "monotonic_ns": 7548328000000,
+      "status": "MEASURED",
+      "working_set_bytes": 351391744,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217727488
+    },
+    {
+      "monotonic_ns": 7549343000000,
+      "status": "MEASURED",
+      "working_set_bytes": 351711232,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217661952
+    },
+    {
+      "monotonic_ns": 7550359000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352350208,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217661952
+    },
+    {
+      "monotonic_ns": 7551375000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352772096,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217661952
+    },
+    {
+      "monotonic_ns": 7552390000000,
+      "status": "MEASURED",
+      "working_set_bytes": 353087488,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7553406000000,
+      "status": "MEASURED",
+      "working_set_bytes": 353533952,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7554421000000,
+      "status": "MEASURED",
+      "working_set_bytes": 353931264,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7555421000000,
+      "status": "MEASURED",
+      "working_set_bytes": 354377728,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7556437000000,
+      "status": "MEASURED",
+      "working_set_bytes": 353935360,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7557468000000,
+      "status": "MEASURED",
+      "working_set_bytes": 354205696,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7558484000000,
+      "status": "MEASURED",
+      "working_set_bytes": 354467840,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7559500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 354684928,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7560500000000,
+      "status": "MEASURED",
+      "working_set_bytes": 354930688,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7561531000000,
+      "status": "MEASURED",
+      "working_set_bytes": 355241984,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7562546000000,
+      "status": "MEASURED",
+      "working_set_bytes": 355344384,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7563546000000,
+      "status": "MEASURED",
+      "working_set_bytes": 355590144,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7564578000000,
+      "status": "MEASURED",
+      "working_set_bytes": 355926016,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7565609000000,
+      "status": "MEASURED",
+      "working_set_bytes": 356147200,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7566640000000,
+      "status": "MEASURED",
+      "working_set_bytes": 356491264,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7567656000000,
+      "status": "MEASURED",
+      "working_set_bytes": 356900864,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7568671000000,
+      "status": "MEASURED",
+      "working_set_bytes": 357183488,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7569703000000,
+      "status": "MEASURED",
+      "working_set_bytes": 357605376,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7570750000000,
+      "status": "MEASURED",
+      "working_set_bytes": 357908480,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7571750000000,
+      "status": "MEASURED",
+      "working_set_bytes": 367714304,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217596416
+    },
+    {
+      "monotonic_ns": 7572781000000,
+      "status": "MEASURED",
+      "working_set_bytes": 373055488,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218251776
+    },
+    {
+      "monotonic_ns": 7573859000000,
+      "status": "MEASURED",
+      "working_set_bytes": 373104640,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218251776
+    },
+    {
+      "monotonic_ns": 7574937000000,
+      "status": "MEASURED",
+      "working_set_bytes": 370925568,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218251776
+    },
+    {
+      "monotonic_ns": 7575953000000,
+      "status": "MEASURED",
+      "working_set_bytes": 367939584,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218251776
+    },
+    {
+      "monotonic_ns": 7577015000000,
+      "status": "MEASURED",
+      "working_set_bytes": 365109248,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218251776
+    },
+    {
+      "monotonic_ns": 7578015000000,
+      "status": "MEASURED",
+      "working_set_bytes": 365150208,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218251776
+    },
+    {
+      "monotonic_ns": 7579015000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352612352,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217793024
+    },
+    {
+      "monotonic_ns": 7580031000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352784384,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217661952
+    },
+    {
+      "monotonic_ns": 7581093000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352866304,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217530880
+    },
+    {
+      "monotonic_ns": 7582093000000,
+      "status": "MEASURED",
+      "working_set_bytes": 353013760,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217530880
+    },
+    {
+      "monotonic_ns": 7583109000000,
+      "status": "MEASURED",
+      "working_set_bytes": 353001472,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217268736
+    },
+    {
+      "monotonic_ns": 7584140000000,
+      "status": "MEASURED",
+      "working_set_bytes": 353243136,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3217268736
+    },
+    {
+      "monotonic_ns": 7585156000000,
+      "status": "MEASURED",
+      "working_set_bytes": 353075200,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216617472
+    },
+    {
+      "monotonic_ns": 7586187000000,
+      "status": "MEASURED",
+      "working_set_bytes": 353218560,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216617472
+    },
+    {
+      "monotonic_ns": 7587250000000,
+      "status": "MEASURED",
+      "working_set_bytes": 353013760,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216355328
+    },
+    {
+      "monotonic_ns": 7588250000000,
+      "status": "MEASURED",
+      "working_set_bytes": 360550400,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216355328
+    },
+    {
+      "monotonic_ns": 7589312000000,
+      "status": "MEASURED",
+      "working_set_bytes": 361013248,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216355328
+    },
+    {
+      "monotonic_ns": 7590343000000,
+      "status": "MEASURED",
+      "working_set_bytes": 361054208,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216355328
+    },
+    {
+      "monotonic_ns": 7591343000000,
+      "status": "MEASURED",
+      "working_set_bytes": 361152512,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216355328
+    },
+    {
+      "monotonic_ns": 7592375000000,
+      "status": "MEASURED",
+      "working_set_bytes": 361480192,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216355328
+    },
+    {
+      "monotonic_ns": 7593375000000,
+      "status": "MEASURED",
+      "working_set_bytes": 361578496,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216355328
+    },
+    {
+      "monotonic_ns": 7594375000000,
+      "status": "MEASURED",
+      "working_set_bytes": 362528768,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7595421000000,
+      "status": "MEASURED",
+      "working_set_bytes": 362692608,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7596453000000,
+      "status": "MEASURED",
+      "working_set_bytes": 362778624,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7597468000000,
+      "status": "MEASURED",
+      "working_set_bytes": 362991616,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7598468000000,
+      "status": "MEASURED",
+      "working_set_bytes": 363294720,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7599484000000,
+      "status": "MEASURED",
+      "working_set_bytes": 363417600,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7600484000000,
+      "status": "MEASURED",
+      "working_set_bytes": 363274240,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7601515000000,
+      "status": "MEASURED",
+      "working_set_bytes": 358633472,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7602546000000,
+      "status": "MEASURED",
+      "working_set_bytes": 358047744,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7603578000000,
+      "status": "MEASURED",
+      "working_set_bytes": 358100992,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7604578000000,
+      "status": "MEASURED",
+      "working_set_bytes": 353951744,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7605578000000,
+      "status": "MEASURED",
+      "working_set_bytes": 351383552,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7606593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 351518720,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7607593000000,
+      "status": "MEASURED",
+      "working_set_bytes": 351555584,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7608609000000,
+      "status": "MEASURED",
+      "working_set_bytes": 351772672,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7609625000000,
+      "status": "MEASURED",
+      "working_set_bytes": 351969280,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7610625000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352010240,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7611640000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352169984,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7612671000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352317440,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7613718000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352350208,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7614734000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352546816,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7615750000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352702464,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7616781000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352677888,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7617828000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352813056,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7618828000000,
+      "status": "MEASURED",
+      "working_set_bytes": 352985088,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3216392192
+    },
+    {
+      "monotonic_ns": 7619828000000,
+      "status": "MEASURED",
+      "working_set_bytes": 413036544,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218620416
+    },
+    {
+      "monotonic_ns": 7620828000000,
+      "status": "MEASURED",
+      "working_set_bytes": 416387072,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3218620416
+    },
+    {
+      "monotonic_ns": 7621843000000,
+      "status": "MEASURED",
+      "working_set_bytes": 418557952,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3220590592
+    },
+    {
+      "monotonic_ns": 7622843000000,
+      "status": "MEASURED",
+      "working_set_bytes": 430145536,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3234955264
+    },
+    {
+      "monotonic_ns": 7623843000000,
+      "status": "MEASURED",
+      "working_set_bytes": 434634752,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3234955264
+    },
+    {
+      "monotonic_ns": 7624843000000,
+      "status": "MEASURED",
+      "working_set_bytes": 400580608,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3243360256
+    },
+    {
+      "monotonic_ns": 7625859000000,
+      "status": "MEASURED",
+      "working_set_bytes": 405532672,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3243307008
+    },
+    {
+      "monotonic_ns": 7626859000000,
+      "status": "MEASURED",
+      "working_set_bytes": 410603520,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3251712000
+    },
+    {
+      "monotonic_ns": 7627875000000,
+      "status": "MEASURED",
+      "working_set_bytes": 418947072,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3260116992
+    },
+    {
+      "monotonic_ns": 7628890000000,
+      "status": "MEASURED",
+      "working_set_bytes": 427601920,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3268128768
+    },
+    {
+      "monotonic_ns": 7629906000000,
+      "status": "MEASURED",
+      "working_set_bytes": 432353280,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3268128768
+    },
+    {
+      "monotonic_ns": 7630906000000,
+      "status": "MEASURED",
+      "working_set_bytes": 432971776,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3268128768
+    },
+    {
+      "monotonic_ns": 7631906000000,
+      "status": "MEASURED",
+      "working_set_bytes": 437428224,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3276533760
+    },
+    {
+      "monotonic_ns": 7632984000000,
+      "status": "MEASURED",
+      "working_set_bytes": 437927936,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3276402688
+    },
+    {
+      "monotonic_ns": 7633984000000,
+      "status": "MEASURED",
+      "working_set_bytes": 442396672,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3276402688
+    },
+    {
+      "monotonic_ns": 7635046000000,
+      "status": "MEASURED",
+      "working_set_bytes": 443215872,
+      "peak_working_set_bytes": 1530978304,
+      "private_commit_bytes": 3276140544
+    }
+  ],
+  "scope": "UE process only; excludes policy/runner, shared GPU memory and system totals"
+}

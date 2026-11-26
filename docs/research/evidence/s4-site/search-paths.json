@@ -1,0 +1,248 @@
+{
+  "source_run": "s4-site-registered-search",
+  "inventory_sha256": "0b590f222900d1b9a13d858a16bd2950f8fc51e1dc201a6dd57dacb7bf9c2cc9",
+  "episodes": [
+    {
+      "episode": "e000",
+      "family": "indoor_damaged_assets_v2",
+      "method": "frontier",
+      "initial_visible_pixels": 0,
+      "first_visible_tick": 22,
+      "first_correct_tick": 36,
+      "first_correct_task_s": 18.0,
+      "native_path_by_first_correct_m": 0.8631235371740826,
+      "terminal_task_s": 89.5,
+      "path_m": 3.7280079276084086,
+      "safety_events": [],
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.8,
+        "safe_time_integrated_recall": 0.8,
+        "first_correct_ns": 18000000000,
+        "restricted_first_ns": 18000000000,
+        "localization_xy_m": [
+          0.07466736908347502
+        ],
+        "localization_median_m": 0.07466736908347502,
+        "localization_p90_m": 0.07466736908347502,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.5575216005847881,
+            "nll_xy": -2.4885323192863513,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 3.7280079276084086,
+        "brier": 0.11747127912602551,
+        "terminal_reason": "FINISH"
+      },
+      "native_pose_at_first_correct": [
+        0.6610981605449371,
+        0.5529478877531544,
+        0.21681463553558958
+      ]
+    },
+    {
+      "episode": "e001",
+      "family": "indoor_damaged_assets_v2",
+      "method": "core",
+      "initial_visible_pixels": 0,
+      "first_visible_tick": 141,
+      "first_correct_tick": null,
+      "first_correct_task_s": null,
+      "native_path_by_first_correct_m": null,
+      "terminal_task_s": 89.5,
+      "path_m": 1.9576726551882953,
+      "safety_events": [],
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 90000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.9576726551882953,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e002",
+      "family": "outdoor_damaged_assets_v2",
+      "method": "frontier",
+      "initial_visible_pixels": 201,
+      "first_visible_tick": 0,
+      "first_correct_tick": 1,
+      "first_correct_task_s": 0.5,
+      "native_path_by_first_correct_m": 0.0,
+      "terminal_task_s": 57.5,
+      "path_m": 2.7547083084564408,
+      "safety_events": [
+        "CONTACT"
+      ],
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 0.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": false,
+        "unsafe": true,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9944444444444445,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.06817933606228854
+        ],
+        "localization_median_m": 0.06817933606228854,
+        "localization_p90_m": 0.06817933606228854,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.4648421865894478,
+            "nll_xy": -2.5348720262840216,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 2.7547083084564408,
+        "brier": 0.08082479515059138,
+        "terminal_reason": "SAFETY_ABORT"
+      },
+      "native_pose_at_first_correct": [
+        0.0,
+        -0.0,
+        0.2500000029182011
+      ]
+    },
+    {
+      "episode": "e003",
+      "family": "outdoor_damaged_assets_v2",
+      "method": "core",
+      "initial_visible_pixels": 201,
+      "first_visible_tick": 0,
+      "first_correct_tick": 1,
+      "first_correct_task_s": 0.5,
+      "native_path_by_first_correct_m": 0.024999999999999977,
+      "terminal_task_s": 67.0,
+      "path_m": 2.7903690371898824,
+      "safety_events": [
+        "CONTACT"
+      ],
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 0.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": false,
+        "unsafe": true,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9944444444444445,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.06699887923617746
+        ],
+        "localization_median_m": 0.06699887923617746,
+        "localization_p90_m": 0.06699887923617746,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.4488849818903892,
+            "nll_xy": -2.542850628633551,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 2.7903690371898824,
+        "brier": 0.10622729504263262,
+        "terminal_reason": "SAFETY_ABORT"
+      },
+      "native_pose_at_first_correct": [
+        0.024748737341529117,
+        0.0035355339059327403,
+        -0.0
+      ]
+    }
+  ],
+  "scope": "Privileged post-run analysis. Native cumulative translation at the task tick of the first correct report. Visibility from the depth-tested ledger mask."
+}

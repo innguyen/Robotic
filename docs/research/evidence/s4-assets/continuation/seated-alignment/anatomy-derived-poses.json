@@ -1,0 +1,65 @@
+{
+  "standing": {
+    "file": "standing.obj",
+    "sha256": "5d1c3218267bbd203865d75f28e682e80fb8ccd0d44a9c9bf1d12c37be068341",
+    "vertices": 13380,
+    "triangles": 26756,
+    "torso_height_m": 1.1517829808690845,
+    "bounds_relative_m": [
+      [
+        -0.14442340473009627,
+        -0.28397883413670766,
+        -1.1517829808690845
+      ],
+      [
+        0.17356713228364412,
+        0.28397883413670766,
+        0.5982170191309151
+      ]
+    ],
+    "human_source": "MakeHuman CC0 anatomical base; original garment shaping",
+    "limitations": "one neutral identity; no facial/skin texture scans, cloth simulation or appearance coverage"
+  },
+  "seated": {
+    "file": "seated.obj",
+    "sha256": "4ef024f6633008da46deb5e4cd7b1151d611694541808f69f5b812e2ebd0620d",
+    "vertices": 13380,
+    "triangles": 26756,
+    "torso_height_m": 0.7562242488000928,
+    "bounds_relative_m": [
+      [
+        -0.12236209542915741,
+        -0.2669939713720118,
+        -0.7562242488000928
+      ],
+      [
+        0.6288998893498027,
+        0.2669939713720118,
+        0.5982170191309149
+      ]
+    ],
+    "human_source": "MakeHuman CC0 anatomical base; original garment shaping",
+    "limitations": "one neutral identity; no facial/skin texture scans, cloth simulation or appearance coverage"
+  },
+  "prone": {
+    "file": "prone.obj",
+    "sha256": "fa09328349b327bf9fda1b78265ed4bcbe8859086805aefe1f573de19e2de352",
+    "vertices": 13380,
+    "triangles": 26756,
+    "torso_height_m": 0.17356713228364412,
+    "bounds_relative_m": [
+      [
+        -1.1517829808690845,
+        -0.28397883413670766,
+        -0.17356713228364412
+      ],
+      [
+        0.598217019130915,
+        0.28397883413670766,
+        0.1444234047300963
+      ]
+    ],
+    "human_source": "MakeHuman CC0 anatomical base; original garment shaping",
+    "limitations": "one neutral identity; no facial/skin texture scans, cloth simulation or appearance coverage"
+  }
+}

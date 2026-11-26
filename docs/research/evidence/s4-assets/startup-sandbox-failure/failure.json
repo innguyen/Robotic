@@ -1,0 +1,6 @@
+{
+  "status": "FAILED",
+  "phase": "runtime",
+  "traceback": "Traceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\runner.py\", line 242, in main\n    raise RuntimeError(f\"engine exited before ready: {engine.returncode}\")\nRuntimeError: engine exited before ready: 3\n",
+  "completed_episodes": 0
+}

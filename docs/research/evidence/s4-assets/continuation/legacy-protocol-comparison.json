@@ -1,0 +1,316 @@
+{
+  "old_manifest_sha256": "8ebc7c959a12eaf20861e0061112d7d2948d2adc59e64e500ecf8566cf355397",
+  "new_manifest_sha256": "a47b0bdbd39414ea0766efb8052a680d945d31565c867524abf136b6a11853da",
+  "new_schedule_sha256": "2d1a769c0099ea97e2a2733830509ea66bdfd5a9ad74178eda55e67995ebf9ee",
+  "observed_protocol": {
+    "suite": {
+      "original": "sar-pilot",
+      "rerun": "sar-pilot",
+      "matches": true
+    },
+    "ticks": {
+      "original": 60,
+      "rerun": 60,
+      "matches": true
+    },
+    "seeds": {
+      "original": 1,
+      "rerun": 1,
+      "matches": true
+    },
+    "methods": {
+      "original": [
+        "frontier",
+        "core",
+        "verify"
+      ],
+      "rerun": [
+        "frontier",
+        "core",
+        "verify"
+      ],
+      "matches": true
+    },
+    "rgbd_size": {
+      "original": [
+        320,
+        240
+      ],
+      "rerun": [
+        320,
+        240
+      ],
+      "matches": true
+    },
+    "threshold": {
+      "original": 0.5,
+      "rerun": 0.5,
+      "matches": true
+    },
+    "max_reports": {
+      "original": 5,
+      "rerun": 5,
+      "matches": true
+    },
+    "action_dt_ns": {
+      "original": 500000000,
+      "rerun": 500000000,
+      "matches": true
+    },
+    "scan_rays": {
+      "original": 360,
+      "rerun": 360,
+      "matches": true
+    },
+    "depth_model": {
+      "original": "structured",
+      "rerun": "structured",
+      "matches": true
+    },
+    "calibrate": {
+      "original": true,
+      "rerun": true,
+      "matches": true
+    },
+    "render_quality": {
+      "original": "preview",
+      "rerun": "preview",
+      "matches": true
+    },
+    "requested_rhi": {
+      "original": "d3d11",
+      "rerun": "d3d11",
+      "matches": true
+    },
+    "pre_policy_admissibility": {
+      "original": true,
+      "rerun": true,
+      "matches": true
+    },
+    "model_sha256": {
+      "original": "04f0e55c26f58d17145b36045780fe1250d5bd2187543e11568e5141d05b3262",
+      "rerun": "04f0e55c26f58d17145b36045780fe1250d5bd2187543e11568e5141d05b3262",
+      "matches": true
+    },
+    "confidence": {
+      "original": 0.4,
+      "rerun": 0.4,
+      "matches": true
+    }
+  },
+  "known_episodes": [
+    {
+      "episode": "e000",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e001",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e002",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e003",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e004",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e005",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e006",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e007",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e008",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e009",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e010",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e011",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e012",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e013",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e014",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e015",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e016",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e017",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e018",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e019",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e020",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e021",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e022",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e023",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e024",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e025",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e026",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e027",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e028",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e029",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e030",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e031",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e032",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e033",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e034",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e035",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e036",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e037",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e038",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e039",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e040",
+      "method_matches": true,
+      "config_matches": true
+    },
+    {
+      "episode": "e041",
+      "method_matches": true,
+      "config_matches": true
+    }
+  ],
+  "scheduled_current": 54,
+  "original_schedule_available": false,
+  "scope": "New full development run with current source and lighting. Only original configs and method starts actually present are compared; no concatenation, missing-episode inference or bitwise replay claim."
+}

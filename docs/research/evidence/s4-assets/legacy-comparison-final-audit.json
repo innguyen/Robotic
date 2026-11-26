@@ -1,0 +1,28 @@
+{
+  "inventory": true,
+  "reference_episodes": 2,
+  "public_packets": 8,
+  "source_snapshot": true,
+  "errors": [],
+  "engine_exit_code": 0,
+  "engine_clean_exit": true,
+  "robot_visual_geometry": true,
+  "delivery_timing_packets": 8,
+  "host_runner_clock_implementation_matches": true,
+  "native_capture_packets": 31,
+  "native_capture_window_wall_s": 58.047,
+  "readback_interval_s": {
+    "median": 0.11,
+    "max": 0.187
+  },
+  "asset_manifest_checks": {
+    "asset-manifest.json": "PASS",
+    "human-pose-manifest.json": "PASS"
+  },
+  "controls": {},
+  "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+  "requested_calibration_status": "PASS_ENGINE_CALIBRATION",
+  "run_acceptance_errors": [],
+  "scheduled_episode_count": 2,
+  "status": "PASS_OFFLINE_AUDIT"
+}

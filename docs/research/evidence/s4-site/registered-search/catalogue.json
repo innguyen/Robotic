@@ -1,0 +1,131 @@
+{
+  "created_utc": "2026-11-26T11:06:36.195350+00:00",
+  "python": "3.11.8 (tags/v3.11.8:db85d51, Feb  6 2024, 22:03:32) [MSC v.1937 64 bit (AMD64)]",
+  "numpy": "2.2.6",
+  "opencv": "4.11.0",
+  "attempts": [
+    {
+      "run": "s4-site-registered-search",
+      "label": "run",
+      "audit": "PASS_OFFLINE_AUDIT",
+      "data_integrity": "PASS_OFFLINE_DATA_AUDIT",
+      "calibration": "PASS_ENGINE_CALIBRATION",
+      "summary": {
+        "scope": "descriptive development pilot only; no significance, generalization or fixed-FAR claim",
+        "run_status": "COMPLETED_HUMAN_DEV_UE_RUNTIME",
+        "completed_episodes": 4,
+        "engine_exit_code": 0,
+        "results_sha256": "e8a94663d47df43d1d40dff9f9b9c42185fc995c3d0fbc37127a772e165f8f86",
+        "source_inventory_sha256": "0b590f222900d1b9a13d858a16bd2950f8fc51e1dc201a6dd57dacb7bf9c2cc9",
+        "table": [
+          {
+            "method": "core",
+            "kind": "clean",
+            "P": 0,
+            "N": 0,
+            "episodes": 2,
+            "auxiliary_failure_challenge": false,
+            "safe_localization_recall": 0.0,
+            "tp": 1,
+            "fp": 0,
+            "unsafe_episodes": 1,
+            "absent_false_alarm_rate": null,
+            "path_mean_m": 2.374020846189089,
+            "localization_matched_count": 1,
+            "localization_median_m": 0.06699887923617746,
+            "localization_p90_m": 0.06699887923617746,
+            "time_integrated_recall": 0.49722222222222223,
+            "action_latency_p50_s": 0.8204908500001693,
+            "action_latency_p95_s": 2.1514586649996996
+          },
+          {
+            "method": "frontier",
+            "kind": "clean",
+            "P": 0,
+            "N": 0,
+            "episodes": 2,
+            "auxiliary_failure_challenge": false,
+            "safe_localization_recall": 0.5,
+            "tp": 2,
+            "fp": 0,
+            "unsafe_episodes": 1,
+            "absent_false_alarm_rate": null,
+            "path_mean_m": 3.2413581180324247,
+            "localization_matched_count": 2,
+            "localization_median_m": 0.07142335257288178,
+            "localization_p90_m": 0.07401856578135636,
+            "time_integrated_recall": 0.8972222222222223,
+            "action_latency_p50_s": 0.680428399999073,
+            "action_latency_p95_s": 1.4713044099989931
+          }
+        ],
+        "rq1": null,
+        "rq2_joint_verify_minus_frontier": {
+          "family_deltas": {},
+          "mean": null,
+          "ci95": null,
+          "reason": "dev corpus is not an independent held-out family sample"
+        },
+        "wall_duration_s": 1585.639468899999,
+        "task_budget_s": 90.0,
+        "action_dt_ns": 500000000,
+        "scientific_main_eligible": false
+      },
+      "archive_provenance": {
+        "kind": "PARTIAL_LOCAL_RAW_INDEX",
+        "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-site-registered-search",
+        "source_inventory_sha256": "0b590f222900d1b9a13d858a16bd2950f8fc51e1dc201a6dd57dacb7bf9c2cc9",
+        "source_run_repository_relative": "experiments/ue5_s4/runs/s4-site-registered-search",
+        "omitted": {
+          "private/host.jsonl.gz": {
+            "sha256": "d96b414e635d3e9e5341b85aa27ece392d582cde7dfd68965085342b7a31c842",
+            "bytes": 95806851
+          },
+          "public/observations.jsonl.gz": {
+            "sha256": "621fc40d5df3790a57a04cdc32419b47698ed25be66bb430eb890ee42b6732b5",
+            "bytes": 215976688
+          }
+        },
+        "raw_streams_included": false,
+        "note": "Original run untouched. Scratch captures are already losslessly embedded in raw host stream. A partial index requires original local raw files for audit/replay."
+      }
+    }
+  ],
+  "analysis_source_sha256": {
+    "__init__.py": "d1803781442a6b0a2c796fd26011cc8bf714e2a50759bce5e98bdf4fdfb653cd",
+    "admissibility.py": "614b61e409ed5ede24782f5dac586f39e873e2bc893cd5a9fb9bc9f57822705f",
+    "agent_worker.py": "bca3dce8a692b1b6873c48d146ea2663f6edf2dec15b81dddf9e855c7b35f5f0",
+    "archive_run.py": "acfc9857e48949ca340529713ff59ebd30dda33ca53fd6e61a2243983041bfa4",
+    "artifacts.py": "0104b912b6e0681bec39392260d7b15cbfcf1fc377be0a5a06f6dcca17596b70",
+    "asset_scenarios.py": "dbd44ba17c70d23c63c356c26f6aeeaf443747e17af0a8257021402ac67c13e8",
+    "audit_run.py": "67c9cb647825e5d5c4421768b341daffb8d85c60a377594510a07ee699f7147f",
+    "calibration.py": "b303c54ad09d24203c44361ad0256a89230c801ce114e9f3a653f5b9f1649410",
+    "capture.py": "585f89f2ae6895f6e19e5807ab2a5e552f3975b5dfcc178961af6257bd36d725",
+    "contracts.py": "96b79fcaf763f5f4fb134fd756d77be2bc0525a17596bca3950983e38485b817",
+    "core_policy.py": "9cae2ab6ce83cb90899190a95b57415aa82a56a12978b432a1c87f5b3c2d9a48",
+    "embodiment.py": "882aeb73e836beb4aeb54572d54b7443079a816316946f83d4405abe48ab60f9",
+    "episode.py": "59c6222a05c6b9e10d16d4ecaff44a91ee906e5d8e9c5152fdf61548f920be9e",
+    "episode_video.py": "32ad807aedbbf0e9c42bea12b51677e4e089e3315f2ccfc43c61341afc39a465",
+    "evaluator.py": "b94a08d25b4146b618330aa5d84fd3d3576a29eda201cbc9cadd37c82525d0c5",
+    "frontier_policy.py": "a833fe412229ebc099f6a2413bc1006ad568c3ed3e50dc1efedac7a031f2d2e9",
+    "geometry.py": "11fa20e362691c37fb027d65068b3b92219a4b19841affefd2a8494498b81316",
+    "imageio.py": "6a7bd1cc32b610964a3c417e8264bc3f31e85c8d820ab4190d1a5e41c180a646",
+    "perception.py": "f6d2cfd716bf2a45dd62347b7aa4220f8ae1624be28b8cffbd30e39ee071589c",
+    "policies.py": "cc69b625956ab808a63b2884575a9d91b8b03c980b32d66b0e8b3bac0c3906b3",
+    "reference.py": "0c770d6d5585a72d365d4df5c8292482e50ccada73feba96d5f71d1915ea9efc",
+    "runner.py": "31a7c6a47f457ac91dbb7e5c5c5836b7c278bdbdbfe3cd6598ec59b50cb67ea3",
+    "runtime_metrics.py": "1ed4f94f0fc22e8b6836a8d11f06d3250bd0d1e6176336c9746110ac9d275da0",
+    "safety.py": "e9ea56222e27b75c3355bea507854bce1c1ee6542bf6065af02c80487cbbb9cb",
+    "scenario_contract.py": "0ac10fa82a43250eb9ac9a11c3bdcecf5b4a66cf02a982b2a7589d26ce62553f",
+    "scenarios.py": "78034894cf2f48b011f6f1f0ef3a266c28e61a10c536785c4365d2c6f4e451f6",
+    "sensor_response.py": "53553740e41bd40d18c3f2003551aa1218f92310de183db22f9487a8ad91125e",
+    "sensor_study.py": "3bd71c9de6b797495f329ebbad04cd1c542fd34c0431f9c38595f0328c8d1bdc",
+    "statistics.py": "c1391a45b2b40bcee780225eb8f0872349fb733fb27129ccbe6ef8265c15d49e",
+    "summarize_run.py": "9c6318c73d3a5d5ca8de05c76c4ac8eccd351905b1a3684aabaa29859a5e19a0",
+    "tracking.py": "4391dbdc534736bb53f7150dcad61131c5494f5c2f44b75d71bed9fa406b6150",
+    "transport.py": "aa2b575f91df8cd327377921725471e170ac74cede6b2470a02c3fc63e6f8039",
+    "ue_backend.py": "4614301964cdcc5848ca918c0a7f53671549deb86b7726f0318f27f68f4a54f2",
+    "visual_qa.py": "54bca7c4551aad63c0c33c1fff0af90a0735c0b58d84ccf1913c04e84f0004cb"
+  },
+  "scope": "All new attempts retained; audit PASS is trace/runtime integrity, not detector coverage, photorealism, full frozen matrix or S3/S5 acceptance"
+}

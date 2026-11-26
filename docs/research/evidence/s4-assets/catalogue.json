@@ -1,0 +1,506 @@
+{
+  "created_utc": "2026-11-26T04:03:43.797149+00:00",
+  "python": "3.11.8 (tags/v3.11.8:db85d51, Feb  6 2024, 22:03:32) [MSC v.1937 64 bit (AMD64)]",
+  "numpy": "2.2.6",
+  "opencv": "4.11.0",
+  "attempts": [
+    {
+      "run": "s4-assets-before",
+      "label": "startup-sandbox-failure",
+      "audit": "FAIL",
+      "data_integrity": "INCOMPLETE_UNACCEPTED",
+      "calibration": "NOT_AUDITED",
+      "summary": null,
+      "archive_provenance": {
+        "kind": "FAILED_STARTUP_METADATA_COPY",
+        "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-assets-before",
+        "source_inventory_sha256": "bf0f37d97dbaa7a76a748333afcb32c29c6c5c6b43a6361a7143012dd3bae477",
+        "note": "No sensor stream was created; this is failed startup evidence, never an accepted episode."
+      }
+    },
+    {
+      "run": "s4-assets-before-authorized",
+      "label": "baseline-before",
+      "audit": "PASS_OFFLINE_AUDIT",
+      "data_integrity": "PASS_OFFLINE_DATA_AUDIT",
+      "calibration": "PASS_ENGINE_CALIBRATION",
+      "summary": {
+        "scope": "descriptive development pilot only; no significance, generalization or fixed-FAR claim",
+        "run_status": "COMPLETED_HUMAN_DEV_UE_RUNTIME",
+        "completed_episodes": 2,
+        "engine_exit_code": 0,
+        "results_sha256": "5c36a39d6f42194f04009d6668469e42b513c68d612dc4cdd85b89d51cc5f271",
+        "source_inventory_sha256": "cec6ea7d2d54ab5f61d9f573617a45973e6499113659ad8c50363aa1eaf5628f",
+        "table": [
+          {
+            "method": "frontier",
+            "kind": "clean",
+            "P": 0,
+            "N": 0,
+            "episodes": 2,
+            "auxiliary_failure_challenge": false,
+            "safe_localization_recall": 0.5,
+            "tp": 1,
+            "fp": 0,
+            "unsafe_episodes": 0,
+            "absent_false_alarm_rate": null,
+            "path_mean_m": 0.0,
+            "localization_matched_count": 1,
+            "localization_median_m": 0.07957011821613924,
+            "localization_p90_m": 0.07957011821613924,
+            "time_integrated_recall": 0.125,
+            "action_latency_p50_s": 1.1596676500012109,
+            "action_latency_p95_s": 1.683877200000279
+          }
+        ],
+        "rq1": null,
+        "rq2_joint_verify_minus_frontier": {
+          "family_deltas": {},
+          "mean": null,
+          "ci95": null,
+          "reason": "dev corpus is not an independent held-out family sample"
+        },
+        "wall_duration_s": 110.01210719999654,
+        "task_budget_s": 2.0,
+        "action_dt_ns": 500000000,
+        "scientific_main_eligible": false
+      },
+      "archive_provenance": {
+        "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+        "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-assets-before-authorized",
+        "source_inventory_sha256": "cec6ea7d2d54ab5f61d9f573617a45973e6499113659ad8c50363aa1eaf5628f",
+        "source_run_repository_relative": "experiments/ue5_s4/runs/s4-assets-before-authorized",
+        "omitted": {},
+        "raw_streams_included": true,
+        "note": "Original run untouched. Scratch captures are already losslessly embedded in raw host stream. A partial index requires original local raw files for audit/replay."
+      }
+    },
+    {
+      "run": "s4-assets-import-01",
+      "label": "import-01",
+      "audit": "PASS_OFFLINE_AUDIT",
+      "data_integrity": "PASS_OFFLINE_DATA_AUDIT",
+      "calibration": "PASS_ENGINE_CALIBRATION",
+      "summary": {
+        "scope": "descriptive development pilot only; no significance, generalization or fixed-FAR claim",
+        "run_status": "COMPLETED_HUMAN_DEV_UE_RUNTIME",
+        "completed_episodes": 6,
+        "engine_exit_code": 0,
+        "results_sha256": "bbe3b314b1d50a1c7c6126d9abdcc0e6a6f9cd1243714ffaf7e80333310095e5",
+        "source_inventory_sha256": "bee220a23dec6e0112db6535a91a59af122683b1edad6700869572f7b2683ebb",
+        "table": [
+          {
+            "method": "frontier",
+            "kind": "clean",
+            "P": 0,
+            "N": 0,
+            "episodes": 6,
+            "auxiliary_failure_challenge": false,
+            "safe_localization_recall": 0.16666666666666666,
+            "tp": 1,
+            "fp": 0,
+            "unsafe_episodes": 0,
+            "absent_false_alarm_rate": null,
+            "path_mean_m": 0.0,
+            "localization_matched_count": 1,
+            "localization_median_m": 0.054782122133952005,
+            "localization_p90_m": 0.054782122133952005,
+            "time_integrated_recall": 0.08333333333333333,
+            "action_latency_p50_s": 0.9669119500031229,
+            "action_latency_p95_s": 1.5352285700006174
+          }
+        ],
+        "rq1": null,
+        "rq2_joint_verify_minus_frontier": {
+          "family_deltas": {},
+          "mean": null,
+          "ci95": null,
+          "reason": "dev corpus is not an independent held-out family sample"
+        },
+        "wall_duration_s": 188.40350899999612,
+        "task_budget_s": 2.0,
+        "action_dt_ns": 500000000,
+        "scientific_main_eligible": false
+      },
+      "archive_provenance": {
+        "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+        "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-assets-import-01",
+        "source_inventory_sha256": "bee220a23dec6e0112db6535a91a59af122683b1edad6700869572f7b2683ebb",
+        "source_run_repository_relative": "experiments/ue5_s4/runs/s4-assets-import-01",
+        "omitted": {},
+        "raw_streams_included": true,
+        "note": "Original run untouched. Scratch captures are already losslessly embedded in raw host stream. A partial index requires original local raw files for audit/replay."
+      }
+    },
+    {
+      "run": "s4-assets-visual-02",
+      "label": "visual-02",
+      "audit": "PASS_OFFLINE_AUDIT",
+      "data_integrity": "PASS_OFFLINE_DATA_AUDIT",
+      "calibration": "PASS_ENGINE_CALIBRATION",
+      "summary": {
+        "scope": "descriptive development pilot only; no significance, generalization or fixed-FAR claim",
+        "run_status": "COMPLETED_HUMAN_DEV_UE_RUNTIME",
+        "completed_episodes": 6,
+        "engine_exit_code": 0,
+        "results_sha256": "e72280fba64142f4a1dd528dacf77ebabf0ad11a699a582bd9991a1cf857bd23",
+        "source_inventory_sha256": "803d2b6d905ba055e48bb436c43a81b0175fc8d58f29ed24563b59fc836e1388",
+        "table": [
+          {
+            "method": "frontier",
+            "kind": "clean",
+            "P": 0,
+            "N": 0,
+            "episodes": 6,
+            "auxiliary_failure_challenge": false,
+            "safe_localization_recall": 0.16666666666666666,
+            "tp": 1,
+            "fp": 0,
+            "unsafe_episodes": 0,
+            "absent_false_alarm_rate": null,
+            "path_mean_m": 0.0,
+            "localization_matched_count": 1,
+            "localization_median_m": 0.06701251710179063,
+            "localization_p90_m": 0.06701251710179063,
+            "time_integrated_recall": 0.125,
+            "action_latency_p50_s": 1.274839299996529,
+            "action_latency_p95_s": 1.8740069049948942
+          }
+        ],
+        "rq1": null,
+        "rq2_joint_verify_minus_frontier": {
+          "family_deltas": {},
+          "mean": null,
+          "ci95": null,
+          "reason": "dev corpus is not an independent held-out family sample"
+        },
+        "wall_duration_s": 211.41256350000185,
+        "task_budget_s": 2.0,
+        "action_dt_ns": 500000000,
+        "scientific_main_eligible": false
+      },
+      "archive_provenance": {
+        "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+        "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-assets-visual-02",
+        "source_inventory_sha256": "803d2b6d905ba055e48bb436c43a81b0175fc8d58f29ed24563b59fc836e1388",
+        "source_run_repository_relative": "experiments/ue5_s4/runs/s4-assets-visual-02",
+        "omitted": {},
+        "raw_streams_included": true,
+        "note": "Original run untouched. Scratch captures are already losslessly embedded in raw host stream. A partial index requires original local raw files for audit/replay."
+      }
+    },
+    {
+      "run": "s4-assets-search-90s",
+      "label": "search-open-90s",
+      "audit": "PASS_OFFLINE_AUDIT",
+      "data_integrity": "PASS_OFFLINE_DATA_AUDIT",
+      "calibration": "PASS_ENGINE_CALIBRATION",
+      "summary": {
+        "scope": "descriptive development pilot only; no significance, generalization or fixed-FAR claim",
+        "run_status": "COMPLETED_HUMAN_DEV_UE_RUNTIME",
+        "completed_episodes": 2,
+        "engine_exit_code": 0,
+        "results_sha256": "66ac507bdd1ebac017f8b1a8cc2d90d8c7bac0ccae5e5d1eda0a8888138c55c9",
+        "source_inventory_sha256": "cdb58afcb3e51fc95a25f02924d00a191c6733b029d145049cef1982ed763091",
+        "table": [
+          {
+            "method": "core",
+            "kind": "clean",
+            "P": 0,
+            "N": 0,
+            "episodes": 2,
+            "auxiliary_failure_challenge": false,
+            "safe_localization_recall": 0.5,
+            "tp": 1,
+            "fp": 0,
+            "unsafe_episodes": 0,
+            "absent_false_alarm_rate": null,
+            "path_mean_m": 0.9641323115749091,
+            "localization_matched_count": 1,
+            "localization_median_m": 0.07454991097339826,
+            "localization_p90_m": 0.07454991097339826,
+            "time_integrated_recall": 0.49722222222222223,
+            "action_latency_p50_s": 0.9118182500023977,
+            "action_latency_p95_s": 1.8240809550017736
+          }
+        ],
+        "rq1": null,
+        "rq2_joint_verify_minus_frontier": {
+          "family_deltas": {},
+          "mean": null,
+          "ci95": null,
+          "reason": "dev corpus is not an independent held-out family sample"
+        },
+        "wall_duration_s": 1004.4095713999995,
+        "task_budget_s": 90.0,
+        "action_dt_ns": 500000000,
+        "scientific_main_eligible": false
+      },
+      "archive_provenance": {
+        "kind": "PARTIAL_LOCAL_RAW_INDEX",
+        "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-assets-search-90s",
+        "source_inventory_sha256": "cdb58afcb3e51fc95a25f02924d00a191c6733b029d145049cef1982ed763091",
+        "source_run_repository_relative": "experiments/ue5_s4/runs/s4-assets-search-90s",
+        "omitted": {
+          "private/host.jsonl.gz": {
+            "sha256": "3b18fb9f265ccf0d44b7947acb5511dcaedc82ced011776505a5f0881c82d892",
+            "bytes": 36966146
+          },
+          "public/observations.jsonl.gz": {
+            "sha256": "1b8e7a2e9f604b9a12bf957b99abba20e5876714a7e55deb7b56437fad6eb91d",
+            "bytes": 65645401
+          }
+        },
+        "raw_streams_included": false,
+        "note": "Original run untouched. Scratch captures are already losslessly embedded in raw host stream. A partial index requires original local raw files for audit/replay."
+      }
+    },
+    {
+      "run": "s4-assets-search-closed-90s",
+      "label": "search-closed-90s",
+      "audit": "PASS_OFFLINE_AUDIT",
+      "data_integrity": "PASS_OFFLINE_DATA_AUDIT",
+      "calibration": "PASS_ENGINE_CALIBRATION",
+      "summary": {
+        "scope": "descriptive development pilot only; no significance, generalization or fixed-FAR claim",
+        "run_status": "COMPLETED_HUMAN_DEV_UE_RUNTIME",
+        "completed_episodes": 2,
+        "engine_exit_code": 0,
+        "results_sha256": "7275fb6c271ed040af6ebbddefe5189899d736c5648c5d903c91b214093e1b72",
+        "source_inventory_sha256": "2d15cd782e26da42e8e3a4dea2397c5b5019a92dfc7ceed6c7937a6cc657b831",
+        "table": [
+          {
+            "method": "frontier",
+            "kind": "clean",
+            "P": 0,
+            "N": 0,
+            "episodes": 2,
+            "auxiliary_failure_challenge": false,
+            "safe_localization_recall": 0.5,
+            "tp": 2,
+            "fp": 0,
+            "unsafe_episodes": 1,
+            "absent_false_alarm_rate": null,
+            "path_mean_m": 2.4402945739983277,
+            "localization_matched_count": 2,
+            "localization_median_m": 0.10648498196383108,
+            "localization_p90_m": 0.1284080435191729,
+            "time_integrated_recall": 0.8,
+            "action_latency_p50_s": 0.8200490000017453,
+            "action_latency_p95_s": 1.4496094999987688
+          }
+        ],
+        "rq1": null,
+        "rq2_joint_verify_minus_frontier": {
+          "family_deltas": {},
+          "mean": null,
+          "ci95": null,
+          "reason": "dev corpus is not an independent held-out family sample"
+        },
+        "wall_duration_s": 662.8055278000029,
+        "task_budget_s": 90.0,
+        "action_dt_ns": 500000000,
+        "scientific_main_eligible": false
+      },
+      "archive_provenance": {
+        "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+        "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-assets-search-closed-90s",
+        "source_inventory_sha256": "2d15cd782e26da42e8e3a4dea2397c5b5019a92dfc7ceed6c7937a6cc657b831",
+        "source_run_repository_relative": "experiments/ue5_s4/runs/s4-assets-search-closed-90s",
+        "omitted": {},
+        "raw_streams_included": true,
+        "note": "Original run untouched. Scratch captures are already losslessly embedded in raw host stream. A partial index requires original local raw files for audit/replay."
+      }
+    },
+    {
+      "run": "s4-assets-final-poses",
+      "label": "final-poses",
+      "audit": "PASS_OFFLINE_AUDIT",
+      "data_integrity": "PASS_OFFLINE_DATA_AUDIT",
+      "calibration": "PASS_ENGINE_CALIBRATION",
+      "summary": {
+        "scope": "descriptive development pilot only; no significance, generalization or fixed-FAR claim",
+        "run_status": "COMPLETED_HUMAN_DEV_UE_RUNTIME",
+        "completed_episodes": 18,
+        "engine_exit_code": 0,
+        "results_sha256": "7abd5b714bca005f2e37ae9f46db4fbdd9eefbde0e10a9172d63fa3f7f630bf5",
+        "source_inventory_sha256": "6eaceca82733768ef9a645063b2672a00f412c3e08e0bac8c07b914ace7ed097",
+        "table": [
+          {
+            "method": "core",
+            "kind": "clean",
+            "P": 0,
+            "N": 0,
+            "episodes": 6,
+            "auxiliary_failure_challenge": false,
+            "safe_localization_recall": 0.16666666666666666,
+            "tp": 1,
+            "fp": 0,
+            "unsafe_episodes": 0,
+            "absent_false_alarm_rate": null,
+            "path_mean_m": 0.004166666666666663,
+            "localization_matched_count": 1,
+            "localization_median_m": 0.05703646950540282,
+            "localization_p90_m": 0.05703646950540282,
+            "time_integrated_recall": 0.125,
+            "action_latency_p50_s": 0.9620080500026233,
+            "action_latency_p95_s": 1.7473064950016113
+          },
+          {
+            "method": "frontier",
+            "kind": "clean",
+            "P": 0,
+            "N": 0,
+            "episodes": 6,
+            "auxiliary_failure_challenge": false,
+            "safe_localization_recall": 0.16666666666666666,
+            "tp": 1,
+            "fp": 0,
+            "unsafe_episodes": 0,
+            "absent_false_alarm_rate": null,
+            "path_mean_m": 0.0,
+            "localization_matched_count": 1,
+            "localization_median_m": 0.06710110926468296,
+            "localization_p90_m": 0.06710110926468296,
+            "time_integrated_recall": 0.125,
+            "action_latency_p50_s": 0.9997375999992073,
+            "action_latency_p95_s": 1.5875869099989353
+          },
+          {
+            "method": "verify",
+            "kind": "clean",
+            "P": 0,
+            "N": 0,
+            "episodes": 6,
+            "auxiliary_failure_challenge": false,
+            "safe_localization_recall": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "unsafe_episodes": 0,
+            "absent_false_alarm_rate": null,
+            "path_mean_m": 0.0,
+            "localization_matched_count": 0,
+            "localization_median_m": null,
+            "localization_p90_m": null,
+            "time_integrated_recall": 0.0,
+            "action_latency_p50_s": 1.007782099997712,
+            "action_latency_p95_s": 1.4640832100049008
+          }
+        ],
+        "rq1": null,
+        "rq2_joint_verify_minus_frontier": {
+          "family_deltas": {},
+          "mean": null,
+          "ci95": null,
+          "reason": "dev corpus is not an independent held-out family sample"
+        },
+        "wall_duration_s": 380.60010039999906,
+        "task_budget_s": 2.0,
+        "action_dt_ns": 500000000,
+        "scientific_main_eligible": false
+      },
+      "archive_provenance": {
+        "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+        "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-assets-final-poses",
+        "source_inventory_sha256": "6eaceca82733768ef9a645063b2672a00f412c3e08e0bac8c07b914ace7ed097",
+        "source_run_repository_relative": "experiments/ue5_s4/runs/s4-assets-final-poses",
+        "omitted": {},
+        "raw_streams_included": true,
+        "note": "Original run untouched. Scratch captures are already losslessly embedded in raw host stream. A partial index requires original local raw files for audit/replay."
+      }
+    },
+    {
+      "run": "s4-legacy-comparison",
+      "label": "legacy-comparison",
+      "audit": "PASS_OFFLINE_AUDIT",
+      "data_integrity": "PASS_OFFLINE_DATA_AUDIT",
+      "calibration": "PASS_ENGINE_CALIBRATION",
+      "summary": {
+        "scope": "descriptive development pilot only; no significance, generalization or fixed-FAR claim",
+        "run_status": "COMPLETED_HUMAN_DEV_UE_RUNTIME",
+        "completed_episodes": 2,
+        "engine_exit_code": 0,
+        "results_sha256": "d47b10951af8f43df97a449e2813b58edb689585764fed9608aa859237cba2d3",
+        "source_inventory_sha256": "c428805d5dca9d17c96edbaf4fbe1be5acbf423d929b2fc0112e8bb5f1991392",
+        "table": [
+          {
+            "method": "frontier",
+            "kind": "clean",
+            "P": 0,
+            "N": 0,
+            "episodes": 2,
+            "auxiliary_failure_challenge": false,
+            "safe_localization_recall": 0.0,
+            "tp": 0,
+            "fp": 0,
+            "unsafe_episodes": 0,
+            "absent_false_alarm_rate": null,
+            "path_mean_m": 0.0,
+            "localization_matched_count": 0,
+            "localization_median_m": null,
+            "localization_p90_m": null,
+            "time_integrated_recall": 0.0,
+            "action_latency_p50_s": 1.2022299999989627,
+            "action_latency_p95_s": 2.4604116550006427
+          }
+        ],
+        "rq1": null,
+        "rq2_joint_verify_minus_frontier": {
+          "family_deltas": {},
+          "mean": null,
+          "ci95": null,
+          "reason": "dev corpus is not an independent held-out family sample"
+        },
+        "wall_duration_s": 99.93068850000418,
+        "task_budget_s": 2.0,
+        "action_dt_ns": 500000000,
+        "scientific_main_eligible": false
+      },
+      "archive_provenance": {
+        "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+        "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-legacy-comparison",
+        "source_inventory_sha256": "c428805d5dca9d17c96edbaf4fbe1be5acbf423d929b2fc0112e8bb5f1991392",
+        "source_run_repository_relative": "experiments/ue5_s4/runs/s4-legacy-comparison",
+        "omitted": {},
+        "raw_streams_included": true,
+        "note": "Original run untouched. Scratch captures are already losslessly embedded in raw host stream. A partial index requires original local raw files for audit/replay."
+      }
+    }
+  ],
+  "analysis_source_sha256": {
+    "__init__.py": "d1803781442a6b0a2c796fd26011cc8bf714e2a50759bce5e98bdf4fdfb653cd",
+    "admissibility.py": "614b61e409ed5ede24782f5dac586f39e873e2bc893cd5a9fb9bc9f57822705f",
+    "agent_worker.py": "bca3dce8a692b1b6873c48d146ea2663f6edf2dec15b81dddf9e855c7b35f5f0",
+    "archive_run.py": "acfc9857e48949ca340529713ff59ebd30dda33ca53fd6e61a2243983041bfa4",
+    "artifacts.py": "0104b912b6e0681bec39392260d7b15cbfcf1fc377be0a5a06f6dcca17596b70",
+    "asset_scenarios.py": "c9340f285681a5439862bb993951c776627820a70d0bc24b6ea5057b6af05e4a",
+    "audit_run.py": "0036a6085cf27c33e89187ad0fa0feb8f7aa47b642bb83afc6fec88bdaddcf0c",
+    "calibration.py": "b303c54ad09d24203c44361ad0256a89230c801ce114e9f3a653f5b9f1649410",
+    "capture.py": "585f89f2ae6895f6e19e5807ab2a5e552f3975b5dfcc178961af6257bd36d725",
+    "contracts.py": "96b79fcaf763f5f4fb134fd756d77be2bc0525a17596bca3950983e38485b817",
+    "core_policy.py": "9cae2ab6ce83cb90899190a95b57415aa82a56a12978b432a1c87f5b3c2d9a48",
+    "embodiment.py": "882aeb73e836beb4aeb54572d54b7443079a816316946f83d4405abe48ab60f9",
+    "episode.py": "59c6222a05c6b9e10d16d4ecaff44a91ee906e5d8e9c5152fdf61548f920be9e",
+    "evaluator.py": "b94a08d25b4146b618330aa5d84fd3d3576a29eda201cbc9cadd37c82525d0c5",
+    "frontier_policy.py": "a833fe412229ebc099f6a2413bc1006ad568c3ed3e50dc1efedac7a031f2d2e9",
+    "geometry.py": "11fa20e362691c37fb027d65068b3b92219a4b19841affefd2a8494498b81316",
+    "imageio.py": "6a7bd1cc32b610964a3c417e8264bc3f31e85c8d820ab4190d1a5e41c180a646",
+    "perception.py": "f6d2cfd716bf2a45dd62347b7aa4220f8ae1624be28b8cffbd30e39ee071589c",
+    "policies.py": "cc69b625956ab808a63b2884575a9d91b8b03c980b32d66b0e8b3bac0c3906b3",
+    "reference.py": "0c770d6d5585a72d365d4df5c8292482e50ccada73feba96d5f71d1915ea9efc",
+    "runner.py": "e3fbb5deceb7fd6da6251d1704eeb87d48206ee5b57a767caa51f07c72831c5d",
+    "runtime_metrics.py": "1ed4f94f0fc22e8b6836a8d11f06d3250bd0d1e6176336c9746110ac9d275da0",
+    "safety.py": "e9ea56222e27b75c3355bea507854bce1c1ee6542bf6065af02c80487cbbb9cb",
+    "scenario_contract.py": "9da5f0e0e81f9f34a0108362d7bdbc8fc4e2962a9a7849b2197cbf15a5bbd21d",
+    "scenarios.py": "5f481ad9d488dca52f78b2272363430c47715e83f184ba19adf4465f89a987f8",
+    "sensor_response.py": "53553740e41bd40d18c3f2003551aa1218f92310de183db22f9487a8ad91125e",
+    "sensor_study.py": "3bd71c9de6b797495f329ebbad04cd1c542fd34c0431f9c38595f0328c8d1bdc",
+    "statistics.py": "c1391a45b2b40bcee780225eb8f0872349fb733fb27129ccbe6ef8265c15d49e",
+    "summarize_run.py": "9c6318c73d3a5d5ca8de05c76c4ac8eccd351905b1a3684aabaa29859a5e19a0",
+    "tracking.py": "4391dbdc534736bb53f7150dcad61131c5494f5c2f44b75d71bed9fa406b6150",
+    "transport.py": "aa2b575f91df8cd327377921725471e170ac74cede6b2470a02c3fc63e6f8039",
+    "ue_backend.py": "4614301964cdcc5848ca918c0a7f53671549deb86b7726f0318f27f68f4a54f2",
+    "visual_qa.py": "54bca7c4551aad63c0c33c1fff0af90a0735c0b58d84ccf1913c04e84f0004cb"
+  },
+  "scope": "All new attempts retained; audit PASS is trace/runtime integrity, not detector coverage, photorealism, full frozen matrix or S3/S5 acceptance"
+}

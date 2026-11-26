@@ -1,0 +1,27 @@
+{
+  "action_dt_ns": 500000000,
+  "clock_profile": "static_kinematic_transactions_not_Chaos_lockstep",
+  "engine_version": "5.6.1-44394996+++UE5+Release-5.6",
+  "monotonic_clock": {
+    "implementation": "GetTickCount64()",
+    "resolution_s": 0.015625
+  },
+  "rendered": true,
+  "renderer_controls": {
+    "backbuffer_dither_precision_override": 32,
+    "editor_fps_cap": 10.0,
+    "render_quality": "preview",
+    "settings": {
+      "r.AntiAliasingMethod": 0,
+      "r.DefaultFeature.AutoExposure": 0,
+      "r.DefaultFeature.MotionBlur": 0,
+      "sg.AntiAliasingQuality": 0,
+      "sg.EffectsQuality": 0,
+      "sg.FoliageQuality": 0,
+      "sg.PostProcessQuality": 0,
+      "sg.ShadowQuality": 0,
+      "sg.TextureQuality": 0,
+      "sg.ViewDistanceQuality": 0
+    }
+  }
+}

@@ -1,0 +1,215 @@
+{
+  "auditor_sha256": "3404f372c0f7116b19cad80816d0ef439f5ff39743f784f33836ebb9ac41ebde",
+  "results": {
+    "startup-sandbox-failure": {
+      "status": "FAIL",
+      "data_integrity_status": "INCOMPLETE_UNACCEPTED",
+      "reference_episodes": 0,
+      "engine_exit_code": null,
+      "engine_clean_exit": false,
+      "requested_calibration_status": "NOT_AUDITED",
+      "scheduled_episode_count": null,
+      "public_packets": 0,
+      "native_capture_packets": null,
+      "source_snapshot": null,
+      "scene_input_bytes_verified": null,
+      "errors": [
+        "required acceptance artifacts missing; no successful audit inferred from scheduled or recorded episode count"
+      ],
+      "missing_artifacts": [
+        "host-capabilities.json",
+        "public/observations.jsonl.gz",
+        "private/host.jsonl.gz"
+      ]
+    },
+    "baseline-before": {
+      "status": "PASS_OFFLINE_AUDIT",
+      "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+      "reference_episodes": 2,
+      "engine_exit_code": 0,
+      "engine_clean_exit": true,
+      "requested_calibration_status": "PASS_ENGINE_CALIBRATION",
+      "scheduled_episode_count": 2,
+      "public_packets": 8,
+      "native_capture_packets": 31,
+      "source_snapshot": true,
+      "scene_input_bytes_verified": null,
+      "errors": [],
+      "missing_artifacts": null
+    },
+    "import-01": {
+      "status": "PASS_OFFLINE_AUDIT",
+      "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+      "reference_episodes": 6,
+      "engine_exit_code": 0,
+      "engine_clean_exit": true,
+      "requested_calibration_status": "PASS_ENGINE_CALIBRATION",
+      "scheduled_episode_count": 6,
+      "public_packets": 24,
+      "native_capture_packets": 47,
+      "source_snapshot": true,
+      "scene_input_bytes_verified": 38,
+      "errors": [],
+      "missing_artifacts": null
+    },
+    "visual-02": {
+      "status": "PASS_OFFLINE_AUDIT",
+      "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+      "reference_episodes": 6,
+      "engine_exit_code": 0,
+      "engine_clean_exit": true,
+      "requested_calibration_status": "PASS_ENGINE_CALIBRATION",
+      "scheduled_episode_count": 6,
+      "public_packets": 24,
+      "native_capture_packets": 83,
+      "source_snapshot": true,
+      "scene_input_bytes_verified": 47,
+      "errors": [],
+      "missing_artifacts": null
+    },
+    "search-open-90s": {
+      "status": "PASS_OFFLINE_AUDIT",
+      "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+      "reference_episodes": 2,
+      "engine_exit_code": 0,
+      "engine_clean_exit": true,
+      "requested_calibration_status": "PASS_ENGINE_CALIBRATION",
+      "scheduled_episode_count": 2,
+      "public_packets": 360,
+      "native_capture_packets": 429,
+      "source_snapshot": true,
+      "scene_input_bytes_verified": 47,
+      "errors": [],
+      "missing_artifacts": null
+    },
+    "search-closed-90s": {
+      "status": "PASS_OFFLINE_AUDIT",
+      "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+      "reference_episodes": 2,
+      "engine_exit_code": 0,
+      "engine_clean_exit": true,
+      "requested_calibration_status": "PASS_ENGINE_CALIBRATION",
+      "scheduled_episode_count": 2,
+      "public_packets": 247,
+      "native_capture_packets": 317,
+      "source_snapshot": true,
+      "scene_input_bytes_verified": 48,
+      "errors": [],
+      "missing_artifacts": null
+    },
+    "final-poses": {
+      "status": "PASS_OFFLINE_AUDIT",
+      "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+      "reference_episodes": 18,
+      "engine_exit_code": 0,
+      "engine_clean_exit": true,
+      "requested_calibration_status": "PASS_ENGINE_CALIBRATION",
+      "scheduled_episode_count": 18,
+      "public_packets": 72,
+      "native_capture_packets": 131,
+      "source_snapshot": true,
+      "scene_input_bytes_verified": 48,
+      "errors": [],
+      "missing_artifacts": null
+    },
+    "legacy-comparison": {
+      "status": "PASS_OFFLINE_AUDIT",
+      "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+      "reference_episodes": 2,
+      "engine_exit_code": 0,
+      "engine_clean_exit": true,
+      "requested_calibration_status": "PASS_ENGINE_CALIBRATION",
+      "scheduled_episode_count": 2,
+      "public_packets": 8,
+      "native_capture_packets": 31,
+      "source_snapshot": true,
+      "scene_input_bytes_verified": null,
+      "errors": [],
+      "missing_artifacts": null
+    },
+    "outdoor-native": {
+      "status": "PASS_OFFLINE_AUDIT",
+      "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+      "reference_episodes": 1,
+      "engine_exit_code": 0,
+      "engine_clean_exit": true,
+      "requested_calibration_status": "PASS_ENGINE_CALIBRATION",
+      "scheduled_episode_count": 1,
+      "public_packets": 115,
+      "native_capture_packets": 178,
+      "source_snapshot": true,
+      "scene_input_bytes_verified": 48,
+      "errors": [],
+      "missing_artifacts": null
+    },
+    "seated-alignment": {
+      "status": "PASS_OFFLINE_AUDIT",
+      "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+      "reference_episodes": 2,
+      "engine_exit_code": 0,
+      "engine_clean_exit": true,
+      "requested_calibration_status": "PASS_ENGINE_CALIBRATION",
+      "scheduled_episode_count": 2,
+      "public_packets": 8,
+      "native_capture_packets": 68,
+      "source_snapshot": true,
+      "scene_input_bytes_verified": 48,
+      "errors": [],
+      "missing_artifacts": null
+    },
+    "old-frozen": {
+      "status": "FAIL",
+      "data_integrity_status": "INCOMPLETE_UNACCEPTED",
+      "reference_episodes": 0,
+      "engine_exit_code": null,
+      "engine_clean_exit": false,
+      "requested_calibration_status": "NOT_AUDITED",
+      "scheduled_episode_count": null,
+      "public_packets": 0,
+      "native_capture_packets": null,
+      "source_snapshot": null,
+      "scene_input_bytes_verified": null,
+      "errors": [
+        "required acceptance artifacts missing; no successful audit inferred from scheduled or recorded episode count"
+      ],
+      "missing_artifacts": [
+        "inventory.json"
+      ]
+    },
+    "old-active-search": {
+      "status": "PASS_OFFLINE_AUDIT",
+      "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+      "reference_episodes": 3,
+      "engine_exit_code": 0,
+      "engine_clean_exit": true,
+      "requested_calibration_status": "NOT_REQUESTED",
+      "scheduled_episode_count": "NOT_RECORDED_BY_EARLIER_RUN",
+      "public_packets": 540,
+      "native_capture_packets": 548,
+      "source_snapshot": true,
+      "scene_input_bytes_verified": null,
+      "errors": [],
+      "missing_artifacts": null
+    },
+    "first-native-geometry": {
+      "status": "FAIL",
+      "data_integrity_status": "INCOMPLETE_UNACCEPTED",
+      "reference_episodes": 0,
+      "engine_exit_code": null,
+      "engine_clean_exit": false,
+      "requested_calibration_status": "NOT_AUDITED",
+      "scheduled_episode_count": null,
+      "public_packets": 0,
+      "native_capture_packets": null,
+      "source_snapshot": null,
+      "scene_input_bytes_verified": null,
+      "errors": [
+        "required acceptance artifacts missing; no successful audit inferred from scheduled or recorded episode count"
+      ],
+      "missing_artifacts": [
+        "inventory.json"
+      ]
+    }
+  },
+  "scope": "Independent re-evaluation of original runs with the delivery auditor, including interrupted/rejected attempts. No modified input, no additional UE episode."
+}

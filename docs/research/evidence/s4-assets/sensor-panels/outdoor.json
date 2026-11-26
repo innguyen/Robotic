@@ -1,0 +1,18 @@
+{
+  "source_gallery": "docs\\research\\evidence\\s4-assets\\continuation\\outdoor-native-frames",
+  "source_inventory_sha256": "64d4b6786d54d4e5078a4886b3c0bd49bfd40f53d5f84787ab75ee7f124523cd",
+  "input_png_sha256": {
+    "e000-report-t0001-robot.png": "26539872a6a29ccef2797afb89d3974591eb59f1db6c882e290b86adbb85afa0",
+    "e000-report-t0001-depth-mm.png": "40d6d3fb2e8c385955bf3b3d16bcdcd7c4b6125d919182fdcae60f786466fedc",
+    "e000-report-t0001-v0-visible.png": "3e7ec770344e216960fb1cc900f8d3b140649f34de1fe59c7c6dd61fee366065"
+  },
+  "epoch": 2,
+  "tick": 1,
+  "frame_role": "MATCHED_REPORT_DELIVERED_FRAME",
+  "depth_scale_mm": [
+    0,
+    10000
+  ],
+  "invalid_depth_color": "black",
+  "output_sha256": "07405d35fa1d7e7ed8e6a3c95e1c890eef11811c4532bdd95c92e40a7b789296"
+}

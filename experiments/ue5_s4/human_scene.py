@@ -54,11 +54,11 @@ def material(name, color, roughness=.8, unlit=False, patterned=False):
     return asset
 
 
-def import_humans(asset_root):
-    metadata = json.loads((Path(asset_root) / "derived/poses.json").read_text())
+def import_humans(asset_root, folder="derived"):
+    metadata = json.loads((Path(asset_root) / folder / "poses.json").read_text())
     result = {}
     for posture, item in metadata.items():
-        source = Path(asset_root)/"derived"/item["file"]
+        source = Path(asset_root)/folder/item["file"]
         if hashlib.sha256(source.read_bytes()).hexdigest() != item["sha256"]:
             raise RuntimeError("derived human hash mismatch")
         asset_name = "H_"+posture+"_"+item["sha256"][:8]
@@ -66,7 +66,7 @@ def import_humans(asset_root):
         mesh = ue.load_asset(path)
         if mesh is None:
             task = ue.AssetImportTask()
-            task.set_editor_property("filename", str(Path(asset_root) / "derived" / item["file"]))
+            task.set_editor_property("filename", str(source))
             task.set_editor_property("destination_path", "/Game/SarHuman")
             task.set_editor_property("destination_name", asset_name)
             task.set_editor_property("automated", True)
@@ -106,20 +106,44 @@ class HumanSceneMixin:
         self.mask_actor,self.mask_sensor,self.mask_target = self.capture(ue.SceneCaptureSource.SCS_SCENE_DEPTH,ue.TextureRenderTargetFormat.RTF_RGBA16F)
         self.mask_sensor.set_editor_property("primitive_render_mode",ue.SceneCapturePrimitiveRenderMode.PRM_USE_SHOW_ONLY_LIST)
         self.human_meshes, self.pose_metadata = import_humans(os.environ["SAR_ASSET_ROOT"])
+        self.anatomy_meshes = None
+        if os.environ.get("SAR_SCENE_SET")=="assets":
+            self.anatomy_meshes,self.anatomy_metadata=import_humans(str(Path(os.environ["SAR_ASSET_ROOT"])/"anatomy"))
+            human_root = Path(os.environ["SAR_ASSET_ROOT"])/"anatomy"
+            self.dressed_meshes,_ = import_humans(human_root,"dressed")
+            from experiments.ue5_s4.asset_scene import initialize, wardrobe_materials
+            initialize(self,os.environ["SAR_ASSET_ROOT"])
+            self.wardrobe = wardrobe_materials(human_root)
         self.materials.update({name: material(name, color, patterned=pattern) for name, color, pattern in (
             ("Concrete", (.35, .32, .28), True), ("Brick", (.4, .18, .10), True),
             ("Floor", (.22, .23, .25), True), ("Ground", (.24, .18, .11), True),
             ("Metal", (.12, .15, .18), False), ("Shirt", (.32, .45, .65), False),
             ("Trousers", (.08, .10, .15), False), ("Skin", (.62, .38, .23), False),
-            ("Tire", (.025, .025, .025), True))})
+            ("Tire", (.025, .025, .025), True), ("Boots", (.035,.028,.022), False))})
         self.materials["Sky"] = material("Sky", (.18, .27, .40), unlit=True)
         # Keep render infrastructure registered across episode resets. Reusing
         # light scene IDs avoids changing deferred light accumulation order.
-        self.human_lights = []
-        for pitch,yaw in ((-45,-35),(-25,140)):
-            light = self.actors.spawn_actor_from_class(ue.DirectionalLight,ue.Vector(0,0,500),ue.Rotator(pitch=pitch,yaw=yaw,roll=0))
-            light.light_component.set_mobility(ue.ComponentMobility.MOVABLE)
-            self.human_lights.append(light)
+        # Own the disposable Entry world lighting. One sun avoids UE's ambiguous
+        # forward-shading directional-light selection; fill is a local area lamp.
+        for actor in self.actors.get_all_level_actors():
+            if isinstance(actor,(ue.DirectionalLight,ue.SkyLight)):
+                self.actors.destroy_actor(actor)
+        sun=self.actors.spawn_actor_from_class(ue.DirectionalLight,ue.Vector(0,0,500),ue.Rotator(pitch=-45,yaw=-35,roll=0))
+        fill=self.actors.spawn_actor_from_class(ue.RectLight,ue.Vector(250,0,300),ue.Rotator(pitch=-90,yaw=0,roll=0))
+        self.human_lights=[sun,fill]
+        for light in self.human_lights:light.light_component.set_mobility(ue.ComponentMobility.MOVABLE)
+        fill.light_component.set_editor_property("source_width",400.)
+        fill.light_component.set_editor_property("source_height",300.)
+        fill.light_component.set_editor_property("attenuation_radius",1000.)
+        self.ambient_sky = None
+        if getattr(self,"daylight_cube",None):
+            actor = self.actors.spawn_actor_from_class(ue.SkyLight,ue.Vector(0,0,500))
+            self.ambient_sky = actor.light_component
+            self.ambient_sky.set_mobility(ue.ComponentMobility.MOVABLE)
+            self.ambient_sky.set_editor_property("source_type",ue.SkyLightSourceType.SLS_SPECIFIED_CUBEMAP)
+            self.ambient_sky.set_real_time_capture(False)
+            self.ambient_sky.set_cubemap(self.daylight_cube)
+            self.ambient_sky.set_intensity(0.)
 
     def encoded_capture(self):
         """Native lossless PNG/EXR readback; avoid per-pixel Python reflection."""
@@ -159,43 +183,71 @@ class HumanSceneMixin:
                 "capture_end_wall_ns":end,"capture_wall_ns":start,"available_wall_ns":time.monotonic_ns(),
                 "clock_profile":"static_kinematic_transactions_not_Chaos_lockstep",
                 "controlled_light_ids":[light.get_name() for light in self.human_lights],
+                "lighting":{"directional_count":sum(isinstance(a,ue.DirectionalLight) for a in self.actors.get_all_level_actors()),
+                    "fixed_sky_intensity":self.ambient_sky.get_editor_property("intensity") if self.ambient_sky else 0.,
+                    "intensities":[light.light_component.get_editor_property("intensity") for light in self.human_lights]},
+                "render_loop":{"frames":self.render_frames,"last_delta_s":self.last_render_delta},
+                "native_geometry_validation":{"overlap_queries":self.native_overlap_queries,"hits":self.native_overlap_hits[-4:]},
                 "asset_diagnostics":[{"name":v["torso"].get_name(),"slots":[str(s.material_slot_name) for s in v["torso"].static_mesh_component.static_mesh.get_editor_property("static_materials")],
                     "materials":[str(v["torso"].static_mesh_component.get_material(i).get_path_name()) for i in range(v["torso"].static_mesh_component.get_num_materials())]} for v in self.victims] if self.tick==0 else []}
 
     def build_human_scene(self, config):
-        self.shape("ground", [3, 0, -.05], [20, 16, .1], "Ground" if config["environment"] == "outdoor" else "Floor")
-        for box in config["boxes"]:
-            self.shape(box["id"], box["center_m"], box["size_m"], box.get("material", "Concrete"))
-        if config["environment"] == "indoor":
-            self.shape("ceiling_beam", [3, 0, 2.65], [6, .18, .3], "Metal")
+        assets="scene_variant" in config
+        if assets:
+            if self.anatomy_meshes is None:raise RuntimeError("asset scene requires SAR_SCENE_SET=assets")
+            from experiments.ue5_s4.asset_scene import build
+            build(self,config)
+        else:
+            self.shape("ground", [3, 0, -.05], [20, 16, .1], "Ground" if config["environment"] == "outdoor" else "Floor")
+            for box in config["boxes"]:
+                self.shape(box["id"], box["center_m"], box["size_m"], box.get("material", "Concrete"))
+            if config["environment"] == "indoor":
+                self.shape("ceiling_beam", [3, 0, 2.65], [6, .18, .3], "Metal")
         sky = self.shape("sky", [0, 0, 0], [300, 300, 300], "Sky", "Sphere")
+        if assets and config["scene_variant"].endswith("_v2"):
+            sky.static_mesh_component.set_material(0,self.asset_materials["Daylight"])
         sky.static_mesh_component.set_collision_enabled(ue.CollisionEnabled.NO_COLLISION)
         sky.static_mesh_component.set_cast_shadow(False)
-        for light,intensity in zip(self.human_lights,(.8,.3) if config["perception"] else (4.,1.8)):
+        for light,intensity in zip(self.human_lights,(.5,4.) if config["perception"] else (2.5,24.)):
             light.light_component.set_editor_property("intensity",intensity)
+        if self.ambient_sky:
+            site = assets and config["scene_variant"].endswith("_v2")
+            self.ambient_sky.set_intensity((.07 if config["perception"] else .72) if site else 0.)
+            fill = self.human_lights[1]
+            fill.set_actor_location(ue.Vector(250,0,238 if site and config["environment"]=="indoor" else 300),False,False)
         self.victim_actors, self.victims = {}, []
         for index, victim in enumerate(config["victims"]):
             actor = self.actors.spawn_actor_from_class(ue.StaticMeshActor, ue.Vector(victim["anchor_m"][0]*100, -victim["anchor_m"][1]*100, victim["anchor_m"][2]*100))
             actor.set_actor_label("human_" + str(index))
             component = actor.static_mesh_component
             component.set_mobility(ue.ComponentMobility.MOVABLE)
-            mesh = self.human_meshes[victim["posture"]]
+            dressed = assets and config["scene_variant"].endswith("_v2")
+            meshes = self.dressed_meshes if dressed else self.anatomy_meshes if assets else self.human_meshes
+            mesh = meshes[victim["posture"]]
             component.set_static_mesh(mesh)
             component.set_collision_profile_name("BlockAll")
             actor.set_actor_rotation(ue.Rotator(yaw=-victim.get("yaw_deg", 180)), False)
             slots = mesh.get_editor_property("static_materials")
             for i, slot in enumerate(slots):
                 key = str(slot.material_slot_name).lower()
-                component.set_material(i, self.materials["Skin" if "skin" in key else "Trousers" if "trouser" in key else "Shirt"])
+                if dressed:
+                    slot_name = next((name for name in self.wardrobe if name in key), None)
+                    if slot_name is None:
+                        raise RuntimeError("unmapped dressed body material slot: "+key)
+                    component.set_material(i,self.wardrobe[slot_name])
+                else:
+                    component.set_material(i, self.materials["Skin" if "skin" in key else "Trousers" if "trouser" in key else "Boots" if "boots" in key else "Shirt"])
             self.spawned.append(actor)
             self.victims.append({"gt_id": victim["gt_id"], "torso": actor})
             self.victim_actors[actor.get_name()] = victim["gt_id"]
 
-    def overview(self):
+    def overview(self, breach=False):
         """Trusted QA view only; restore the agent camera and never deliver it."""
         old_location,old_rotation = self.rgb_actor.get_actor_location(),self.rgb_actor.get_actor_rotation()
         x,y,_ = self.pose
-        position,look_at = [x-.65,y-1.,.8],[x+.6,y,.25]
+        position,look_at = [-.3,-5.8,5.3],[3.,0.,.7]
+        if breach:
+            position,look_at = [-1.1,5.9,6.4],[3.1,.0,.65]
         yaw = math.atan2(look_at[1]-position[1],look_at[0]-position[0])
         pitch = math.atan2(look_at[2]-position[2],math.dist(position[:2],look_at[:2]))
         try:

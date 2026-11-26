@@ -1,0 +1,1551 @@
+﻿Log file open, 11/26/26 10:08:17
+LogWindows: Failed to load 'aqProf.dll' (GetLastError=126)
+LogWindows: File 'aqProf.dll' does not exist
+LogProfilingDebugging: Loading WinPixEventRuntime.dll for PIX profiling (from ../../../Engine/Binaries/ThirdParty/Windows/WinPixEventRuntime/x64).
+LogWindows: Failed to load 'VtuneApi.dll' (GetLastError=126)
+LogWindows: File 'VtuneApi.dll' does not exist
+LogWindows: Failed to load 'VtuneApi32e.dll' (GetLastError=126)
+LogWindows: File 'VtuneApi32e.dll' does not exist
+LogWindows: Started CrashReportClient (pid=24088)
+LogWindows: Custom abort handler registered for crash reporting.
+LogInit: Display: Running engine for game: SarEditorSlice
+LogCore: UTS: Unreal Trace Server launched successfully
+LogTrace: Initializing trace...
+LogCore: Display: Requested channels: 'cpu,gpu,frame,log,bookmark,screenshot,region'
+LogTrace: Display: Control listening on port 1985
+LogTrace: Finished trace initialization.
+LogCsvProfiler: Display: Metadata set : platform="Windows"
+LogCsvProfiler: Display: Metadata set : config="Development"
+LogCsvProfiler: Display: Metadata set : buildversion="++UE5+Release-5.6-CL-44394996"
+LogCsvProfiler: Display: Metadata set : engineversion="5.6.1-44394996+++UE5+Release-5.6"
+LogCsvProfiler: Display: Metadata set : os="Windows 11 (26H2) [10.0.26300.10075] "
+LogCsvProfiler: Display: Metadata set : cpu="GenuineIntel|11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz"
+LogCsvProfiler: Display: Metadata set : pgoenabled="0"
+LogCsvProfiler: Display: Metadata set : pgoprofilingenabled="0"
+LogCsvProfiler: Display: Metadata set : ltoenabled="0"
+LogCsvProfiler: Display: Metadata set : asan="0"
+LogCsvProfiler: Display: Metadata set : commandline="" C:\Projects\Robotic\experiments\ue5_s4\editor_host\SarEditorSlice.uproject -unattended -nosplash -nosound -d3d11 -AllowCommandletRendering -ExecutePythonScript=C:\Projects\Robotic\experiments\ue5_s4\runs\s4-assets-before-authorized\source\experiments\ue5_s4\editor_server.py -abslog=C:\Projects\Robotic\experiments\ue5_s4\runs\s4-assets-before-authorized\engine.log""
+LogCsvProfiler: Display: Metadata set : loginid="7675ee75c13243da8d8def8f019b81b7"
+LogCsvProfiler: Display: Metadata set : llm="0"
+LogStats: Stats thread started at 0.472157
+LogCsvProfiler: Display: Metadata set : systemresolution.resx="1280"
+LogCsvProfiler: Display: Metadata set : systemresolution.resy="720"
+LogICUInternationalization: ICU TimeZone Detection - Raw Offset: +7:00, Platform Override: ''
+LogInit: Session CrashGUID >====================================================
+         Session CrashGUID >   UECC-Windows-C849D8E9476D5A8F6C57F49D15B25088
+         Session CrashGUID >====================================================
+LogConfig: No local boot hotfix file found at: [../../../../../../Projects/Robotic/experiments/ue5_s4/editor_host/Saved/PersistentDownloadDir/HotfixForNextBoot.txt]
+LogAudio: Display: Audio Device Manager not initializing due to all audio being disabled. If this is not intentional, please check command line arguments for "-nosound".
+LogPluginManager: Looking for build plugins target receipt
+LogPluginManager: Unable to find target receipt in path: ../../../../../../Projects/Robotic/experiments/ue5_s4/editor_host/Binaries/Win64/*.target
+LogConfig: Display: Loading IOS ini files took 0.10 seconds
+LogConfig: Display: Loading Mac ini files took 0.11 seconds
+LogConfig: Display: Loading Android ini files took 0.13 seconds
+LogAssetRegistry: Display: Asset registry cache read as 66.6 MiB from ../../../../../../Projects/Robotic/experiments/ue5_s4/editor_host/Intermediate/CachedAssetRegistry_0.bin.
+LogConfig: Display: Loading Linux ini files took 0.22 seconds
+LogConfig: Display: Loading TVOS ini files took 0.12 seconds
+LogConfig: Display: Loading Unix ini files took 0.12 seconds
+LogConfig: Display: Loading VulkanPC ini files took 0.09 seconds
+LogPluginManager: Found matching target receipt: ../../../Engine/Binaries/Win64/UnrealEditor.target
+LogPluginManager: Looking for enabled plugins target receipt
+LogPluginManager: Unable to find target receipt in path: ../../../../../../Projects/Robotic/experiments/ue5_s4/editor_host/Binaries/Win64/*.target
+LogConfig: Display: Loading VisionOS ini files took 0.08 seconds
+LogConfig: Display: Loading Windows ini files took 0.08 seconds
+LogPluginManager: Found matching target receipt: ../../../Engine/Binaries/Win64/UnrealEditor.target
+LogPluginManager: Mounting Engine plugin Bridge
+LogPluginManager: Mounting Engine plugin ChaosCloth
+LogPluginManager: Mounting Engine plugin ChaosInsights
+LogPluginManager: Mounting Engine plugin ChaosVD
+LogPluginManager: Mounting Engine plugin CmdLinkServer
+LogPluginManager: Mounting Engine plugin EnhancedInput
+LogPluginManager: Mounting Engine plugin Fab
+LogPluginManager: Mounting Engine plugin FastBuildController
+LogPluginManager: Mounting Engine plugin IoStoreInsights
+LogPluginManager: Mounting Engine plugin MassInsights
+LogPluginManager: Mounting Engine plugin MeshPainting
+LogPluginManager: Mounting Engine plugin RenderGraphInsights
+LogPluginManager: Mounting Engine plugin TraceUtilities
+LogPluginManager: Mounting Engine plugin UbaController
+LogPluginManager: Mounting Engine plugin XGEController
+LogPluginManager: Mounting Engine plugin WorldMetrics
+LogPluginManager: Mounting Engine plugin AssetManagerEditor
+LogPluginManager: Mounting Engine plugin BlueprintHeaderView
+LogPluginManager: Mounting Engine plugin ChangelistReview
+LogPluginManager: Mounting Engine plugin ColorGrading
+LogPluginManager: Mounting Engine plugin CryptoKeys
+LogPluginManager: Mounting Engine plugin CurveEditorTools
+LogPluginManager: Mounting Engine plugin DataValidation
+LogPluginManager: Mounting Engine plugin EditorDebugTools
+LogPluginManager: Mounting Engine plugin EditorScriptingUtilities
+LogPluginManager: Mounting Engine plugin EngineAssetDefinitions
+LogPluginManager: Mounting Engine plugin FacialAnimation
+LogPluginManager: Mounting Engine plugin GameplayTagsEditor
+LogPluginManager: Mounting Engine plugin GeometryMode
+LogPluginManager: Mounting Engine plugin MacGraphicsSwitching
+LogPluginManager: Mounting Engine plugin MaterialAnalyzer
+LogPluginManager: Mounting Engine plugin MobileLauncherProfileWizard
+LogPluginManager: Mounting Engine plugin MeshLODToolset
+LogPluginManager: Mounting Engine plugin ModelingToolsEditorMode
+LogPluginManager: Mounting Engine plugin PluginBrowser
+LogPluginManager: Mounting Engine plugin ProxyLODPlugin
+LogPluginManager: Mounting Engine plugin SequencerAnimTools
+LogPluginManager: Mounting Engine plugin SpeedTreeImporter
+LogPluginManager: Mounting Engine plugin StylusInput
+LogPluginManager: Mounting Engine plugin UMGWidgetPreview
+LogPluginManager: Mounting Engine plugin UVEditor
+LogPluginManager: Mounting Engine plugin WorldPartitionHLODUtilities
+LogPluginManager: Mounting Engine plugin DatasmithContent
+LogPluginManager: Mounting Engine plugin GLTFExporter
+LogPluginManager: Mounting Engine plugin VariantManager
+LogPluginManager: Mounting Engine plugin Cascade
+LogPluginManager: Mounting Engine plugin Niagara
+LogPluginManager: Mounting Engine plugin NiagaraSimCaching
+LogPluginManager: Mounting Engine plugin AlembicImporter
+LogPluginManager: Mounting Engine plugin InterchangeAssets
+LogPluginManager: Mounting Engine plugin InterchangeEditor
+LogPluginManager: Mounting Engine plugin Interchange
+LogPluginManager: Mounting Engine plugin InterchangeTests
+LogPluginManager: Mounting Engine plugin VariantManagerContent
+LogPluginManager: Mounting Engine plugin AndroidMedia
+LogPluginManager: Mounting Engine plugin AvfMedia
+LogPluginManager: Mounting Engine plugin ImgMedia
+LogPluginManager: Mounting Engine plugin MediaCompositing
+LogPluginManager: Mounting Engine plugin MediaPlate
+LogPluginManager: Mounting Engine plugin MediaPlayerEditor
+LogPluginManager: Mounting Engine plugin WebMMedia
+LogPluginManager: Mounting Engine plugin TcpMessaging
+LogPluginManager: Mounting Engine plugin WmfMedia
+LogPluginManager: Mounting Engine plugin ActorSequence
+LogPluginManager: Mounting Engine plugin UdpMessaging
+LogPluginManager: Mounting Engine plugin LevelSequenceEditor
+LogPluginManager: Mounting Engine plugin SequencerScripting
+LogPluginManager: Mounting Engine plugin TemplateSequence
+LogPluginManager: Mounting Engine plugin EOSShared
+LogPluginManager: Mounting Engine plugin OnlineServices
+LogPluginManager: Mounting Engine plugin OnlineBase
+LogPluginManager: Mounting Engine plugin OnlineSubsystem
+LogPluginManager: Mounting Engine plugin OnlineSubsystemNull
+LogPluginManager: Mounting Engine plugin OnlineSubsystemUtils
+LogPluginManager: Mounting Engine plugin ActorLayerUtilities
+LogPluginManager: Mounting Engine plugin AndroidDeviceProfileSelector
+LogPluginManager: Mounting Engine plugin AndroidMoviePlayer
+LogPluginManager: Mounting Engine plugin AndroidPermission
+LogPluginManager: Mounting Engine plugin AppleMoviePlayer
+LogPluginManager: Mounting Engine plugin AppleImageUtils
+LogPluginManager: Mounting Engine plugin ArchVisCharacter
+LogPluginManager: Mounting Engine plugin AudioCapture
+LogPluginManager: Mounting Engine plugin AudioSynesthesia
+LogPluginManager: Mounting Engine plugin CableComponent
+LogPluginManager: Mounting Engine plugin AudioWidgets
+LogPluginManager: Mounting Engine plugin ComputeFramework
+LogPluginManager: Mounting Engine plugin ChunkDownloader
+LogPluginManager: Mounting Engine plugin CustomMeshComponent
+LogPluginManager: Mounting Engine plugin ExampleDeviceProfileSelector
+LogPluginManager: Mounting Engine plugin GeometryCache
+LogPluginManager: Mounting Engine plugin GeometryProcessing
+LogPluginManager: Mounting Engine plugin GoogleCloudMessaging
+LogPluginManager: Mounting Engine plugin GooglePAD
+LogPluginManager: Mounting Engine plugin HairStrands
+LogPluginManager: Mounting Engine plugin InputDebugging
+LogPluginManager: Mounting Engine plugin IOSDeviceProfileSelector
+LogPluginManager: Mounting Engine plugin LinuxDeviceProfileSelector
+LogPluginManager: Mounting Engine plugin LocationServicesBPLibrary
+LogPluginManager: Mounting Engine plugin MeshModelingToolset
+LogPluginManager: Mounting Engine plugin Metasound
+LogPluginManager: Mounting Engine plugin MobilePatchingUtils
+LogPluginManager: Mounting Engine plugin MsQuic
+LogPluginManager: Mounting Engine plugin PropertyAccessEditor
+LogPluginManager: Mounting Engine plugin PropertyBindingUtils
+LogPluginManager: Mounting Engine plugin ProceduralMeshComponent
+LogPluginManager: Mounting Engine plugin RigVM
+LogPluginManager: Mounting Engine plugin SignificanceManager
+LogPluginManager: Mounting Engine plugin ResonanceAudio
+LogPluginManager: Mounting Engine plugin AssetTags
+LogPluginManager: Mounting Engine plugin SoundFields
+LogPluginManager: Mounting Engine plugin StateTree
+LogPluginManager: Mounting Engine plugin Synthesis
+LogPluginManager: Mounting Engine plugin WebMMoviePlayer
+LogPluginManager: Mounting Engine plugin WindowsDeviceProfileSelector
+LogPluginManager: Mounting Engine plugin WindowsMoviePlayer
+LogPluginManager: Mounting Engine plugin Paper2D
+LogPluginManager: Mounting Engine plugin AISupport
+LogPluginManager: Mounting Engine plugin EnvironmentQueryEditor
+LogPluginManager: Mounting Engine plugin AnimationData
+LogPluginManager: Mounting Engine plugin ACLPlugin
+LogPluginManager: Mounting Engine plugin BlendSpaceMotionAnalysis
+LogPluginManager: Mounting Engine plugin WaveTable
+LogPluginManager: Mounting Engine plugin ControlRig
+LogPluginManager: Mounting Engine plugin ControlRigModules
+LogPluginManager: Mounting Engine plugin ControlRigSpline
+LogPluginManager: Mounting Engine plugin DeformerGraph
+LogPluginManager: Mounting Engine plugin GameplayInsights
+LogPluginManager: Mounting Engine plugin IKRig
+LogPluginManager: Mounting Engine plugin AnimationModifierLibrary
+LogPluginManager: Mounting Engine plugin RigLogic
+LogPluginManager: Mounting Engine plugin SkeletalMeshModelingTools
+LogPluginManager: Mounting Engine plugin CameraShakePreviewer
+LogPluginManager: Mounting Engine plugin EngineCameras
+LogPluginManager: Mounting Engine plugin GameplayCameras
+LogPluginManager: Mounting Engine plugin TweeningUtils
+LogPluginManager: Mounting Engine plugin OodleNetwork
+LogPluginManager: Mounting Engine plugin AnimationSharing
+LogPluginManager: Mounting Engine plugin CLionSourceCodeAccess
+LogPluginManager: Mounting Engine plugin CodeLiteSourceCodeAccess
+LogPluginManager: Mounting Engine plugin DumpGPUServices
+LogPluginManager: Mounting Engine plugin GitSourceControl
+LogPluginManager: Mounting Engine plugin KDevelopSourceCodeAccess
+LogPluginManager: Mounting Engine plugin N10XSourceCodeAccess
+LogPluginManager: Mounting Engine plugin NamingTokens
+LogPluginManager: Mounting Engine plugin NullSourceCodeAccess
+LogPluginManager: Mounting Engine plugin PerforceSourceControl
+LogPluginManager: Mounting Engine plugin PixWinPlugin
+LogPluginManager: Mounting Engine plugin PlasticSourceControl
+LogPluginManager: Mounting Engine plugin PluginUtils
+LogPluginManager: Mounting Engine plugin ProjectLauncher
+LogPluginManager: Mounting Engine plugin RenderDocPlugin
+LogPluginManager: Mounting Engine plugin PropertyAccessNode
+LogPluginManager: Mounting Engine plugin SubversionSourceControl
+LogPluginManager: Mounting Engine plugin RiderSourceCodeAccess
+LogPluginManager: Mounting Engine plugin TextureFormatOodle
+LogPluginManager: Mounting Engine plugin UObjectPlugin
+LogPluginManager: Mounting Engine plugin VisualStudioCodeSourceCodeAccess
+LogPluginManager: Mounting Engine plugin VisualStudioSourceCodeAccess
+LogPluginManager: Mounting Engine plugin XCodeSourceCodeAccess
+LogPluginManager: Mounting Engine plugin AdvancedRenamer
+LogPluginManager: Mounting Engine plugin AutomationUtils
+LogPluginManager: Mounting Engine plugin BackChannel
+LogPluginManager: Mounting Engine plugin ChaosCaching
+LogPluginManager: Mounting Engine plugin ChaosEditor
+LogPluginManager: Mounting Engine plugin ChaosNiagara
+LogPluginManager: Mounting Engine plugin ChaosSolverPlugin
+LogPluginManager: Mounting Engine plugin ChaosUserDataPT
+LogPluginManager: Mounting Engine plugin CharacterAI
+LogPluginManager: Mounting Engine plugin Dataflow
+LogPluginManager: Mounting Engine plugin EditorDataStorage
+LogPluginManager: Mounting Engine plugin EditorDataStorageFeatures
+LogPluginManager: Mounting Engine plugin EditorPerformance
+LogPluginManager: Mounting Engine plugin EditorTelemetry
+LogPluginManager: Mounting Engine plugin Fracture
+LogPluginManager: Mounting Engine plugin FullBodyIK
+LogPluginManager: Mounting Engine plugin GeometryDataflow
+LogPluginManager: Mounting Engine plugin GeometryCollectionPlugin
+LogPluginManager: Mounting Engine plugin GeometryFlow
+LogPluginManager: Mounting Engine plugin LevelSequenceNavigatorBridge
+LogPluginManager: Mounting Engine plugin LocalizableMessage
+LogPluginManager: Mounting Engine plugin MeshModelingToolsetExp
+LogPluginManager: Mounting Engine plugin LowLevelNetTrace
+LogPluginManager: Mounting Engine plugin NFORDenoise
+LogPluginManager: Mounting Engine plugin PlanarCut
+LogPluginManager: Mounting Engine plugin PlatformCrypto
+LogPluginManager: Mounting Engine plugin PythonScriptPlugin
+LogPluginManager: Mounting Engine plugin RuntimeTelemetry
+LogPluginManager: Mounting Engine plugin SequenceNavigator
+LogPluginManager: Mounting Engine plugin SkeletalReduction
+LogPluginManager: Mounting Engine plugin ToolPresets
+LogPluginManager: Mounting Engine plugin MetaHumanSDK
+LogPluginManager: Mounting Engine plugin NNEDenoiser
+LogPluginManager: Mounting Engine plugin NNERuntimeORT
+LogPluginManager: Mounting Engine plugin LauncherChunkInstaller
+LogPluginManager: Mounting Engine plugin CameraCalibrationCore
+LogPluginManager: Mounting Engine plugin Takes
+LogPluginManager: Mounting Engine plugin ContentBrowserClassDataSource
+LogPluginManager: Mounting Engine plugin ContentBrowserAssetDataSource
+LogPluginManager: Mounting Engine plugin ContentBrowserFileDataSource
+LogPluginManager: Mounting Engine plugin LightMixer
+LogPluginManager: Mounting Engine plugin ObjectMixer
+LogPluginManager: Mounting Engine plugin OnlineSubsystemGooglePlay
+LogPluginManager: Mounting Engine plugin BaseCharacterFXEditor
+LogPluginManager: Mounting Engine plugin OnlineSubsystemIOS
+LogPluginManager: Mounting Engine plugin CompositeCore
+LogPluginManager: Mounting Engine plugin XInputDevice
+LogPluginManager: Mounting Engine plugin PortableObjectFileDataSource
+SourceControl: Revision control is disabled
+SourceControl: Revision control is disabled
+SourceControl: Revision control is disabled
+LogEOSShared: Loaded "C:/Program Files/Epic Games/UE_5.6/Engine/Binaries/Win64/EOSSDK-Win64-Shipping.dll"
+LogEOSShared: FEOSSDKManager::Initialize Initializing EOSSDK Version:1.17.0-41373641
+LogInit: Using libcurl 8.12.1
+LogInit:  - built for Windows
+LogInit:  - supports SSL with OpenSSL/1.1.1t
+LogInit:  - supports HTTP deflate (compression) using libz 1.3
+LogInit:  - other features:
+LogInit:      CURL_VERSION_SSL
+LogInit:      CURL_VERSION_LIBZ
+LogInit:      CURL_VERSION_IPV6
+LogInit:      CURL_VERSION_ASYNCHDNS
+LogInit:      CURL_VERSION_LARGEFILE
+LogInit:      CURL_VERSION_TLSAUTH_SRP
+LogInit:      CURL_VERSION_HTTP2
+LogInit:  CurlRequestOptions (configurable via config and command line):
+LogInit:  - bVerifyPeer = true  - Libcurl will verify peer certificate
+LogInit:  - bUseHttpProxy = false  - Libcurl will NOT use HTTP proxy
+LogInit:  - bDontReuseConnections = false  - Libcurl will reuse connections
+LogInit:  - MaxHostConnections = 16  - Libcurl will limit the number of connections to a host
+LogInit:  - LocalHostAddr = Default
+LogInit:  - BufferSize = 65536
+LogInit: CreateHttpThread using FCurlMultiPollEventLoopHttpThread
+LogInit: Creating http thread with maximum 256 concurrent requests
+LogInit: WinSock: version 1.1 (2.2), MaxSocks=32767, MaxUdp=65467
+LogOnline: OSS: Created online subsystem instance for: NULL
+LogOnline: OSS: TryLoadSubsystemAndSetDefault: Loaded subsystem for type [NULL]
+LogWindows: Failed to load 'WinPixGpuCapturer.dll' (GetLastError=126)
+LogWindows: File 'WinPixGpuCapturer.dll' does not exist
+PixWinPlugin: PIX capture plugin failed to initialize! Check that the process is launched from PIX.
+LogConfig: Applying CVar settings from Section [/Script/RenderDocPlugin.RenderDocPluginSettings] File [Engine]
+RenderDocPlugin: Display: RenderDoc plugin will not be loaded. Use '-AttachRenderDoc' on the cmd line or enable 'renderdoc.AutoAttach' in the plugin settings.
+LogStudioTelemetry: Started StudioTelemetry Session
+LogNFORDenoise: NFORDenoise function starting up
+LogConfig: Applying CVar settings from Section [/Script/CompositeCore.CompositeCorePluginSettings] File [Engine]
+LogInit: ExecutableName: UnrealEditor-Cmd.exe
+LogInit: Build: ++UE5+Release-5.6-CL-44394996
+LogInit: Platform=WindowsEditor
+LogInit: MachineId=7675ee75c13243da8d8def8f019b81b7
+LogInit: DeviceId=
+LogInit: Engine Version: 5.6.1-44394996+++UE5+Release-5.6
+LogInit: Compatible Engine Version: 5.6.0-43139311+++UE5+Release-5.6
+LogInit: Net CL: 43139311
+LogInit: OS: Windows 11 (26H2) [10.0.26300.10075] (), CPU: 11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz, GPU: Intel(R) Iris(R) Xe Graphics
+LogInit: Compiled (64-bit): Jul 28 2025 20:53:34
+LogInit: Architecture: x64
+LogInit: Compiled with Visual C++: 19.38.33130.00
+LogInit: Build Configuration: Development
+LogInit: Branch Name: ++UE5+Release-5.6
+LogInit: Command Line: -unattended -nosplash -nosound -d3d11 -AllowCommandletRendering -ExecutePythonScript=C:\Projects\Robotic\experiments\ue5_s4\runs\s4-assets-before-authorized\source\experiments\ue5_s4\editor_server.py -abslog=C:\Projects\Robotic\experiments\ue5_s4\runs\s4-assets-before-authorized\engine.log
+LogInit: Base Directory: C:/Program Files/Epic Games/UE_5.6/Engine/Binaries/Win64/
+LogInit: Allocator: Mimalloc
+LogInit: Installed Engine Build: 1
+LogInit: This binary is optimized with LTO: no, PGO: no, instrumented for PGO data collection: no
+LogDevObjectVersion: Number of dev versions registered: 37
+LogDevObjectVersion:   Dev-Blueprints (B0D832E4-1F89-4F0D-ACCF-7EB736FD4AA2): 10
+LogDevObjectVersion:   Dev-Build (E1C64328-A22C-4D53-A36C-8E866417BD8C): 0
+LogDevObjectVersion:   Dev-Core (375EC13C-06E4-48FB-B500-84F0262A717E): 4
+LogDevObjectVersion:   Dev-Editor (E4B068ED-F494-42E9-A231-DA0B2E46BB41): 40
+LogDevObjectVersion:   Dev-Framework (CFFC743F-43B0-4480-9391-14DF171D2073): 37
+LogDevObjectVersion:   Dev-Mobile (B02B49B5-BB20-44E9-A304-32B752E40360): 3
+LogDevObjectVersion:   Dev-Networking (A4E4105C-59A1-49B5-A7C5-40C4547EDFEE): 0
+LogDevObjectVersion:   Dev-Online (39C831C9-5AE6-47DC-9A44-9C173E1C8E7C): 0
+LogDevObjectVersion:   Dev-Physics (78F01B33-EBEA-4F98-B9B4-84EACCB95AA2): 20
+LogDevObjectVersion:   Dev-Platform (6631380F-2D4D-43E0-8009-CF276956A95A): 0
+LogDevObjectVersion:   Dev-Rendering (12F88B9F-8875-4AFC-A67C-D90C383ABD29): 49
+LogDevObjectVersion:   Dev-Sequencer (7B5AE74C-D270-4C10-A958-57980B212A5A): 13
+LogDevObjectVersion:   Dev-VR (D7296918-1DD6-4BDD-9DE2-64A83CC13884): 3
+LogDevObjectVersion:   Dev-LoadTimes (C2A15278-BFE7-4AFE-6C17-90FF531DF755): 1
+LogDevObjectVersion:   Private-Geometry (6EACA3D4-40EC-4CC1-B786-8BED09428FC5): 3
+LogDevObjectVersion:   Dev-AnimPhys (29E575DD-E0A3-4627-9D10-D276232CDCEA): 17
+LogDevObjectVersion:   Dev-Anim (AF43A65D-7FD3-4947-9873-3E8ED9C1BB05): 15
+LogDevObjectVersion:   Dev-ReflectionCapture (6B266CEC-1EC7-4B8F-A30B-E4D90942FC07): 1
+LogDevObjectVersion:   Dev-Automation (0DF73D61-A23F-47EA-B727-89E90C41499A): 1
+LogDevObjectVersion:   FortniteMain (601D1886-AC64-4F84-AA16-D3DE0DEAC7D6): 207
+LogDevObjectVersion:   FortniteValkyrie (8DBC2C5B-54A7-43E0-A768-FCBB7DA29060): 8
+LogDevObjectVersion:   FortniteSeason (5B4C06B7-2463-4AF8-805B-BF70CDF5D0DD): 13
+LogDevObjectVersion:   FortniteRelease (E7086368-6B23-4C58-8439-1B7016265E91): 17
+LogDevObjectVersion:   Dev-Enterprise (9DFFBCD6-494F-0158-E221-12823C92A888): 11
+LogDevObjectVersion:   Dev-Niagara (F2AED0AC-9AFE-416F-8664-AA7FFA26D6FC): 1
+LogDevObjectVersion:   Dev-Destruction (174F1F0B-B4C6-45A5-B13F-2EE8D0FB917D): 10
+LogDevObjectVersion:   Dev-Physics-Ext (35F94A83-E258-406C-A318-09F59610247C): 41
+LogDevObjectVersion:   Dev-PhysicsMaterial-Chaos (B68FC16E-8B1B-42E2-B453-215C058844FE): 1
+LogDevObjectVersion:   Dev-CineCamera (B2E18506-4273-CFC2-A54E-F4BB758BBA07): 1
+LogDevObjectVersion:   Dev-VirtualProduction (64F58936-FD1B-42BA-BA96-7289D5D0FA4E): 1
+LogDevObjectVersion:   UE5-Main (697DD581-E64F-41AB-AA4A-51ECBEB7B628): 121
+LogDevObjectVersion:   UE5-Release (D89B5E42-24BD-4D46-8412-ACA8DF641779): 56
+LogDevObjectVersion:   UE5-SpecialProject (59DA5D52-1232-4948-B878-597870B8E98B): 9
+LogDevObjectVersion:   Dev-MediaFramework (6F0ED827-A609-4895-9C91-998D90180EA4): 2
+LogDevObjectVersion:   Dev-NaniteResearch (30D58BE3-95EA-4282-A6E3-B159D8EBB06A): 1
+LogDevObjectVersion:   Dev-ComputeFramework (6304A3E7-0059-4F59-8CFC-21BD7721FD4E): 0
+LogDevObjectVersion:   LensFileVersion (8652A554-966A-466C-9FD7-1C6DD61B1ADB): 1
+LogInit: Presizing for max 25165824 objects, including 0 objects not considered by GC.
+LogInit: Object subsystem initialized
+LogConfig: Set CVar [[con.DebugEarlyDefault:1]]
+LogConfig: CVar [[con.DebugLateDefault:1]] deferred - dummy variable created
+LogConfig: CVar [[con.DebugLateCheat:1]] deferred - dummy variable created
+LogConfig: CVar [[LogNamedEventFilters:Frame *]] deferred - dummy variable created
+LogConfig: Set CVar [[r.setres:1280x720]]
+LogConfig: CVar [[framepro.ScopeMinTimeMicroseconds:10]] deferred - dummy variable created
+LogConfig: Set CVar [[fx.NiagaraAllowRuntimeScalabilityChanges:1]]
+LogConfig: CVar [[QualityLevelMapping:high]] deferred - dummy variable created
+LogConfig: CVar [[r.Occlusion.SingleRHIThreadStall:1]] deferred - dummy variable created
+LogConfig: Set CVar [[r.Nanite.Streaming.ReservedResources:1]]
+LogConfig: CVar [[D3D12.Bindless.ResourceDescriptorHeapSize:32768]] deferred - dummy variable created
+LogConfig: CVar [[D3D12.Bindless.SamplerDescriptorHeapSize:2048]] deferred - dummy variable created
+LogConfig: Set CVar [[r.PSOPrecache.GlobalShaders:1]]
+LogConfig: Set CVar [[r.VRS.EnableSoftware:1]]
+LogConfig: Set CVar [[r.VRS.ContrastAdaptiveShading:1]]
+[2026.11.26-03.08.18:647][  0]LogConfig: Set CVar [[r.VSync:0]]
+[2026.11.26-03.08.18:648][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.RendererSettings] File [Engine]
+[2026.11.26-03.08.18:648][  0]LogConfig: CVar [[VisualizeCalibrationColorMaterialPath:/Engine/EngineMaterials/PPM_DefaultCalibrationColor.PPM_DefaultCalibrationColor]] deferred - dummy variable created
+[2026.11.26-03.08.18:648][  0]LogConfig: CVar [[VisualizeCalibrationGrayscaleMaterialPath:/Engine/EngineMaterials/PPM_DefaultCalibrationGrayscale.PPM_DefaultCalibrationGrayscale]] deferred - dummy variable created
+[2026.11.26-03.08.18:648][  0]LogConfig: Set CVar [[r.GPUCrashDebugging:0]]
+[2026.11.26-03.08.18:648][  0]LogConfig: CVar [[MaxSkinBones:(Default=65536,PerPlatform=(("Mobile", 256)))]] deferred - dummy variable created
+[2026.11.26-03.08.18:648][  0]LogConfig: Set CVar [[r.Shaders.RemoveUnusedInterpolators:1]]
+[2026.11.26-03.08.18:648][  0]LogConfig: Set CVar [[r.Shadow.DetectVertexShaderLayerAtRuntime:1]]
+[2026.11.26-03.08.18:648][  0]LogConfig: Set CVar [[r.DefaultFeature.AutoExposure:0]]
+[2026.11.26-03.08.18:648][  0]LogConfig: Set CVar [[r.DefaultFeature.MotionBlur:0]]
+[2026.11.26-03.08.18:648][  0]LogConfig: Set CVar [[r.AntiAliasingMethod:0]]
+[2026.11.26-03.08.18:648][  0]LogConfig: Set CVar [[r.DynamicGlobalIlluminationMethod:0]]
+[2026.11.26-03.08.18:648][  0]LogConfig: Set CVar [[r.ReflectionMethod:0]]
+[2026.11.26-03.08.18:649][  0]LogConfig: Set CVar [[r.Shadow.Virtual.Enable:0]]
+[2026.11.26-03.08.18:649][  0]LogConfig: Set CVar [[r.Nanite.ProjectEnabled:0]]
+[2026.11.26-03.08.18:649][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.RendererOverrideSettings] File [Engine]
+[2026.11.26-03.08.18:649][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.StreamingSettings] File [Engine]
+[2026.11.26-03.08.18:649][  0]LogConfig: Set CVar [[s.MinBulkDataSizeForAsyncLoading:131072]]
+[2026.11.26-03.08.18:649][  0]LogConfig: Set CVar [[s.AsyncLoadingThreadEnabled:1]]
+[2026.11.26-03.08.18:649][  0]LogConfig: Set CVar [[s.EventDrivenLoaderEnabled:1]]
+[2026.11.26-03.08.18:649][  0]LogConfig: Set CVar [[s.WarnIfTimeLimitExceeded:0]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[s.TimeLimitExceededMultiplier:1.5]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[s.TimeLimitExceededMinTime:0.005]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[s.UseBackgroundLevelStreaming:1]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[s.PriorityAsyncLoadingExtraTime:15.0]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[s.LevelStreamingActorsUpdateTimeLimit:5.0]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[s.PriorityLevelStreamingActorsUpdateExtraTime:5.0]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[s.LevelStreamingComponentsRegistrationGranularity:10]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[s.UnregisterComponentsTimeLimit:1.0]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[s.LevelStreamingComponentsUnregistrationGranularity:5]]
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[s.MaxPackageSummarySize:16384]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[s.FlushStreamingOnExit:1]]
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[FixedBootOrder:/Script/Engine/Default__SoundBase]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[FixedBootOrder:/Script/Engine/Default__MaterialInterface]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[FixedBootOrder:/Script/Engine/Default__DeviceProfileManager]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.GarbageCollectionSettings] File [Engine]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.MaxObjectsNotConsideredByGC:1]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.FlushStreamingOnGC:0]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.NumRetriesBeforeForcingGC:10]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.AllowParallelGC:1]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.TimeBetweenPurgingPendingKillObjects:61.1]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.MaxObjectsInEditor:25165824]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.IncrementalBeginDestroyEnabled:1]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.CreateGCClusters:1]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.MinGCClusterSize:5]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.AssetClustreringEnabled:0]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.ActorClusteringEnabled:0]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.VerifyUObjectsAreNotFGCObjects:0]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Set CVar [[gc.GarbageEliminationEnabled:1]]
+[2026.11.26-03.08.18:650][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.NetworkSettings] File [Engine]
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[NetworkEmulationProfiles:(ProfileName="Average",ToolTip="Simulates average internet conditions")]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[NetworkEmulationProfiles:(ProfileName="Bad",ToolTip="Simulates laggy internet conditions")]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: Applying CVar settings from Section [/Script/UnrealEd.CookerSettings] File [Engine]
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[DefaultASTCQualityBySpeed:2]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[DefaultASTCQualityBySize:3]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[DefaultASTCQualityBySizeHQ:4]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:WidgetBlueprint]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:GroupActor]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:MetaData]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:ObjectRedirector]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:NavMeshRenderingComponent]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:ReflectionCaptureComponent]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:TextRenderComponent]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:Font]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:InterpCurveEdSetup]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:MaterialExpression]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:NiagaraEmitter]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:NiagaraScript]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:ParticleEmitter]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:ParticleLODLevel]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:ParticleModule]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:SubUVAnimation]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:SoundNode]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:GameplayEffectUIData]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:AmbientSound]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedClient:WidgetBlueprint]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedClient:GroupActor]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedClient:MetaData]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedClient:ObjectRedirector]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedClient:InterpCurveEdSetup]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.AllowStaticLighting]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.MaterialEditor.LWCTruncateMode]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.GBuffer]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.VelocityOutputPass]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.SelectiveBasePassOutputs]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.DBuffer]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.Mobile.DBuffer]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.Shaders.Symbols]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.Shaders.GenerateSymbols]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.Shaders.WriteSymbols]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.Shaders.AllowUniqueSymbols]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.Shaders.ExtraData]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.Shaders.Optimize]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.CompileShadersForDevelopment]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.MobileHDR]] deferred - dummy variable created
+[2026.11.26-03.08.18:650][  0]LogConfig: CVar [[VersionedIntRValues:r.UsePreExposure]] deferred - dummy variable created
+[2026.11.26-03.08.18:657][  0]LogCsvProfiler: Display: Metadata set : systemresolution.resx="1536"
+[2026.11.26-03.08.18:657][  0]LogCsvProfiler: Display: Metadata set : systemresolution.resy="864"
+[2026.11.26-03.08.18:659][  0]LogConfig: Applying CVar settings from Section [ViewDistanceQuality@3] File [Scalability]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.SkeletalMeshLODBias:0]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.ViewDistanceScale:1.0]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Applying CVar settings from Section [AntiAliasingQuality@3] File [Scalability]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.FXAA.Quality:4]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.TemporalAA.Quality:2]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.TSR.History.R11G11B10:1]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.TSR.History.ScreenPercentage:200]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.TSR.History.UpdateQuality:3]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.TSR.ShadingRejection.Flickering:1]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.TSR.RejectionAntiAliasingQuality:2]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.TSR.ReprojectionField:1]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.TSR.Resurrection:1]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Applying CVar settings from Section [ShadowQuality@3] File [Scalability]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.LightFunctionQuality:1]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.ShadowQuality:5]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.Shadow.CSM.MaxCascades:10]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.Shadow.MaxResolution:2048]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.Shadow.MaxCSMResolution:2048]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.Shadow.RadiusThreshold:0.01]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.Shadow.DistanceScale:1.0]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.Shadow.CSM.TransitionScale:1.0]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.Shadow.PreShadowResolutionFactor:1.0]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.DistanceFieldShadowing:1]]
+[2026.11.26-03.08.18:659][  0]LogConfig: Set CVar [[r.VolumetricFog:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.VolumetricFog.GridPixelSize:8]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.VolumetricFog.GridSizeZ:128]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.VolumetricFog.HistoryMissSupersampleCount:4]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.LightMaxDrawDistanceScale:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.CapsuleShadows:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Shadow.Virtual.MaxPhysicalPages:4096]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Shadow.Virtual.ResolutionLodBiasDirectional:-1.5]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving:-1.5]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Shadow.Virtual.ResolutionLodBiasLocal:0.0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Shadow.Virtual.ResolutionLodBiasLocalMoving:1.0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Shadow.Virtual.SMRT.RayCountDirectional:8]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Shadow.Virtual.SMRT.SamplesPerRayDirectional:4]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Shadow.Virtual.SMRT.RayCountLocal:8]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Shadow.Virtual.SMRT.SamplesPerRayLocal:4]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Applying CVar settings from Section [GlobalIlluminationQuality@3] File [Scalability]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DistanceFieldAO:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.SkylightIntensityMultiplier:1.0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.AOQuality:2]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.DiffuseIndirect.Allow:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.LumenScene.DirectLighting.MaxLightsPerTile:8]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.LumenScene.DirectLighting.UpdateFactor:32]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.LumenScene.Radiosity.UpdateFactor:64]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.LumenScene.Radiosity.ProbeSpacing:4]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.LumenScene.Radiosity.HemisphereProbeResolution:4]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.TraceMeshSDFs.Allow:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution:32]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget:100]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.DownsampleFactor:16]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.NumAdaptiveProbes:8]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.TracingOctahedronResolution:8]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.IrradianceFormat:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.StochasticInterpolation:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.FullResolutionJitterWidth:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.TwoSidedFoliageBackfaceDiffuse:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.ScreenTraces.HZBTraversal.FullResDepth:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.ShortRangeAO.HardwareRayTracing:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.ShortRangeAO.BentNormal:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyVolume.GridPixelSize:32]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyVolume.TraceFromVolume:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyVolume.TracingOctahedronResolution:3]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyVolume.RadianceCache.ProbeResolution:8]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyVolume.RadianceCache.NumProbesToTraceBudget:70]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.RayTracing.Scene.BuildMode:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Applying CVar settings from Section [ReflectionQuality@3] File [Scalability]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.SSR.Quality:3]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.SSR.HalfResSceneColor:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.Reflections.Allow:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.Reflections.DownsampleFactor:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.Reflections.MaxRoughnessToTraceForFoliage:0.4]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.MaxRoughnessToEvaluateRoughSpecularForFoliage:0.8]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.Reflections.ScreenSpaceReconstruction.NumSamples:5]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.Reflections.ScreenSpaceReconstruction.MinWeight:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyReflections.FrontLayer.Allow:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyReflections.FrontLayer.Enable:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Applying CVar settings from Section [PostProcessQuality@3] File [Scalability]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.MotionBlurQuality:4]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.MotionBlur.HalfResGather:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.AmbientOcclusionMipLevelFactor:0.4]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.AmbientOcclusionMaxQuality:100]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.AmbientOcclusionLevels:-1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.AmbientOcclusionRadiusScale:1.0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DepthOfFieldQuality:2]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.RenderTargetPoolMin:400]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.LensFlareQuality:2]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.SceneColorFringeQuality:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.EyeAdaptationQuality:2]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.BloomQuality:5]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Bloom.ScreenPercentage:50.000]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.FastBlurThreshold:100]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Upscale.Quality:3]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.LightShaftQuality:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Filter.SizeScale:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Tonemapper.Quality:5]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Gather.ResolutionDivisor:2         ; lower gathering resolution]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Gather.AccumulatorQuality:1        ; higher gathering accumulator quality]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Gather.PostfilterMethod:1          ; Median3x3 postfilering method]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Gather.EnableBokehSettings:0       ; no bokeh simulation when gathering]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Gather.RingCount:4                 ; medium number of samples when gathering]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Scatter.ForegroundCompositing:1    ; additive foreground scattering]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Scatter.BackgroundCompositing:2    ; additive background scattering]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Scatter.EnableBokehSettings:1      ; bokeh simulation when scattering]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Scatter.MaxSpriteRatio:0.1         ; only a maximum of 10% of scattered bokeh]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Recombine.Quality:1                ; cheap slight out of focus]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Recombine.EnableBokehSettings:0    ; no bokeh simulation on slight out of focus]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.TemporalAAQuality:1                ; more stable temporal accumulation]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Kernel.MaxForegroundRadius:0.025]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DOF.Kernel.MaxBackgroundRadius:0.025]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Applying CVar settings from Section [TextureQuality@3] File [Scalability]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Streaming.MipBias:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Streaming.AmortizeCPUToGPUCopy:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Streaming.MaxNumTexturesToStreamPerFrame:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Streaming.Boost:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.MaxAnisotropy:8]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.VT.MaxAnisotropy:8]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Streaming.LimitPoolSizeToVRAM:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Streaming.PoolSize:1000]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.Streaming.MaxEffectiveScreenSize:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Applying CVar settings from Section [EffectsQuality@3] File [Scalability]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.TranslucencyLightingVolumeDim:64]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.RefractionQuality:2]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.SceneColorFormat:4]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.DetailMode:3]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.TranslucencyVolumeBlur:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.MaterialQualityLevel:1 ; High quality]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.SSS.Scale:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.SSS.SampleSet:2]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.SSS.Quality:1]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.SSS.HalfRes:0]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.SSGI.Quality:3]]
+[2026.11.26-03.08.18:660][  0]LogConfig: Set CVar [[r.EmitterSpawnRateScale:1.0]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.ParticleLightQuality:2]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.FastApplyOnOpaque:1 ; Always have FastSkyLUT 1 in this case to avoid wrong sky]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.SampleCountMaxPerSlice:4]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.DepthResolution:16.0]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.SkyAtmosphere.FastSkyLUT:1]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.SkyAtmosphere.FastSkyLUT.SampleCountMin:4.0]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.SkyAtmosphere.FastSkyLUT.SampleCountMax:128.0]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.SkyAtmosphere.SampleCountMin:4.0]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.SkyAtmosphere.SampleCountMax:128.0]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.SkyAtmosphere.TransmittanceLUT.UseSmallFormat:0]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.SkyAtmosphere.TransmittanceLUT.SampleCount:10.0]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.SkyAtmosphere.MultiScatteringLUT.SampleCount:15.0]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[fx.Niagara.QualityLevel:3]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.Refraction.OffsetQuality:1]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.HeterogeneousVolumes.DownsampleFactor:2]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.HeterogeneousVolumes.MaxStepCount:256]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.HeterogeneousVolumes.Shadows.Resolution:256]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.HeterogeneousVolumes.Shadows.MaxSampleCount:8]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.HeterogeneousVolumes.UseExistenceMask:0]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Applying CVar settings from Section [FoliageQuality@3] File [Scalability]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[foliage.DensityScale:1.0]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[grass.DensityScale:1.0]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Applying CVar settings from Section [ShadingQuality@3] File [Scalability]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.HairStrands.SkyLighting.IntegrationType:2]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.HairStrands.SkyAO.SampleCount:4]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.HairStrands.Visibility.MSAA.SamplePerPixel:4]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Set CVar [[r.AnisotropicMaterials:1]]
+[2026.11.26-03.08.18:661][  0]LogConfig: Applying CVar settings from Section [LandscapeQuality@3] File [Scalability]
+[2026.11.26-03.08.18:668][  0]LogRHI: Using Forced RHI: D3D11
+[2026.11.26-03.08.18:668][  0]LogRHI: Using Highest Feature Level of D3D11: SM5
+[2026.11.26-03.08.18:668][  0]LogRHI: Loading RHI module D3D11RHI
+[2026.11.26-03.08.18:676][  0]LogRHI: Checking if RHI D3D11 with Feature Level SM5 is supported by your system.
+[2026.11.26-03.08.18:691][  0]LogD3D11RHI: D3D11 min allowed feature level: 11_0
+[2026.11.26-03.08.18:691][  0]LogD3D11RHI: D3D11 max allowed feature level: 11_1
+[2026.11.26-03.08.18:691][  0]LogD3D11RHI: D3D11 adapters:
+[2026.11.26-03.08.18:692][  0]LogD3D11RHI: Testing D3D11 Adapter 0:
+[2026.11.26-03.08.18:692][  0]LogD3D11RHI:     Description : Intel(R) Iris(R) Xe Graphics
+[2026.11.26-03.08.18:692][  0]LogD3D11RHI:     VendorId    : 8086
+[2026.11.26-03.08.18:692][  0]LogD3D11RHI:     DeviceId    : 9a49
+[2026.11.26-03.08.18:692][  0]LogD3D11RHI:     SubSysId    : 87fe103c
+[2026.11.26-03.08.18:692][  0]LogD3D11RHI:     Revision    : 0001
+[2026.11.26-03.08.18:692][  0]LogD3D11RHI:     DedicatedVideoMemory : 134217728 bytes
+[2026.11.26-03.08.18:692][  0]LogD3D11RHI:     DedicatedSystemMemory : 0 bytes
+[2026.11.26-03.08.18:692][  0]LogD3D11RHI:     SharedSystemMemory : 4107550720 bytes
+[2026.11.26-03.08.18:692][  0]LogD3D11RHI:     AdapterLuid : 0 71314
+[2026.11.26-03.08.18:833][  0]LogD3D11RHI:    0. 'Intel(R) Iris(R) Xe Graphics' (Feature Level 11_1)
+[2026.11.26-03.08.18:833][  0]LogD3D11RHI:       128/0/3917 MB DedicatedVideo/DedicatedSystem/SharedSystem, Outputs:1, VendorId:0x8086 UMA:true
+[2026.11.26-03.08.18:833][  0]LogD3D11RHI: Testing D3D11 Adapter 1:
+[2026.11.26-03.08.18:833][  0]LogD3D11RHI:     Description : Microsoft Basic Render Driver
+[2026.11.26-03.08.18:833][  0]LogD3D11RHI:     VendorId    : 1414
+[2026.11.26-03.08.18:833][  0]LogD3D11RHI:     DeviceId    : 008c
+[2026.11.26-03.08.18:833][  0]LogD3D11RHI:     SubSysId    : 0000
+[2026.11.26-03.08.18:833][  0]LogD3D11RHI:     Revision    : 0000
+[2026.11.26-03.08.18:833][  0]LogD3D11RHI:     DedicatedVideoMemory : 0 bytes
+[2026.11.26-03.08.18:833][  0]LogD3D11RHI:     DedicatedSystemMemory : 0 bytes
+[2026.11.26-03.08.18:833][  0]LogD3D11RHI:     SharedSystemMemory : 4107550720 bytes
+[2026.11.26-03.08.18:833][  0]LogD3D11RHI:     AdapterLuid : 0 72258
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI:    1. 'Microsoft Basic Render Driver' (Feature Level 11_1)
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI:       0/0/3917 MB DedicatedVideo/DedicatedSystem/SharedSystem, Outputs:0, VendorId:0x1414 UMA:true
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI: Chosen D3D11 Adapter:
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI:     Description : Intel(R) Iris(R) Xe Graphics
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI:     VendorId    : 8086
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI:     DeviceId    : 9a49
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI:     SubSysId    : 87fe103c
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI:     Revision    : 0001
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI:     DedicatedVideoMemory : 134217728 bytes
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI:     DedicatedSystemMemory : 0 bytes
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI:     SharedSystemMemory : 4107550720 bytes
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI:     AdapterLuid : 0 71314
+[2026.11.26-03.08.18:854][  0]LogD3D11RHI: Integrated GPU (iGPU): true
+[2026.11.26-03.08.18:854][  0]LogRHI: RHI D3D11 with Feature Level SM5 is supported and will be used.
+[2026.11.26-03.08.18:854][  0]LogInit: Selected Device Profile: [WindowsEditor]
+[2026.11.26-03.08.18:854][  0]LogHAL: Display: Platform has ~ 8 GB [8215101440 / 8589934592 / 8], which maps to Default [LargestMinGB=32, LargerMinGB=12, DefaultMinGB=8, SmallerMinGB=6, SmallestMinGB=0)
+[2026.11.26-03.08.18:856][  0]LogDeviceProfileManager: Going up to parent DeviceProfile [Windows]
+[2026.11.26-03.08.18:857][  0]LogDeviceProfileManager: Going up to parent DeviceProfile []
+[2026.11.26-03.08.18:857][  0]LogDeviceProfileManager: Pushing Device Profile CVar: [[UI.SlateSDFText.RasterizationMode:Bitmap -> Msdf]]
+[2026.11.26-03.08.18:857][  0]LogDeviceProfileManager: Pushing Device Profile CVar: [[UI.SlateSDFText.ResolutionLevel:2 -> 2]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Applying CVar settings from Section [ViewDistanceQuality@0] File [Scalability]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.SkeletalMeshLODBias:2]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.ViewDistanceScale:0.4]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Applying CVar settings from Section [AntiAliasingQuality@0] File [Scalability]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.FXAA.Quality:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.TemporalAA.Quality:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.TSR.History.ScreenPercentage:100]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.TSR.History.UpdateQuality:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.TSR.ShadingRejection.Flickering:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.TSR.RejectionAntiAliasingQuality:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.TSR.ReprojectionField:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.TSR.Resurrection:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Applying CVar settings from Section [ShadowQuality@0] File [Scalability]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.LightFunctionQuality:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.ShadowQuality:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.CSM.MaxCascades:1]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.MaxResolution:512]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.MaxCSMResolution:512]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.RadiusThreshold:0.06]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.DistanceScale:0.6]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.CSM.TransitionScale:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.PreShadowResolutionFactor:0.5]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.DistanceFieldShadowing:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.VolumetricFog:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.LightMaxDrawDistanceScale:0.5]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.CapsuleShadows:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.Virtual.MaxPhysicalPages:512]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.Virtual.ResolutionLodBiasDirectional:0.0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving:0.0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.Virtual.ResolutionLodBiasLocal:1.0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.Virtual.ResolutionLodBiasLocalMoving:2.0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.Virtual.SMRT.RayCountDirectional:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.Virtual.SMRT.SamplesPerRayDirectional:2]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.Virtual.SMRT.RayCountLocal:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.Shadow.Virtual.SMRT.SamplesPerRayLocal:2]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Applying CVar settings from Section [PostProcessQuality@0] File [Scalability]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.MotionBlurQuality:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.MotionBlur.HalfResGather:1]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.AmbientOcclusionMipLevelFactor:1.0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.AmbientOcclusionMaxQuality:0]]
+[2026.11.26-03.08.18:858][  0]LogConfig: Set CVar [[r.AmbientOcclusionLevels:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.AmbientOcclusionRadiusScale:1.2]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.DepthOfFieldQuality:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.RenderTargetPoolMin:300]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.LensFlareQuality:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SceneColorFringeQuality:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.BloomQuality:4]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.Bloom.ScreenPercentage:25.000]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.FastBlurThreshold:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.Upscale.Quality:1]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.LightShaftQuality:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.Filter.SizeScale:0.6]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.Tonemapper.Quality:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Applying CVar settings from Section [TextureQuality@0] File [Scalability]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.Streaming.MipBias:16]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.Streaming.AmortizeCPUToGPUCopy:1]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.Streaming.MaxNumTexturesToStreamPerFrame:1]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.Streaming.Boost:0.3]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.MaxAnisotropy:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.VT.MaxAnisotropy:4]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.Streaming.LimitPoolSizeToVRAM:1]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.Streaming.PoolSize:400]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Applying CVar settings from Section [EffectsQuality@0] File [Scalability]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.TranslucencyLightingVolumeDim:24]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.RefractionQuality:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SceneColorFormat:3]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.DetailMode:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.TranslucencyVolumeBlur:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.MaterialQualityLevel:0 ; Low quality]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SSS.Scale:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SSS.SampleSet:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SSS.Quality:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SSS.HalfRes:1]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SSGI.Quality:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.EmitterSpawnRateScale:0.125]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.ParticleLightQuality:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.SampleCountMaxPerSlice:1]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.DepthResolution:8.0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SkyAtmosphere.FastSkyLUT.SampleCountMin:2.0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SkyAtmosphere.FastSkyLUT.SampleCountMax:16.0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SkyAtmosphere.SampleCountMin:2.0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SkyAtmosphere.SampleCountMax:16.0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.SkyAtmosphere.TransmittanceLUT.UseSmallFormat:1]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[fx.Niagara.QualityLevel:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.HeterogeneousVolumes:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Applying CVar settings from Section [FoliageQuality@0] File [Scalability]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[foliage.DensityScale:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[grass.DensityScale:0]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Applying CVar settings from Section [Startup] File [../../../Engine/Config/ConsoleVariables.ini]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[r.DumpShaderDebugInfo:2]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[p.chaos.AllowCreatePhysxBodies:1]]
+[2026.11.26-03.08.18:859][  0]LogConfig: Set CVar [[fx.SkipVectorVMBackendOptimizations:1]]
+[2026.11.26-03.08.18:859][  0]LogConfig: CVar [[ds.CADTranslator.Meshing.ActivateThinZoneMeshing:0]] deferred - dummy variable created
+[2026.11.26-03.08.18:859][  0]LogConfig: CVar [[ds.CADTranslator.Stitching.RemoveThinFaces:0]] deferred - dummy variable created
+[2026.11.26-03.08.18:860][  0]LogConfig: Applying CVar settings from Section [Startup_Windows] File [../../../Engine/Config/ConsoleVariables.ini]
+[2026.11.26-03.08.18:860][  0]LogConfig: Applying CVar settings from Section [ConsoleVariables] File [Engine]
+[2026.11.26-03.08.18:860][  0]LogConfig: Applying CVar settings from Section [ViewDistanceQuality@0] File [Scalability]
+[2026.11.26-03.08.18:860][  0]LogConfig: Applying CVar settings from Section [AntiAliasingQuality@0] File [Scalability]
+[2026.11.26-03.08.18:860][  0]LogConfig: Applying CVar settings from Section [ShadowQuality@0] File [Scalability]
+[2026.11.26-03.08.18:860][  0]LogConfig: Applying CVar settings from Section [PostProcessQuality@0] File [Scalability]
+[2026.11.26-03.08.18:860][  0]LogConfig: Applying CVar settings from Section [TextureQuality@0] File [Scalability]
+[2026.11.26-03.08.18:860][  0]LogConfig: Applying CVar settings from Section [EffectsQuality@0] File [Scalability]
+[2026.11.26-03.08.18:860][  0]LogConfig: Applying CVar settings from Section [FoliageQuality@0] File [Scalability]
+[2026.11.26-03.08.18:860][  0]LogConfig: Set CVar [[t.MaxFPS:30]]
+[2026.11.26-03.08.18:860][  0]LogConfig: Applying CVar settings from Section [ConsoleVariables] File [C:/Projects/Robotic/experiments/ue5_s4/editor_host/Saved/Config/WindowsEditor/Editor.ini]
+[2026.11.26-03.08.18:863][  0]LogInit: Computer: LAPTOP-KBPKJ5JM
+[2026.11.26-03.08.18:863][  0]LogInit: User: lemin
+[2026.11.26-03.08.18:863][  0]LogInit: CPU Page size=4096, Cores=4
+[2026.11.26-03.08.18:863][  0]LogInit: High frequency timer resolution =10.000000 MHz
+[2026.11.26-03.08.18:863][  0]LogMemory: Process is running as part of a Windows Job with separate resource limits
+[2026.11.26-03.08.18:863][  0]LogMemory: Memory total: Physical=7.7GB (8GB approx) Virtual=24.8GB
+[2026.11.26-03.08.18:863][  0]LogMemory: Platform Memory Stats for WindowsEditor
+[2026.11.26-03.08.18:863][  0]LogMemory: Process Physical Memory: 626.77 MB used, 650.57 MB peak
+[2026.11.26-03.08.18:863][  0]LogMemory: Process Virtual Memory: 597.88 MB used, 600.73 MB peak
+[2026.11.26-03.08.18:863][  0]LogMemory: Physical Memory: 7307.66 MB used,  526.87 MB free, 7834.53 MB total
+[2026.11.26-03.08.18:863][  0]LogMemory: Virtual Memory: 16348.84 MB used,  9030.81 MB free, 25379.66 MB total
+[2026.11.26-03.08.18:863][  0]LogCsvProfiler: Display: Metadata set : extradevelopmentmemorymb="0"
+[2026.11.26-03.08.18:868][  0]LogWindows: WindowsPlatformFeatures enabled
+[2026.11.26-03.08.18:878][  0]LogChaosDD: Chaos Debug Draw Startup
+[2026.11.26-03.08.18:878][  0]LogInit: Physics initialised using underlying interface: Chaos
+[2026.11.26-03.08.18:879][  0]LogInit: Using OS detected language (en-US).
+[2026.11.26-03.08.18:879][  0]LogInit: Using OS detected locale (en-US).
+[2026.11.26-03.08.18:887][  0]LogTextLocalizationManager: No specific localization for 'en-US' exists, so 'en' will be used for the language.
+[2026.11.26-03.08.19:604][  0]LogWindowsTextInputMethodSystem: Available input methods:
+[2026.11.26-03.08.19:604][  0]LogWindowsTextInputMethodSystem:   - English (United States) - (Keyboard).
+[2026.11.26-03.08.19:604][  0]LogWindowsTextInputMethodSystem:   - Vietnamese (Vietnam) - (Keyboard).
+[2026.11.26-03.08.19:604][  0]LogWindowsTextInputMethodSystem: Activated input method: English (United States) - (Keyboard).
+[2026.11.26-03.08.19:614][  0]LogWindowsTouchpad: Display: CacheForceMaxTouchpadSensitivityMode SetMaxTouchpadSensitivity
+[2026.11.26-03.08.19:624][  0]LogObj: Display: Attempting to load config data for Default__SlateThemeManager before the Class has been constructed/registered/linked (likely during module loading or early startup). This will result in the load silently failing and should be fixed.
+[2026.11.26-03.08.19:630][  0]LogSlate: New Slate User Created. Platform User Id 0, User Index 0, Is Virtual User: 0
+[2026.11.26-03.08.19:630][  0]LogSlate: Slate User Registered.  User Index 0, Is Virtual User: 0
+[2026.11.26-03.08.19:949][  0]LogRHI: Using Forced RHI: D3D11
+[2026.11.26-03.08.19:949][  0]LogRHI: Using Highest Feature Level of D3D11: SM5
+[2026.11.26-03.08.19:949][  0]LogRHI: Loading RHI module D3D11RHI
+[2026.11.26-03.08.19:949][  0]LogRHI: Checking if RHI D3D11 with Feature Level SM5 is supported by your system.
+[2026.11.26-03.08.19:949][  0]LogRHI: RHI D3D11 with Feature Level SM5 is supported and will be used.
+[2026.11.26-03.08.19:951][  0]LogWindows: Attached monitors:
+[2026.11.26-03.08.19:951][  0]LogWindows:     resolution: 1536x864, work area: (0, 0) -> (1536, 864), device: '\\.\DISPLAY1' [PRIMARY]
+[2026.11.26-03.08.19:951][  0]LogWindows: Found 1 attached monitors.
+[2026.11.26-03.08.19:951][  0]LogWindows: Gathering driver information using Windows Setup API
+[2026.11.26-03.08.19:952][  0]LogRHI: RHI Adapter Info:
+[2026.11.26-03.08.19:952][  0]LogRHI:             Name: Intel(R) Iris(R) Xe Graphics
+[2026.11.26-03.08.19:952][  0]LogRHI:   Driver Version: 31.0.101.5186 (internal:31.0.101.5186, unified:101.5186)
+[2026.11.26-03.08.19:952][  0]LogRHI:      Driver Date: 1-18-2024
+[2026.11.26-03.08.19:952][  0]LogD3D11RHI: Creating new Direct3DDevice
+[2026.11.26-03.08.19:952][  0]LogD3D11RHI:     GPU DeviceId: 0x9a49 (for the marketing name, search the web for "GPU Device Id")
+[2026.11.26-03.08.19:952][  0]LogRHI: Texture pool is 1460 MB (70% of 2086 MB)
+[2026.11.26-03.08.19:952][  0]LogNvidiaAftermath: Nvidia Aftermath is disabled in D3D11 due to instability issues.
+[2026.11.26-03.08.19:952][  0]LogD3D11RHI: Creating D3DDevice using adapter:
+[2026.11.26-03.08.19:952][  0]LogD3D11RHI:     Description : Intel(R) Iris(R) Xe Graphics
+[2026.11.26-03.08.19:952][  0]LogD3D11RHI:     VendorId    : 8086
+[2026.11.26-03.08.19:952][  0]LogD3D11RHI:     DeviceId    : 9a49
+[2026.11.26-03.08.19:952][  0]LogD3D11RHI:     SubSysId    : 87fe103c
+[2026.11.26-03.08.19:952][  0]LogD3D11RHI:     Revision    : 0001
+[2026.11.26-03.08.19:952][  0]LogD3D11RHI:     DedicatedVideoMemory : 134217728 bytes
+[2026.11.26-03.08.19:952][  0]LogD3D11RHI:     DedicatedSystemMemory : 0 bytes
+[2026.11.26-03.08.19:952][  0]LogD3D11RHI:     SharedSystemMemory : 4107550720 bytes
+[2026.11.26-03.08.19:952][  0]LogD3D11RHI:     AdapterLuid : 0 71314
+[2026.11.26-03.08.20:020][  0]LogNvidiaAftermath: Aftermath is not loaded.
+[2026.11.26-03.08.20:061][  0]LogD3D11RHI: Intel Extensions loaded requested version for UAVOverlap: 1.1.0
+[2026.11.26-03.08.20:061][  0]LogD3D11RHI: Intel Extensions loaded requested version Atomics Version: 3.4.1
+[2026.11.26-03.08.20:062][  0]LogD3D11RHI: Intel Extensions Framework enabled
+[2026.11.26-03.08.20:062][  0]LogD3D11RHI: RHI has support for 64 bit atomics
+[2026.11.26-03.08.20:063][  0]LogD3D11RHI: Async texture creation enabled
+[2026.11.26-03.08.20:063][  0]LogD3D11RHI: D3D11_MAP_WRITE_NO_OVERWRITE for dynamic buffer SRVs is supported
+[2026.11.26-03.08.20:063][  0]LogD3D11RHI: Array index from any shader is supported
+[2026.11.26-03.08.20:087][  0]LogVRS: Current RHI does not support Variable Rate Shading
+[2026.11.26-03.08.20:104][  0]LogCsvProfiler: Display: Metadata set : verbatimrhiname="D3D11"
+[2026.11.26-03.08.20:104][  0]LogCsvProfiler: Display: Metadata set : rhiname="D3D11"
+[2026.11.26-03.08.20:104][  0]LogCsvProfiler: Display: Metadata set : rhifeaturelevel="SM5"
+[2026.11.26-03.08.20:104][  0]LogCsvProfiler: Display: Metadata set : shaderplatform="PCD3D_SM5"
+[2026.11.26-03.08.20:104][  0]LogInit: Initializing FReadOnlyCVARCache
+[2026.11.26-03.08.20:138][  0]LogTextureFormatASTC: Display: ASTCEnc version 5.0.1 library loaded
+[2026.11.26-03.08.20:138][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatASTC
+[2026.11.26-03.08.20:138][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatDXT
+[2026.11.26-03.08.20:138][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatETC2
+[2026.11.26-03.08.20:138][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatIntelISPCTexComp
+[2026.11.26-03.08.20:138][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatUncompressed
+[2026.11.26-03.08.20:138][  0]LogTextureFormatOodle: Display: Oodle Texture TFO init; latest sdk version = 2.9.13
+[2026.11.26-03.08.20:138][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.13.dll
+[2026.11.26-03.08.20:140][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.5.dll
+[2026.11.26-03.08.20:143][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatOodle
+[2026.11.26-03.08.20:210][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android'
+[2026.11.26-03.08.20:210][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ASTC'
+[2026.11.26-03.08.20:210][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_DXT'
+[2026.11.26-03.08.20:210][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ETC2'
+[2026.11.26-03.08.20:210][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_OpenXR'
+[2026.11.26-03.08.20:210][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'AndroidClient'
+[2026.11.26-03.08.20:210][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ASTCClient'
+[2026.11.26-03.08.20:210][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_DXTClient'
+[2026.11.26-03.08.20:210][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ETC2Client'
+[2026.11.26-03.08.20:210][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_OpenXRClient'
+[2026.11.26-03.08.20:210][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_Multi'
+[2026.11.26-03.08.20:210][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_MultiClient'
+[2026.11.26-03.08.20:239][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'IOS'
+[2026.11.26-03.08.20:239][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'IOSClient'
+[2026.11.26-03.08.20:267][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Linux'
+[2026.11.26-03.08.20:267][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxEditor'
+[2026.11.26-03.08.20:267][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxServer'
+[2026.11.26-03.08.20:267][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxClient'
+[2026.11.26-03.08.20:295][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Mac'
+[2026.11.26-03.08.20:295][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'MacEditor'
+[2026.11.26-03.08.20:295][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'MacServer'
+[2026.11.26-03.08.20:295][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'MacClient'
+[2026.11.26-03.08.20:319][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'TVOS'
+[2026.11.26-03.08.20:319][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'TVOSClient'
+[2026.11.26-03.08.20:346][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Windows'
+[2026.11.26-03.08.20:347][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsEditor'
+[2026.11.26-03.08.20:347][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsServer'
+[2026.11.26-03.08.20:347][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsClient'
+[2026.11.26-03.08.20:347][  0]LogTargetPlatformManager: Display: Building Assets For WindowsEditor
+[2026.11.26-03.08.20:362][  0]LogAudioDebug: Display: Lib vorbis DLL was dynamically loaded.
+[2026.11.26-03.08.20:538][  0]LogTargetPlatformManager: Unable to find shader format SF_METAL_ES3_1_IOS from hinted modules, loading all potential format modules to find it
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager: Loaded format module MetalShaderFormat
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_METAL_ES3_1_IOS
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_METAL_SM5_IOS
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_METAL_ES3_1_TVOS
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_METAL_SM5_TVOS
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_METAL_SM5
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_METAL_SM6
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_METAL_SIM
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_METAL_ES3_1
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager: Loaded format module ShaderFormatD3D
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   PCD3D_SM6
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   PCD3D_SM5
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   PCD3D_ES31
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager: Loaded format module ShaderFormatOpenGL
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   GLSL_150_ES31
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   GLSL_ES3_1_ANDROID
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager: Loaded format module ShaderFormatVectorVM
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   VVM_1_0
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager: Loaded format module VulkanShaderFormat
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_VULKAN_SM5
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_VULKAN_ES31_ANDROID
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_VULKAN_ES31
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_VULKAN_SM5_ANDROID
+[2026.11.26-03.08.20:613][  0]LogTargetPlatformManager:   SF_VULKAN_SM6
+[2026.11.26-03.08.20:613][  0]LogRendererCore: Ray tracing is disabled. Reason: disabled through project setting (r.RayTracing=0).
+[2026.11.26-03.08.20:618][  0]LogDerivedDataCache: Display: Memory: Max Cache Size: -1 MB
+[2026.11.26-03.08.20:618][  0]LogDerivedDataCache: FDerivedDataBackendGraph: Pak pak cache file ../../../../../../Projects/Robotic/experiments/ue5_s4/editor_host/DerivedDataCache/DDC.ddp not found, will not use a pak cache.
+[2026.11.26-03.08.20:618][  0]LogDerivedDataCache: Unable to find inner node Pak for hierarchy Hierarchy.
+[2026.11.26-03.08.20:618][  0]LogDerivedDataCache: FDerivedDataBackendGraph: CompressedPak pak cache file ../../../../../../Projects/Robotic/experiments/ue5_s4/editor_host/DerivedDataCache/Compressed.ddp not found, will not use a pak cache.
+[2026.11.26-03.08.20:618][  0]LogDerivedDataCache: Unable to find inner node CompressedPak for hierarchy Hierarchy.
+[2026.11.26-03.08.20:992][  0]LogDerivedDataCache: Display: ../../../Engine/DerivedDataCache/Compressed.ddp: Opened pak cache for reading. (1350 MiB)
+[2026.11.26-03.08.20:992][  0]LogDerivedDataCache: FDerivedDataBackendGraph: EnterprisePak pak cache file ../../../Enterprise/DerivedDataCache/Compressed.ddp not found, will not use a pak cache.
+[2026.11.26-03.08.20:992][  0]LogDerivedDataCache: Unable to find inner node EnterprisePak for hierarchy Hierarchy.
+[2026.11.26-03.08.20:997][  0]LogZenServiceInstance: Found Zen config default=C:/Users/lemin/AppData/Local/UnrealEngine/Common/Zen/Data
+[2026.11.26-03.08.20:998][  0]LogZenServiceInstance: InTree version at 'C:/Program Files/Epic Games/UE_5.6/Engine/Binaries/Win64/zenserver.exe' is '5.6.6-202504241958-windows-x64-release-f090a03'
+[2026.11.26-03.08.20:998][  0]LogZenServiceInstance: Installed version at 'C:/Users/lemin/AppData/Local/UnrealEngine/Common/Zen/Install/zenserver.exe' is '5.6.6-202504241958-windows-x64-release-f090a03'
+[2026.11.26-03.08.20:999][  0]LogZenServiceInstance: No current process using the data dir found, launching a new instance
+[2026.11.26-03.08.21:000][  0]LogZenServiceInstance: Display: Launching executable 'C:/Users/lemin/AppData/Local/UnrealEngine/Common/Zen/Install/zenserver.exe', working dir 'C:/Users/lemin/AppData/Local/UnrealEngine/Common/Zen/Install', data dir 'C:/Users/lemin/AppData/Local/UnrealEngine/Common/Zen/Data', args '--port 8558 --data-dir "C:\Users\lemin\AppData\Local\UnrealEngine\Common\Zen\Data" --http asio --gc-cache-duration-seconds 1209600 --gc-interval-seconds 21600 --gc-low-diskspace-threshold 2147483648 --quiet --http-forceloopback --owner-pid 268  --child-id Zen_268_Startup'
+[2026.11.26-03.08.21:350][  0]LogZenServiceInstance: Display: Unreal Zen Storage Server HTTP service at [::1]:8558 status: OK!.
+[2026.11.26-03.08.21:351][  0]LogZenServiceInstance: Local ZenServer AutoLaunch initialization completed in 0.354 seconds
+[2026.11.26-03.08.21:358][  0]LogDerivedDataCache: Display: ZenLocal: Using ZenServer HTTP service at http://[::1]:8558/ with namespace ue.ddc status: OK!.
+[2026.11.26-03.08.21:389][  0]LogDerivedDataCache: C:/Users/lemin/AppData/Local/UnrealEngine/Common/DerivedDataCache: Speed tests took 0.03 seconds.
+[2026.11.26-03.08.21:389][  0]LogDerivedDataCache: Display: C:/Users/lemin/AppData/Local/UnrealEngine/Common/DerivedDataCache: Performance: Latency=0.07ms. RandomReadSpeed=132.45MBs, RandomWriteSpeed=44.69MBs. Assigned SpeedClass 'Local'
+[2026.11.26-03.08.21:407][  0]LogDerivedDataCache: Local: Using data cache path C:/Users/lemin/AppData/Local/UnrealEngine/Common/DerivedDataCache: DeleteOnly
+[2026.11.26-03.08.21:407][  0]LogDerivedDataCache: ZenShared: Disabled because Host is set to 'None'
+[2026.11.26-03.08.21:407][  0]LogDerivedDataCache: Unable to find inner node ZenShared for hierarchy Hierarchy.
+[2026.11.26-03.08.21:408][  0]LogDerivedDataCache: Shared: Disabled because no path is configured.
+[2026.11.26-03.08.21:408][  0]LogDerivedDataCache: Unable to find inner node Shared for hierarchy Hierarchy.
+[2026.11.26-03.08.21:408][  0]LogDerivedDataCache: Cloud: Disabled because Host is set to 'None'
+[2026.11.26-03.08.21:408][  0]LogDerivedDataCache: Unable to find inner node Cloud for hierarchy Hierarchy.
+[2026.11.26-03.08.21:415][  0]LogShaderCompilers: Guid format shader working directory is -18 characters bigger than the processId version (../../../../../../Projects/Robotic/experiments/ue5_s4/editor_host/Intermediate/Shaders/WorkingDirectory/268/).
+[2026.11.26-03.08.21:415][  0]LogShaderCompilers: Cleaned the shader compiler working directory 'C:/Users/lemin/AppData/Local/Temp/UnrealShaderWorkingDir/4FAF06774651F6A8411F88B43B519754/'.
+[2026.11.26-03.08.21:416][  0]LogXGEController: Cannot use XGE Controller as Incredibuild is not installed on this machine.
+[2026.11.26-03.08.21:433][  0]LogUbaHorde: Display: UBA/Horde Configuration [Uba.Provider.Horde]: Not Enabled
+[2026.11.26-03.08.21:433][  0]LogShaderCompilers: Display: Using 5 local workers for shader compilation
+[2026.11.26-03.08.21:439][  0]LogShaderCompilers: Display: Compiling shader autogen file: ../../../../../../Projects/Robotic/experiments/ue5_s4/editor_host/Intermediate/ShaderAutogen/PCD3D_SM5/AutogenShaderHeaders.ush
+[2026.11.26-03.08.21:458][  0]LogShaderCompilers: Display: Autogen file is unchanged, skipping write.
+[2026.11.26-03.08.37:230][  0]LogSlate: Using FreeType 2.10.0
+[2026.11.26-03.08.37:264][  0]LogSlate: SlateFontServices - WITH_FREETYPE: 1, WITH_HARFBUZZ: 1
+[2026.11.26-03.08.37:286][  0]LogStreaming: Warning: Failed to read file '../../../Engine/Platforms/VisionOS/Content/Editor/Slate/Launcher/Platform_VisionOS_24x.png' error.
+[2026.11.26-03.08.37:286][  0]LogSlate: Could not load file for Slate resource: [../../../Engine/Platforms/VisionOS/Content/Editor/Slate/Launcher/Platform_VisionOS_24x.png] file: [../../../Engine/Platforms/VisionOS/Content/Editor/Slate/Launcher/Platform_VisionOS_24x.png]
+[2026.11.26-03.08.37:286][  0]LogStreaming: Warning: Failed to read file '../../../Engine/Platforms/VisionOS/Content/Editor/Slate/Launcher/Platform_VisionOS_128x.png' error.
+[2026.11.26-03.08.37:286][  0]LogSlate: Could not load file for Slate resource: [../../../Engine/Platforms/VisionOS/Content/Editor/Slate/Launcher/Platform_VisionOS_128x.png] file: [../../../Engine/Platforms/VisionOS/Content/Editor/Slate/Launcher/Platform_VisionOS_128x.png]
+[2026.11.26-03.08.37:337][  0]LogAssetRegistry: FAssetRegistry took 0.0115 seconds to start up
+[2026.11.26-03.08.37:345][  0]LogEditorDomain: Display: EditorDomain is Disabled
+[2026.11.26-03.08.37:390][  0]LogAssetRegistry: Display: AssetDataGatherer spent 0.001s loading caches ../../../../../../Projects/Robotic/experiments/ue5_s4/editor_host/Intermediate/CachedAssetRegistry_*.bin.
+[2026.11.26-03.08.38:047][  0]LogDeviceProfileManager: Display: Deviceprofile LinuxArm64Editor not found.
+[2026.11.26-03.08.38:048][  0]LogDeviceProfileManager: Display: Deviceprofile LinuxArm64 not found.
+[2026.11.26-03.08.38:104][  0]LogDeviceProfileManager: Active device profile: [000001C154C0AF00][000001C14AFF7800 66] WindowsEditor
+[2026.11.26-03.08.38:104][  0]LogCsvProfiler: Display: Metadata set : deviceprofile="WindowsEditor"
+[2026.11.26-03.08.38:135][  0]LogStreaming: Display: FlushAsyncLoading(1): 1 QueuedPackages, 0 AsyncPackages
+[2026.11.26-03.08.38:156][  0]LogTextureEncodingSettings: Display: Texture Encode Speed: FinalIfAvailable (editor).
+[2026.11.26-03.08.38:156][  0]LogTextureEncodingSettings: Display: Oodle Texture Encode Speed settings: Fast: RDO Off Lambda=0, Effort=Normal Final: RDO Off Lambda=0, Effort=Normal
+[2026.11.26-03.08.38:156][  0]LogTextureEncodingSettings: Display: Shared linear texture encoding: Disabled
+[2026.11.26-03.08.38:263][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.11.26-03.08.38:266][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness because of a recursive sync load
+[2026.11.26-03.08.38:266][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.11.26-03.08.38:267][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.11.26-03.08.38:269][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec because of a recursive sync load
+[2026.11.26-03.08.38:269][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.11.26-03.08.38:270][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/WorldGridMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.11.26-03.08.38:274][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/EngineMaterials/T_Default_Material_Grid_M because of a recursive sync load
+[2026.11.26-03.08.38:275][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/EngineMaterials/T_Default_Material_Grid_N because of a recursive sync load
+[2026.11.26-03.08.38:278][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/Functions/Engine_MaterialFunctions01/Opacity/CameraDepthFade because of a recursive sync load
+[2026.11.26-03.08.38:280][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/WorldGridMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.11.26-03.08.38:282][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.11.26-03.08.38:283][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultPostProcessMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.11.26-03.08.38:287][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultLightFunctionMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultDiffuse because of a recursive sync load
+[2026.11.26-03.08.38:287][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultLightFunctionMaterial is adding a dynamic import to package /Engine/Functions/Engine_MaterialFunctions02/Utility/BreakOutFloat2Components because of a recursive sync load
+[2026.11.26-03.08.38:291][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultLightFunctionMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultPostProcessMaterial because of a recursive sync load
+[2026.11.26-03.08.38:291][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultPostProcessMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.11.26-03.08.38:369][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultDeferredDecalMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultLightFunctionMaterial because of a recursive sync load
+[2026.11.26-03.08.38:369][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.11.26-03.08.38:392][  0]LogStreaming: Display: Package /Engine/EngineMaterials/WorldGridMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultDeferredDecalMaterial because of a recursive sync load
+[2026.11.26-03.08.38:392][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/WorldGridMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.11.26-03.08.38:421][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/EngineMaterials/WorldGridMaterial because of a recursive sync load
+[2026.11.26-03.08.38:421][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/WorldGridMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.11.26-03.08.38:736][  0]LogMeshReduction: Display: Using QuadricMeshReduction for automatic static mesh reduction
+[2026.11.26-03.08.38:736][  0]LogMeshReduction: Display: Using SkeletalMeshReduction for automatic skeletal mesh reduction
+[2026.11.26-03.08.38:736][  0]LogMeshReduction: Display: Using ProxyLODMeshReduction for automatic mesh merging
+[2026.11.26-03.08.38:736][  0]LogMeshReduction: Display: No distributed automatic mesh merging module available
+[2026.11.26-03.08.38:736][  0]LogMeshMerging: No distributed automatic mesh merging module available
+[2026.11.26-03.08.39:891][  0]LogConfig: Applying CVar settings from Section [/Script/CQTest.CQTestSettings] File [Engine]
+[2026.11.26-03.08.40:031][  0]LogVirtualization: Display: VirtualizationSystem name found in ini file: None
+[2026.11.26-03.08.40:031][  0]LogVirtualization: Display: FNullVirtualizationSystem mounted, virtualization will be disabled
+[2026.11.26-03.08.40:032][  0]LogIris: FNetObjectFactoryRegistry::UnregisterFactory is unregistering factory: NetActorFactory name: NetActorFactory id: 0
+[2026.11.26-03.08.40:032][  0]LogIris: FNetObjectFactoryRegistry::UnregisterFactory is unregistering factory: NetSubObjectFactory name: NetSubObjectFactory id: 1
+[2026.11.26-03.08.40:126][  0]LogSlate: Border
+[2026.11.26-03.08.40:126][  0]LogSlate: BreadcrumbButton
+[2026.11.26-03.08.40:126][  0]LogSlate: Brushes.Title
+[2026.11.26-03.08.40:126][  0]LogSlate: ColorPicker.ColorThemes
+[2026.11.26-03.08.40:126][  0]LogSlate: Default
+[2026.11.26-03.08.40:126][  0]LogSlate: Icons.Save
+[2026.11.26-03.08.40:126][  0]LogSlate: Icons.Toolbar.Settings
+[2026.11.26-03.08.40:126][  0]LogSlate: ListView
+[2026.11.26-03.08.40:126][  0]LogSlate: SoftwareCursor_CardinalCross
+[2026.11.26-03.08.40:126][  0]LogSlate: SoftwareCursor_Grab
+[2026.11.26-03.08.40:126][  0]LogSlate: TableView.DarkRow
+[2026.11.26-03.08.40:126][  0]LogSlate: TableView.Row
+[2026.11.26-03.08.40:126][  0]LogSlate: TreeView
+[2026.11.26-03.08.40:592][  0]LogWorldPartition: Display: FWorldPartitionClassDescRegistry::Initialize started...
+[2026.11.26-03.08.40:616][  0]LogWorldPartition: Display: FWorldPartitionClassDescRegistry::Initialize took 24.508 ms
+[2026.11.26-03.08.40:713][  0]LogInit: XR: Instanced Stereo Rendering is Disabled
+[2026.11.26-03.08.40:713][  0]LogInit: XR: MultiViewport is Disabled
+[2026.11.26-03.08.40:713][  0]LogInit: XR: Mobile Multiview is Disabled
+[2026.11.26-03.08.40:802][  0]LogStats: UGameplayTagsManager::InitializeManager -  0.001 s
+[2026.11.26-03.08.41:264][  0]LogNiagaraDebuggerClient: Niagara Debugger Client Initialized | Session: 109F190B5A934D0C8000000000001D00 | Instance: BE73CC5A47B72DFA5044BB985C07EDA9 (LAPTOP-KBPKJ5JM-268).
+[2026.11.26-03.08.41:697][  0]LogTcpMessaging: Initializing TcpMessaging bridge
+[2026.11.26-03.08.41:713][  0]LogUdpMessaging: Display: Work queue size set to 1024.
+[2026.11.26-03.08.41:715][  0]LogUdpMessaging: Initializing bridge on interface 0.0.0.0:0 to multicast group 230.0.0.1:6666.
+[2026.11.26-03.08.41:716][  0]LogUdpMessaging: Display: Unicast socket bound to '0.0.0.0:57993'.
+[2026.11.26-03.08.41:727][  0]LogUdpMessaging: Display: Added local interface '192.168.137.1' to multicast group '230.0.0.1:6666'
+[2026.11.26-03.08.41:728][  0]LogUdpMessaging: Display: Added local interface '192.168.1.7' to multicast group '230.0.0.1:6666'
+[2026.11.26-03.08.41:731][  0]LogUdpMessaging: Display: Using asynchronous task graph for message deserialization.
+[2026.11.26-03.08.42:058][  0]LogMetaSound: Display: MetaSound Page Target Initialized to 'Default'
+[2026.11.26-03.08.42:061][  0]LogAudio: Display: Registering Engine Module Parameter Interfaces...
+[2026.11.26-03.08.42:109][  0]LogMetaSound: MetaSound Engine Initialized
+[2026.11.26-03.08.43:044][  0]LogPython: Python enabled via IPythonScriptPlugin::ForceEnablePythonAtRuntime: D:\build\++UE5\Sync\Engine\Plugins\Experimental\PythonScriptPlugin\Source\PythonScriptPlugin\Private\EditorUtilities\EditorPythonExecuter.cpp(193:30) void __cdecl FEditorPythonExecuter::OnStartupModule(void)
+[2026.11.26-03.08.43:555][  0]LogNNERuntimeORT: Available graphics and compute adapters:
+[2026.11.26-03.08.43:555][  0]LogNNERuntimeORT: Selecting NPU adapter: Intel(R) Iris(R) Xe Graphics
+[2026.11.26-03.08.43:749][  0]LogNNERuntimeORT: MakeRuntimeORTDml:
+[2026.11.26-03.08.43:749][  0]LogNNERuntimeORT:   DirectML:  yes
+[2026.11.26-03.08.43:749][  0]LogNNERuntimeORT:   RHI D3D12: no
+[2026.11.26-03.08.43:749][  0]LogNNERuntimeORT:   D3D12:     yes
+[2026.11.26-03.08.43:749][  0]LogNNERuntimeORT:   NPU:       yes
+[2026.11.26-03.08.43:749][  0]LogNNERuntimeORT: Interface availability:
+[2026.11.26-03.08.43:749][  0]LogNNERuntimeORT:   GPU: yes
+[2026.11.26-03.08.43:750][  0]LogNNERuntimeORT:   RDG: no
+[2026.11.26-03.08.43:750][  0]LogNNERuntimeORT:   NPU: yes
+[2026.11.26-03.08.43:943][  0]LogNNERuntimeORT: Available graphics and compute adapters:
+[2026.11.26-03.08.43:943][  0]LogNNERuntimeORT: Selecting NPU adapter: Intel(R) Iris(R) Xe Graphics
+[2026.11.26-03.08.44:280][  0]LogChaosVDEditor: [FChaosVDExtensionsManager::RegisterExtension] Registering CVD Extension [FChaosVDGenericDebugDrawExtension] ...
+[2026.11.26-03.08.44:280][  0]LogChaosVDEditor: [FChaosVDExtensionsManager::RegisterExtension] Registering CVD Extension [FChaosVDAccelerationStructuresExtension] ...
+[2026.11.26-03.08.44:304][  0]LogTimingProfiler: Initialize
+[2026.11.26-03.08.44:307][  0]LogTimingProfiler: OnSessionChanged
+[2026.11.26-03.08.44:307][  0]LoadingProfiler: Initialize
+[2026.11.26-03.08.44:307][  0]LoadingProfiler: OnSessionChanged
+[2026.11.26-03.08.44:308][  0]LogNetworkingProfiler: Initialize
+[2026.11.26-03.08.44:310][  0]LogNetworkingProfiler: OnSessionChanged
+[2026.11.26-03.08.44:310][  0]LogMemoryProfiler: Initialize
+[2026.11.26-03.08.44:310][  0]LogMemoryProfiler: OnSessionChanged
+[2026.11.26-03.08.45:255][  0]LogAndroidPermission: UAndroidPermissionCallbackProxy::GetInstance
+[2026.11.26-03.08.45:268][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2026.11.26-03.08.45:268][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2026.11.26-03.08.45:584][  0]SourceControl: Revision control is disabled
+[2026.11.26-03.08.45:623][  0]LogStreaming: Warning: Failed to read file '../../../Engine/Content/Slate/Icons/doc_16x.png' error.
+[2026.11.26-03.08.45:623][  0]LogStreaming: Warning: Failed to read file '../../../Engine/Content/Slate/Common/ButtonHoverHint.png' error.
+[2026.11.26-03.08.45:623][  0]LogSlate: Could not load file for Slate resource: [../../../Engine/Content/Slate/Common/ButtonHoverHint.png] file: [../../../Engine/Content/Slate/Common/ButtonHoverHint.png]
+[2026.11.26-03.08.45:623][  0]LogSlate: Could not load file for Slate resource: [../../../Engine/Content/Slate/Icons/doc_16x.png] file: [../../../Engine/Content/Slate/Icons/doc_16x.png]
+[2026.11.26-03.08.45:638][  0]SourceControl: Revision control is disabled
+[2026.11.26-03.08.46:080][  0]LogConfig: Applying CVar settings from Section [/Script/NNEDenoiser.NNEDenoiserSettings] File [Engine]
+[2026.11.26-03.08.46:148][  0]LogCollectionManager: Loaded 0 collections in 0.004488 seconds
+[2026.11.26-03.08.46:153][  0]LogFileCache: Scanning file cache for directory 'C:/Projects/Robotic/experiments/ue5_s4/editor_host/Saved/Collections/' took 0.01s
+[2026.11.26-03.08.46:160][  0]LogFileCache: Scanning file cache for directory 'C:/Projects/Robotic/experiments/ue5_s4/editor_host/Content/Developers/lemin/Collections/' took 0.01s
+[2026.11.26-03.08.46:165][  0]LogFileCache: Scanning file cache for directory 'C:/Projects/Robotic/experiments/ue5_s4/editor_host/Content/Collections/' took 0.00s
+[2026.11.26-03.08.46:296][  0]LogStreaming: Warning: Failed to read file '../../../Engine/Platforms/VisionOS/Content/Editor/Slate/Launcher/Platform_VisionOS_24x.png' error.
+[2026.11.26-03.08.46:296][  0]LogSlate: Could not load file for Slate resource: [../../../Engine/Platforms/VisionOS/Content/Editor/Slate/Launcher/Platform_VisionOS_24x.png] file: [../../../Engine/Platforms/VisionOS/Content/Editor/Slate/Launcher/Platform_VisionOS_24x.png]
+[2026.11.26-03.08.46:296][  0]LogStreaming: Warning: Failed to read file '../../../Engine/Platforms/VisionOS/Content/Editor/Slate/Launcher/Platform_VisionOS_128x.png' error.
+[2026.11.26-03.08.46:296][  0]LogSlate: Could not load file for Slate resource: [../../../Engine/Platforms/VisionOS/Content/Editor/Slate/Launcher/Platform_VisionOS_128x.png] file: [../../../Engine/Platforms/VisionOS/Content/Editor/Slate/Launcher/Platform_VisionOS_128x.png]
+[2026.11.26-03.08.46:370][  0]LogStreaming: Warning: Failed to read file '../../../Engine/Content/Slate/Icons/doc_16x.png' error.
+[2026.11.26-03.08.46:370][  0]LogSlate: Could not load file for Slate resource: [../../../Engine/Content/Slate/Icons/doc_16x.png] file: [../../../Engine/Content/Slate/Icons/doc_16x.png]
+[2026.11.26-03.08.46:371][  0]LogStreaming: Warning: Failed to read file '../../../Engine/Content/Slate/Common/ButtonHoverHint.png' error.
+[2026.11.26-03.08.46:371][  0]LogSlate: Could not load file for Slate resource: [../../../Engine/Content/Slate/Common/ButtonHoverHint.png] file: [../../../Engine/Content/Slate/Common/ButtonHoverHint.png]
+[2026.11.26-03.08.46:409][  0]LogEOSSDK: LogEOS: [Boot] EOSSDK Version 1.17.0-41373641 booting at 2026-11-26T03:08:46.406Z using C
+[2026.11.26-03.08.46:413][  0]LogEOSSDK: LogEOS: [Boot] EOSSDK Platform Properties [OS=Windows/10.0.26100.10068.64bit, ClientId=xyza7891REBVsEqSJRRNXmlS7EQHM459, ProductId=86f32f1151354e7cb39c12f8ab2c22a3, SandboxId=a01927f7421a4d4995673fe30ef46945, DeploymentId=a652a72ea1664dcab3a467891eea5f30, ProductName=SarEditorSlice, ProductVersion=++UE5+Release-5.6-CL-44394996, IsServer=false, Flags=DisableOverlay]
+[2026.11.26-03.08.46:417][  0]LogEOSSDK: LogEOSAnalytics: Start Session (User: ...)
+[2026.11.26-03.08.46:422][  0]LogEOSSDK: LogEOSOverlay: Overlay will not load, because it was explicitly disabled when creating the platform
+[2026.11.26-03.08.46:449][  0]LogEOSSDK: LogEOSAntiCheat: [AntiCheatClient] Anti-cheat client not available. Verify that the game was started using the anti-cheat bootstrapper if you intend to use it.
+[2026.11.26-03.08.46:454][  0]LogEOSSDK: LogEOS: SetApplicationStatus - OldStatus: EOS_AS_Foreground, NewStatus: EOS_AS_Foreground, Current Time: 0001.01.01-00.00.00
+[2026.11.26-03.08.46:455][  0]LogEOSSDK: LogEOS: SetNetworkStatus - OldStatus: EOS_NS_Online, NewStatus: EOS_NS_Online
+[2026.11.26-03.08.46:455][  0]LogEOSSDK: LogEOS: Updating Platform SDK Config, Time: 0.001122
+[2026.11.26-03.08.46:456][  0]LogFab: Plugin initialized. VersionName: 0.0.14 (Version: 14) - Engine Version 5.6.1-44394996+++UE5+Release-5.6
+[2026.11.26-03.08.46:566][  0]LogUObjectArray: 42329 objects as part of root set at end of initial load.
+[2026.11.26-03.08.46:566][  0]LogUObjectArray: CloseDisregardForGC: 0/0 objects in disregard for GC pool
+[2026.11.26-03.08.46:854][  0]LogClass: Display: AttemptToFindUninitializedScriptStructMembers took more than 1ms to process ScriptStruct /Script/Engine.AnimInstanceProxy. Time(ms): 2.3
+[2026.11.26-03.08.46:985][  0]LogEngine: Initializing Engine...
+[2026.11.26-03.08.47:255][  0]LogTedsSettings: UTedsSettingsEditorSubsystem::Initialize
+[2026.11.26-03.08.47:682][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.11.dll
+[2026.11.26-03.08.47:721][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.12.dll
+[2026.11.26-03.08.47:750][  0]LogTexture: Display: Waiting for textures to be ready 27/37 (/Engine/EngineMaterials/Black_1x1_EXR_Texture_VT) ...
+[2026.11.26-03.08.47:790][  0]LogChaosDD: Creating Chaos Debug Draw Scene for world Untitled
+[2026.11.26-03.08.47:917][  0]LogNetVersion: Set ProjectVersion to 1.0.0.0. Version Checksum will be recalculated on next use.
+[2026.11.26-03.08.47:918][  0]LogInit: Texture streaming: Enabled
+[2026.11.26-03.08.47:943][  0]LogAnalytics: Display: [UEEditor.Rocket.Release] AnalyticsET::StartSession ( APIServer = https://datarouter.ol.epicgames.com/datarouter/api/v1/public/data. AppVersion = 5.6.1-44394996+++UE5+Release-5.6 )
+[2026.11.26-03.08.47:996][  0]LogCsvProfiler: Display: Metadata set : largeworldcoordinates="1"
+[2026.11.26-03.08.48:013][  0]LogInit: Undo buffer set to 256 MB
+[2026.11.26-03.08.48:014][  0]LogInit: Transaction tracking system initialized
+[2026.11.26-03.08.48:089][  0]LogSourceControl: Display: Uncontrolled Changelist persistency file loaded ../../../../../../Projects/Robotic/experiments/ue5_s4/editor_host/Saved/SourceControl/UncontrolledChangelists.json
+[2026.11.26-03.08.48:310][  0]LocalizationService: Localization service is disabled
+[2026.11.26-03.08.48:796][  0]LogNNEDenoiser: Ray Tracing is not enabled, therefore NNEDenoiser is not registered!
+[2026.11.26-03.08.48:958][  0]LogPython: Using Python 3.11.8
+[2026.11.26-03.08.49:201][  0]LogPython: Display: No pip-enabled plugins with python dependencies found, skipping
+[2026.11.26-03.08.50:478][  0]LogLevelSequenceEditor: LevelSequenceEditor subsystem initialized.
+[2026.11.26-03.08.50:856][  0]LogEditorDataStorage: Initializing
+[2026.11.26-03.08.50:888][  0]LogEditorDataStorage: Initialized
+[2026.11.26-03.08.50:909][  0]LogCore: Display: GameplayInsights module auto-connecting to local trace server...
+[2026.11.26-03.08.50:993][  0]LogAssetRegistry: Display: Triggering cache save on discovery complete
+[2026.11.26-03.08.51:185][  0]LogInit: Display: Engine is initialized. Leaving FEngineLoop::Init()
+[2026.11.26-03.08.51:220][  0]SourceControl: Revision control is disabled
+[2026.11.26-03.08.51:221][  0]LogUnrealEdMisc: Loading editor; pre map load, took 34.807
+[2026.11.26-03.08.51:252][  0]Cmd: MAP LOAD FILE="../../../Engine/Content/Maps/Entry.umap" TEMPLATE=0 SHOWPROGRESS=1 FEATURELEVEL=3
+[2026.11.26-03.08.51:270][  0]LogWorld: UWorld::CleanupWorld for Untitled, bSessionEnded=true, bCleanupResources=true
+[2026.11.26-03.08.51:279][  0]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.11.26-03.08.51:401][  0]LogUObjectHash: Compacting FUObjectHashTables data took   1.97ms
+[2026.11.26-03.08.51:425][  0]LogChaosDD: Creating Chaos Debug Draw Scene for world Entry
+[2026.11.26-03.08.51:479][  0]LogEditorServer: Finished looking for orphan Actors (0.000 secs)
+[2026.11.26-03.08.51:523][  0]LogUObjectHash: Compacting FUObjectHashTables data took   1.52ms
+[2026.11.26-03.08.51:526][  0]Cmd: MAP CHECKDEP NOCLEARLOG
+[2026.11.26-03.08.51:528][  0]MapCheck: Map check complete: 0 Error(s), 0 Warning(s), took 0.714ms to complete.
+[2026.11.26-03.08.51:617][  0]LogUnrealEdMisc: Total Editor Startup Time, took 35.202
+[2026.11.26-03.08.51:765][  0]LogPlacementMode: Display: The Asset Registry is not yet fully loaded so some placeable classes might be missing.
+[2026.11.26-03.08.52:278][  0]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.11.26-03.08.52:510][  0]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.11.26-03.08.52:744][  0]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.11.26-03.08.52:974][  0]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.11.26-03.08.53:262][  0]LogPakFile: Initializing PakPlatformFile
+[2026.11.26-03.08.53:284][  0]LogPakFile: Display: Mounted Pak file 'C:/Program Files/Epic Games/UE_5.6/FeaturePacks/StarterContent.upack', mount point: 'root:/'
+[2026.11.26-03.08.53:286][  0]LogPakFile: Initializing PakPlatformFile
+[2026.11.26-03.08.53:301][  0]LogPakFile: Display: Mounted Pak file 'C:/Program Files/Epic Games/UE_5.6/FeaturePacks/TP_FirstPerson.upack', mount point: 'root:/'
+[2026.11.26-03.08.53:302][  0]LogPakFile: Initializing PakPlatformFile
+[2026.11.26-03.08.53:315][  0]LogPakFile: Display: Mounted Pak file 'C:/Program Files/Epic Games/UE_5.6/FeaturePacks/TP_FirstPersonBP.upack', mount point: 'root:/'
+[2026.11.26-03.08.53:315][  0]LogPakFile: Initializing PakPlatformFile
+[2026.11.26-03.08.53:329][  0]LogPakFile: Display: Mounted Pak file 'C:/Program Files/Epic Games/UE_5.6/FeaturePacks/TP_HandheldARBP.upack', mount point: 'root:/'
+[2026.11.26-03.08.53:331][  0]LogPakFile: Initializing PakPlatformFile
+[2026.11.26-03.08.53:348][  0]LogPakFile: Display: Mounted Pak file 'C:/Program Files/Epic Games/UE_5.6/FeaturePacks/TP_ThirdPerson.upack', mount point: 'root:/'
+[2026.11.26-03.08.53:348][  0]LogPakFile: Initializing PakPlatformFile
+[2026.11.26-03.08.53:358][  0]LogAssetRegistry: Display: Asset registry cache written as 66.6 MiB to ../../../../../../Projects/Robotic/experiments/ue5_s4/editor_host/Intermediate/CachedAssetRegistry_*.bin
+[2026.11.26-03.08.53:367][  0]LogPakFile: Display: Mounted Pak file 'C:/Program Files/Epic Games/UE_5.6/FeaturePacks/TP_ThirdPersonBP.upack', mount point: 'root:/'
+[2026.11.26-03.08.53:368][  0]LogPakFile: Initializing PakPlatformFile
+[2026.11.26-03.08.53:388][  0]LogPakFile: Display: Mounted Pak file 'C:/Program Files/Epic Games/UE_5.6/FeaturePacks/TP_TopDown.upack', mount point: 'root:/'
+[2026.11.26-03.08.53:388][  0]LogPakFile: Initializing PakPlatformFile
+[2026.11.26-03.08.53:403][  0]LogPakFile: Display: Mounted Pak file 'C:/Program Files/Epic Games/UE_5.6/FeaturePacks/TP_TopDownBP.upack', mount point: 'root:/'
+[2026.11.26-03.08.53:404][  0]LogPakFile: Initializing PakPlatformFile
+[2026.11.26-03.08.53:426][  0]LogPakFile: Display: Mounted Pak file 'C:/Program Files/Epic Games/UE_5.6/FeaturePacks/TP_VehicleAdvBP.upack', mount point: 'root:/'
+[2026.11.26-03.08.53:426][  0]LogPakFile: Initializing PakPlatformFile
+[2026.11.26-03.08.53:448][  0]LogPakFile: Display: Mounted Pak file 'C:/Program Files/Epic Games/UE_5.6/FeaturePacks/TP_VirtualRealityBP.upack', mount point: 'root:/'
+[2026.11.26-03.08.54:696][  0]LogSlate: Took 0.009848 seconds to synchronously load lazily loaded font '../../../Engine/Content/Slate/Fonts/Roboto-Regular.ttf' (155K)
+[2026.11.26-03.08.54:722][  0]LogSlate: Took 0.008206 seconds to synchronously load lazily loaded font '../../../Engine/Content/Slate/Fonts/DroidSansMono.ttf' (77K)
+[2026.11.26-03.08.55:333][  0]LogStall: Startup...
+[2026.11.26-03.08.55:706][  0]LogStall: Startup complete.
+[2026.11.26-03.08.55:806][  0]LogLoad: (Engine Initialization) Total time: 39.39 seconds
+[2026.11.26-03.08.57:344][  0]LogContentStreaming: Texture pool size now 400 MB
+[2026.11.26-03.08.57:344][  0]LogCsvProfiler: Display: Metadata set : streamingpoolsizemb="400"
+[2026.11.26-03.08.57:492][  0]LogSlate: Took 0.013190 seconds to synchronously load lazily loaded font '../../../Engine/Content/Slate/Fonts/Roboto-Bold.ttf' (160K)
+[2026.11.26-03.08.57:787][  0]LogAutomationController: Ignoring very large delta of 16837002.45 seconds in calls to FAutomationControllerManager::Tick() and not penalizing unresponsive tests
+[2026.11.26-03.08.57:797][  0]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.11.26-03.08.57:901][  0]LogPython: Display: Running start-up script C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Animation/ControlRig/Content/Python/init_unreal.py... started...
+[2026.11.26-03.08.58:464][  0]LogPython: registering <class 'ControlRigWorkflows.workflow_deformation_rig_preset.provider'>
+
+[2026.11.26-03.08.58:477][  0]LogPython: Display: Running start-up script C:/Program Files/Epic Games/UE_5.6/Engine/Plugins/Animation/ControlRig/Content/Python/init_unreal.py... took 576.494 ms
+[2026.11.26-03.08.59:186][  1]LogAssetRegistry: AssetRegistryGather time 0.2809s: AssetDataDiscovery 0.0276s, AssetDataGather 0.0602s, StoreResults 0.1932s. Wall time 21.8570s.
+	NumCachedDirectories 1438. NumUncachedDirectories 19. NumCachedFiles 7405. NumUncachedFiles 0.
+	BackgroundTickInterruptions 4.
+[2026.11.26-03.08.59:281][  1]LogPlacementMode: Display: The Asset Registry is done with its initial scan, the list of placeable classes has been updated.
+[2026.11.26-03.08.59:403][  1]LogCollectionManager: Fixed up redirectors for 0 collections in 0.000000 seconds (updated 0 objects)
+[2026.11.26-03.08.59:417][  1]LogSourceControl: Uncontrolled asset discovery started...
+[2026.11.26-03.08.59:874][  1]LogAutomationController: Ignoring very large delta of 2.09 seconds in calls to FAutomationControllerManager::Tick() and not penalizing unresponsive tests
+[2026.11.26-03.09.00:295][  2]LogConfig: Applying CVar settings from Section [ViewDistanceQuality@0] File [Scalability]
+[2026.11.26-03.09.00:295][  2]sg.ViewDistanceQuality = "0"
+[2026.11.26-03.09.00:295][  2]LogConfig: Applying CVar settings from Section [AntiAliasingQuality@0] File [Scalability]
+[2026.11.26-03.09.00:295][  2]sg.AntiAliasingQuality = "0"
+[2026.11.26-03.09.00:297][  2]LogConfig: Applying CVar settings from Section [ShadowQuality@0] File [Scalability]
+[2026.11.26-03.09.00:297][  2]sg.ShadowQuality = "0"
+[2026.11.26-03.09.00:297][  2]LogConfig: Applying CVar settings from Section [PostProcessQuality@0] File [Scalability]
+[2026.11.26-03.09.00:299][  2]sg.PostProcessQuality = "0"
+[2026.11.26-03.09.00:299][  2]LogConfig: Applying CVar settings from Section [TextureQuality@0] File [Scalability]
+[2026.11.26-03.09.00:299][  2]sg.TextureQuality = "0"
+[2026.11.26-03.09.00:299][  2]LogConfig: Applying CVar settings from Section [EffectsQuality@0] File [Scalability]
+[2026.11.26-03.09.00:299][  2]sg.EffectsQuality = "0"
+[2026.11.26-03.09.00:299][  2]LogConfig: Applying CVar settings from Section [FoliageQuality@0] File [Scalability]
+[2026.11.26-03.09.00:299][  2]sg.FoliageQuality = "0"
+[2026.11.26-03.09.00:299][  2]r.AntiAliasingMethod = "0"
+[2026.11.26-03.09.00:299][  2]r.DefaultFeature.AutoExposure = "0"
+[2026.11.26-03.09.00:299][  2]r.DefaultFeature.MotionBlur = "0"
+[2026.11.26-03.09.00:299][  2]t.MaxFPS = "10"
+[2026.11.26-03.09.00:299][  2]r.BackbufferQuantizationDitheringOverride = "32"
+[2026.11.26-03.09.00:305][  2]LogActorFactory: Loading ActorFactory Class /Script/Engine.LevelInstance
+[2026.11.26-03.09.00:456][  2]LogEditor: Attempting to add actor of class 'SceneCapture2D' to level at 220.00,-450.00,480.00
+[2026.11.26-03.09.00:635][  2]LogEditor: Attempting to add actor of class 'SceneCapture2D' to level at 220.00,-450.00,480.00
+[2026.11.26-03.09.00:657][  2]LogStreaming: Display: FlushAsyncLoading(327): 1 QueuedPackages, 0 AsyncPackages
+[2026.11.26-03.09.00:835][  2]LogEditor: Attempting to add actor of class 'SceneCapture2D' to level at 220.00,-450.00,480.00
+[2026.11.26-03.09.00:980][  2]LogSourceControl: Uncontrolled asset discovery finished in 1.566063 seconds (Found 7381 uncontrolled assets)
+[2026.11.26-03.09.01:097][  2]LogActorFactory: Actor Factory attempting to spawn Class /Script/Engine.DirectionalLight
+[2026.11.26-03.09.01:097][  2]LogActorFactory: Actor Factory attempting to spawn Class /Script/Engine.DirectionalLight
+[2026.11.26-03.09.01:116][  2]LogActorFactory: Actor Factory spawned Class /Script/Engine.DirectionalLight as actor: DirectionalLight /Engine/Maps/Entry.Entry:PersistentLevel.DirectionalLight_0
+[2026.11.26-03.09.01:117][  2]LogActorFactory: Actor Factory spawned Class /Script/Engine.DirectionalLight as actor: DirectionalLight /Engine/Maps/Entry.Entry:PersistentLevel.DirectionalLight_0
+[2026.11.26-03.09.01:125][  2]LogActorFactory: Actor Factory attempting to spawn Class /Script/Engine.DirectionalLight
+[2026.11.26-03.09.01:125][  2]LogActorFactory: Actor Factory attempting to spawn Class /Script/Engine.DirectionalLight
+[2026.11.26-03.09.01:130][  2]LogActorFactory: Actor Factory spawned Class /Script/Engine.DirectionalLight as actor: DirectionalLight /Engine/Maps/Entry.Entry:PersistentLevel.DirectionalLight_1
+[2026.11.26-03.09.01:130][  2]LogActorFactory: Actor Factory spawned Class /Script/Engine.DirectionalLight as actor: DirectionalLight /Engine/Maps/Entry.Entry:PersistentLevel.DirectionalLight_1
+[2026.11.26-03.09.01:268][  2]LogEOSSDK: LogEOS: SDK Config Platform Update Request Successful, Time: 13.423323
+[2026.11.26-03.09.01:284][  2]LogEOSSDK: LogEOSAnalytics: EOS SDK Analytics disabled for route [1].
+[2026.11.26-03.09.01:297][  2]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 14.811885
+[2026.11.26-03.09.01:346][  3]LogSceneTextures: Display: Enforcing FloatRGBA scene color format due to alpha channel requirement.
+[2026.11.26-03.09.01:438][  4]LogSlate: Took 0.000803 seconds to synchronously load lazily loaded font '../../../Engine/Content/Slate/Fonts/Roboto-Regular.ttf' (155K)
+[2026.11.26-03.09.01:782][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:796][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:801][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:807][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:814][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:817][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:826][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:833][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:840][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:850][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:854][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:860][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:873][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:947][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:954][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:963][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:969][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.01:977][  7]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.02:109][  9]LogEOSSDK: LogEOSAnalytics: Start Session (User: ...)
+[2026.11.26-03.09.02:819][ 12]LogEOSSDK: LogEOS: SDK Config Product Update Request Successful, Time: 16.349871
+[2026.11.26-03.09.02:827][ 12]LogEOSSDK: LogEOS: SDK Config Data - Watermark: 2053588990
+[2026.11.26-03.09.02:827][ 12]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 16.349871, Update Interval: 331.617798
+[2026.11.26-03.09.25:839][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:901][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:901][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:901][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:901][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:918][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:921][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:921][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:930][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:933][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:939][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:944][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:948][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:951][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:954][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:957][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.25:960][214]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:027][342]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:035][342]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:041][342]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:048][342]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:053][342]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:058][342]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:063][342]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:067][342]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:071][342]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:809][349]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:809][349]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:826][349]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:830][349]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:834][349]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:838][349]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:844][349]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:848][349]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.40:852][349]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.41:625][356]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.41:629][356]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.41:629][356]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.41:629][356]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.41:629][356]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.41:629][356]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.41:643][356]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.41:646][356]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.41:646][356]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.42:392][363]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.42:392][363]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.42:392][363]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.42:392][363]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.42:392][363]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.42:392][363]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.42:407][363]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.42:407][363]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.42:407][363]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:196][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:196][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:211][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:212][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:216][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:216][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:216][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:216][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:216][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:227][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:227][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:227][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:227][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:227][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:227][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:227][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.43:242][370]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:122][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:125][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:128][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:130][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:134][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:136][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:139][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:142][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:145][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:147][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:147][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:150][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:154][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:156][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:159][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:160][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.44:164][378]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:040][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:040][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:040][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:040][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:056][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:058][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:062][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:062][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:070][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:072][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:072][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:072][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:088][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:090][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:090][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:090][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:090][386]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:944][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:944][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:944][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:944][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:944][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:955][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:955][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:955][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:955][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:955][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:955][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:955][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:971][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:973][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:976][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:976][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.45:976][394]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:875][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:875][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:875][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:881][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:881][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:881][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:881][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:881][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:881][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:881][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:896][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:899][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:901][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:904][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:904][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:904][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.46:912][402]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:756][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:756][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:756][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:756][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:756][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:772][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:772][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:772][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:772][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:772][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:784][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:784][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:789][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:790][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:790][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:790][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.47:790][410]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:706][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:709][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:712][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:714][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:717][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:719][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:722][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:725][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:727][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:730][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:733][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:735][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:738][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:739][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:742][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:742][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.48:742][418]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:644][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:645][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:645][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:645][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:645][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:645][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:660][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:660][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:660][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:660][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:660][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:660][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:660][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:677][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:677][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:677][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.49:677][426]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:532][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:548][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:548][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:548][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:548][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:548][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:548][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:548][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:565][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:565][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:565][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:565][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:565][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:565][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:565][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:579][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.50:579][434]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:425][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:433][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:439][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:439][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:444][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:446][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:446][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:446][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:455][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:456][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:456][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:456][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:456][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:456][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:456][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:470][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.51:472][442]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:339][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:339][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:339][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:339][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:355][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:358][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:358][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:358][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:358][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:372][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:375][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:375][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:375][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:382][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:382][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:388][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.52:388][450]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:543][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:545][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:548][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:551][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:553][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:556][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:558][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:560][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:562][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:564][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:567][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:569][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:571][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:573][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:575][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:575][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.54:575][469]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:754][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:754][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:762][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:764][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:764][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:769][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:771][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:774][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:777][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:779][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:785][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:788][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:788][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:792][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:795][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:796][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.56:800][488]LogEditor: Attempting to add actor of class 'StaticMeshActor' to level at 460.00,210.00,260.00
+[2026.11.26-03.09.59:635][513]Cmd: QUIT_EDITOR
+[2026.11.26-03.09.59:635][513]LogCore: Engine exit requested (reason: UUnrealEdEngine::CloseEditor())
+[2026.11.26-03.09.59:672][514]LogCore: Engine exit requested (reason: EngineExit() was called; note: exit was already requested)
+[2026.11.26-03.09.59:682][514]LogStaticMesh: Abandoning remaining async distance field tasks for shutdown
+[2026.11.26-03.09.59:682][514]LogStaticMesh: Abandoning remaining async card representation tasks for shutdown
+[2026.11.26-03.09.59:689][514]LogWorld: UWorld::CleanupWorld for Entry, bSessionEnded=true, bCleanupResources=true
+[2026.11.26-03.09.59:712][514]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.11.26-03.09.59:800][514]LogStylusInput: Shutting down StylusInput subsystem.
+[2026.11.26-03.09.59:805][514]LogTedsSettings: UTedsSettingsEditorSubsystem::Deinitialize
+[2026.11.26-03.09.59:816][514]LogLevelSequenceEditor: LevelSequenceEditor subsystem deinitialized.
+[2026.11.26-03.09.59:888][514]LogRuntimeTelemetry: Recording EnginePreExit events
+[2026.11.26-03.09.59:890][514]LogStudioTelemetry: Ended StudioTelemetry Session
+[2026.11.26-03.09.59:890][514]LogAnalytics: Display: [UEEditor.Rocket.Release] AnalyticsET::EndSession
+[2026.11.26-03.09.59:935][514]LogSlate: Window 'SarEditorSlice - Unreal Editor' being destroyed
+[2026.11.26-03.09.59:951][514]LogWindowsTextInputMethodSystem: Activated input method: English (United States) - (Keyboard).
+[2026.11.26-03.10.00:114][514]LogSlate: Slate User Destroyed.  User Index 0, Is Virtual User: 0
+[2026.11.26-03.10.00:126][514]LogExit: Preparing to exit.
+[2026.11.26-03.10.00:563][514]LogUObjectHash: Compacting FUObjectHashTables data took   4.70ms
+[2026.11.26-03.10.01:239][514]LogEditorDataStorage: Deinitializing
+[2026.11.26-03.10.01:805][514]LogDemo: Cleaned up 0 splitscreen connections, owner deletion: enabled
+[2026.11.26-03.10.01:921][514]LogExit: Editor shut down
+[2026.11.26-03.10.01:928][514]LogExit: Transaction tracking system shut down
+[2026.11.26-03.10.02:404][514]LogStall: Shutdown...
+[2026.11.26-03.10.02:404][514]LogStall: Shutdown complete.
+[2026.11.26-03.10.02:520][514]LogExit: Object subsystem successfully closed.
+[2026.11.26-03.10.02:601][514]LogShaderCompilers: Display: Shaders left to compile 0
+[2026.11.26-03.10.03:040][514]LogMemoryProfiler: Shutdown
+[2026.11.26-03.10.03:040][514]LogNetworkingProfiler: Shutdown
+[2026.11.26-03.10.03:040][514]LoadingProfiler: Shutdown
+[2026.11.26-03.10.03:041][514]LogTimingProfiler: Shutdown
+[2026.11.26-03.10.03:048][514]LogChaosVDEditor: [FChaosVDExtensionsManager::UnRegisterExtension] UnRegistering CVD Extension [FChaosVDGenericDebugDrawExtension] ...
+[2026.11.26-03.10.03:048][514]LogChaosVDEditor: [FChaosVDExtensionsManager::UnRegisterExtension] UnRegistering CVD Extension [FChaosVDAccelerationStructuresExtension] ...
+[2026.11.26-03.10.03:521][514]LogChaosDD: Chaos Debug Draw Shutdown
+[2026.11.26-03.10.03:521][514]LogNFORDenoise: NFORDenoise function shutting down
+[2026.11.26-03.10.03:521][514]RenderDocPlugin: plugin has been unloaded.
+[2026.11.26-03.10.04:140][514]LogEOSShared: FEOSSDKManager::Shutdown EOS_Shutdown Result=[EOS_Success]
+[2026.11.26-03.10.04:160][514]LogXGEController: Cleaning working directory: C:/Users/lemin/AppData/Local/Temp/UnrealXGEWorkingDir/
+[2026.11.26-03.10.04:186][514]LogIris: FNetObjectFactoryRegistry::UnregisterFactory is unregistering factory: None name: NetActorFactory id: 0
+[2026.11.26-03.10.04:186][514]LogIris: FNetObjectFactoryRegistry::UnregisterFactory is unregistering factory: None name: NetSubObjectFactory id: 1
+[2026.11.26-03.10.04:186][514]LogPakFile: Destroying PakPlatformFile
+[2026.11.26-03.10.04:192][514]LogD3D11RHI: Shutdown
+[2026.11.26-03.10.04:192][514]LogD3D11RHI: CleanupD3DDevice
+[2026.11.26-03.10.04:230][514]LogD3D11RHI: Intel Extensions Framework unloaded
+[2026.11.26-03.10.04:250][514]LogExit: Exiting.
+[2026.11.26-03.10.04:281][514]Log file closed, 11/26/26 10:10:04

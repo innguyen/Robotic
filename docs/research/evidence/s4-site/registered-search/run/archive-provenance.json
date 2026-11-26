@@ -1,0 +1,18 @@
+{
+  "kind": "PARTIAL_LOCAL_RAW_INDEX",
+  "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\s4-site-registered-search",
+  "source_inventory_sha256": "0b590f222900d1b9a13d858a16bd2950f8fc51e1dc201a6dd57dacb7bf9c2cc9",
+  "source_run_repository_relative": "experiments/ue5_s4/runs/s4-site-registered-search",
+  "omitted": {
+    "private/host.jsonl.gz": {
+      "sha256": "d96b414e635d3e9e5341b85aa27ece392d582cde7dfd68965085342b7a31c842",
+      "bytes": 95806851
+    },
+    "public/observations.jsonl.gz": {
+      "sha256": "621fc40d5df3790a57a04cdc32419b47698ed25be66bb430eb890ee42b6732b5",
+      "bytes": 215976688
+    }
+  },
+  "raw_streams_included": false,
+  "note": "Original run untouched. Scratch captures are already losslessly embedded in raw host stream. A partial index requires original local raw files for audit/replay."
+}

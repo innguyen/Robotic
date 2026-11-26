@@ -1,0 +1,62 @@
+{
+  "epoch": 17,
+  "budget_ns": 2000000000,
+  "action_dt_ns": 500000000,
+  "victims": [
+    {
+      "gt_id": "v0",
+      "anchor_m": [
+        4.7,
+        1.6,
+        0.17356713228364412
+      ]
+    }
+  ],
+  "frames": {
+    "0": {
+      "epoch": 17,
+      "capture_ns": 0,
+      "available_ns": 0,
+      "width": 640,
+      "height": 480,
+      "valid": true,
+      "visible": {},
+      "delivered_rgb_sha256": "fed4434278cf6d72cfc1ed0b1f10c8d5648b06ad50e7108835cbcce8f348a990"
+    },
+    "1": {
+      "epoch": 17,
+      "capture_ns": 500000000,
+      "available_ns": 500000000,
+      "width": 640,
+      "height": 480,
+      "valid": true,
+      "visible": {},
+      "delivered_rgb_sha256": "fed4434278cf6d72cfc1ed0b1f10c8d5648b06ad50e7108835cbcce8f348a990"
+    },
+    "2": {
+      "epoch": 17,
+      "capture_ns": 1000000000,
+      "available_ns": 1000000000,
+      "width": 640,
+      "height": 480,
+      "valid": true,
+      "visible": {},
+      "delivered_rgb_sha256": "fed4434278cf6d72cfc1ed0b1f10c8d5648b06ad50e7108835cbcce8f348a990"
+    },
+    "3": {
+      "epoch": 17,
+      "capture_ns": 1500000000,
+      "available_ns": 1500000000,
+      "width": 640,
+      "height": 480,
+      "valid": true,
+      "visible": {},
+      "delivered_rgb_sha256": "fed4434278cf6d72cfc1ed0b1f10c8d5648b06ad50e7108835cbcce8f348a990"
+    }
+  },
+  "reports": [],
+  "safety_events": [],
+  "path_m": 0.0,
+  "terminal_reason": "FINISH",
+  "terminal_ns": 1500000000
+}

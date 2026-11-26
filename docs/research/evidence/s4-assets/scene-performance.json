@@ -1,0 +1,139 @@
+{
+  "runs": [
+    {
+      "run": "s4-legacy-comparison",
+      "inventory_sha256": "c428805d5dca9d17c96edbaf4fbe1be5acbf423d929b2fc0112e8bb5f1991392",
+      "host_runner_clock_matches": true,
+      "scenes": [
+        {
+          "environment": "indoor",
+          "episodes": 1,
+          "captures": 4,
+          "wall_s": 18.797,
+          "engine_callbacks": 179,
+          "callback_fps": 9.522796190881524,
+          "memory_samples": 18,
+          "max_sampled_working_set_bytes": 1154031616,
+          "max_sampled_private_commit_bytes": 2888753152
+        },
+        {
+          "environment": "outdoor",
+          "episodes": 1,
+          "captures": 4,
+          "wall_s": 13.079,
+          "engine_callbacks": 126,
+          "callback_fps": 9.633764049239238,
+          "memory_samples": 12,
+          "max_sampled_working_set_bytes": 358486016,
+          "max_sampled_private_commit_bytes": 2874580992
+        }
+      ]
+    },
+    {
+      "run": "s4-assets-final-poses",
+      "inventory_sha256": "6eaceca82733768ef9a645063b2672a00f412c3e08e0bac8c07b914ace7ed097",
+      "host_runner_clock_matches": true,
+      "scenes": [
+        {
+          "environment": "indoor",
+          "episodes": 9,
+          "captures": 36,
+          "wall_s": 112.203,
+          "engine_callbacks": 1053,
+          "callback_fps": 9.384775808133472,
+          "memory_samples": 109,
+          "max_sampled_working_set_bytes": 827441152,
+          "max_sampled_private_commit_bytes": 2984988672
+        },
+        {
+          "environment": "outdoor",
+          "episodes": 9,
+          "captures": 36,
+          "wall_s": 92.032,
+          "engine_callbacks": 870,
+          "callback_fps": 9.453233657858137,
+          "memory_samples": 89,
+          "max_sampled_working_set_bytes": 276623360,
+          "max_sampled_private_commit_bytes": 3037777920
+        }
+      ]
+    },
+    {
+      "run": "s4-assets-search-closed-90s",
+      "inventory_sha256": "2d15cd782e26da42e8e3a4dea2397c5b5019a92dfc7ceed6c7937a6cc657b831",
+      "host_runner_clock_matches": true,
+      "scenes": [
+        {
+          "environment": "indoor",
+          "episodes": 1,
+          "captures": 180,
+          "wall_s": 411.657,
+          "engine_callbacks": 3941,
+          "callback_fps": 9.5735041551583,
+          "memory_samples": 402,
+          "max_sampled_working_set_bytes": 762687488,
+          "max_sampled_private_commit_bytes": 3105615872
+        },
+        {
+          "environment": "outdoor",
+          "episodes": 1,
+          "captures": 68,
+          "wall_s": 130.734,
+          "engine_callbacks": 1249,
+          "callback_fps": 9.55375036333318,
+          "memory_samples": 128,
+          "max_sampled_working_set_bytes": 241459200,
+          "max_sampled_private_commit_bytes": 3109203968
+        }
+      ]
+    },
+    {
+      "run": "s4-assets-native-geometry-retry",
+      "inventory_sha256": "a31677f2f7a9a64f6986bc4344b73125cc31ffbce282e3705b4789ec7a4264a6",
+      "host_runner_clock_matches": true,
+      "scenes": [
+        {
+          "environment": "outdoor",
+          "episodes": 1,
+          "captures": 116,
+          "wall_s": 309.718,
+          "engine_callbacks": 2852,
+          "callback_fps": 9.20837665230952,
+          "memory_samples": 303,
+          "max_sampled_working_set_bytes": 275009536,
+          "max_sampled_private_commit_bytes": 2978914304
+        }
+      ]
+    },
+    {
+      "run": "s4-assets-seated-alignment",
+      "inventory_sha256": "d2c9d912a3ef5b24afb8c4e5b9932d663006eb8e6a74bf040725e9c53f8dc7cb",
+      "host_runner_clock_matches": true,
+      "scenes": [
+        {
+          "environment": "indoor",
+          "episodes": 1,
+          "captures": 4,
+          "wall_s": 15.875,
+          "engine_callbacks": 149,
+          "callback_fps": 9.385826771653543,
+          "memory_samples": 16,
+          "max_sampled_working_set_bytes": 768958464,
+          "max_sampled_private_commit_bytes": 2914336768
+        },
+        {
+          "environment": "outdoor",
+          "episodes": 1,
+          "captures": 4,
+          "wall_s": 14.281,
+          "engine_callbacks": 133,
+          "callback_fps": 9.313073314193684,
+          "memory_samples": 14,
+          "max_sampled_working_set_bytes": 362405888,
+          "max_sampled_private_commit_bytes": 2918268928
+        }
+      ]
+    }
+  ],
+  "scope": "Sum of first-to-last capture windows of scored epochs only. Excludes setup, admission, inter-episode gaps and calibration. Memory is sampled UE process memory, not GPU or lifetime peaks."
+}

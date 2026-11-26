@@ -1,0 +1,16 @@
+{
+  "status": "FAIL",
+  "data_integrity_status": "INCOMPLETE_UNACCEPTED",
+  "missing_artifacts": [
+    "inventory.json"
+  ],
+  "reference_episodes": 0,
+  "public_packets": 0,
+  "recorded_ledgers": 28,
+  "errors": [
+    "required acceptance artifacts missing; no successful audit inferred from scheduled or recorded episode count"
+  ],
+  "requested_calibration_status": "NOT_AUDITED",
+  "engine_clean_exit": false,
+  "scope": "Incomplete attempt; recorded_ledgers is a file count, not independently accepted episodes"
+}

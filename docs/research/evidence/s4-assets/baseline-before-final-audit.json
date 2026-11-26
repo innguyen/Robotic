@@ -1,0 +1,841 @@
+{
+  "inventory": true,
+  "reference_episodes": 2,
+  "public_packets": 8,
+  "source_snapshot": true,
+  "errors": [],
+  "engine_exit_code": 0,
+  "engine_clean_exit": true,
+  "robot_visual_geometry": true,
+  "delivery_timing_packets": 8,
+  "host_runner_clock_implementation_matches": true,
+  "native_capture_packets": 31,
+  "native_capture_window_wall_s": 56.391,
+  "readback_interval_s": {
+    "median": 0.094,
+    "max": 0.266
+  },
+  "asset_manifest_checks": {
+    "asset-manifest.json": "PASS",
+    "human-pose-manifest.json": "PASS"
+  },
+  "controls": {
+    "duplicate_false": {
+      "source": "e000-ledger",
+      "expected_tp_fp": [
+        1,
+        2
+      ],
+      "actual_tp_fp": [
+        1,
+        2
+      ],
+      "ledger": {
+        "epoch": 1,
+        "budget_ns": 2000000000,
+        "action_dt_ns": 500000000,
+        "victims": [
+          {
+            "gt_id": "v0",
+            "anchor_m": [
+              4.0,
+              0.5,
+              1.2569248733683451
+            ]
+          }
+        ],
+        "frames": {
+          "0": {
+            "epoch": 1,
+            "capture_ns": 0,
+            "available_ns": 0,
+            "width": 640,
+            "height": 480,
+            "valid": true,
+            "visible": {
+              "v0": {
+                "pixels": 3250,
+                "bbox": [
+                  262,
+                  146,
+                  294,
+                  296
+                ]
+              }
+            },
+            "delivered_rgb_sha256": "b432c38c5f01e0afb58638092360f6a93ec96336682d17aeeda439f2ab965843"
+          },
+          "1": {
+            "epoch": 1,
+            "capture_ns": 500000000,
+            "available_ns": 500000000,
+            "width": 640,
+            "height": 480,
+            "valid": true,
+            "visible": {
+              "v0": {
+                "pixels": 3242,
+                "bbox": [
+                  348,
+                  146,
+                  380,
+                  296
+                ]
+              }
+            },
+            "delivered_rgb_sha256": "5eb0b171b703f58cd6c644845f4f7cd654bcd634cb75e76930320c338627bea1"
+          },
+          "2": {
+            "epoch": 1,
+            "capture_ns": 1000000000,
+            "available_ns": 1000000000,
+            "width": 640,
+            "height": 480,
+            "valid": true,
+            "visible": {
+              "v0": {
+                "pixels": 3969,
+                "bbox": [
+                  438,
+                  140,
+                  475,
+                  300
+                ]
+              }
+            },
+            "delivered_rgb_sha256": "48399e3f91e2af748b03438571481feaff61393e002f33ebe55dd0664343e518"
+          },
+          "3": {
+            "epoch": 1,
+            "capture_ns": 1500000000,
+            "available_ns": 1500000000,
+            "width": 640,
+            "height": 480,
+            "valid": true,
+            "visible": {
+              "v0": {
+                "pixels": 6258,
+                "bbox": [
+                  547,
+                  124,
+                  597,
+                  311
+                ]
+              }
+            },
+            "delivered_rgb_sha256": "772e4559f89a2b72ee17fb1d8e0be841525516303be4339378f927e0353b704a"
+          }
+        },
+        "reports": [
+          {
+            "payload": {
+              "confidence": 0.523577481508255,
+              "epoch": 1,
+              "evidence": [
+                {
+                  "bbox_xyxy_px": [
+                    348.6261749267578,
+                    157.46580505371094,
+                    378.4559783935547,
+                    296.95948791503906
+                  ],
+                  "rgb_sequence": 1
+                },
+                {
+                  "bbox_xyxy_px": [
+                    550.4075813293457,
+                    131.75142669677734,
+                    592.0011100769043,
+                    320.5378189086914
+                  ],
+                  "rgb_sequence": 3
+                }
+              ],
+              "label": "victim_person",
+              "position_covariance_m2": [
+                [
+                  0.01,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.01,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.01
+                ]
+              ],
+              "position_episode_m": [
+                3.9225213116509514,
+                0.4818766293245054,
+                0.9489841907465459
+              ],
+              "report_id": "r1",
+              "tick": 3
+            },
+            "accepted_ns": 1500000000
+          },
+          {
+            "payload": {
+              "confidence": 0.523577481508255,
+              "epoch": 1,
+              "evidence": [
+                {
+                  "bbox_xyxy_px": [
+                    348.6261749267578,
+                    157.46580505371094,
+                    378.4559783935547,
+                    296.95948791503906
+                  ],
+                  "rgb_sequence": 1
+                },
+                {
+                  "bbox_xyxy_px": [
+                    550.4075813293457,
+                    131.75142669677734,
+                    592.0011100769043,
+                    320.5378189086914
+                  ],
+                  "rgb_sequence": 3
+                }
+              ],
+              "label": "victim_person",
+              "position_covariance_m2": [
+                [
+                  0.01,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.01,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.01
+                ]
+              ],
+              "position_episode_m": [
+                3.9225213116509514,
+                0.4818766293245054,
+                0.9489841907465459
+              ],
+              "report_id": "diagnostic_duplicate",
+              "tick": 3
+            },
+            "accepted_ns": 1500000000
+          },
+          {
+            "payload": {
+              "confidence": 0.523577481508255,
+              "epoch": 1,
+              "evidence": [
+                {
+                  "bbox_xyxy_px": [
+                    348.6261749267578,
+                    157.46580505371094,
+                    378.4559783935547,
+                    296.95948791503906
+                  ],
+                  "rgb_sequence": 1
+                },
+                {
+                  "bbox_xyxy_px": [
+                    550.4075813293457,
+                    131.75142669677734,
+                    592.0011100769043,
+                    320.5378189086914
+                  ],
+                  "rgb_sequence": 3
+                }
+              ],
+              "label": "victim_person",
+              "position_covariance_m2": [
+                [
+                  0.01,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.01,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.01
+                ]
+              ],
+              "position_episode_m": [
+                23.92252131165095,
+                0.4818766293245054,
+                0.9489841907465459
+              ],
+              "report_id": "diagnostic_false",
+              "tick": 3
+            },
+            "accepted_ns": 1500000000
+          }
+        ],
+        "safety_events": [],
+        "path_m": 0.0,
+        "terminal_reason": "FINISH",
+        "terminal_ns": 1500000000
+      },
+      "metrics": {
+        "tp": 1,
+        "fp": 2,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 0.3333333333333333,
+        "duplicate_reports": 1,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.25,
+        "safe_time_integrated_recall": 0.25,
+        "first_correct_ns": 1500000000,
+        "restricted_first_ns": 1500000000,
+        "localization_xy_m": [
+          0.07957011821613924
+        ],
+        "localization_median_m": 0.07957011821613924,
+        "localization_p90_m": 0.07957011821613924,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.6331403712930374,
+            "nll_xy": -2.450722933932227,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": 0.25841505813702376,
+        "terminal_reason": "FINISH"
+      }
+    },
+    "rq1_metric_sensitivity": {
+      "source": "e000-ledger",
+      "cells": {
+        "00": 1.0,
+        "10": 1.0,
+        "01": 1.0,
+        "11": 0.0
+      },
+      "interaction": -1.0,
+      "scope": "OFFLINE REPORT-COORDINATE PERTURBATION ONLY, not a rendered sensor intervention or scientific RQ1 result"
+    },
+    "adversarial_real_trace": {
+      "source": "e000-ledger",
+      "attacks": {
+        "oracle_position_forged_frames": {
+          "expected_tp_fp": [
+            0,
+            1
+          ],
+          "actual_tp_fp": [
+            0,
+            1
+          ],
+          "independent_tp_fp": [
+            0,
+            1
+          ],
+          "candidate": {
+            "payload": {
+              "confidence": 0.523577481508255,
+              "epoch": 1,
+              "evidence": [
+                {
+                  "bbox_xyxy_px": [
+                    348.6261749267578,
+                    157.46580505371094,
+                    378.4559783935547,
+                    296.95948791503906
+                  ],
+                  "rgb_sequence": 999999
+                },
+                {
+                  "bbox_xyxy_px": [
+                    550.4075813293457,
+                    131.75142669677734,
+                    592.0011100769043,
+                    320.5378189086914
+                  ],
+                  "rgb_sequence": 999999
+                }
+              ],
+              "label": "victim_person",
+              "position_covariance_m2": [
+                [
+                  0.01,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.01,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.01
+                ]
+              ],
+              "position_episode_m": [
+                4.0,
+                0.5,
+                1.2569248733683451
+              ],
+              "report_id": "r1",
+              "tick": 3
+            },
+            "accepted_ns": 1500000000
+          },
+          "terminal_ns": 1500000000,
+          "budget_ns": 2000000000
+        },
+        "wrong_epoch": {
+          "expected_tp_fp": [
+            0,
+            1
+          ],
+          "actual_tp_fp": [
+            0,
+            1
+          ],
+          "independent_tp_fp": [
+            0,
+            1
+          ],
+          "candidate": {
+            "payload": {
+              "confidence": 0.523577481508255,
+              "epoch": 2,
+              "evidence": [
+                {
+                  "bbox_xyxy_px": [
+                    348.6261749267578,
+                    157.46580505371094,
+                    378.4559783935547,
+                    296.95948791503906
+                  ],
+                  "rgb_sequence": 1
+                },
+                {
+                  "bbox_xyxy_px": [
+                    550.4075813293457,
+                    131.75142669677734,
+                    592.0011100769043,
+                    320.5378189086914
+                  ],
+                  "rgb_sequence": 3
+                }
+              ],
+              "label": "victim_person",
+              "position_covariance_m2": [
+                [
+                  0.01,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.01,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.01
+                ]
+              ],
+              "position_episode_m": [
+                3.9225213116509514,
+                0.4818766293245054,
+                0.9489841907465459
+              ],
+              "report_id": "r1",
+              "tick": 3
+            },
+            "accepted_ns": 1500000000
+          },
+          "terminal_ns": 1500000000,
+          "budget_ns": 2000000000
+        },
+        "backdated": {
+          "expected_tp_fp": [
+            0,
+            1
+          ],
+          "actual_tp_fp": [
+            0,
+            1
+          ],
+          "independent_tp_fp": [
+            0,
+            1
+          ],
+          "candidate": {
+            "payload": {
+              "confidence": 0.523577481508255,
+              "epoch": 1,
+              "evidence": [
+                {
+                  "bbox_xyxy_px": [
+                    348.6261749267578,
+                    157.46580505371094,
+                    378.4559783935547,
+                    296.95948791503906
+                  ],
+                  "rgb_sequence": 1
+                },
+                {
+                  "bbox_xyxy_px": [
+                    550.4075813293457,
+                    131.75142669677734,
+                    592.0011100769043,
+                    320.5378189086914
+                  ],
+                  "rgb_sequence": 3
+                }
+              ],
+              "label": "victim_person",
+              "position_covariance_m2": [
+                [
+                  0.01,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.01,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.01
+                ]
+              ],
+              "position_episode_m": [
+                3.9225213116509514,
+                0.4818766293245054,
+                0.9489841907465459
+              ],
+              "report_id": "r1",
+              "tick": 4
+            },
+            "accepted_ns": 1500000000
+          },
+          "terminal_ns": 1500000000,
+          "budget_ns": 2000000000
+        },
+        "malformed_confidence": {
+          "expected_tp_fp": [
+            0,
+            1
+          ],
+          "actual_tp_fp": [
+            0,
+            1
+          ],
+          "independent_tp_fp": [
+            0,
+            1
+          ],
+          "candidate": {
+            "payload": {
+              "confidence": "invalid",
+              "epoch": 1,
+              "evidence": [
+                {
+                  "bbox_xyxy_px": [
+                    348.6261749267578,
+                    157.46580505371094,
+                    378.4559783935547,
+                    296.95948791503906
+                  ],
+                  "rgb_sequence": 1
+                },
+                {
+                  "bbox_xyxy_px": [
+                    550.4075813293457,
+                    131.75142669677734,
+                    592.0011100769043,
+                    320.5378189086914
+                  ],
+                  "rgb_sequence": 3
+                }
+              ],
+              "label": "victim_person",
+              "position_covariance_m2": [
+                [
+                  0.01,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.01,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.01
+                ]
+              ],
+              "position_episode_m": [
+                3.9225213116509514,
+                0.4818766293245054,
+                0.9489841907465459
+              ],
+              "report_id": "r1",
+              "tick": 3
+            },
+            "accepted_ns": 1500000000
+          },
+          "terminal_ns": 1500000000,
+          "budget_ns": 2000000000
+        },
+        "repeated_capture": {
+          "expected_tp_fp": [
+            0,
+            1
+          ],
+          "actual_tp_fp": [
+            0,
+            1
+          ],
+          "independent_tp_fp": [
+            0,
+            1
+          ],
+          "candidate": {
+            "payload": {
+              "confidence": 0.523577481508255,
+              "epoch": 1,
+              "evidence": [
+                {
+                  "bbox_xyxy_px": [
+                    348.6261749267578,
+                    157.46580505371094,
+                    378.4559783935547,
+                    296.95948791503906
+                  ],
+                  "rgb_sequence": 1
+                },
+                {
+                  "bbox_xyxy_px": [
+                    348.6261749267578,
+                    157.46580505371094,
+                    378.4559783935547,
+                    296.95948791503906
+                  ],
+                  "rgb_sequence": 1
+                }
+              ],
+              "label": "victim_person",
+              "position_covariance_m2": [
+                [
+                  0.01,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.01,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.01
+                ]
+              ],
+              "position_episode_m": [
+                3.9225213116509514,
+                0.4818766293245054,
+                0.9489841907465459
+              ],
+              "report_id": "r1",
+              "tick": 3
+            },
+            "accepted_ns": 1500000000
+          },
+          "terminal_ns": 1500000000,
+          "budget_ns": 2000000000
+        },
+        "out_of_image": {
+          "expected_tp_fp": [
+            0,
+            1
+          ],
+          "actual_tp_fp": [
+            0,
+            1
+          ],
+          "independent_tp_fp": [
+            0,
+            1
+          ],
+          "candidate": {
+            "payload": {
+              "confidence": 0.523577481508255,
+              "epoch": 1,
+              "evidence": [
+                {
+                  "bbox_xyxy_px": [
+                    348.6261749267578,
+                    157.46580505371094,
+                    999999,
+                    296.95948791503906
+                  ],
+                  "rgb_sequence": 1
+                },
+                {
+                  "bbox_xyxy_px": [
+                    550.4075813293457,
+                    131.75142669677734,
+                    592.0011100769043,
+                    320.5378189086914
+                  ],
+                  "rgb_sequence": 3
+                }
+              ],
+              "label": "victim_person",
+              "position_covariance_m2": [
+                [
+                  0.01,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.01,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.01
+                ]
+              ],
+              "position_episode_m": [
+                3.9225213116509514,
+                0.4818766293245054,
+                0.9489841907465459
+              ],
+              "report_id": "r1",
+              "tick": 3
+            },
+            "accepted_ns": 1500000000
+          },
+          "terminal_ns": 1500000000,
+          "budget_ns": 2000000000
+        },
+        "stale_evidence": {
+          "expected_tp_fp": [
+            0,
+            1
+          ],
+          "actual_tp_fp": [
+            0,
+            1
+          ],
+          "independent_tp_fp": [
+            0,
+            1
+          ],
+          "candidate": {
+            "payload": {
+              "confidence": 0.523577481508255,
+              "epoch": 1,
+              "evidence": [
+                {
+                  "bbox_xyxy_px": [
+                    348.6261749267578,
+                    157.46580505371094,
+                    378.4559783935547,
+                    296.95948791503906
+                  ],
+                  "rgb_sequence": 1
+                },
+                {
+                  "bbox_xyxy_px": [
+                    550.4075813293457,
+                    131.75142669677734,
+                    592.0011100769043,
+                    320.5378189086914
+                  ],
+                  "rgb_sequence": 3
+                }
+              ],
+              "label": "victim_person",
+              "position_covariance_m2": [
+                [
+                  0.01,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.01,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.01
+                ]
+              ],
+              "position_episode_m": [
+                3.9225213116509514,
+                0.4818766293245054,
+                0.9489841907465459
+              ],
+              "report_id": "r1",
+              "tick": 9
+            },
+            "accepted_ns": 4500000000
+          },
+          "terminal_ns": 4500000000,
+          "budget_ns": 5000000000
+        }
+      },
+      "scope": "offline mutations of actual delivered evidence, not additional UE episodes"
+    }
+  },
+  "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+  "requested_calibration_status": "PASS_ENGINE_CALIBRATION",
+  "run_acceptance_errors": [],
+  "scheduled_episode_count": 2,
+  "status": "PASS_OFFLINE_AUDIT"
+}

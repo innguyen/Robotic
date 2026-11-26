@@ -1,0 +1,29 @@
+{
+  "run": "s4-v2-baselines-90s",
+  "inventory_sha256": "828f8ba919c67bd37c407cc91a66a33ef58cdae8bf0da219a3e12be059228d03",
+  "host_runner_clock_matches": true,
+  "scenes": [
+    {
+      "environment": "indoor",
+      "episodes": 2,
+      "captures": 257,
+      "wall_s": 494.124,
+      "engine_callbacks": 4780,
+      "callback_fps": 9.673685147857622,
+      "memory_samples": 482,
+      "max_sampled_working_set_bytes": 890544128,
+      "max_sampled_private_commit_bytes": 3086217216
+    },
+    {
+      "environment": "outdoor",
+      "episodes": 2,
+      "captures": 261,
+      "wall_s": 473.531,
+      "engine_callbacks": 4542,
+      "callback_fps": 9.591769071085103,
+      "memory_samples": 462,
+      "max_sampled_working_set_bytes": 498950144,
+      "max_sampled_private_commit_bytes": 3056906240
+    }
+  ]
+}

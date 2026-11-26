@@ -1,0 +1,3116 @@
+{
+  "status": "INTERRUPTED_PARTIAL_NOT_ACCEPTED",
+  "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\sar-pilot-frozen",
+  "scheduled_episodes": null,
+  "completed_ledgers_independently_recomputed": 41,
+  "source_snapshot_matches_manifest": true,
+  "journal_chain_errors": [],
+  "engine_exit_events": [],
+  "last_journal_event": {
+    "ack": [],
+    "action": {
+      "epoch": 96,
+      "finish": false,
+      "reports": [],
+      "sequence": 10,
+      "tick": 10,
+      "twist": [
+        0.0,
+        0.0,
+        0.5
+      ]
+    },
+    "capture_timing": {
+      "available_wall_ns": 59381609000000,
+      "capture_end_wall_ns": 59381453000000,
+      "capture_start_wall_ns": 59381234000000,
+      "measurements_ready_wall_ns": 59382984000000,
+      "rpc_decode_complete_wall_ns": 59381656000000
+    },
+    "episode": "e041",
+    "policy_timing": {
+      "input_write_complete_wall_ns": 59383468000000,
+      "input_write_start_wall_ns": 59383359000000,
+      "response_received_wall_ns": 59384500000000
+    },
+    "type": "agent_submission"
+  },
+  "calibration_present": false,
+  "results_present": false,
+  "original_inventory_present": false,
+  "streams": {
+    "public/observations.jsonl.gz": {
+      "bytes": 814526546,
+      "sha256": "d77b8c14be463d0c3b682b0d7c2565e39747f70885fdb55215c66e97a96186cf",
+      "parseable_records": 2472,
+      "last_record": {
+        "epoch": 96,
+        "tick": 11
+      },
+      "stream_complete": false,
+      "error": "EOFError: Compressed file ended before the end-of-stream marker was reached"
+    },
+    "private/host.jsonl.gz": {
+      "bytes": 314694291,
+      "sha256": "0b411f31fa8a130197100670811b3e4f457e8a9fe624f5045d45b8dfa3083b97",
+      "parseable_records": 2579,
+      "last_record": {
+        "epoch": 96,
+        "tick": 10
+      },
+      "stream_complete": false,
+      "error": "EOFError: Compressed file ended before the end-of-stream marker was reached"
+    }
+  },
+  "episodes": [
+    {
+      "episode": "e000",
+      "method": "frontier",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.95,
+        "safe_time_integrated_recall": 0.95,
+        "first_correct_ns": 1500000000,
+        "restricted_first_ns": 1500000000,
+        "localization_xy_m": [
+          0.07619683152930574
+        ],
+        "localization_median_m": 0.07619683152930574,
+        "localization_p90_m": 0.07619683152930574,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.5805957135105403,
+            "nll_xy": -2.4769952628234755,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": 0.04840407771115807,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e001",
+      "method": "core",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.0732424555989654
+        ],
+        "localization_median_m": 0.0732424555989654,
+        "localization_p90_m": 0.0732424555989654,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.5364457302166418,
+            "nll_xy": -2.499070254470425,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.175,
+        "brier": 0.10935400126790285,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e002",
+      "method": "verify",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.25,
+        "safe_time_integrated_recall": 0.25,
+        "first_correct_ns": 22500000000,
+        "restricted_first_ns": 22500000000,
+        "localization_xy_m": [
+          0.07284079940544105
+        ],
+        "localization_median_m": 0.07284079940544105,
+        "localization_p90_m": 0.07284079940544105,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.5305782058023701,
+            "nll_xy": -2.5020040166775606,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.2671944236647599,
+        "brier": 0.07552678914654279,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e003",
+      "method": "frontier",
+      "kind": "occluded",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.5833333333333334,
+        "safe_time_integrated_recall": 0.5833333333333334,
+        "first_correct_ns": 12500000000,
+        "restricted_first_ns": 12500000000,
+        "localization_xy_m": [
+          0.08636688284327128
+        ],
+        "localization_median_m": 0.08636688284327128,
+        "localization_p90_m": 0.08636688284327128,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.7459238452063348,
+            "nll_xy": -2.3943311969755783,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": 0.13691976437372944,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e004",
+      "method": "core",
+      "kind": "occluded",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.6666666666666666,
+        "safe_time_integrated_recall": 0.6666666666666666,
+        "first_correct_ns": 10000000000,
+        "restricted_first_ns": 10000000000,
+        "localization_xy_m": [
+          0.09544249362066116
+        ],
+        "localization_median_m": 0.09544249362066116,
+        "localization_p90_m": 0.09544249362066116,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.9109269588529947,
+            "nll_xy": -2.311829640152248,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.7066540571326091,
+        "brier": 0.19045926332915997,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e005",
+      "method": "verify",
+      "kind": "occluded",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.17416961523984512,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e006",
+      "method": "frontier",
+      "kind": "absent",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 0,
+        "matches": [],
+        "recall": null,
+        "safe_localization_recall": null,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": null,
+        "absent_false_alarm": false,
+        "absent_specificity": true,
+        "time_integrated_recall": null,
+        "safe_time_integrated_recall": null,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e007",
+      "method": "core",
+      "kind": "absent",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 0,
+        "matches": [],
+        "recall": null,
+        "safe_localization_recall": null,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": null,
+        "absent_false_alarm": false,
+        "absent_specificity": true,
+        "time_integrated_recall": null,
+        "safe_time_integrated_recall": null,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.23873401942549016,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e008",
+      "method": "verify",
+      "kind": "absent",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 0,
+        "matches": [],
+        "recall": null,
+        "safe_localization_recall": null,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": null,
+        "absent_false_alarm": false,
+        "absent_specificity": true,
+        "time_integrated_recall": null,
+        "safe_time_integrated_recall": null,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e009",
+      "method": "frontier",
+      "kind": "multi",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 2,
+        "fp": 0,
+        "victims": 2,
+        "matches": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.8,
+        "safe_time_integrated_recall": 0.8,
+        "first_correct_ns": 1500000000,
+        "restricted_first_ns": 1500000000,
+        "localization_xy_m": [
+          0.0696623781315508,
+          0.09257541237026928
+        ],
+        "localization_median_m": 0.08111889525091004,
+        "localization_p90_m": 0.09257541237026928,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.48528469269431657,
+            "nll_xy": -2.5246507732315875,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          },
+          {
+            "report": 1,
+            "mahalanobis2": 0.8570206975525408,
+            "nll_xy": -2.3387827708024753,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": 0.049611575066971,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e010",
+      "method": "core",
+      "kind": "multi",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 2,
+        "fp": 0,
+        "victims": 2,
+        "matches": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.575,
+        "safe_time_integrated_recall": 0.575,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.06418736986880542,
+          0.08020501748897416
+        ],
+        "localization_median_m": 0.0721961936788898,
+        "localization_p90_m": 0.08020501748897416,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.41200184506748316,
+            "nll_xy": -2.561292197045004,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          },
+          {
+            "report": 1,
+            "mahalanobis2": 0.643284483040665,
+            "nll_xy": -2.445650878058413,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.04999999999999999,
+        "brier": 0.08112593209505592,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e011",
+      "method": "verify",
+      "kind": "multi",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 2,
+        "fp": 0,
+        "victims": 2,
+        "matches": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.375,
+        "safe_time_integrated_recall": 0.375,
+        "first_correct_ns": 14500000000,
+        "restricted_first_ns": 14500000000,
+        "localization_xy_m": [
+          0.06956194985105749,
+          0.09879842027937674
+        ],
+        "localization_median_m": 0.08418018506521711,
+        "localization_p90_m": 0.09879842027937674,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.4838864867081037,
+            "nll_xy": -2.5253498762246935,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          },
+          {
+            "report": 1,
+            "mahalanobis2": 0.976112784970036,
+            "nll_xy": -2.2792367270937275,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.7685036475603247,
+        "brier": 0.08226799918705296,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e012",
+      "method": "frontier",
+      "kind": "obstacles",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.269281649238814,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e013",
+      "method": "core",
+      "kind": "obstacles",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.23873401942549016,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e014",
+      "method": "verify",
+      "kind": "obstacles",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.269281649238814,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e015",
+      "method": "frontier",
+      "kind": "blocked",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.269281649238814,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e016",
+      "method": "core",
+      "kind": "blocked",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.23873401942549016,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e017",
+      "method": "verify",
+      "kind": "blocked",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.269281649238814,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e018",
+      "method": "frontier",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.06496575903140443
+        ],
+        "localization_median_m": 0.06496575903140443,
+        "localization_p90_m": 0.06496575903140443,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.4220549846526507,
+            "nll_xy": -2.5562656272524205,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": 0.13623648528441468,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e019",
+      "method": "core",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.05694189013329766
+        ],
+        "localization_median_m": 0.05694189013329766,
+        "localization_p90_m": 0.05694189013329766,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.3242378851952541,
+            "nll_xy": -2.6051741769811185,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.175,
+        "brier": 0.10305378757713957,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e020",
+      "method": "verify",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.25622225067537957,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e021",
+      "method": "frontier",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 2,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 0.3333333333333333,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.95,
+        "safe_time_integrated_recall": 0.95,
+        "first_correct_ns": 1500000000,
+        "restricted_first_ns": 1500000000,
+        "localization_xy_m": [
+          0.1765900047406003
+        ],
+        "localization_median_m": 0.1765900047406003,
+        "localization_p90_m": 0.1765900047406003,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 1.6752780129839053,
+            "nll_xy": -1.364115845800121,
+            "within_50": false,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.0000000000000098,
+        "brier": 0.37283652748856877,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e022",
+      "method": "core",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.07014955266639698
+        ],
+        "localization_median_m": 0.07014955266639698,
+        "localization_p90_m": 0.07014955266639698,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.4920959739295604,
+            "nll_xy": -2.5212451326139655,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.024999999999999977,
+        "brier": 0.10935400126790285,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e023",
+      "method": "verify",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.7200000000000061,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e024",
+      "method": "frontier",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 1,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 0.5,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.07599390613803611
+        ],
+        "localization_median_m": 0.07599390613803611,
+        "localization_p90_m": 0.07599390613803611,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.5775073770116643,
+            "nll_xy": -2.4785394310729134,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.0000000000000098,
+        "brier": 0.21363869564461313,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e025",
+      "method": "core",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.05376616489649015
+        ],
+        "localization_median_m": 0.05376616489649015,
+        "localization_p90_m": 0.05376616489649015,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.28908004876765697,
+            "nll_xy": -2.622753095194917,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.024999999999999977,
+        "brier": 0.10305378757713957,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e026",
+      "method": "verify",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.9600000000000107,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e027",
+      "method": "frontier",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.95,
+        "safe_time_integrated_recall": 0.95,
+        "first_correct_ns": 1500000000,
+        "restricted_first_ns": 1500000000,
+        "localization_xy_m": [
+          0.06972225751997393
+        ],
+        "localization_median_m": 0.06972225751997393,
+        "localization_p90_m": 0.06972225751997393,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.4861193193681561,
+            "nll_xy": -2.5242334598946674,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": 0.0568953003132755,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e028",
+      "method": "core",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.9833333333333333,
+        "safe_time_integrated_recall": 0.9833333333333333,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.07217749492452123
+        ],
+        "localization_median_m": 0.07217749492452123,
+        "localization_p90_m": 0.07217749492452123,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.5209590773579287,
+            "nll_xy": -2.5068135808997813,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.175,
+        "brier": 0.1357187850995425,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e029",
+      "method": "verify",
+      "kind": "clean",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e030",
+      "method": "frontier",
+      "kind": "occluded",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.5833333333333334,
+        "safe_time_integrated_recall": 0.5833333333333334,
+        "first_correct_ns": 12500000000,
+        "restricted_first_ns": 12500000000,
+        "localization_xy_m": [
+          0.07399533603094577
+        ],
+        "localization_median_m": 0.07399533603094577,
+        "localization_p90_m": 0.07399533603094577,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.5475309754332581,
+            "nll_xy": -2.4935276318621167,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": 0.15242769864187622,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e031",
+      "method": "core",
+      "kind": "occluded",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.6166666666666667,
+        "safe_time_integrated_recall": 0.6166666666666667,
+        "first_correct_ns": 11500000000,
+        "restricted_first_ns": 11500000000,
+        "localization_xy_m": [
+          0.08189847957175657
+        ],
+        "localization_median_m": 0.08189847957175657,
+        "localization_p90_m": 0.08189847957175657,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.6707360956165427,
+            "nll_xy": -2.431925071770474,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5395769427623798,
+        "brier": 0.1402136269100005,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e032",
+      "method": "verify",
+      "kind": "occluded",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.2935003260133484,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e033",
+      "method": "frontier",
+      "kind": "absent",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 0,
+        "matches": [],
+        "recall": null,
+        "safe_localization_recall": null,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": null,
+        "absent_false_alarm": false,
+        "absent_specificity": true,
+        "time_integrated_recall": null,
+        "safe_time_integrated_recall": null,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e034",
+      "method": "core",
+      "kind": "absent",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 0,
+        "matches": [],
+        "recall": null,
+        "safe_localization_recall": null,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": null,
+        "absent_false_alarm": false,
+        "absent_specificity": true,
+        "time_integrated_recall": null,
+        "safe_time_integrated_recall": null,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.23873401942549016,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e035",
+      "method": "verify",
+      "kind": "absent",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 0,
+        "matches": [],
+        "recall": null,
+        "safe_localization_recall": null,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": null,
+        "absent_false_alarm": false,
+        "absent_specificity": true,
+        "time_integrated_recall": null,
+        "safe_time_integrated_recall": null,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e036",
+      "method": "frontier",
+      "kind": "multi",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 2,
+        "fp": 0,
+        "victims": 2,
+        "matches": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.8,
+        "safe_time_integrated_recall": 0.8,
+        "first_correct_ns": 1500000000,
+        "restricted_first_ns": 1500000000,
+        "localization_xy_m": [
+          0.07371682496503415,
+          0.09276953748579969
+        ],
+        "localization_median_m": 0.08324318122541692,
+        "localization_p90_m": 0.09276953748579969,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.5434170282925482,
+            "nll_xy": -2.4955846054324713,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          },
+          {
+            "report": 1,
+            "mahalanobis2": 0.8606187085329194,
+            "nll_xy": -2.336983765312286,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.5574818886995572,
+        "brier": 0.055748065768487454,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e037",
+      "method": "core",
+      "kind": "multi",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 2,
+        "fp": 0,
+        "victims": 2,
+        "matches": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.575,
+        "safe_time_integrated_recall": 0.575,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.07217432163086189,
+          0.08029414959442688
+        ],
+        "localization_median_m": 0.07623423561264439,
+        "localization_p90_m": 0.08029414959442688,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.5209132702875099,
+            "nll_xy": -2.5068364844349906,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          },
+          {
+            "report": 1,
+            "mahalanobis2": 0.6447150459092204,
+            "nll_xy": -2.4449355966241355,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.04999999999999999,
+        "brier": 0.09439642854614849,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e038",
+      "method": "verify",
+      "kind": "multi",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 2,
+        "fp": 0,
+        "victims": 2,
+        "matches": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null,
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.38333333333333336,
+        "safe_time_integrated_recall": 0.38333333333333336,
+        "first_correct_ns": 14500000000,
+        "restricted_first_ns": 14500000000,
+        "localization_xy_m": [
+          0.06809833144805041,
+          0.0890904636006351
+        ],
+        "localization_median_m": 0.07859439752434276,
+        "localization_p90_m": 0.0890904636006351,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.46373827460085315,
+            "nll_xy": -2.535423982278319,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          },
+          {
+            "report": 1,
+            "mahalanobis2": 0.7937110704576088,
+            "nll_xy": -2.3704375843499412,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.6627083846997941,
+        "brier": 0.11023312116770126,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e039",
+      "method": "frontier",
+      "kind": "obstacles",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 1.269281649238814,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    },
+    {
+      "episode": "e040",
+      "method": "core",
+      "kind": "obstacles",
+      "metrics_equal_recomputed": true,
+      "independent_reference_equal": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 30000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.23873401942549016,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      }
+    }
+  ],
+  "all_original_file_hashes": {
+    "asset-manifest.json": {
+      "sha256": "8c2bebea3cbe937d9ac22552d2ab656e426a147d6bb7f19ed73174d6eda7ea6c",
+      "bytes": 2340
+    },
+    "e000-metrics.json": {
+      "sha256": "607ebbdc0680f5eaa02d6f7bf40991036ea0af0b221203c102a3c97550341c48",
+      "bytes": 2786
+    },
+    "e001-metrics.json": {
+      "sha256": "2449cdb4c9a8a68e6aeac982cb93da318fc13a2aee63fa3e969fc5924ee63af0",
+      "bytes": 2774
+    },
+    "e002-metrics.json": {
+      "sha256": "fd9e6e948569d1a1a1733e33f3abadb935fff71f439a1c76eae098412ec65083",
+      "bytes": 2786
+    },
+    "e003-metrics.json": {
+      "sha256": "d85ef792e5a0be5ed81a7f26967f7704bdf4f7b5600e26d270c212a3c72e35fa",
+      "bytes": 2817
+    },
+    "e004-metrics.json": {
+      "sha256": "67e870918fb063d88e4dadab3ee7796292e67b769440a41688abb1a9abe8d30f",
+      "bytes": 2810
+    },
+    "e005-metrics.json": {
+      "sha256": "9d9c3bf3ed45a1942d21fcdb1bd9d545d93cfbb535add7133a19a4be5ec42733",
+      "bytes": 2455
+    },
+    "e006-metrics.json": {
+      "sha256": "b928af8a3c6cfe53ca6680e3bbf4975cf0e24c1350372c14c4d0ffbed3063770",
+      "bytes": 2437
+    },
+    "e007-metrics.json": {
+      "sha256": "5268f9fefbfd5e5601e280b476c50bac4036da02c9c044a88032a7739a753eed",
+      "bytes": 2439
+    },
+    "e008-metrics.json": {
+      "sha256": "c2b5c13bac4a24dcb56d851b10f8897888fdfc59779e207707fc2358f0cbe5f1",
+      "bytes": 2439
+    },
+    "e009-metrics.json": {
+      "sha256": "8acf7a1e10dcfccebbef1c5211944505d3247f528a2878e7cff930fedd63d4f4",
+      "bytes": 3059
+    },
+    "e010-metrics.json": {
+      "sha256": "3b9750011306d194579625d8e36cc726c20ff900513aade93c2ed7ce22784626",
+      "bytes": 3059
+    },
+    "e011-metrics.json": {
+      "sha256": "171d663004d4ac7898af6315049b1480cc0174eba72c0f39c6e106631fe58a64",
+      "bytes": 3066
+    },
+    "e012-metrics.json": {
+      "sha256": "3c97176feb377a83ec409db530eb1cd97fa59ea0555816d1e4e8fc46dd94e9da",
+      "bytes": 2454
+    },
+    "e013-metrics.json": {
+      "sha256": "dca046d1691fb82e3506f6a948f12c912645535dae4dfbcf8b189ab23f8ed7b6",
+      "bytes": 2445
+    },
+    "e014-metrics.json": {
+      "sha256": "a73d9ffb868bea63120ddd328cb8376ec6d4438930bfb74a89aa6ec01fa39be4",
+      "bytes": 2453
+    },
+    "e015-metrics.json": {
+      "sha256": "ed33888a9b6e5307c36b1f2ad8b2113b4c882eb768aae4df735eb72428272df2",
+      "bytes": 2443
+    },
+    "e016-metrics.json": {
+      "sha256": "30b4b2549b1ca1ccd3a3b4c60a67fe3e221a76199a0b460551dc0dea5bb54640",
+      "bytes": 2441
+    },
+    "e017-metrics.json": {
+      "sha256": "71b233eb94f00bc5a5adb452d41003a939ac523b7975dde6af936a33f3269140",
+      "bytes": 2442
+    },
+    "e018-metrics.json": {
+      "sha256": "c3b06699164462bd4cb8253375ef9567773d959bd5e8d7bdc705864e1f2f55ef",
+      "bytes": 2816
+    },
+    "e019-metrics.json": {
+      "sha256": "b44b64fd8a50c7731205c44fec70f656bc5c8e13f62844d76e0267265b9f544e",
+      "bytes": 2795
+    },
+    "e020-metrics.json": {
+      "sha256": "695f23aa31d4cc92a010982199e701b90b237ce7ca78244718ca2eb541fa2dc4",
+      "bytes": 2453
+    },
+    "e021-metrics.json": {
+      "sha256": "2bc9d237285392438d13abf9c6746b65c01666f226b27e79dd3427e858adfe05",
+      "bytes": 2824
+    },
+    "e022-metrics.json": {
+      "sha256": "debbef3de25c1ea13d764458ea0c490bc064ccc890f66051d4815f11f1868d28",
+      "bytes": 2804
+    },
+    "e023-metrics.json": {
+      "sha256": "b4c7a72b4cbabd781edca11d111dd47252e6c26523df668c1813ffada2cebeaa",
+      "bytes": 2442
+    },
+    "e024-metrics.json": {
+      "sha256": "c2a9fa932d08543ed8cdf4cbe05f2d179e4921f668a8d388240857c37aa7c5cd",
+      "bytes": 2828
+    },
+    "e025-metrics.json": {
+      "sha256": "f81ba4d1589fd7377ee315d143838575364eeb2b20aa3d3c37ff4fbe25e899d7",
+      "bytes": 2813
+    },
+    "e026-metrics.json": {
+      "sha256": "458556c4f4e86f1dc780e350853d1866cf1607297c6c717af45d02fa03a74d52",
+      "bytes": 2439
+    },
+    "e027-metrics.json": {
+      "sha256": "68ddcff56e66a052ed34b08af9b3c0256b6f556db016a25a5f4ebbd3313fd76a",
+      "bytes": 2767
+    },
+    "e028-metrics.json": {
+      "sha256": "0ef100598aaf0206083a7587c1d3e8ef75d9b871100899372c56fb0d37d9fc67",
+      "bytes": 2799
+    },
+    "e029-metrics.json": {
+      "sha256": "ac987af229f4224b3619c05b649535d6bea0e1a330b84bc8949ec1df15bd4e17",
+      "bytes": 2427
+    },
+    "e030-metrics.json": {
+      "sha256": "67ff071905e768ffa84cb1dff7ede4813544fe9491566346b5a38916117b6c47",
+      "bytes": 2821
+    },
+    "e031-metrics.json": {
+      "sha256": "2e20ffb56c67a29324a4efd3fdb48a03edddee7cb37dd519b21a98141b073518",
+      "bytes": 2815
+    },
+    "e032-metrics.json": {
+      "sha256": "13df248eb2299987de78212325ec65d38572e82799cca8c621dcf74849a83760",
+      "bytes": 2447
+    },
+    "e033-metrics.json": {
+      "sha256": "4ee492bfb02d921c9bb4ab0149c67d6aee6c158e4a92d3b2b1f1a7a4a01b017f",
+      "bytes": 2442
+    },
+    "e034-metrics.json": {
+      "sha256": "e8fd42071941ce1e6a6ea83bfa4c87397b28614abf095ac63aef136f20a3b00a",
+      "bytes": 2439
+    },
+    "e035-metrics.json": {
+      "sha256": "ae0281c682c3041053b2160f8a40ff98e07995cfa5b4b157d4d1d5aab9cc8616",
+      "bytes": 2436
+    },
+    "e036-metrics.json": {
+      "sha256": "9fa92d457d049b4cb836599430fd22f655b52bef71698f5727dcd25a22032068",
+      "bytes": 3064
+    },
+    "e037-metrics.json": {
+      "sha256": "3a9f85a059f40acb5cb336ec1d7473f33da902baa57cafcbabebfe2998c8d5b3",
+      "bytes": 3066
+    },
+    "e038-metrics.json": {
+      "sha256": "084568e7b29a358b044657db5bfad4648eb9cb203d4659247c21a27c5eec60b4",
+      "bytes": 3083
+    },
+    "e039-metrics.json": {
+      "sha256": "fbf0f84e97d15c0d67b2eaa43e23b806a54252da0e152221dd68836109f61763",
+      "bytes": 2455
+    },
+    "e040-metrics.json": {
+      "sha256": "5c7ddb6b4877fdc0a099c6f992dc1e6bf1534343b84c4b68195ee68194c31ed1",
+      "bytes": 2443
+    },
+    "engine-stdout.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "engine.log": {
+      "sha256": "90d51b24b416679ab90bf2d6caab571d842b2ae41eca95617a5eb1c160a1fbca",
+      "bytes": 345857
+    },
+    "host-capabilities.json": {
+      "sha256": "d65299111d60e73a0c8e31e0eca1c3a0649831c2a53260790f7a67f6b2ac6048",
+      "bytes": 778
+    },
+    "host-ready.json": {
+      "sha256": "086ce6140d0e055eaaecf44d770383326aaf3f2e6a511fcd69c73dbf7aa1728d",
+      "bytes": 307
+    },
+    "human-pose-manifest.json": {
+      "sha256": "16df1a3b6001f83c851a9f9109a334da45301c8e7a9f48285ffaf8b5f661ef5d",
+      "bytes": 1422
+    },
+    "journal.jsonl": {
+      "sha256": "076348490d5292fb7680d39b55b25de4166c3535194552640d1fa2ebe847950f",
+      "bytes": 1791287
+    },
+    "manifest.json": {
+      "sha256": "8ebc7c959a12eaf20861e0061112d7d2948d2adc59e64e500ecf8566cf355397",
+      "bytes": 6594
+    },
+    "private/admission-000.json": {
+      "sha256": "71a9235f86ec8aeaf65a2f8954d796f5fcee89de401eb748cd8ee0c9ec905167",
+      "bytes": 592
+    },
+    "private/admission-001.json": {
+      "sha256": "057dbd2dceb61a781635a970e4011d284d2ff89a9656d635eaaa7c336f7210d1",
+      "bytes": 592
+    },
+    "private/admission-002.json": {
+      "sha256": "6751eda4ddf1c75af3c17117a828a94fb81e5960782101e30ec601a2634eac6d",
+      "bytes": 270
+    },
+    "private/admission-003.json": {
+      "sha256": "1b8611947d7d5fa3dce37f75570471f2ad17b137513183344c72c0c92ae49d3c",
+      "bytes": 910
+    },
+    "private/admission-004.json": {
+      "sha256": "3b1c2956ea43817db4bddb6284e03e7994e84102398ec5486ec36acca76b9997",
+      "bytes": 1539
+    },
+    "private/admission-005.json": {
+      "sha256": "2a5ce00f7dbfdf2aaf3a4875ffbb5e775a26235d795a362eb013c4af7e50b962",
+      "bytes": 5235
+    },
+    "private/admission-006.json": {
+      "sha256": "cc443c1d339d795d6839dd527d3ce9f534126c70ed71daf4cf648fc05dede680",
+      "bytes": 593
+    },
+    "private/admission-007.json": {
+      "sha256": "332abb8e700e1371a4c8c7f867121f50c1def1830ba7f95bf13f494215f5707f",
+      "bytes": 593
+    },
+    "private/admission-008.json": {
+      "sha256": "fe951323eadb57dd7b7ad836b14a088a3c2bc068dff5068881c414388b55bc5e",
+      "bytes": 593
+    },
+    "private/admission-009.json": {
+      "sha256": "206a5cdff1c1df9c526c64d019b4e5a598f5363f1d5d50bd6460e61c5560315b",
+      "bytes": 593
+    },
+    "private/admission-010.json": {
+      "sha256": "b888f000a5a288ed200ebdea69f02e55d12cbf8d40831741675105db69ae8c51",
+      "bytes": 593
+    },
+    "private/admission-011.json": {
+      "sha256": "6751eda4ddf1c75af3c17117a828a94fb81e5960782101e30ec601a2634eac6d",
+      "bytes": 270
+    },
+    "private/admission-012.json": {
+      "sha256": "957dbb66aadd52a59167d7ce0cc66999cb8f947302cf84ba25e1b6b6aae964f6",
+      "bytes": 912
+    },
+    "private/admission-013.json": {
+      "sha256": "07072318a6f2496a8cd346d77621a5e5d2eb3530e3abe4f76a9896975d532e09",
+      "bytes": 1543
+    },
+    "private/admission-014.json": {
+      "sha256": "0dc68fc7cdc43239f18209ccf83debfd7ae0060e3232854174f00a9eb6238b34",
+      "bytes": 5236
+    },
+    "private/admission-015.json": {
+      "sha256": "9279a620e14cf1e7100637cad11c0417c316fd0655ed86f80e9a51ed747ec0fe",
+      "bytes": 593
+    },
+    "private/admission-016.json": {
+      "sha256": "c6c1c768eb0810e6d6257afdc38bc4b213e09105af9c0bc40d8f68d1b2f46de0",
+      "bytes": 593
+    },
+    "private/admission-017.json": {
+      "sha256": "e4585535413d968657ecf8102992d75d5bf7023c40d2c0db28a676cdd5bf9e44",
+      "bytes": 593
+    },
+    "private/e000-commands.json": {
+      "sha256": "9425c634c48f392205f2398c87e385995889c0c978504fa09d7e78e9e1f260dd",
+      "bytes": 19467
+    },
+    "private/e000-ledger.json": {
+      "sha256": "09de4e8278fe280c6de6a10fe4da5e6587451a24566b802d72b8781c5fec47f4",
+      "bytes": 24167
+    },
+    "private/e000-scenario.json": {
+      "sha256": "10da90ef7417033ea55e5f2e7fe453035592cfc6cde1d8cf55bc9d949ffe49ba",
+      "bytes": 1963
+    },
+    "private/e000-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e001-commands.json": {
+      "sha256": "4a667e0fe6fb8622d12b4e059d0f5a4ce180ee13162d2e18949cb6abf9a77db2",
+      "bytes": 19115
+    },
+    "private/e001-ledger.json": {
+      "sha256": "f214a97f50fa7f7a6bd5f79d5084a7c151c85038281aceeed70a53a10751e102",
+      "bytes": 20434
+    },
+    "private/e001-scenario.json": {
+      "sha256": "10da90ef7417033ea55e5f2e7fe453035592cfc6cde1d8cf55bc9d949ffe49ba",
+      "bytes": 1963
+    },
+    "private/e001-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e002-commands.json": {
+      "sha256": "7acf974caa9ef5b91267b58ee06908622ff9b766dd06373c399bfe563a728b04",
+      "bytes": 19553
+    },
+    "private/e002-ledger.json": {
+      "sha256": "be03252b9cf4363d3b16171a7f2c0d9602c08f97f3b8dededd90c27ff5202a2f",
+      "bytes": 22485
+    },
+    "private/e002-scenario.json": {
+      "sha256": "10da90ef7417033ea55e5f2e7fe453035592cfc6cde1d8cf55bc9d949ffe49ba",
+      "bytes": 1963
+    },
+    "private/e002-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e003-commands.json": {
+      "sha256": "51506c21ef81644ea3a5e3bf1e6bdd350aa293a6cd54f5292d13a703d0f97bee",
+      "bytes": 19467
+    },
+    "private/e003-ledger.json": {
+      "sha256": "68e87663bfe2b5e1fde84e51565dacdd450165d3548125c45bc82b07000fb265",
+      "bytes": 24168
+    },
+    "private/e003-scenario.json": {
+      "sha256": "ace83edcedc9a6db6795b796625bfe966d38835edea8d012d49756a54c863934",
+      "bytes": 2140
+    },
+    "private/e003-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e004-commands.json": {
+      "sha256": "bd13264912dd61d3f5c339a476fbf29bd97773bcb75ef72ca2a54444d2d984e9",
+      "bytes": 20171
+    },
+    "private/e004-ledger.json": {
+      "sha256": "742c7211239defaf72cb59033ba6385d2f6c1d292c6576ddd34a7e0a9ba2c4a5",
+      "bytes": 22633
+    },
+    "private/e004-scenario.json": {
+      "sha256": "ace83edcedc9a6db6795b796625bfe966d38835edea8d012d49756a54c863934",
+      "bytes": 2140
+    },
+    "private/e004-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e005-commands.json": {
+      "sha256": "5514ad2f60e6437c31287d171d0c9f2c5ae326b2d991e95e50102955d2d80e06",
+      "bytes": 19531
+    },
+    "private/e005-ledger.json": {
+      "sha256": "a22da75354bf6667e6e95bf5c18cac91de2955e2be685ee1dfed39587dc32b24",
+      "bytes": 21348
+    },
+    "private/e005-scenario.json": {
+      "sha256": "ace83edcedc9a6db6795b796625bfe966d38835edea8d012d49756a54c863934",
+      "bytes": 2140
+    },
+    "private/e005-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e006-commands.json": {
+      "sha256": "ab6ea15efa1912554dfbbb0d52dd47cf0efd2b8b44f7cce4eb718a857c23d0df",
+      "bytes": 19467
+    },
+    "private/e006-ledger.json": {
+      "sha256": "eadf8151aee53deab4380692afd7ee24e45b4a7c6068e24b606c5e367841513c",
+      "bytes": 17333
+    },
+    "private/e006-scenario.json": {
+      "sha256": "4e9a096af87ef6e6faa7ee7ca60698066aed6afde956ea943961241ce9707985",
+      "bytes": 1795
+    },
+    "private/e006-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e007-commands.json": {
+      "sha256": "30dd8f0844ed9c3cfd694086ecf47ad3d53ae82884cbae9220e14eb85fd10811",
+      "bytes": 19027
+    },
+    "private/e007-ledger.json": {
+      "sha256": "6c798475f2e7d4b5403252063a96d69cb6af6dc0b8c974cbd78522be80580be6",
+      "bytes": 17334
+    },
+    "private/e007-scenario.json": {
+      "sha256": "4e9a096af87ef6e6faa7ee7ca60698066aed6afde956ea943961241ce9707985",
+      "bytes": 1795
+    },
+    "private/e007-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e008-commands.json": {
+      "sha256": "c15da04dba0d8c982cd507f92fc74db822d0a19ed0457612c412d99ee296c5a0",
+      "bytes": 19467
+    },
+    "private/e008-ledger.json": {
+      "sha256": "8eaa4f8727fe98bcf8ec258a86fe2945a8c7671d732937074e74b1fb1335fc31",
+      "bytes": 17333
+    },
+    "private/e008-scenario.json": {
+      "sha256": "4e9a096af87ef6e6faa7ee7ca60698066aed6afde956ea943961241ce9707985",
+      "bytes": 1795
+    },
+    "private/e008-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e009-commands.json": {
+      "sha256": "00ac1176789ddde540ec65197f5de8afb550df17d75a0c10c70fa12696f879b7",
+      "bytes": 19467
+    },
+    "private/e009-ledger.json": {
+      "sha256": "c06383ba19f0fffcb2d0d442db6fa39051a1cb5ed63024f2dff8a78b5ccac3f2",
+      "bytes": 29184
+    },
+    "private/e009-scenario.json": {
+      "sha256": "6d74345486c718378816b9a785ff718c068282ef40aaa3f62f5a23cc3cbe2bdc",
+      "bytes": 2129
+    },
+    "private/e009-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e010-commands.json": {
+      "sha256": "4166167b1f3db225217df89f0c8385b09d64100b1847a037f34effce68853095",
+      "bytes": 18947
+    },
+    "private/e010-ledger.json": {
+      "sha256": "b23b5b4723f4df593ccb29e38fe8dbf44cc1bd735a6666be60e958939ebb6341",
+      "bytes": 24892
+    },
+    "private/e010-scenario.json": {
+      "sha256": "6d74345486c718378816b9a785ff718c068282ef40aaa3f62f5a23cc3cbe2bdc",
+      "bytes": 2129
+    },
+    "private/e010-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e011-commands.json": {
+      "sha256": "4525f8ef7d9f3a4ba7df6cd7bcfb5464c999f476ad3c34b64cb9c04029b1c040",
+      "bytes": 20811
+    },
+    "private/e011-ledger.json": {
+      "sha256": "f08bc9ec7c2fd13ab620f318e625d1397976d89244f49172f53b0b99ddd4c8d7",
+      "bytes": 28767
+    },
+    "private/e011-scenario.json": {
+      "sha256": "6d74345486c718378816b9a785ff718c068282ef40aaa3f62f5a23cc3cbe2bdc",
+      "bytes": 2129
+    },
+    "private/e011-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e012-commands.json": {
+      "sha256": "d82f9fb564aba08c17110bfc5f3f9b25dc81f2f0712d772ef59878f81b3267d2",
+      "bytes": 19143
+    },
+    "private/e012-ledger.json": {
+      "sha256": "3566ec7ac4090a3dca3668fe42970fcd01228aa8db1c06ca75cc0695b083b7d4",
+      "bytes": 17449
+    },
+    "private/e012-scenario.json": {
+      "sha256": "dd5a19fdd26cb374d2934eb3f8565cf6d13f876fd891a61cbf9cdfa9b99a3ffc",
+      "bytes": 2145
+    },
+    "private/e012-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e013-commands.json": {
+      "sha256": "df2da91bea979270cb22a84e3f91a154b43dd20bba95dff003827915604c1f68",
+      "bytes": 19027
+    },
+    "private/e013-ledger.json": {
+      "sha256": "b0434edb6a33b945f0c4680545be72be2dfd0ab12098037a6623318be6fdeb32",
+      "bytes": 17451
+    },
+    "private/e013-scenario.json": {
+      "sha256": "dd5a19fdd26cb374d2934eb3f8565cf6d13f876fd891a61cbf9cdfa9b99a3ffc",
+      "bytes": 2145
+    },
+    "private/e013-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e014-commands.json": {
+      "sha256": "a9a739411fc91504e5149577a0168cbffbba3c8a82327abd52cb61d19b23ce64",
+      "bytes": 19143
+    },
+    "private/e014-ledger.json": {
+      "sha256": "e532d7ea56b70edc259f8c62e0955ba7cb461b04163a3e910c3ff106398c6795",
+      "bytes": 17449
+    },
+    "private/e014-scenario.json": {
+      "sha256": "dd5a19fdd26cb374d2934eb3f8565cf6d13f876fd891a61cbf9cdfa9b99a3ffc",
+      "bytes": 2145
+    },
+    "private/e014-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e015-commands.json": {
+      "sha256": "312b91002006f0da970877af5293144f22eac915a2612ac4569fd2d48f222e97",
+      "bytes": 19143
+    },
+    "private/e015-ledger.json": {
+      "sha256": "d260715e8266ac2b541eb3e35361679d1eebbe2dac45d7c59ef1c72cfeb1f519",
+      "bytes": 17449
+    },
+    "private/e015-scenario.json": {
+      "sha256": "8ff1301a9a7623565f89925054675a3ab93e62297b37963bb196899055dc9f35",
+      "bytes": 2145
+    },
+    "private/e015-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e016-commands.json": {
+      "sha256": "5d0b0337b0d7ec924b72a65bf1b115fdc46c602fdbad06a888fb24a0b24c6ebb",
+      "bytes": 19027
+    },
+    "private/e016-ledger.json": {
+      "sha256": "9a54a4f5aa408cf200d4565a9a0faed3c6fc636a6d07e30919da9ebe7394b927",
+      "bytes": 17451
+    },
+    "private/e016-scenario.json": {
+      "sha256": "8ff1301a9a7623565f89925054675a3ab93e62297b37963bb196899055dc9f35",
+      "bytes": 2145
+    },
+    "private/e016-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e017-commands.json": {
+      "sha256": "8ff09b04b3370a5738ece5dc2d9b4843d94fc7edde67a16283a58bcf909e0a92",
+      "bytes": 19143
+    },
+    "private/e017-ledger.json": {
+      "sha256": "7b7dd79c4b580320664438a74ee8af6c56a7e1b2a511afdcbad800129a20266e",
+      "bytes": 17449
+    },
+    "private/e017-scenario.json": {
+      "sha256": "8ff1301a9a7623565f89925054675a3ab93e62297b37963bb196899055dc9f35",
+      "bytes": 2145
+    },
+    "private/e017-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e018-commands.json": {
+      "sha256": "d0c3dbcb6936d455aeaca2c468eda0467a115d6107674b8bec7311ef27969cc1",
+      "bytes": 19467
+    },
+    "private/e018-ledger.json": {
+      "sha256": "fdf007159b2e0d8c102674bb838b5b884c384d22ba34dc6663e1ba282d7bb499",
+      "bytes": 24169
+    },
+    "private/e018-scenario.json": {
+      "sha256": "e14618d3a49112ac9c925d2773afc3fc73359b9de1e5c5e1b5d491e82b0de0df",
+      "bytes": 1963
+    },
+    "private/e018-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e019-commands.json": {
+      "sha256": "9a0f3b4a2ab17db6f741e2383ccf0d36e8d90318ef08a196daf9dc2f57f4e591",
+      "bytes": 19115
+    },
+    "private/e019-ledger.json": {
+      "sha256": "95f412f126deb45c27df7c732d23ac1cff25fb9b26a22c21db62f0236119c00f",
+      "bytes": 20436
+    },
+    "private/e019-scenario.json": {
+      "sha256": "e14618d3a49112ac9c925d2773afc3fc73359b9de1e5c5e1b5d491e82b0de0df",
+      "bytes": 1963
+    },
+    "private/e019-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e020-commands.json": {
+      "sha256": "8243ef9449b5bf8116421ddb5bbab9f16387611c1d26567f56e634e9f6bb4de2",
+      "bytes": 19869
+    },
+    "private/e020-ledger.json": {
+      "sha256": "d66947b03501ad260bc366c822e41d00152bcaa2e7c174be38eff3976a65d410",
+      "bytes": 21517
+    },
+    "private/e020-scenario.json": {
+      "sha256": "e14618d3a49112ac9c925d2773afc3fc73359b9de1e5c5e1b5d491e82b0de0df",
+      "bytes": 1963
+    },
+    "private/e020-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e021-commands.json": {
+      "sha256": "d1e4b9403f276a689e8ff9ae96d3e46d068e7f512422f15a9227628b02e10ce2",
+      "bytes": 17321
+    },
+    "private/e021-ledger.json": {
+      "sha256": "09030a86898671c98b8c927e9c15d85212162b5f9a4ee1d6ec2dee0a481b2a39",
+      "bytes": 23164
+    },
+    "private/e021-scenario.json": {
+      "sha256": "99d48b929ddfad419e13774259ee4060c640b7355293941cefe40091b09816f0",
+      "bytes": 1963
+    },
+    "private/e021-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e022-commands.json": {
+      "sha256": "1e73ba8e9eaf236677887dca1c80571cb58bc9efe1fcd59f3b0e12b546cc8f30",
+      "bytes": 18759
+    },
+    "private/e022-ledger.json": {
+      "sha256": "438042a39bc726a079dbf607d0628598d977367a725869ad5d5004d9e757a297",
+      "bytes": 20450
+    },
+    "private/e022-scenario.json": {
+      "sha256": "99d48b929ddfad419e13774259ee4060c640b7355293941cefe40091b09816f0",
+      "bytes": 1963
+    },
+    "private/e022-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e023-commands.json": {
+      "sha256": "1930f43c7acdbb16b54913a4030e9bceffef8224d0516e54386169591f964310",
+      "bytes": 17923
+    },
+    "private/e023-ledger.json": {
+      "sha256": "9c49249c54f4494bd99180db50b46447c228b7043bd838a4353ab55ffb0cfff0",
+      "bytes": 19946
+    },
+    "private/e023-scenario.json": {
+      "sha256": "99d48b929ddfad419e13774259ee4060c640b7355293941cefe40091b09816f0",
+      "bytes": 1963
+    },
+    "private/e023-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e024-commands.json": {
+      "sha256": "6be3ea4db9f09de98fd0c3bb3f3ff183016a4c894dde84b157ed50fd6bb9745e",
+      "bytes": 17321
+    },
+    "private/e024-ledger.json": {
+      "sha256": "739ffa6da0b8fedb3cc11e213ada4ebc73b5a032938aeb8c3bca55f6eed9ee46",
+      "bytes": 22031
+    },
+    "private/e024-scenario.json": {
+      "sha256": "939e8ada50a1d5a691e525bfaf6dd5231f814a22ff19e9d02dc64f7cb0ab584a",
+      "bytes": 1963
+    },
+    "private/e024-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e025-commands.json": {
+      "sha256": "480528c85203e75eec5a62e3839a62a63d0a1800db6daeb09bee1a2ef8294f2a",
+      "bytes": 18759
+    },
+    "private/e025-ledger.json": {
+      "sha256": "37e411d0f7cba0970b45a567243ef6433121a4b29d23214616096844b26b2dff",
+      "bytes": 20451
+    },
+    "private/e025-scenario.json": {
+      "sha256": "939e8ada50a1d5a691e525bfaf6dd5231f814a22ff19e9d02dc64f7cb0ab584a",
+      "bytes": 1963
+    },
+    "private/e025-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e026-commands.json": {
+      "sha256": "69811044563462e330386f86fa9fdb5bc4d032dbd638a62a55b58e54febb30d3",
+      "bytes": 17767
+    },
+    "private/e026-ledger.json": {
+      "sha256": "51dbca2880c38fa83fda0532227ba6e414e067024576c5db41d2d67ec2978ca5",
+      "bytes": 19941
+    },
+    "private/e026-scenario.json": {
+      "sha256": "939e8ada50a1d5a691e525bfaf6dd5231f814a22ff19e9d02dc64f7cb0ab584a",
+      "bytes": 1963
+    },
+    "private/e026-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e027-commands.json": {
+      "sha256": "9f51be98ca3422ee61bd456cf7c78ff8b1532662f53750d86714f846db546e67",
+      "bytes": 19467
+    },
+    "private/e027-ledger.json": {
+      "sha256": "a25086f6f6dac33a131974a16a91ad4bddf254e8d3a02bfa49105cabce4523b8",
+      "bytes": 24167
+    },
+    "private/e027-scenario.json": {
+      "sha256": "dcd053365cff8c575ff7bb43301f79694549f9978ef38fa4bad82ef4b6a33b58",
+      "bytes": 1968
+    },
+    "private/e027-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e028-commands.json": {
+      "sha256": "18adb229c6a94a10c9e962e3000e1e3807abac99210149371fc47070c006ff8a",
+      "bytes": 19115
+    },
+    "private/e028-ledger.json": {
+      "sha256": "8236f9543599b6c1fb6f298fc50786395308932d789d9017ececc19e8ce09c5a",
+      "bytes": 20433
+    },
+    "private/e028-scenario.json": {
+      "sha256": "dcd053365cff8c575ff7bb43301f79694549f9978ef38fa4bad82ef4b6a33b58",
+      "bytes": 1968
+    },
+    "private/e028-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e029-commands.json": {
+      "sha256": "f8925c866280018fc7a283f454b23294ed6401c00d824b103fa63a786a27bd91",
+      "bytes": 19055
+    },
+    "private/e029-ledger.json": {
+      "sha256": "342beb9fc0851d061edbdeafabfd70daf7124431d9b735d8d4b5ceb4739ed806",
+      "bytes": 20567
+    },
+    "private/e029-scenario.json": {
+      "sha256": "dcd053365cff8c575ff7bb43301f79694549f9978ef38fa4bad82ef4b6a33b58",
+      "bytes": 1968
+    },
+    "private/e029-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e030-commands.json": {
+      "sha256": "40ef7be7a3a2bb5654793c7f1bdf0c12efbf3dcf0f4c161295c1df9050b515f8",
+      "bytes": 19467
+    },
+    "private/e030-ledger.json": {
+      "sha256": "a90e86d4bbe151608bdb5c5b1ecf0444640bb9ac7b6d385bf15f824e14a92499",
+      "bytes": 24167
+    },
+    "private/e030-scenario.json": {
+      "sha256": "8820fbdfa65b62eb57d16624e5d0f064a2104209014cecb84f6bae261c39f2eb",
+      "bytes": 2145
+    },
+    "private/e030-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e031-commands.json": {
+      "sha256": "d1edfa12c6558592f181f4728681f1bee8205be15ef4e1a2e169bc69e83138bb",
+      "bytes": 20093
+    },
+    "private/e031-ledger.json": {
+      "sha256": "0a28473c17541abed8d835c2b2d11ab5600714e320122243056306cdc976431a",
+      "bytes": 22957
+    },
+    "private/e031-scenario.json": {
+      "sha256": "8820fbdfa65b62eb57d16624e5d0f064a2104209014cecb84f6bae261c39f2eb",
+      "bytes": 2145
+    },
+    "private/e031-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e032-commands.json": {
+      "sha256": "033c91c44bf930968007a23e0e7f227a89989d75c6f91a69f87d4b64cec438e4",
+      "bytes": 19653
+    },
+    "private/e032-ledger.json": {
+      "sha256": "bea54b439de71b3339119c453149554c407e2a450aced70a3e507d40a7b2300a",
+      "bytes": 21340
+    },
+    "private/e032-scenario.json": {
+      "sha256": "8820fbdfa65b62eb57d16624e5d0f064a2104209014cecb84f6bae261c39f2eb",
+      "bytes": 2145
+    },
+    "private/e032-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e033-commands.json": {
+      "sha256": "31f4043ffa98ba179e5a69f92f56e6a87932d35fc311676b876d4fc2f53f5fa5",
+      "bytes": 19467
+    },
+    "private/e033-ledger.json": {
+      "sha256": "9fee247282c3040d94b90e78878025a70790e3073005b23972ff0a2fc450ab78",
+      "bytes": 17333
+    },
+    "private/e033-scenario.json": {
+      "sha256": "ec21f2b33997cfa3cdf0b527080dd49b92519f64722454b16133968b37470daa",
+      "bytes": 1800
+    },
+    "private/e033-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e034-commands.json": {
+      "sha256": "e8c0ea473b448426ea0c1d0b0e684dd4fa76d9606e0f595d6771d751950c08f5",
+      "bytes": 19027
+    },
+    "private/e034-ledger.json": {
+      "sha256": "65721b53c8d33390401415d3d2e7c765c608d011b0536e115fe55bedc9ef40ff",
+      "bytes": 17334
+    },
+    "private/e034-scenario.json": {
+      "sha256": "ec21f2b33997cfa3cdf0b527080dd49b92519f64722454b16133968b37470daa",
+      "bytes": 1800
+    },
+    "private/e034-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e035-commands.json": {
+      "sha256": "20116e7be7f4b42740d4f13511ab958e784a44cb933142b5ca16bcf61ea42c9d",
+      "bytes": 19467
+    },
+    "private/e035-ledger.json": {
+      "sha256": "89a7b9addb5a20fde8d107102bd791e510622976380a627eb9b7c2958431b68e",
+      "bytes": 17333
+    },
+    "private/e035-scenario.json": {
+      "sha256": "ec21f2b33997cfa3cdf0b527080dd49b92519f64722454b16133968b37470daa",
+      "bytes": 1800
+    },
+    "private/e035-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e036-commands.json": {
+      "sha256": "4aaaf6960f7bd163ffbe272a7b7cf433d84e8d7387ee2e0a984ccc0d19a166ea",
+      "bytes": 19467
+    },
+    "private/e036-ledger.json": {
+      "sha256": "f462568f4b492be8b2b85874b8e131eeeb203b9fbe5d2d3a402eea81ba7c95a3",
+      "bytes": 29188
+    },
+    "private/e036-scenario.json": {
+      "sha256": "b5cfdd28e68751581755e0d792b21749fbb75f49b92a1385647682c43f8f2851",
+      "bytes": 2134
+    },
+    "private/e036-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e037-commands.json": {
+      "sha256": "b668c821019add195fe5b46708207d26d4b6dbbb9f068077b9f716aed0a0aac2",
+      "bytes": 18947
+    },
+    "private/e037-ledger.json": {
+      "sha256": "36c7d53048ca5e1da4b662a9538c772be34784e3f403cee01a6cc80d87e0cf0a",
+      "bytes": 24890
+    },
+    "private/e037-scenario.json": {
+      "sha256": "b5cfdd28e68751581755e0d792b21749fbb75f49b92a1385647682c43f8f2851",
+      "bytes": 2134
+    },
+    "private/e037-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e038-commands.json": {
+      "sha256": "254e0c3b96a008b9dba6cd6b04e2931a001f066d79620f75da5ef17e29c765ce",
+      "bytes": 20829
+    },
+    "private/e038-ledger.json": {
+      "sha256": "65635cc739a73de6a01b53bb4671baaf473fca0f27e593b4df4cedac6294259e",
+      "bytes": 28595
+    },
+    "private/e038-scenario.json": {
+      "sha256": "b5cfdd28e68751581755e0d792b21749fbb75f49b92a1385647682c43f8f2851",
+      "bytes": 2134
+    },
+    "private/e038-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e039-commands.json": {
+      "sha256": "dbf7195f06fe1ace8d71bfa8875df40c3b6872a7315e4229672418803f99d8b4",
+      "bytes": 19143
+    },
+    "private/e039-ledger.json": {
+      "sha256": "a405a936f650cd6dc9bb2b6016042eb0499ea4cac13b0731e6c0d6dd0dcd6f43",
+      "bytes": 17449
+    },
+    "private/e039-scenario.json": {
+      "sha256": "884ed1b6268ad2cd99368b21e8866edc2934009eda76aebbaca6fae86ea9e40f",
+      "bytes": 2150
+    },
+    "private/e039-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e040-commands.json": {
+      "sha256": "33e4e57d7deef52fbce0bb50fc4ed2b266fba32ce2278903220b51444a778d3e",
+      "bytes": 19027
+    },
+    "private/e040-ledger.json": {
+      "sha256": "d1c494333c78b8a296871c26cd4909b58bfbb69c2eddca19cef6a26b83115101",
+      "bytes": 17451
+    },
+    "private/e040-scenario.json": {
+      "sha256": "884ed1b6268ad2cd99368b21e8866edc2934009eda76aebbaca6fae86ea9e40f",
+      "bytes": 2150
+    },
+    "private/e040-worker.json": {
+      "sha256": "030fc3878daaa0471dd27944f0a46e1b1dfa4fcdbdf97fd885c66ce2cf574619",
+      "bytes": 37
+    },
+    "private/e041-scenario.json": {
+      "sha256": "884ed1b6268ad2cd99368b21e8866edc2934009eda76aebbaca6fae86ea9e40f",
+      "bytes": 2150
+    },
+    "private/host.jsonl.gz": {
+      "sha256": "0b411f31fa8a130197100670811b3e4f457e8a9fe624f5045d45b8dfa3083b97",
+      "bytes": 314694291
+    },
+    "public/observations.jsonl.gz": {
+      "sha256": "d77b8c14be463d0c3b682b0d7c2565e39747f70885fdb55215c66e97a96186cf",
+      "bytes": 814526546
+    },
+    "source/experiments/ue5_s4/bake_humans.py": {
+      "sha256": "4e65cdc752507a439912b2a81d9cc76fe19ea5568b311133de7b0b4ded2758cc",
+      "bytes": 7732
+    },
+    "source/experiments/ue5_s4/editor_host/Config/DefaultEngine.ini": {
+      "sha256": "c86db38881c06d4fc3ab10bccb49798bd0fd305080a23e1ff18f411b6cc3e366",
+      "bytes": 650
+    },
+    "source/experiments/ue5_s4/editor_host/Config/DefaultInput.ini": {
+      "sha256": "2644f3ee3ecafc30e7a00d1f4a3d6ba116ac4c75a84f5444c3cd04e9512d666a",
+      "bytes": 9068
+    },
+    "source/experiments/ue5_s4/editor_host/SarEditorSlice.uproject": {
+      "sha256": "b29389f8c4a1a2dec75e3097bd876d5652fb05f46548d9feb158925be600a37f",
+      "bytes": 323
+    },
+    "source/experiments/ue5_s4/editor_server.py": {
+      "sha256": "c9c518cf6af03e83ec92a56bd134f0d7497d60e271edf232e385675a4acb14e3",
+      "bytes": 21754
+    },
+    "source/experiments/ue5_s4/human_scene.py": {
+      "sha256": "873a434a27f7544ea26ecf4c4ecd809c84b5f0acad616f7e59f66abac9f21921",
+      "bytes": 14666
+    },
+    "source/experiments/ue5_s4/prepare_assets.py": {
+      "sha256": "96267d7964f4b946e522a0bcbd1648e959eae664932093020e1f9640d70ba90b",
+      "bytes": 3097
+    },
+    "source/experiments/ue5_s4/probe_editor.py": {
+      "sha256": "c509cbeb64182b89992fb4bbb957e44ed14c9f99d10976b535e5693770f7685c",
+      "bytes": 2097
+    },
+    "source/experiments/webots_s2/geometry.py": {
+      "sha256": "3337b365bd2667c6e1b007ab195a5ea0a5afdf916880e8e7c050b28ee543f078",
+      "bytes": 790
+    },
+    "source/sar_benchmark/__init__.py": {
+      "sha256": "d1803781442a6b0a2c796fd26011cc8bf714e2a50759bce5e98bdf4fdfb653cd",
+      "bytes": 117
+    },
+    "source/sar_benchmark/admissibility.py": {
+      "sha256": "614b61e409ed5ede24782f5dac586f39e873e2bc893cd5a9fb9bc9f57822705f",
+      "bytes": 3396
+    },
+    "source/sar_benchmark/agent_worker.py": {
+      "sha256": "bca3dce8a692b1b6873c48d146ea2663f6edf2dec15b81dddf9e855c7b35f5f0",
+      "bytes": 1441
+    },
+    "source/sar_benchmark/archive_run.py": {
+      "sha256": "acfc9857e48949ca340529713ff59ebd30dda33ca53fd6e61a2243983041bfa4",
+      "bytes": 3117
+    },
+    "source/sar_benchmark/artifacts.py": {
+      "sha256": "0104b912b6e0681bec39392260d7b15cbfcf1fc377be0a5a06f6dcca17596b70",
+      "bytes": 2078
+    },
+    "source/sar_benchmark/audit_run.py": {
+      "sha256": "973466b14ca616ab4ba352024adf8063831125d6c4eb8d42132e2b718d2b1b1f",
+      "bytes": 12441
+    },
+    "source/sar_benchmark/calibration.py": {
+      "sha256": "e3b5e047a588b46b4f98dc8139bdb35db1b0170d9de64b19be62f33b9c397c2d",
+      "bytes": 5432
+    },
+    "source/sar_benchmark/capture.py": {
+      "sha256": "585f89f2ae6895f6e19e5807ab2a5e552f3975b5dfcc178961af6257bd36d725",
+      "bytes": 1949
+    },
+    "source/sar_benchmark/contracts.py": {
+      "sha256": "96b79fcaf763f5f4fb134fd756d77be2bc0525a17596bca3950983e38485b817",
+      "bytes": 9513
+    },
+    "source/sar_benchmark/core_policy.py": {
+      "sha256": "9cae2ab6ce83cb90899190a95b57415aa82a56a12978b432a1c87f5b3c2d9a48",
+      "bytes": 2322
+    },
+    "source/sar_benchmark/embodiment.py": {
+      "sha256": "882aeb73e836beb4aeb54572d54b7443079a816316946f83d4405abe48ab60f9",
+      "bytes": 1177
+    },
+    "source/sar_benchmark/episode.py": {
+      "sha256": "59c6222a05c6b9e10d16d4ecaff44a91ee906e5d8e9c5152fdf61548f920be9e",
+      "bytes": 4689
+    },
+    "source/sar_benchmark/evaluator.py": {
+      "sha256": "b94a08d25b4146b618330aa5d84fd3d3576a29eda201cbc9cadd37c82525d0c5",
+      "bytes": 10189
+    },
+    "source/sar_benchmark/frontier_policy.py": {
+      "sha256": "a833fe412229ebc099f6a2413bc1006ad568c3ed3e50dc1efedac7a031f2d2e9",
+      "bytes": 4767
+    },
+    "source/sar_benchmark/geometry.py": {
+      "sha256": "11fa20e362691c37fb027d65068b3b92219a4b19841affefd2a8494498b81316",
+      "bytes": 1189
+    },
+    "source/sar_benchmark/imageio.py": {
+      "sha256": "6a7bd1cc32b610964a3c417e8264bc3f31e85c8d820ab4190d1a5e41c180a646",
+      "bytes": 762
+    },
+    "source/sar_benchmark/perception.py": {
+      "sha256": "f6d2cfd716bf2a45dd62347b7aa4220f8ae1624be28b8cffbd30e39ee071589c",
+      "bytes": 2795
+    },
+    "source/sar_benchmark/policies.py": {
+      "sha256": "cc69b625956ab808a63b2884575a9d91b8b03c980b32d66b0e8b3bac0c3906b3",
+      "bytes": 6285
+    },
+    "source/sar_benchmark/reference.py": {
+      "sha256": "0c770d6d5585a72d365d4df5c8292482e50ccada73feba96d5f71d1915ea9efc",
+      "bytes": 4778
+    },
+    "source/sar_benchmark/runner.py": {
+      "sha256": "c3c90335807b75aced1b624d9cceb594f68ad0ff871fd2b9a77d8cde8428f070",
+      "bytes": 19944
+    },
+    "source/sar_benchmark/safety.py": {
+      "sha256": "e9ea56222e27b75c3355bea507854bce1c1ee6542bf6065af02c80487cbbb9cb",
+      "bytes": 3724
+    },
+    "source/sar_benchmark/scenario_contract.py": {
+      "sha256": "24447d9b92ae62c774672dee507217d7a9479568488e5b0c6581c65ab7ba5015",
+      "bytes": 3232
+    },
+    "source/sar_benchmark/scenarios.py": {
+      "sha256": "5e2e8d6c27a18d8bb33b03f8174f5d6bca34f3bbef21e47bb80397d3ba076805",
+      "bytes": 3605
+    },
+    "source/sar_benchmark/sensor_response.py": {
+      "sha256": "a035355cae2720a81a88c35e0f02cd450697f821cbfae5570c154b2320612d10",
+      "bytes": 1332
+    },
+    "source/sar_benchmark/sensor_study.py": {
+      "sha256": "3bd71c9de6b797495f329ebbad04cd1c542fd34c0431f9c38595f0328c8d1bdc",
+      "bytes": 5112
+    },
+    "source/sar_benchmark/statistics.py": {
+      "sha256": "c1391a45b2b40bcee780225eb8f0872349fb733fb27129ccbe6ef8265c15d49e",
+      "bytes": 1907
+    },
+    "source/sar_benchmark/summarize_run.py": {
+      "sha256": "9c6318c73d3a5d5ca8de05c76c4ac8eccd351905b1a3684aabaa29859a5e19a0",
+      "bytes": 5756
+    },
+    "source/sar_benchmark/tracking.py": {
+      "sha256": "4391dbdc534736bb53f7150dcad61131c5494f5c2f44b75d71bed9fa406b6150",
+      "bytes": 3158
+    },
+    "source/sar_benchmark/transport.py": {
+      "sha256": "aa2b575f91df8cd327377921725471e170ac74cede6b2470a02c3fc63e6f8039",
+      "bytes": 1994
+    },
+    "source/sar_benchmark/ue_backend.py": {
+      "sha256": "4614301964cdcc5848ca918c0a7f53671549deb86b7726f0318f27f68f4a54f2",
+      "bytes": 6504
+    },
+    "source/test version/collision_monitor_ros1.py": {
+      "sha256": "7324eb1117f7762cbe77db796311f629355ebd8f9234c99f0603c2a0dbb66f12",
+      "bytes": 15141
+    },
+    "source/test version/navigation_core_ros1.py": {
+      "sha256": "822e6a647cfc58747a4af117f77e8ad700a4c2a758bbf4245601cb80af0024d6",
+      "bytes": 41442
+    },
+    "source/test version/search_core_ros1.py": {
+      "sha256": "cc7dd129140737fdd486e1020a90dc4a78f56f9433fe4ab1c108a976582cd1ff",
+      "bytes": 13715
+    }
+  },
+  "archive_kind": "PARTIAL_LOCAL_RAW_INDEX_NO_ACCEPTANCE_INVENTORY",
+  "note": "Original attempt unchanged; parseable records/recomputed metrics do not establish clean lifecycle, full delivery audit or run acceptance. Interruption cause is unknown."
+}

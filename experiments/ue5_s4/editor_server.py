@@ -55,6 +55,9 @@ class World:
         self.path = 0.0
         self.events = []
         self.config = None
+        self.render_frames,self.last_render_delta=0,0.
+        self.native_overlap_queries=0
+        self.native_overlap_hits=[]
         self.human = os.environ.get("SAR_PROFILE") == "human"
         self.action_dt_ns = int(os.environ.get("SAR_ACTION_DT_NS","100000000"))
         require(self.action_dt_ns in (100_000_000,500_000_000), "unsupported transaction interval")
@@ -141,9 +144,26 @@ class World:
         self.last_motion = {"requested_body_twist": [0.0] * 3, "actual_world_delta_per_s": [0.0] * 3}
 
     def _geometry_check(self, reset=False):
+        assets="scene_variant" in self.config
+        if assets:
+            self.native_overlap_queries+=1
+            overlaps=ue.SystemLibrary.component_overlap_components(self.robot.static_mesh_component,
+                self.robot.get_actor_transform(),
+                [ue.ObjectTypeQuery.OBJECT_TYPE_QUERY1,ue.ObjectTypeQuery.OBJECT_TYPE_QUERY2],
+                ue.PrimitiveComponent,[self.robot])
+            labels=sorted({component.get_owner().get_actor_label() for component in overlaps or []
+                           if component.get_owner() in self.spawned})
+            if labels:
+                self.native_overlap_hits.append({"epoch":self.epoch,"tick":self.tick,"actors":labels})
+                if reset:raise RuntimeError("reset native overlap: "+str(labels))
+                self.events.append("NATIVE_GEOMETRY_OVERLAP")
         # Reuse the independently tested S2 SAT helper only for assertion, not
         # sensing or target selection. Engine sweeps remain the motion mechanism.
         for box in self.config["boxes"]:
+            # An irregular mesh's authoring AABB is a conservative admission
+            # bound, not its occupied surface. Native overlap above checks the
+            # actual imported collision hull, including rotated chassis poses.
+            if assets and "mesh" in box:continue
             if box["center_m"][2] - box["size_m"][2] / 2 >= .35:
                 continue
             fixture = box["center_m"][:2] + box["size_m"][:2]
@@ -196,12 +216,19 @@ class World:
         if self.human:
             for light in self.human_lights: self.actors.destroy_actor(light)
             self.human_lights = []
+            if self.ambient_sky:
+                self.actors.destroy_actor(self.ambient_sky.get_owner())
+                self.ambient_sky = None
             self.actors.destroy_actor(self.mask_actor)
             ue.RenderingLibrary.release_render_target2d(self.mask_target)
             self.mask_actor = self.mask_target = self.mask_sensor = None
 
     def observe(self):
         require(self.config is not None, "host not reset")
+        if "scene_variant" in self.config and self.tick==0:
+            # Recheck after reset's registration/render barriers, before any
+            # initial observation can be delivered to a policy.
+            self._geometry_check(reset=True)
         if self.human:
             return self.human_builder.encoded_capture(self)
         actual = self.robot.get_actor_location()
@@ -286,6 +313,8 @@ class Server:
 
     def tick(self, delta):
         try:
+            self.world.render_frames+=1
+            self.world.last_render_delta=float(delta)
             if self.pending is not None:
                 response, frames = self.pending
                 if frames:
@@ -367,7 +396,7 @@ class Server:
                     result = {"stopped": True, "tick": self.world.tick}
                 elif op == "overview":
                     require(self.world.human and self.world.config is not None,"overview requires a reset human scene")
-                    result = self.world.human_builder.overview(self.world)
+                    result = self.world.human_builder.overview(self.world,breach=args.get("view")=="breach")
                 elif op == "shutdown":
                     self.exiting, result = True, {"closing": True}
                 else:

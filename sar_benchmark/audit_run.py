@@ -16,6 +16,16 @@ from .reference import reference_score
 
 def audit(path):
     path = Path(path)
+    required=("manifest.json","inventory.json","journal.jsonl","host-capabilities.json",
+              "public/observations.jsonl.gz","private/host.jsonl.gz")
+    missing=[name for name in required if not (path/name).is_file()]
+    if missing:
+        return {"status":"FAIL","data_integrity_status":"INCOMPLETE_UNACCEPTED",
+            "missing_artifacts":missing,"reference_episodes":0,"public_packets":0,
+            "recorded_ledgers":len(list((path/"private").glob("*-ledger.json"))),
+            "errors":["required acceptance artifacts missing; no successful audit inferred from scheduled or recorded episode count"],
+            "requested_calibration_status":"NOT_AUDITED","engine_clean_exit":False,
+            "scope":"Incomplete attempt; recorded_ledgers is a file count, not independently accepted episodes"}
     checks = {"inventory": verify_inventory(path), "reference_episodes": 0, "public_packets": 0,
               "source_snapshot": True, "errors": []}
     manifest = strict_loads((path / "manifest.json").read_bytes())
@@ -90,6 +100,7 @@ def audit(path):
             delivered[identity] = hashlib.sha256(canonical(obs["rgb"]["data"])).hexdigest()
             checks["public_packets"] += 1
     ledgers = []
+    scored_frames = set()
     for file in sorted((path / "private").glob("*-ledger.json")):
         data = strict_loads(file.read_bytes())
         score, reference = evaluate(data), reference_score(data)
@@ -97,10 +108,19 @@ def audit(path):
             if score[key] != reference[key]:
                 checks["errors"].append(f"{file.name}/{key}: reference disagreement")
         checks["reference_episodes"] += 1
+        prefix=file.name.removesuffix("-ledger.json")
+        metrics_file=path/(prefix+"-metrics.json")
+        if not metrics_file.is_file() or strict_loads(metrics_file.read_bytes()).get("metrics")!=score:
+            checks["errors"].append(prefix+": stored metrics differ from ledger recomputation")
+        last_sequence = max((int(sequence) for sequence in data["frames"]), default=-1)
         for sequence,frame in data["frames"].items():
             # A final safety-abort/timeout capture can remain private, while
             # report evidence must always refer to a delivered public capture.
             key = (frame["epoch"],int(sequence))
+            scored_frames.add(key)
+            private_terminal = int(sequence) == last_sequence and data["terminal_reason"] in ("SAFETY_ABORT","TIMEOUT","AGENT_TIMEOUT")
+            if key not in delivered and not private_terminal:
+                checks["errors"].append(f"{file.name}/{sequence}: missing delivered observation")
             if key in delivered and frame["delivered_rgb_sha256"] != delivered[key]:
                 checks["errors"].append(f"{file.name}/{sequence}: delivered RGB hash mismatch")
         for report_index,_ in score["matches"]:
@@ -113,10 +133,17 @@ def audit(path):
         ledgers.append((file.stem, data, score))
     # Software readback intervals and availability are real monotonic clocks;
     # they do not claim per-exposure hardware time or global physics lockstep.
+    if delivered.keys() - scored_frames:
+        checks["errors"].append("public observations without scored ledger frames")
     intervals, previous_end, raw_count, first_start = [], -1, 0, None
+    remaining_native = scored_frames.copy()
+    directional_counts = set()
     with gzip.open(path / "private/host.jsonl.gz", "rt", encoding="utf-8") as stream:
         for line in stream:
             raw = strict_loads(line)
+            remaining_native.discard((raw.get("epoch"),raw.get("tick")))
+            if manifest.get("human_asset_profile") == "makehuman_dressed_v2":
+                directional_counts.add(raw.get("lighting",{}).get("directional_count",-1))
             start,end,available = (raw.get(key) for key in ("capture_start_wall_ns","capture_end_wall_ns","available_wall_ns"))
             if not all(type(value) is int for value in (start,end,available)) or not previous_end <= start <= end <= available:
                 checks["errors"].append(f"capture {raw_count}: non-monotonic readback/availability")
@@ -129,6 +156,9 @@ def audit(path):
     checks["native_capture_window_wall_s"] = (previous_end-first_start)/1e9 if first_start is not None else None
     checks["readback_interval_s"] = {"median":statistics.median(intervals),"max":max(intervals)} if intervals else None
     if manifest.get("track") == "sar_human_dev_static_synthetic":
+        checks["missing_native_scored_frames"] = len(remaining_native)
+        if remaining_native:
+            checks["errors"].append("scored ledger frames missing from native host stream")
         checks["asset_manifest_checks"] = {}
         for name, field in (("asset-manifest.json","asset_manifest_sha256"),("human-pose-manifest.json","derived_pose_manifest_sha256")):
             if field not in manifest:
@@ -138,6 +168,49 @@ def audit(path):
                 checks["asset_manifest_checks"][name] = "FAIL"
             else:
                 checks["asset_manifest_checks"][name] = "PASS"
+    for name,sha in manifest.get("scene_asset_manifests",{}).items():
+        file=path/name
+        if not file.is_file() or digest(file)!=sha:
+            checks["errors"].append(name+": scene asset manifest mismatch")
+    if manifest.get("scene_set")=="assets":
+        checks["scene_input_bytes_verified"]=0
+        for category in ("environment","anatomy"):
+            root=path/"asset-inputs"/category
+            metadata = "meshes.json" if category == "environment" else "derived/poses.json"
+            for relative in ("lock.json", metadata):
+                recorded = (category + "/" + relative).replace("/", "-")
+                actual = root / relative
+                if not actual.is_file() or digest(actual) != manifest.get("scene_asset_manifests", {}).get(recorded):
+                    checks["errors"].append(recorded + ": frozen importer metadata differs from launch manifest")
+            if not (root/"lock.json").is_file() or not (root/metadata).is_file():
+                continue
+            lock=strict_loads((root/"lock.json").read_bytes())
+            files=lock["files"]
+            if type(files) is dict:files=[{"file":name,**item} for name,item in files.items()]
+            for item in files:
+                source=(root/"source"/item["file"]).resolve()
+                if not source.is_relative_to((root/"source").resolve()) or not source.is_file() or digest(source)!=item["sha256"]:
+                    checks["errors"].append(category+": locked input mismatch: "+item["file"])
+                else:checks["scene_input_bytes_verified"]+=1
+            poses=strict_loads((root/metadata).read_bytes())
+            for item in poses.values():
+                source=root/"derived"/item["file"]
+                if not source.is_file() or digest(source)!=item["sha256"]:
+                    checks["errors"].append(category+": derived mesh mismatch: "+item["file"])
+                else:checks["scene_input_bytes_verified"]+=1
+        if manifest.get("human_asset_profile") == "makehuman_dressed_v2":
+            folder = path/"asset-inputs/anatomy/dressed"
+            expected = manifest.get("scene_asset_manifests",{}).get("anatomy-dressed-poses.json")
+            poses_file = folder/"poses.json"
+            if not poses_file.is_file() or digest(poses_file) != expected or expected != manifest.get("derived_pose_manifest_sha256"):
+                checks["errors"].append("dressed pose metadata differs from launch manifest")
+            else:
+                for item in strict_loads(poses_file.read_bytes()).values():
+                    obj = folder/item["file"]
+                    if not obj.is_file() or digest(obj) != item["sha256"]:
+                        checks["errors"].append("dressed pose mesh mismatch: "+item["file"])
+                    else:
+                        checks["scene_input_bytes_verified"] += 1
     base = next(((name, data, score) for name, data, score in ledgers if score["tp"] == 1 and score["victims"] == 1), None)
     controls = {}
     if base:
@@ -198,10 +271,71 @@ def audit(path):
     checks["requested_calibration_status"] = "NOT_REQUESTED"
     if manifest.get("calibrate"):
         calibration_file = path / "calibration.json"
-        checks["requested_calibration_status"] = strict_loads(calibration_file.read_bytes())["status"] if calibration_file.is_file() else "MISSING"
+        calibration = strict_loads(calibration_file.read_bytes()) if calibration_file.is_file() else {}
+        checks["requested_calibration_status"] = calibration.get("status", "MISSING")
+        if checks["requested_calibration_status"] == "PASS_ENGINE_CALIBRATION":
+            components = calibration.get("checks", {})
+            valid = bool(components) and all(value is True for value in components.values())
+            for component, filename in (("asset_scenes_reset_visibility", "asset-calibration.json"),
+                                        ("asset_native_geometry_probe", "asset-geometry-calibration.json")):
+                if component in components:
+                    evidence = path / filename
+                    record = strict_loads(evidence.read_bytes()) if evidence.is_file() else {}
+                    flags = record.get("checks", {})
+                    valid = valid and record.get("status") == "PASS_ENGINE_CALIBRATION" and bool(flags) and all(v is True for v in flags.values())
+            if not valid:
+                checks["requested_calibration_status"] = "FAIL_INCONSISTENT_CALIBRATION"
         if checks["requested_calibration_status"] != "PASS_ENGINE_CALIBRATION":
             checks["errors"].append("requested native calibration did not pass")
-    checks["status"] = "PASS_OFFLINE_AUDIT" if integrity_ok and not checks["errors"] else "FAIL"
+    result_file=path/"results.json"
+    checks["run_acceptance_errors"]=[]
+    if manifest.get("human_asset_profile") == "makehuman_dressed_v2":
+        checks["directional_counts"] = sorted(directional_counts)
+        if directional_counts != {1}:
+            checks["run_acceptance_errors"].append("expected one directional light in every recorded lighting configuration")
+        engine_log = path/"engine-log.txt"
+        if not engine_log.is_file():
+            checks["run_acceptance_errors"].append("missing engine material compilation log")
+        else:
+            with engine_log.open(encoding="utf-8",errors="replace") as log:
+                failures = [line.strip() for line in log if "Failed to compile Material" in line and "SarAssets" in line]
+            checks["asset_material_compile_failures"] = failures
+            if failures:
+                checks["run_acceptance_errors"].append("UE could not compile one or more SAR asset materials")
+    if not result_file.is_file():
+        checks["run_acceptance_errors"].append("results missing; scheduled/partial episodes do not establish completion")
+    else:
+        result=strict_loads(result_file.read_bytes())
+        if result.get("status") not in ("COMPLETED_HUMAN_DEV_UE_RUNTIME","COMPLETED_DIAGNOSTIC_UE_RUNTIME"):
+            checks["run_acceptance_errors"].append("run status is not completed")
+        if result.get("engine_exit_code")!=engine_exit:
+            checks["errors"].append("results engine exit disagrees with journal")
+        expected={name.removesuffix("-ledger"):score for name,data,score in ledgers}
+        actual={row["episode"]:row["metrics"] for row in result.get("rows",[])}
+        if expected!=actual or len(actual)!=len(result.get("rows",[])):
+            checks["errors"].append("results rows differ from independently recomputed ledgers")
+        scheduled_file=path/"private/scheduled-scenarios.json"
+        checks["scheduled_episode_count"]="NOT_RECORDED_BY_EARLIER_RUN"
+        if scheduled_file.is_file():
+            scheduled = strict_loads(scheduled_file.read_bytes())
+            count=len(scheduled)*len(manifest["methods"])
+            checks["scheduled_episode_count"]=count
+            if len(ledgers)!=count:checks["run_acceptance_errors"].append("completed ledger count differs from scheduled episodes")
+            if "runner_arguments" in manifest:
+                rows = {row["episode"]:row for row in result.get("rows",[])}
+                checked = 0
+                for index, scenario in enumerate(scheduled):
+                    for offset, method in enumerate(manifest["methods"]):
+                        episode = f"e{index*len(manifest['methods'])+offset:03d}"
+                        config_path = path/"private"/(episode+"-scenario.json")
+                        row = rows.get(episode,{})
+                        if row.get("method") != method or not config_path.is_file() or strict_loads(config_path.read_bytes()) != scenario:
+                            checks["run_acceptance_errors"].append(f"{episode}: method or private scene differs from schedule")
+                        else:
+                            checked += 1
+                checks["verified_scheduled_episode_identities"] = checked
+    checks["data_integrity_status"]="PASS_OFFLINE_DATA_AUDIT" if integrity_ok and not [e for e in checks["errors"] if e!="requested native calibration did not pass"] else "FAIL"
+    checks["status"] = "PASS_OFFLINE_AUDIT" if integrity_ok and not checks["errors"] and not checks["run_acceptance_errors"] else "FAIL"
     return checks
 
 

@@ -1,5 +1,7 @@
 # Human and detector provenance
 
+Asset scenes additionally use the [CC0 environment selection](environment/README.md) and [MakeHuman anatomical avatar](anatomy/README.md). The Cesium assets below remain the legacy diagnostic/human-development fixtures; their bytes are unchanged.
+
 **Cesium Man**, copyright 2017 Cesium, **CC BY 4.0**, from the official Khronos glTF Sample Assets repository at commit `e124e8d8d7330a5372bc2b4d00d39a4a9d7997ea`.
 
 Source: <https://github.com/KhronosGroup/glTF-Sample-Assets/tree/e124e8d8d7330a5372bc2b4d00d39a4a9d7997ea/Models/CesiumMan>. License: <https://creativecommons.org/licenses/by/4.0/>. Original legal notice is retained in `source/CesiumMan-LICENSE-source.md`. The original source texture contains a Cesium logo with separate trademark terms; **the rendered derivatives replace that texture entirely** and imply no endorsement.

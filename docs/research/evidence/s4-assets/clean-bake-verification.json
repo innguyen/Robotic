@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "source": "locked inputs only, empty derived folders, same machine and installed NumPy",
+  "results": [
+    {
+      "category": "environment",
+      "rebaked": {
+        "meshes.json": "f36260d926861219a2fbd52f808c72bcd3e011519515fa7cefd1f59868462cfe",
+        "derived/concrete_road_barrier_02.obj": "1d6caaa5dfc47992224af3a8c3ec1e04a5c3437f221bd738ac6f9825a685b8fe",
+        "derived/exposed_rebar.obj": "b6bbfb13c6641519195ae7d287f2121e4e410664e8756aafdebfe3438e2de286",
+        "derived/fallen_slab.obj": "9e4352e04ec2be26a71c7394cf6a110ef64be76959854a43cb3aa58854f89ed7",
+        "derived/fractured_wall.obj": "a4f13042dd274e531e1c78c8cfb5063780d37e26222cb3e0e144dfdd6b63fd09",
+        "derived/painted_wooden_chair_02.obj": "207cdb282be813e36ad4e67b34bc6895f82b19d662b00327656c17890509e9c6",
+        "derived/panel_indoor_ground.obj": "492365fdeff59ee227b65cdb59f27a8c8fe16096223530b745ee9733e30feeec",
+        "derived/panel_indoor_north_masonry.obj": "98a6998665fff1921a9c916e5128968fe22d1fbda6c46ded1bc0294591ce2e72",
+        "derived/panel_indoor_office_divider.obj": "516645e5677438e976799cff4f93cbb158bb2a6d673dc28bb8c32f4dd2b9251b",
+        "derived/panel_indoor_south_masonry.obj": "98a6998665fff1921a9c916e5128968fe22d1fbda6c46ded1bc0294591ce2e72",
+        "derived/panel_indoor_west_bay.obj": "531cc65a7150903013141b2395e016ef3976276958deea36363ae538034e3c75",
+        "derived/panel_indoor_west_bay_lower.obj": "531cc65a7150903013141b2395e016ef3976276958deea36363ae538034e3c75",
+        "derived/panel_outdoor_ground.obj": "492365fdeff59ee227b65cdb59f27a8c8fe16096223530b745ee9733e30feeec",
+        "derived/panel_outdoor_retaining_south.obj": "cfd505b49cfeb3df64dbed337c91a937515241fc2b66d74a6bcf78fbadc94eb7",
+        "derived/panel_outdoor_west_retaining.obj": "3fea54293bdac79bf5cb98f2d543e930136f55f1704ca3e10b6eaab200cb1ff5",
+        "derived/rubble_heap.obj": "869505904006d7df8ebab07fae77e4d89686feb34271d9115752e585bd05897b",
+        "derived/wooden_crate_01.obj": "0c564321ca76db90f199b57df6a515e667e8d5ae636e8dd1cab71f717fd670af"
+      },
+      "matches": true
+    },
+    {
+      "category": "anatomy",
+      "rebaked": {
+        "derived/poses.json": "a7441614e157a52f3a14479bfa746df6cd866eba67c6a6867daef54104b8b540",
+        "derived/prone.obj": "fa09328349b327bf9fda1b78265ed4bcbe8859086805aefe1f573de19e2de352",
+        "derived/seated.obj": "4ef024f6633008da46deb5e4cd7b1151d611694541808f69f5b812e2ebd0620d",
+        "derived/standing.obj": "5d1c3218267bbd203865d75f28e682e80fb8ccd0d44a9c9bf1d12c37be068341"
+      },
+      "matches": true
+    }
+  ]
+}

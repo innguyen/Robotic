@@ -1,0 +1,29 @@
+{
+  "run": "s4-site-registered-poses",
+  "inventory_sha256": "466ef1bcc633e44e98b419cb930f0a36c61c818905ea31a4e6e9adf393211ea1",
+  "host_runner_clock_matches": true,
+  "scenes": [
+    {
+      "environment": "indoor",
+      "episodes": 3,
+      "captures": 12,
+      "wall_s": 31.953,
+      "engine_callbacks": 302,
+      "callback_fps": 9.451381716896693,
+      "memory_samples": 32,
+      "max_sampled_working_set_bytes": 280772608,
+      "max_sampled_private_commit_bytes": 3483619328
+    },
+    {
+      "environment": "outdoor",
+      "episodes": 3,
+      "captures": 12,
+      "wall_s": 35.671,
+      "engine_callbacks": 340,
+      "callback_fps": 9.531552241316476,
+      "memory_samples": 34,
+      "max_sampled_working_set_bytes": 402489344,
+      "max_sampled_private_commit_bytes": 3529928704
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "scope": "descriptive development pilot only; no significance, generalization or fixed-FAR claim",
+  "run_status": "FAILED_CALIBRATION",
+  "completed_episodes": 4,
+  "engine_exit_code": 0,
+  "results_sha256": "968e94b6932880ba29d24b64408dfc7eddb4fec9352b76d80d5a3d60e8719a77",
+  "source_inventory_sha256": "828f8ba919c67bd37c407cc91a66a33ef58cdae8bf0da219a3e12be059228d03",
+  "table": [
+    {
+      "method": "core",
+      "kind": "clean",
+      "P": 0,
+      "N": 0,
+      "episodes": 2,
+      "auxiliary_failure_challenge": false,
+      "safe_localization_recall": 0.5,
+      "tp": 2,
+      "fp": 1,
+      "unsafe_episodes": 1,
+      "absent_false_alarm_rate": null,
+      "path_mean_m": 3.1183501510168306,
+      "localization_matched_count": 2,
+      "localization_median_m": 0.0626279711728249,
+      "localization_p90_m": 0.06604036086019661,
+      "time_integrated_recall": 0.7444444444444445,
+      "action_latency_p50_s": 0.6290652499997123,
+      "action_latency_p95_s": 1.3459456650002721
+    },
+    {
+      "method": "verify",
+      "kind": "clean",
+      "P": 0,
+      "N": 0,
+      "episodes": 2,
+      "auxiliary_failure_challenge": false,
+      "safe_localization_recall": 0.0,
+      "tp": 1,
+      "fp": 0,
+      "unsafe_episodes": 2,
+      "absent_false_alarm_rate": null,
+      "path_mean_m": 2.8378346452102816,
+      "localization_matched_count": 1,
+      "localization_median_m": 0.06029093866678456,
+      "localization_p90_m": 0.06029093866678456,
+      "time_integrated_recall": 0.3972222222222222,
+      "action_latency_p50_s": 0.5485472999989724,
+      "action_latency_p95_s": 1.1699547999996867
+    }
+  ],
+  "rq1": null,
+  "rq2_joint_verify_minus_frontier": {
+    "family_deltas": {},
+    "mean": null,
+    "ci95": null,
+    "reason": "dev corpus is not an independent held-out family sample"
+  },
+  "wall_duration_s": 1049.0581205000008,
+  "task_budget_s": 90.0,
+  "action_dt_ns": 500000000,
+  "scientific_main_eligible": false
+}

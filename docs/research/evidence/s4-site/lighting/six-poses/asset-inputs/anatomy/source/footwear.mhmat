@@ -1,0 +1,25 @@
+# MakeHuman Material definition
+
+name loafersMaterial
+
+// Color shading attributes
+diffuseColor  0.64 0.64 0.64
+specularColor  0.1 0.1 0.1
+shininess 1
+opacity 1
+
+// Textures and properties
+diffuseTexture Loafers.png
+normalmapTexture LoafersNORM.png
+specularmapTexture Loafers_spec.png
+
+// Shader programme
+shader data/shaders/glsl/phong
+
+// Configure built-in shader defines
+shaderConfig diffuse true
+shaderConfig bump false
+shaderConfig normal  true
+shaderConfig displacement  false
+shaderConfig spec  true
+shaderConfig vertexColors false

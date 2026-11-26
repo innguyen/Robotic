@@ -1,0 +1,62 @@
+{
+  "episode": "e009",
+  "method": "frontier",
+  "family": "outdoor_damaged_assets_v1",
+  "pair_id": "outdoor-clean-standing-0",
+  "kind": "clean",
+  "perception": 0,
+  "odometry": 0,
+  "metrics": {
+    "tp": 1,
+    "fp": 0,
+    "victims": 1,
+    "matches": [
+      [
+        0,
+        0
+      ]
+    ],
+    "recall": 1.0,
+    "safe_localization_recall": 1.0,
+    "precision": 1.0,
+    "duplicate_reports": 0,
+    "invalid_reports": 0,
+    "report_reasons": [
+      null
+    ],
+    "safe": true,
+    "unsafe": false,
+    "mission_complete": true,
+    "absent_false_alarm": null,
+    "absent_specificity": null,
+    "time_integrated_recall": 0.75,
+    "safe_time_integrated_recall": 0.75,
+    "first_correct_ns": 500000000,
+    "restricted_first_ns": 500000000,
+    "localization_xy_m": [
+      0.06710110926468296
+    ],
+    "localization_median_m": 0.06710110926468296,
+    "localization_p90_m": 0.06710110926468296,
+    "covariance_matched_inliers_only": [
+      {
+        "report": 0,
+        "mahalanobis2": 0.4502558864550923,
+        "nll_xy": -2.542165176351199,
+        "within_50": true,
+        "within_90": true,
+        "within_95": true
+      }
+    ],
+    "uncertainty_unavailable_count": 0,
+    "path_m": 0.0,
+    "brier": 0.12832437334964197,
+    "terminal_reason": "FINISH"
+  },
+  "agent_latency_s": [
+    1.2587625000014668,
+    1.7830638000014005,
+    1.1267373000009684,
+    0.9642844999980298
+  ]
+}

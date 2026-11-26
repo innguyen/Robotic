@@ -1,0 +1,86 @@
+{
+  "standing": {
+    "file": "standing.obj",
+    "sha256": "5fcc8982443ef4c2b54a1ebc5cbb0430c7796773355bd98ed13e17cf8d59058b",
+    "vertices": 14307,
+    "triangles": 27966,
+    "torso_height_m": 1.1690808777640584,
+    "bounds_relative_m": [
+      [
+        -0.15813797565844623,
+        -0.2943427699689063,
+        -1.1690808777640584
+      ],
+      [
+        0.19937826346558368,
+        0.2943427699689063,
+        0.5989515924697957
+      ]
+    ],
+    "material_slots": [
+      "skin",
+      "shirt",
+      "trousers",
+      "footwear",
+      "eyes",
+      "bob"
+    ],
+    "human_source": "MakeHuman HM08 body and low-poly eyes; fitted CC0 wardrobe, hair and skin"
+  },
+  "seated": {
+    "file": "seated.obj",
+    "sha256": "3d6340031a01559fdd4933a8f571390f03109999ff892f2412ebeb71af75448f",
+    "vertices": 14307,
+    "triangles": 27966,
+    "torso_height_m": 0.7678530133877882,
+    "bounds_relative_m": [
+      [
+        -0.1447567253387386,
+        -0.27253804087886535,
+        -0.7678530133877882
+      ],
+      [
+        0.6549862644373118,
+        0.27253804087886535,
+        0.5989515924697957
+      ]
+    ],
+    "material_slots": [
+      "skin",
+      "shirt",
+      "trousers",
+      "footwear",
+      "eyes",
+      "bob"
+    ],
+    "human_source": "MakeHuman HM08 body and low-poly eyes; fitted CC0 wardrobe, hair and skin"
+  },
+  "prone": {
+    "file": "prone.obj",
+    "sha256": "d0e29ccb40108b0c88cca70e621386de263c59ee063a290dd04f3353874ab199",
+    "vertices": 14307,
+    "triangles": 27966,
+    "torso_height_m": 0.19937826346558368,
+    "bounds_relative_m": [
+      [
+        -1.1690808777640584,
+        -0.2943427699689063,
+        -0.19937826346558368
+      ],
+      [
+        0.5989515924697957,
+        0.2943427699689063,
+        0.15813797565844623
+      ]
+    ],
+    "material_slots": [
+      "skin",
+      "shirt",
+      "trousers",
+      "footwear",
+      "eyes",
+      "bob"
+    ],
+    "human_source": "MakeHuman HM08 body and low-poly eyes; fitted CC0 wardrobe, hair and skin"
+  }
+}
