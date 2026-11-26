@@ -47,7 +47,8 @@ def reference_match(edges, count):
 
 def evidence_candidates(report, episode):
     validate_report(report)
-    if report["epoch"] != episode["epoch"] or report["tick"] < 0 or report["tick"] * DT_NS > episode["terminal_ns"]:
+    report_ns = report["tick"]*episode.get("action_dt_ns",DT_NS)
+    if report["epoch"] != episode["epoch"] or report["tick"] < 0 or report_ns > episode["terminal_ns"]:
         raise ContractError("report outside epoch/deadline")
     frames = episode["frames"]
     selected = []
@@ -59,14 +60,14 @@ def evidence_candidates(report, episode):
         seen.add(seq)
         frame = frames[str(seq)]
         stamp = frame["capture_ns"]
-        if not frame["valid"] or frame["epoch"] != episode["epoch"] or stamp > report["tick"] * DT_NS or frame["available_ns"] > report["tick"] * DT_NS:
+        if not frame["valid"] or frame["epoch"] != episode["epoch"] or stamp > report_ns or frame["available_ns"] > report_ns:
             raise ContractError("invalid/future evidence")
         box = evidence["bbox_xyxy_px"]
         if not (0 <= box[0] < box[2] <= frame["width"] and 0 <= box[1] < box[3] <= frame["height"]):
             raise ContractError("out-of-image bbox")
         selected.append((stamp, box, frame))
     stamps = sorted(x[0] for x in selected)
-    if len(set(stamps)) != len(stamps) or stamps[-1] - stamps[0] < DT_NS or report["tick"] * DT_NS - stamps[-1] > 2_000_000_000:
+    if len(set(stamps)) != len(stamps) or stamps[-1] - stamps[0] < DT_NS or report_ns - stamps[-1] > 2_000_000_000:
         raise ContractError("buffered/too close/stale evidence")
     candidates = []
     for index, victim in enumerate(episode["victims"]):
@@ -87,6 +88,8 @@ def evaluate(episode, threshold=0.5, matcher=match):
     if not finite(threshold) or not 0 <= threshold <= 1:
         raise ContractError("invalid operating threshold")
     victims, slots = episode["victims"], episode["reports"]
+    if type(episode.get("action_dt_ns",DT_NS)) is not int or episode.get("action_dt_ns",DT_NS) not in (DT_NS,500_000_000):
+        raise ContractError("invalid trusted action interval")
     if not (integer(episode["epoch"], 1) and integer(episode["budget_ns"], DT_NS) and
             integer(episode["terminal_ns"]) and episode["terminal_ns"] <= episode["budget_ns"] and
             finite(episode["path_m"]) and episode["path_m"] >= 0):
@@ -112,7 +115,7 @@ def evaluate(episode, threshold=0.5, matcher=match):
             if report["report_id"] in seen_ids:
                 raise ContractError("duplicate report_id")
             seen_ids.add(report["report_id"])
-            if report["tick"] * DT_NS != slot["accepted_ns"]:
+            if report["tick"] * episode.get("action_dt_ns",DT_NS) != slot["accepted_ns"]:
                 raise ContractError("backdated report")
             candidates = evidence_candidates(report, episode)
         except ContractError as exc:

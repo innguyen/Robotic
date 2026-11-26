@@ -10,13 +10,32 @@ import statistics
 from .geometry import localize
 
 
-def detections(obs):
-    if not obs["rgb"]["valid"] or not obs["depth_m"]["valid"]:
+def detections(obs, detector=None):
+    if not obs["rgb"]["valid"] or not obs["depth_m"]["valid"] or not obs["odom"]["valid"]:
+        return []
+    if obs["sim_time_ns"] - obs["odom"]["capture_ns"] > 300_000_000:
         return []
     if abs(obs["rgb"]["capture_ns"] - obs["depth_m"]["capture_ns"]) > 30_000_000 or obs["sim_time_ns"] - obs["rgb"]["capture_ns"] > 500_000_000:
         return []
     width, height = obs["camera"]["width"], obs["camera"]["height"]
     rgb = obs["rgb"]["data"]
+    if detector is not None:
+        results = []
+        for detection in detector.detect(rgb, width, height):
+            box = detection["box"]
+            # Torso depth from the central box area, retaining holes as invalid.
+            u, v = (box[0]+box[2])/2, box[1]+.40*(box[3]-box[1])
+            radius = max(1, round(min(box[2]-box[0],box[3]-box[1])*.12))
+            values = [obs["depth_m"]["data"][y*width+x]
+                      for y in range(max(0,round(v)-radius), min(height,round(v)+radius+1))
+                      for x in range(max(0,round(u)-radius), min(width,round(u)+radius+1))
+                      if obs["depth_m"]["data"][y*width+x] is not None]
+            if len(values) < 3: continue
+            z = statistics.median(values)
+            position = localize(u, v, z, obs["camera"], obs["odom"]["pose"])
+            spread = statistics.median(abs(value-z) for value in values)
+            results.append({**detection, "position": position, "depth_spread_m": spread})
+        return results
     foreground = {i for i in range(width * height)
                   if rgb[3 * i] >= 70 and rgb[3 * i] > 1.8 * max(rgb[3 * i + 1], rgb[3 * i + 2])}
     components = []
@@ -52,22 +71,31 @@ def detections(obs):
 
 
 class SearchPolicy:
-    def __init__(self, method="sweep", seed=0):
+    def __init__(self, method="sweep", seed=0, detector=None):
         if method not in ("random", "sweep"):
             raise ValueError("unknown policy")
         self.method = method
         self.rng = random.Random(seed)
         self.tracks, self.reported = [], []
         self.report_count = 0
+        self.detector = detector
+        if detector is not None:
+            from .tracking import ReportTracker
+            self.reporter = ReportTracker()
 
     def act(self, obs):
         reports = []
-        if obs["odom"]["valid"] and obs["sim_time_ns"] - obs["odom"]["capture_ns"] <= 300_000_000:
-            for detection in detections(obs):
+        self.current_detections = detections(obs, self.detector)
+        if self.detector is not None:
+            reports = self.reporter.update(obs,self.current_detections)
+            self.reported = self.reporter.reported
+        elif obs["odom"]["valid"] and obs["sim_time_ns"] - obs["odom"]["capture_ns"] <= 300_000_000:
+            for detection in self.current_detections:
                 position = detection["position"]
                 if any(math.dist(position[:2], previous[:2]) < .8 for previous in self.reported):
                     continue
-                best = next((track for track in self.tracks if math.dist(track["position"][:2], position[:2]) < .8), None)
+                best = next((track for track in self.tracks if math.dist(track["position"][:2], position[:2]) < .8
+                             and 0 < obs["rgb"]["capture_ns"]-track["stamp"] <= 1_500_000_000), None)
                 evidence = {"rgb_sequence": obs["rgb"]["sequence"], "bbox_xyxy_px": detection["box"]}
                 if best is None:
                     self.tracks.append({"position": position, "evidence": evidence, "stamp": obs["rgb"]["capture_ns"]})
@@ -79,12 +107,14 @@ class SearchPolicy:
                     self.reported.append(position)
         tick = obs["tick"]
         if self.method == "random":
-            if tick % 10 == 0:
+            phase = obs["sim_time_ns"]//1_000_000_000
+            if getattr(self,"motion_phase",None) != phase:
                 self.motion = [self.rng.uniform(.05, .2), 0.0, self.rng.choice([-.5, .5])]
+                self.motion_phase = phase
             twist = list(self.motion)
         else:
             # Full sensor-only sweep, then short translation, repeated. No map,
             # victim count, hidden target pose or success acknowledgement.
-            twist = [0.0, 0.0, .5] if tick % 140 < 125 else [.15, 0.0, 0.0]
+            twist = [0.0, 0.0, .5] if obs["sim_time_ns"] % 14_000_000_000 < 12_500_000_000 else [.15, 0.0, 0.0]
         return {"epoch": obs["epoch"], "sequence": tick, "tick": tick, "twist": twist,
-                "reports": reports, "finish": tick * 100_000_000 >= obs["budget_ns"] - 100_000_000}
+                "reports": reports, "finish": obs["sim_time_ns"] >= obs["budget_ns"] - obs.get("action_dt_ns",100_000_000)}

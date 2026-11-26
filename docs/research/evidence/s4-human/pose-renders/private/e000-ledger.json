@@ -1,0 +1,321 @@
+{
+  "epoch": 1,
+  "budget_ns": 1500000000,
+  "victims": [
+    {
+      "gt_id": "v0",
+      "anchor_m": [
+        4.0,
+        0.5,
+        1.2569248733683454
+      ]
+    }
+  ],
+  "frames": {
+    "0": {
+      "epoch": 1,
+      "capture_ns": 0,
+      "available_ns": 0,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "1aff89033637c68af1138cf01d38b2fa37d40a414a2edd7d7b80405048dde08a"
+    },
+    "1": {
+      "epoch": 1,
+      "capture_ns": 100000000,
+      "available_ns": 100000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 801,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "ec75a866963069fc19b0e93bc57a29b9c7b497463f83504dc8f9d857e39839b0"
+    },
+    "2": {
+      "epoch": 1,
+      "capture_ns": 200000000,
+      "available_ns": 200000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 802,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "4cd0dd5c04120dd0e945574deb0a7a9ab047fc805de3c2cc619c1c11d7e0c325"
+    },
+    "3": {
+      "epoch": 1,
+      "capture_ns": 300000000,
+      "available_ns": 300000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 804,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "ce744495cae1c784fd03bc71b0e92ae48a31d0cb535a7f90e6d0d8ea85ffdf37"
+    },
+    "4": {
+      "epoch": 1,
+      "capture_ns": 400000000,
+      "available_ns": 400000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 804,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "cdc0a5c7628e8fcc60af2e59c43f4452c6f7568496bd2be3364b84f47c33a89c"
+    },
+    "5": {
+      "epoch": 1,
+      "capture_ns": 500000000,
+      "available_ns": 500000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 808,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "905ebed5961cf7e5785095a9d6d158802e114d40a8a3fef43e727cb2ad2c4779"
+    },
+    "6": {
+      "epoch": 1,
+      "capture_ns": 600000000,
+      "available_ns": 600000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 814,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "d1904117895b23ea3e41d939c3c547641b96f82e60212525eea4c1ad010c2242"
+    },
+    "7": {
+      "epoch": 1,
+      "capture_ns": 700000000,
+      "available_ns": 700000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 817,
+          "bbox": [
+            131,
+            72,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "eb9cc14fd98b0c7e1795fa93c67550dd05143a08ecdfc072cb089b5d5cb0dc41"
+    },
+    "8": {
+      "epoch": 1,
+      "capture_ns": 800000000,
+      "available_ns": 800000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 822,
+          "bbox": [
+            131,
+            72,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "b59b502b3a9928405bacb56bae2d5217ca73bf5823c39989151b77eb55beb955"
+    },
+    "9": {
+      "epoch": 1,
+      "capture_ns": 900000000,
+      "available_ns": 900000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 833,
+          "bbox": [
+            131,
+            72,
+            147,
+            149
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "4343be3d774a509144b410bfa65bac653aee80a6c1a3efb0021a4643e514ef7c"
+    },
+    "10": {
+      "epoch": 1,
+      "capture_ns": 1000000000,
+      "available_ns": 1000000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 840,
+          "bbox": [
+            131,
+            72,
+            147,
+            149
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "28b427e78690cc022708e432c9fab9ea9accb3e2e5c43ca69034c6207e8e34cd"
+    },
+    "11": {
+      "epoch": 1,
+      "capture_ns": 1100000000,
+      "available_ns": 1100000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 852,
+          "bbox": [
+            130,
+            71,
+            147,
+            149
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "c63fd096dba57cd2cfcc83932779b3fea4dc0976a64a60b546eaf649eacbd984"
+    },
+    "12": {
+      "epoch": 1,
+      "capture_ns": 1200000000,
+      "available_ns": 1200000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 865,
+          "bbox": [
+            130,
+            71,
+            147,
+            149
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "6e8f32ba55f8f862f2641511ddfb849fd8667ed5e680c8f645b91a203e2d19e7"
+    },
+    "13": {
+      "epoch": 1,
+      "capture_ns": 1300000000,
+      "available_ns": 1300000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 879,
+          "bbox": [
+            130,
+            71,
+            147,
+            149
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "0d4223711c6e7667ac68b3356ac4b674887992f445eeabda2d8d748d23558cb6"
+    },
+    "14": {
+      "epoch": 1,
+      "capture_ns": 1400000000,
+      "available_ns": 1400000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 892,
+          "bbox": [
+            130,
+            71,
+            147,
+            149
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "e17ed40e5c034a8aee26558cae0b8a074ca1eaa7a241690a203912624ab2447e"
+    }
+  },
+  "reports": [],
+  "safety_events": [],
+  "path_m": 0.18078993168086194,
+  "terminal_reason": "FINISH",
+  "terminal_ns": 1400000000
+}

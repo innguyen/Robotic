@@ -1,0 +1,69 @@
+{
+  "rows": [
+    {
+      "episode": "e000",
+      "method": "frontier",
+      "family": "original_rescue_layout_v1",
+      "pair_id": "outdoor-clean-standing-0",
+      "kind": "clean",
+      "perception": 0,
+      "odometry": 0,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.5,
+        "safe_time_integrated_recall": 0.5,
+        "first_correct_ns": 100000000,
+        "restricted_first_ns": 100000000,
+        "localization_xy_m": [
+          0.09918422154371127
+        ],
+        "localization_median_m": 0.09918422154371127,
+        "localization_p90_m": 0.09918422154371127,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.9837509803231997,
+            "nll_xy": -2.2754176294171455,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": 0.09150786048286452,
+        "terminal_reason": "FINISH"
+      },
+      "agent_latency_s": [
+        1.0143141000007745,
+        0.9606632000068203
+      ]
+    }
+  ],
+  "rq1": null,
+  "scope": "Human SAR dev scenes; no statistical generalization/empirical sensor fidelity claim",
+  "status": "COMPLETED_HUMAN_DEV_UE_RUNTIME",
+  "engine_exit_code": 0,
+  "wall_duration_s": 82.91554860000178
+}

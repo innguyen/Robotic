@@ -1,0 +1,271 @@
+{
+  "status": "PASS_ENGINE_CALIBRATION",
+  "checks": {
+    "plane_0.6m": true,
+    "plane_1.0m": true,
+    "plane_2.0m": true,
+    "plane_4.0m": true,
+    "epoch_unique": true,
+    "reset_pose_scan_repeat": true,
+    "reset_render_repeat": true,
+    "visible_rendered_human": true,
+    "scan_count_matches_host": true,
+    "forward": true,
+    "forward_zero": true,
+    "left": true,
+    "left_zero": true,
+    "yaw": true,
+    "yaw_zero": true
+  },
+  "planes": [
+    {
+      "distance_m": 0.6,
+      "optical_Z_samples_m": [
+        0.5996875,
+        0.5996875,
+        0.5996875
+      ],
+      "max_error_m": 0.00031249999999993783
+    },
+    {
+      "distance_m": 1.0,
+      "optical_Z_samples_m": [
+        0.999375,
+        0.999375,
+        0.999375
+      ],
+      "max_error_m": 0.0006249999999999867
+    },
+    {
+      "distance_m": 2.0,
+      "optical_Z_samples_m": [
+        1.99875,
+        1.99875,
+        1.99875
+      ],
+      "max_error_m": 0.0012499999999999734
+    },
+    {
+      "distance_m": 4.0,
+      "optical_Z_samples_m": [
+        3.9975,
+        3.9975,
+        3.9975
+      ],
+      "max_error_m": 0.0024999999999999467
+    }
+  ],
+  "resets": [
+    {
+      "epoch": 6,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "945990f044ecb17704dd5865b53ad0d542455e15e878f52985163aac93ee7409",
+      "rgb_hash": "08cef9217d5991aa6f5abda9124915df3b5edb9c2d1085313e18342762e8716b",
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 7,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "945990f044ecb17704dd5865b53ad0d542455e15e878f52985163aac93ee7409",
+      "rgb_hash": "08cef9217d5991aa6f5abda9124915df3b5edb9c2d1085313e18342762e8716b",
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 8,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "945990f044ecb17704dd5865b53ad0d542455e15e878f52985163aac93ee7409",
+      "rgb_hash": "08cef9217d5991aa6f5abda9124915df3b5edb9c2d1085313e18342762e8716b",
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 9,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "945990f044ecb17704dd5865b53ad0d542455e15e878f52985163aac93ee7409",
+      "rgb_hash": "08cef9217d5991aa6f5abda9124915df3b5edb9c2d1085313e18342762e8716b",
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 10,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "945990f044ecb17704dd5865b53ad0d542455e15e878f52985163aac93ee7409",
+      "rgb_hash": "08cef9217d5991aa6f5abda9124915df3b5edb9c2d1085313e18342762e8716b",
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 11,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "945990f044ecb17704dd5865b53ad0d542455e15e878f52985163aac93ee7409",
+      "rgb_hash": "08cef9217d5991aa6f5abda9124915df3b5edb9c2d1085313e18342762e8716b",
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 12,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "945990f044ecb17704dd5865b53ad0d542455e15e878f52985163aac93ee7409",
+      "rgb_hash": "08cef9217d5991aa6f5abda9124915df3b5edb9c2d1085313e18342762e8716b",
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 13,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "945990f044ecb17704dd5865b53ad0d542455e15e878f52985163aac93ee7409",
+      "rgb_hash": "08cef9217d5991aa6f5abda9124915df3b5edb9c2d1085313e18342762e8716b",
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 14,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "945990f044ecb17704dd5865b53ad0d542455e15e878f52985163aac93ee7409",
+      "rgb_hash": "08cef9217d5991aa6f5abda9124915df3b5edb9c2d1085313e18342762e8716b",
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      }
+    },
+    {
+      "epoch": 15,
+      "pose": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scan_hash": "945990f044ecb17704dd5865b53ad0d542455e15e878f52985163aac93ee7409",
+      "rgb_hash": "08cef9217d5991aa6f5abda9124915df3b5edb9c2d1085313e18342762e8716b",
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      }
+    }
+  ],
+  "scope": "native PNG/EXR depth Z, renders, scan, epochs and ideal actuation; not empirical sensor or wheel dynamics calibration"
+}

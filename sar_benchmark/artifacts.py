@@ -39,9 +39,9 @@ class RunStore:
         self.journal.close()
         files = {str(path.relative_to(self.path)).replace("\\", "/"): digest(path)
                  for path in sorted(self.path.rglob("*")) if path.is_file() and path.name != "inventory.json"
-                 and "__pycache__" not in path.parts and path.suffix != ".log"}
+                 and not {"__pycache__", "capture-tmp"}.intersection(path.parts) and path.suffix != ".log"}
         write_json(self.path / "inventory.json", {"files": files, "journal_head": self.chain,
-                   "excluded_generated": ["__pycache__", "*.log (retained losslessly as engine-log.txt)"]})
+                   "excluded_generated": ["__pycache__", "capture-tmp (PNG/EXR retained in private/host.jsonl.gz)", "*.log (retained losslessly as engine-log.txt)"]})
 
 
 def verify_inventory(path):

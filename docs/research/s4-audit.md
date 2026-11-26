@@ -1,106 +1,98 @@
-# S4 audit — SAR Benchmark Foundation & MVP
+# S4 audit — High-Fidelity SAR Benchmark Implementation
 
-Bàn giao: **2026-11-26, Asia/Saigon**, repository `innguyen/Robotic`, nhánh `feat/benchmark`. **Foundation Python và vertical slice UE thật đã triển khai. Main high-fidelity research benchmark chưa được nghiệm thu.** Không dùng kết quả fixture để khẳng định perception robustness của người thật, physical JetAuto/Mecanum, novelty hay kết quả RQ có ý nghĩa thống kê.
+Cập nhật 2026-11-26, Asia/Saigon; repository innguyen/Robotic, feat/benchmark, tiếp tục từ 2b60605. **Đã triển khai human SAR dev trên native UE; chưa nghiệm thu đầy đủ high-fidelity main benchmark S3.** Không coi số test PASS hoặc primitive pilot là bằng chứng photorealism, physical JetAuto, sensor fidelity hay generalization.
 
-## 1. Quyết định nền tảng
+## Nền tảng và phạm vi
 
-**Chọn một host tối giản UE 5.6.1 native, qua PythonScriptPlugin đã cài, D3D11.** Đây là fallback có bằng chứng thực thi, thay candidate Project AirSim/UE5.8 ở S3. Không đổi tài liệu S3 thành báo cáo implementation. Không tải Rescue environment ~8 GB, UnrealZoo ~70 GB, engine khác hoặc model mới.
+Giữ một backend UE 5.6.1/D3D11/PythonScriptPlugin có thể chạy trên máy hiện tại. Không thay engine, không tải environment pack lớn, không sửa production ROS/T1 hoặc historical accepted evidence. [Runtime và lệnh chạy](../../experiments/ue5_s4/README.md), [package](../../sar_benchmark/README.md).
 
-Đã ưu tiên đọc paper RescueBench arXiv:2606.01848v1 cùng source chính thức RescueBench/UnrealZoo, sau đó đối chiếu Project AirSim. Phân biệt framework Python, plugin C++, cooked environment và quyền source/assets:
+S4 foundation đã xem xét source chính thức [RescueBench](https://github.com/UnrealZoo/RescueBench/tree/6da2490b45301e6e44ae49df6fa2918f5c3701a9), [UnrealZoo v3.0](https://github.com/UnrealZoo/unrealzoo-gym/tree/6ea6aa87eb108d35eb48d953ab96a5201d111062), [UnrealCV](https://github.com/unrealcv/unrealcv/tree/67d466a246c7bacffab5392312b0746191fa5c10), [Project AirSim v1.1.0](https://github.com/iamaisim/ProjectAirSim/tree/be18449c8305641a6bf0d6061f8fd7f405371354). Rescue binary scene khoảng 8 GB và UnrealZoo khoảng 70 GB không được tải; quyền framework source không mặc định cấp quyền sửa/phân phối mọi cooked asset. Native UnrealCV Editor build thiếu NetFxSDK/SwarmInterface; runtime spike chưa build hoàn tất, không suy rằng upstream không hỗ trợ UE5.6. AirSim tuple của S3 cần engine khác và rover không tự là Mecanum. [Source inspection](evidence/s4/upstream-inspection.json), [Editor build](evidence/s4/build-02.txt), [runtime spike](evidence/s4/build-game-01.txt) giữ nguyên.
 
-| Nền tảng / source đã khóa | Kết luận cho S4 trên máy hiện tại |
+Không vendor upstream runtime/binary scenes. Native fallback phát triển tiếp implementation hiện có, không dựng backend thứ hai. Engine primitive meshes lấy từ UE cục bộ theo quyền UE hiện có, chỉ phát hành recipe, không phân phối engine assets nguồn.
+
+## Scene và human perception
+
+Human profile dùng original indoor/outdoor rescue layouts: tường gạch/bê tông bị đứt, low walls, column, ceiling beam, debris, partition/occlusion và đường bị chặn. Vật liệu lit PBR với procedural noise/roughness, nguồn sáng movable và low-light condition; không dùng red surrogate trong human experiments. Hai môi trường còn chung một geometry lineage, không được tính là hai independent scene families.
+
+[Cesium Man attribution và model license](../../experiments/ue5_s4/assets/README.md): human mesh CC BY 4.0 từ pinned Khronos source, offline skeletal pose baking sang standing/seated/prone, chuẩn hóa 1,75 m, torso-origin metadata và replacement skin/clothing. Texture logo nguồn không dùng khi render. Chỉ một identity stylized; chưa phải photorealistic humans, injury corpus hoặc held-out appearance evaluation. OBJ/manifest có hashes, import/material cache names phụ thuộc content; [asset integrity](evidence/s4-human/asset-integrity.txt).
+
+Detector thực là official YOLOv5n ONNX v7.0, pinned source GPL-3.0, SHA256 04f0e55c26f58d17145b36045780fe1250d5bd2187543e11568e5141d05b3262. Checkpoint khoảng 3,98 MB được khôi phục bằng downloader có byte cap/hash, ignored, không ghi đè production checkpoint. Letterbox 640/NMS, COCO person, RGB-D median torso patch và estimated pose/extrinsic cho localization. Candidate threshold .4, evaluator/report operating threshold .5; không nới scoring để buộc model đúng.
+
+[Pose render run](evidence/s4-human/pose-renders/results.json) có sáu tổ hợp indoor/outdoor × standing/seated/prone, 90 public captures, UE exit 0; [offline audit](evidence/s4-human/pose-renders-audit.json) PASS. Lượt ngắn này có 0 TP/0 FP, được giữ như evidence miss chứ không coi là detector nghiệm thu. [Standing](evidence/s4-human/frames/poses-epoch-1.png), [seated](evidence/s4-human/frames/poses-epoch-2.png), [prone nhìn dọc thân](evidence/s4-human/frames/poses-epoch-3.png); [image index](evidence/s4-human/frames/index.json) chỉ đúng source/epoch. Góc nhìn prone dọc thân foreshortened rõ; generator hiện dùng side orientation cho prone. Không tự suy chất lượng anatomy hoặc detection coverage chỉ từ mesh tồn tại.
+
+## Robot, sensor và clock
+
+UGV có chassis .4 m square swept collider, wheel/mast visual children; Mecanum X-arrangement inverse/forward kinematics, common wheel-speed saturation và twist acceleration/clearance gate. Human gate dự báo circle sweep qua trọn TTL với .01 s increments, cho phép zero-yaw retreat tăng clearance; đây là planar measured-ray protection, không 3D collision certificate. Source hiện đặt wheel radius .05 m, half-length .13 m, half-width .17 m; geometry là giả định proxy, chưa đo JetAuto. Chassis dịch chuyển bằng .01 s swept increments, rotation được kiểm assertion geometry. Chưa có roller contacts, wheel dynamics, inertia/friction/slip/traction/braking; không dùng nhãn physics realism.
+
+Human profile hỗ trợ 160×120/320×240/640×480 RGB-D và 360/720 rays. Local pilot dùng 320×240, 360 rays, .5 s transactions (2 Hz). Native RGB PNG sRGB và RGBA16F depth EXR optical Z cm→m, K/extrinsic cố định; private visibility dùng isolated rendered depth so với full-scene Z, không dùng boxes của detector làm GT. Scan là ideal complex collision rays, không phải G4 response model. N là synthetic body-frame self-motion increments tích phân trong estimated heading: translation gain 3%, yaw gain 10% cùng yaw bias 2°/m và .01 rad/s ở stress; không phải encoder/IMU đo thật.
+
+Depth có ideal, range-dependent Gaussian và structured bias/edge/range holes/1 mm quantization. Structured nominal bias .006z, Gaussian sigma .002+.002z², severity tăng với P; đây là assumptions công khai, chưa fit Astra. P cũng giảm rendered directional lighting và gain RGB .75; không gọi là khói hoặc IR scattering. RNG frame-seeded, domain-separated theo sensor/model/tick; chưa phải per-pixel counter stream của S3. Không dùng victim coordinates để inject lỗi.
+
+Public capture/available time là transaction task clock; raw private records giữ monotonic software capture start/end/availability thực. Scene tĩnh trong inference/readback, render loop vẫn chạy, không global Chaos lockstep. Chưa có hardware exposure/per-ray time, measured sensor delays hoặc deployment timing mode. Editor FPS cap 10 giúp giảm cạnh tranh CPU, không phải sensor clock.
+
+[Native calibration](evidence/s4-human/native-calibration/calibration.json), [run](evidence/s4-human/native-calibration/results.json), [audit](evidence/s4-human/native-calibration-audit.json): UE exit 0, 15 checks PASS. Plane optical-Z ở .6/1/2/4 m, center và off-axis: max errors .0003125/.000625/.00125/.0025 m. Mười reset epochs khác nhau với repeat pose/scan/RGB cùng máy; rendered visible human 800 pixels; vx/vy/yaw và zero đúng ideal transforms. Đây là renderer/transport calibration, chưa empirical sensor calibration hoặc cross-machine determinism. Các chỉnh sửa ground alignment/wheel dimensions/prone yaw sau pilot có source riêng; mỗi run phải được hiểu theo source snapshot của nó.
+
+## Policies, scenarios và experiments
+
+Ba baseline dùng cùng ONNX weights, preprocessing/depth localizer, observations, report slots, action budget và common safety:
+
+- frontier: persistent free/occupied grid, inflated reachable-frontier selection theo gain/travel, visual sweeps, actual Navigator/Costmap.
+- core: actual SearchMission/Navigator/Costmap từ Robotics, thay S2 oracle bằng detections ước lượng.
+- verify: frontier + temporal multi-target association, translated viewpoint ≥.2 m, ≥3 observations và position stability. Hai-frame report evidence vẫn theo evaluator chung. Covariance là sample dispersion có synthetic floor, chưa calibrated uncertainty.
+
+Random/sweep giữ sanity diagnostic. ReportTracker không chốt/dedup candidate có mean confidence dưới .5; localization chặn invalid/stale estimated pose. Không dùng GT để merge predictions, chọn viewpoint hoặc báo all-found. Absent không có success oracle.
+
+Dev scenarios có clean, occluded, absent, multi-victim, obstacles, blocked, P-only/N-only/P+N. blocked là auxiliary infeasible navigation challenge; không gộp vào feasible positive corpus để báo recall. Seed replicas không tạo independent families. --admissibility đã triển khai trusted pre-policy conservative circular-footprint grid connectivity và native two-capture visibility; không dùng detector performance để chọn scene. Đây chưa là certificate dynamics hay corpus held-out.
+
+[Pilot trước sửa reset](evidence/s4-human/failed-pilot-summary.json) đã chạy đủ 54 episodes / 3.240 public captures, UE exit 0. [Independent audit](evidence/s4-human/failed-pilot-audit.json) xác nhận data integrity/source/metrics cho 54 ledgers nhưng **run acceptance FAIL** vì requested calibration không đạt RGB repeat. Không cấp COMPLETE hoặc dùng lượt này làm nghiệm thu. Raw local được giữ tại experiments/ue5_s4/runs/sar-dev-complete; [archive index](evidence/s4-human/failed-pilot/archive-provenance.json) đánh dấu partial rõ ràng.
+
+[Đối chiếu hai reset](evidence/s4-human/reset-rgb-difference.json) đo max 1 RGB level, 1.198 pixels thay đổi. Source UE có frame-dependent LDR quantization dither; override 32-bit dither precision riêng lẻ chưa đủ sửa lỗi. Giữ directional light actors/registration IDs cố định qua resets đã khắc phục repeat trong các lượt tiếp theo, phù hợp giả thuyết thứ tự/lifecycle lighting ảnh hưởng floating-point accumulation. Đây là kết luận từ can thiệp và phép đo, chưa phải GPU RenderDoc trace chứng minh từng phép cộng. Output vẫn RGB8; không nới tolerance hay scoring threshold.
+
+[Reset sau sửa](evidence/s4-human/reset-stable/calibration.json) PASS 15 checks, [audit](evidence/s4-human/reset-stable-audit.json) PASS. [Full-resolution run](evidence/s4-human/profile-640/results.json) chạy sáu tổ hợp indoor/outdoor × ba poses, 24 public packets, 59 native captures gồm admission/calibration; 640×480 và 720 rays, UE exit 0. [Independent audit](evidence/s4-human/profile-640-audit.json) PASS cả 24 capture-to-policy timing records, asset manifests, source snapshots, metrics và requested calibration. Mười resets RGB hash khớp chính xác; clock implementations đều GetTickCount64 với resolution .015625 s, không nhầm ns field với độ chính xác exposure.
+
+[Standing 640](evidence/s4-human/frames/native-indoor-standing-640.png), [seated 640](evidence/s4-human/frames/native-indoor-seated-640.png), [prone side view 640](evidence/s4-human/frames/native-indoor-prone-640.png); [native image index](evidence/s4-human/frames/native-640-index.json) chứa epoch/source/hash và visible masks summary. Ảnh là bytes PNG gốc ở policy tick 0, không chỉnh sửa hoặc lấy từ privileged admission viewpoint. Visible pixels lần lượt 3.250 / 2.687 / 2.789. Seated là baked static pose; appearance realism và body support/contact chưa được nghiệm thu.
+
+Matrix mới tại experiments/ue5_s4/runs/sar-pilot-frozen đang chạy 54 episodes trên source snapshot đã sửa reset, có pre-policy admission và 30 s task budget tại 2 Hz. Active-search detour budget 90 s và standard raster QA được chạy riêng. Kết quả cuối sẽ chỉ được ghi sau clean exit, calibration và independent audit; không dùng scheduled count làm completed count.
+
+[sensor_study](../../sar_benchmark/sensor_study.py) triển khai secondary fixed-trajectory replay: cùng RGB/detector boxes/estimated pose, thay ba depth profiles. Chỉ là synthetic sensor sensitivity; Gaussian chưa matched RMSE và chưa có Astra validation, không thay closed-loop RQ3. summarize_run giữ abstention/absent và auxiliary failures, descriptive RQ1/RQ2; không significance/generalization/fixed-FAR claim trên dev corpus này.
+
+## Correctness, security và storage
+
+Giữ evaluator max-cardinality → min squared-XY cost → stable ties; exhaustive matcher và reference scorer tính eligibility/counts/time credit độc lập. Report cap 5, malformed/duplicate penalties, delivered evidence đúng epoch/time, pixel/IoU/XY/z thresholds, unsafe gating, time-integrated recall và matched-inlier uncertainty giữ nguyên. .5 s action clock có regression riêng; report evidence separation vẫn .1 s.
+
+Offline audit kiểm file inventory, journal chain/head, clean engine exit, source snapshot, worker exit, public schema, delivered RGB hash với ledger, report evidence thực sự đã phát, monotonic software readback intervals và asset manifests khi run có ghi. Backward metadata thiếu ở earlier dev runs được ghi NOT_RECORDED, không bịa đã kiểm.
+
+Agent nhận public measurements qua stdin; private engine token/endpoints, GT anchors, masks, ledgers và scoring không forward. Allowlist reject nested canaries; ACK chỉ slot/received. Worker cùng OS user/filesystem/network nên chưa chặn agent đối kháng. Algorithm hiện dùng cùng base replicate seed với faults nhưng domain-separated RNG, không có seed secrecy. All runs scientific_main_eligible=false. Upstream RescueBench hooks target_pose/task_context/env bindings không được reuse để cấp GT cho policies.
+
+Run directories exclusive, không overwrite/resume chọn best. Watchdog mới bao phủ serialization/stdin write và response; child không đọc 2 MB input được terminate đúng hạn trong regression. Private QA export failure là INFRA_ERROR, không đổ lỗi policy hoặc cấp COMPLETE. Source snapshots chỉ scripts/config cần thiết, không Saved/CrashReportClient settings. Native PNG/EXR lossless trong private raw; scratch capture-tmp không thuộc portable inventory. archive_run tạo archive mới, giữ original inventory/provenance; raw quá lớn giữ local ignored paths kèm hashes và đánh dấu PARTIAL_LOCAL_RAW_INDEX, không gọi partial archive là portable audited run. Không commit weights/shader/engine caches. Các failed/aborted attempts được giữ và phân loại, không gộp vào completed pilot.
+
+## Regression và historical evidence
+
+Canonical Webots S2 world đã regenerate đúng generator found fixture; regression mới 14/14 PASS. Historical worlds/results/evidence snapshots không chỉnh. S4 foundation 48 episodes vẫn nguyên tại [pilot-02](evidence/s4/pilot-02/results.json), [audit](evidence/s4/pilot-02-offline-audit.json); đây là 80×60 red-primitive diagnostic, không phải human results. Pilot-01 vẫn ghi engine exit 3221225477 và không được xem clean lifecycle PASS. [Diagnostic calibration](evidence/s4/calibration-01/calibration.json) giữ 11 checks và forced collision/safety probes riêng.
+
+| Regression trên implementation mới | Kết quả thực chạy |
 | --- | --- |
-| [RescueBench](https://github.com/UnrealZoo/RescueBench/tree/6da2490b45301e6e44ae49df6fa2918f5c3701a9) | Gần SAR nhất; có baseline adapters/task tooling, nhưng nhiệm vụ bốn giai đoạn khác search/report. Public runner có đường đưa GT/env tới agent. Binary scene không phải source UE có thể tùy ý sửa sensor hoặc phân phối. Không dùng nguyên runner làm main của nhóm |
-| [UnrealZoo v3.0](https://github.com/UnrealZoo/unrealzoo-gym/tree/6ea6aa87eb108d35eb48d953ab96a5201d111062) / [v3.1](https://github.com/UnrealZoo/unrealzoo-gym/tree/01f56d4180c8dba2f5ca65430a61cb59e76b2ba0) | v3.0 phù hợp UE5.6 hơn v3.1/UE5.7. Có RGB-D, robotics/control/scene tooling; v3.1 có LiDAR. UnrealCV+ phát hành qua môi trường không đồng nghĩa mọi tính năng server mở source; không mặc định có JetAuto hoặc global stepping |
-| [UnrealCV source](https://github.com/unrealcv/unrealcv/tree/67d466a246c7bacffab5392312b0746191fa5c10) | Đã tải **sparse source**, không scene packages. Editor build dừng ở thiếu NetFxSDK/SwarmInterface. Runtime spike chưa build hoàn tất: integration header include trong spike không tìm thấy. Đây không phải bằng chứng UnrealCV không hỗ trợ UE5.6. Không giữ spike C++ chưa dùng trong deliverable |
-| [Project AirSim v1.1.0](https://github.com/iamaisim/ProjectAirSim/tree/be18449c8305641a6bf0d6061f8fd7f405371354) | Source có Rover/SimpleDrive, Python/sensor extension. Native wheeled vehicle không tương đương Mecanum. Tuple release ở S3 cần UE5.8; máy chỉ xác minh UE5.6.1. Không cài engine hay binary khác để thử. Engine-driven vehicle clock không được coi mặc định pause/step như drone |
+| [S4 regression mới](evidence/s4-human/unit-final-io-watchdog.txt) | 59 PASS; gồm schema/privacy, independent scoring, tracking/translated-view, threshold dedup, Mecanum, stale pose, bounded compression bomb và directional safety/retreat và watchdog cho blocked stdin |
+| [T1 đầy đủ](evidence/s4-human/t1-regression.txt) | 239 PASS, offline; discovery rộng hơn bộ 143 tests của evidence cũ |
+| [Godot](evidence/s4-human/godot-regression.txt) | 5 PASS, protocol tests; không chạy lại Godot runtime |
+| [Webots S2](evidence/s4-human/webots-regression.txt) | 14 PASS sau regenerate canonical world; không sửa historical evidence |
+| [Preservation/syntax/link QA](evidence/s4-human/preservation-01.json) | 5.859 protected tracked files không đổi; đây không phải simulator test, sẽ kiểm lại cuối bàn giao |
 
-Nguồn paper: [RescueBench full text và D.2](https://arxiv.org/html/2606.01848v1). [Source ledger](evidence/s4/upstream-inspection.json), [build Editor](evidence/s4/build-02.txt), [build runtime spike](evidence/s4/build-game-01.txt). Quyết định fallback nhằm có pipeline đo đúng với hạ tầng được phép; không xếp hạng tổng quát chất lượng ba framework.
+Preservation QA bảo vệ production, T1, S3 và tracked historical evidence; chỉ whitelist implementation S4, audit/tools và đúng canonical Webots world được yêu cầu. [Runtime environment capture](evidence/s4-human/runtime-environment.json) ghi Python/OpenCV/NumPy và binary hash quan sát trong phiên; không giả rằng earlier manifests đã attest package versions tại thời điểm launch.
 
-Code RescueBench/UnrealZoo được mô tả Apache-2.0, Project AirSim MIT; kiểm code license không cấp quyền tất cả scenes/checkpoints. S4 không vendor assets của chúng. Engine meshes dùng từ bản UE cục bộ theo quyền UE hiện có, chỉ phát hành recipe/script; không phát hành lại engine mesh nguồn. Vật liệu màu và scene layout tự dựng để diagnostic, không là human asset corpus có license đã kiểm.
+## Đối chiếu S3 và chuyển S5
 
-## 2. Audit ground-truth leakage
+| Hạng mục | Đã triển khai/kiểm được | Còn thiếu để nghiệm thu main S3 |
+| --- | --- | --- |
+| Runtime/evaluator | Native UE thật, RGB-D/control/reset, private/public lanes, independent scoring và artifacts | OS/network isolation, soak/cross-machine, full dynamic clock/contact proof |
+| Human perception | Licensed human mesh, ba poses, RGB ONNX detector/localizer, native masks | Photorealistic/identity diversity, held-out image corpus/AP, texture/scene realism acceptance |
+| Environments | Indoor/outdoor rescue dev strata, occlusion/debris/navigation failures | 48 lineage-disjoint families/splits, frozen admissibility and exposure strata |
+| Sensors | Native 640×480/720-ray đã kiểm ở short static suite; depth-plane/transform/reset và synthetic response | 300 s/10 Hz soak/timing, exposure/per-ray clocks, IMU/encoders, empirical Astra/G4 sessions và held-out fits |
+| Embodiment | Visual UGV, swept proxy, Mecanum kinematics/safety | Measured JetAuto geometry, roller/contact dynamics, braking/slip/real trajectory validation |
+| Methods/experiments | Frontier/core/active verification, paired P/N and synthetic replay plumbing | 300 s/10 Hz accepted missions, strong semantic baseline, empirical RQ3, power/confirmatory study |
 
-Đường dữ liệu cụ thể đã kiểm:
+**Chưa đủ điều kiện chuyển sang S5 confirmatory scientific experiments.** Có thể dùng implementation cho S5 engineering/integration trên graphics worker, nhưng không đổi tên dev pilot thành main result. Blockers cụ thể: Iris Xe/RAM 8 GB không đủ cơ sở nghiệm thu photorealistic 300 s/10 Hz throughput; chưa được phép tải scene packs lớn; chưa có diverse licensed human/environment corpus, Astra/G4/encoder calibration sessions hoặc OS sandbox. Không tìm thấy real sensor recordings trong các source liên quan đã kiểm; simulator calibration logs S2 không thay real calibration.
 
-1. [`state_machine_wrapper.prepare_info`](https://github.com/UnrealZoo/RescueBench/blob/6da2490b45301e6e44ae49df6fa2918f5c3701a9/benchmark/wrappers/state_machine_wrapper.py) thêm `info['target_pose']` từ target của task state machine.
-2. [`episode_runner.run_episode`](https://github.com/UnrealZoo/RescueBench/blob/6da2490b45301e6e44ae49df6fa2918f5c3701a9/benchmark/core/episode_runner.py) gọi `agent.prepare_episode(task_context)` trước reset; context chứa injured/stretcher/agent/ambulance poses. Sau đó `prepare_step_inputs(env, obs, info)` nhận cả object environment và enriched info.
-3. [`agent_base`](https://github.com/UnrealZoo/RescueBench/blob/6da2490b45301e6e44ae49df6fa2918f5c3701a9/benchmark/agents/agent_base.py) mặc định chuyển nguyên obs/info tới `act`. [`SolutionAgent`](https://github.com/UnrealZoo/RescueBench/blob/6da2490b45301e6e44ae49df6fa2918f5c3701a9/benchmark/agents/solution_agent.py) có thể chuyển info vào reset/predicts của solution.
-4. [`SGNavRescueAgent.prepare_step_inputs`](https://github.com/UnrealZoo/RescueBench/blob/6da2490b45301e6e44ae49df6fa2918f5c3701a9/benchmark/agents/sgnav_rescue_agent.py) bind env rồi đọc `obj_poses[protagonist_id]` làm self pose. Đây là privileged self localization; không tự suy rằng mọi baseline dùng injured GT để navigation.
-5. UnrealCV có actor poses, object masks, reflection/Blueprint calls và console commands. Chỉ bỏ field `target_pose` chưa đóng các đường đặc quyền khác. Task state machine cũng dùng GT proximity để trợ giúp carry/drop; không mang trigger đó vào scoring search/report.
+[Worker command](../../experiments/ue5_s4/README.md) đã chuẩn bị cho 640×480/720 rays/3000 ticks với pre-policy admission và calibration. Trước confirmatory S5 phải khóa licensed asset lineage/splits trên graphics workstation, đo full sensor/clock/stop/contacts, fit và validate real sensor models, nghiệm thu physical track riêng và cô lập agent. Không thay tài liệu S3 để khớp các giới hạn hiện tại; không tự nhận rank/significance từ một layout lineage.
 
-S4 không gọi các hooks trên. Agent chỉ nhận allowlisted JSON observations; không nhận env/client/evaluator object, `info`, reward, masks, victim count, fault seed, scenario identity hoặc đường dẫn GT. Tests đặt canary `target_pose` ở mọi object public và kiểm reject. Report ACK chỉ nhận/slot, không matching/success.
-
-**Giới hạn security:** process riêng cùng Windows user có thể đọc filesystem/network nếu là mã đối kháng. Chưa có OS sandbox/test server isolation; tất cả run gắn `scientific_main_eligible=false`. Đây là API/data-flow separation đã test cho local honest policies, chưa là chứng minh hostile-agent isolation. Không có main-track result nào được cấp từ profile này.
-
-## 3. Kiến trúc và implementation
-
-- [`sar_benchmark/`](../../sar_benchmark/README.md): scenario/public observation/action/report validation, lifecycle/reset/epoch, common safety, blind reporter, independent evaluator, manifests/run store/runner, statistics và offline audit.
-- [`experiments/ue5_s4/`](../../experiments/ue5_s4/README.md): một native UE host, scene primitive có rubble/occluder/victim surrogate, swept kinematic UGV, RGB/depth và collision-ray scan. Không thay project UE của người dùng trên ổ A.
-- Report tối đa 5 slots cho mọi K=0..3; malformed slots/confidence không tạo loophole né FP, duplicate ID bị penalty, duplicate victim không tăng TP. Evidence yêu cầu hai delivered captures đúng epoch/time, đủ visible pixels/IoU, XY≤1 m và |Δz|≤.75 m.
-- Matcher DP tối đa cardinality → tối thiểu squared XY error → stable tie-break; exhaustive matcher và một reference scorer tính eligibility/counts/time credit độc lập. Prefix matching giữ đúng time credit khi assignment cuối thay đổi.
-- Metrics: SLR/recall/precision, FP, duplicate/invalid reports, absent FAR/specificity, completeness, time-integrated recall, restricted first-report time, path, XY median/p90, Brier và optional covariance XY NLL/coverage trên matched inliers. Không có covariance output của fixture policies thì ghi unavailable, không bịa uncertainty.
-- `statistics.rq1` kiểm đủ bốn paired cells, average seeds trong family rồi family-weighted interaction. Một family không có cluster CI. Không dùng seeds làm independent scene families.
-- Run directories tạo exclusive, không overwrite/resume chọn best; source snapshot, config/model/profile hashes, separate public/private raw gzip JSONL, immutable reports, command chain và file inventories. Agent exception giữ outcome, infrastructure failure chặn complete result; final runner kiểm exit code của engine.
-
-Tái sử dụng thực từ Robotics: `SearchMission`, `Navigator`/costmap, footprint config của core qua `CoreSearchPolicy`; SAT geometry S2 để assertion; port preprocessing/YOLOv5 decode từ production sang optional ROS-free detector. Không tái sử dụng oracle recognition hoặc target poses S2. Không có binary/assets/baseline weights của RescueBench, UnrealZoo hay Project AirSim được chạy/tái phân phối; reuse ở đây là thiết kế boundary và audit interface, không claim tích hợp upstream runtime.
-
-## 4. Bằng chứng thực thi và verification
-
-[Preflight S4](evidence/s4-preflight.json) xác nhận engine cục bộ; [depth probe](evidence/s4/editor-probe-01.json) đọc 4.800 samples từ UE 5.6.1. Center depth **259,75 cm**, so với mặt phẳng trước box **260 cm**. Đây là sanity ở một range, không calibration Astra. Raw UE log xác nhận Iris Xe, D3D11/SM5; không dùng NullRHI.
-
-[Engine/asset identity](evidence/s4/engine-asset-identity.json) lưu build/changelist, SHA256 editor, PythonScriptPlugin, D3D11 module và mesh cục bộ; checkpoint ONNX có sẵn cũng được hash và ghi chưa xác minh provenance/license. Không copy những engine files đó vào repository.
-
-[Runtime smoke 04](evidence/s4/runtime-04/results.json) có hai episode: random và sweep đều TP=1, FP=0; sweep XY error khoảng **0,151 m**. Các lần trước được giữ nguyên: startup callback thiếu keep-alive ở runtime-01; report bị mép ảnh/thiếu evidence ở runtime-02/03. Đã sửa policy confirmation và barrier capture, không nới evaluator để làm report đó đúng.
-
-[Pilot 01](evidence/s4/pilot-01/results.json) ghi đủ **32 episodes, 960 public packets**, 2 methods ×2 seeds ×8 cases. [Offline audit](evidence/s4/pilot-01-offline-audit.json) đối chiếu independent scorer, source snapshots, hashes, public schema: không disagreement. **Engine exit code 3221225477 sau khi đã ghi log “Exiting”**; không xem lượt này là clean lifecycle PASS. Giữ nguyên evidence gốc và sửa runner để exit code khác 0 không được cấp complete status. Lượt tiếp theo và calibration được ghi bổ sung ở phần nghiệm thu cuối.
-
-**Lượt nghiệm thu cuối:** [pilot-02](evidence/s4/pilot-02/results.json) hoàn tất **48 episodes / 1.440 public packets**, 3 methods ×2 seeds ×8 cases; UE exit **0**, wall duration **442,27 s**. Có **26 TP, 0 FP, 0 unsafe episodes** trong fixture; các miss vẫn ở denominator. [Offline audit cuối](evidence/s4/pilot-02-offline-audit.json) PASS inventory/source snapshots/public allowlist/reference scorer cho cả 48 episodes. Đây là pilot theo source snapshot đã lưu, không phải main-track score.
-
-| Nominal condition, mean SLR qua 2 seeds | Random | Sweep | Core SearchMission/Navigator |
-| --- | --- | --- | --- |
-| Clean | 0,50 | 1,00 | 1,00 |
-| Occluded | 0,50 | 1,00 | 1,00 |
-| Multi-victim | 0,75 | 1,00 | 1,00 |
-
-Absent và sensor-black đều không phát report ở cả ba methods. P và P+N đều ở floor 0 của marker detector; N-only giữ clean SLR. **RQ1 I=0 cho cả ba methods, không CI vì chỉ có 1 family**. Không có bằng chứng statistical robustness hoặc ranking tổng quát từ bảng này.
-
-Adversarial replay trên real delivered evidence cho **TP=1, FP=2** khi thêm một duplicate và một false-location report. Đối chứng dịch report coordinates `.7 m` theo từng factor cho bốn recall cells `[1,1,1,0]`, **I=−1**: chứng minh evaluator/contrast đo được threshold interaction. Đây chỉ là **offline report perturbation**, không phải sensor intervention trên UE hoặc kết quả khoa học RQ1.
-
-[Calibration cuối](evidence/s4/calibration-01/calibration.json) trên native engine transforms đã **PASS 11 checks**: forward .03 m, left .02 m, yaw-left .06 rad trong một transaction; zero ở cả ba trục; 10 reset epochs riêng và pose/scan/RGB hashes lặp đúng trên cùng máy; swept collision chặn wall tại x≈**0,348997 m**, có CONTACT; common gate trả zero gần wall. [Lượt calibration](evidence/s4/calibration-01/results.json) UE exit **0**, kèm 3 short smoke episodes và source snapshot mới. Collision forcing là privileged engineering probe riêng, không phải policy run hoặc safety-certified result. Không suy bitwise determinism cross-machine từ 10 resets này.
-
-Kiểm tra đã chạy:
-
-| Check | Kết quả đã quan sát |
-| --- | --- |
-| [Unit/integration/adversarial S4 cuối](evidence/s4/unit-final-03.txt) | **46 PASS**, gồm 500 random matcher graphs +150 randomized independent eligibility/metric comparisons, strict JSON, covariance, extreme finite/overflow, frames, resets, safety, report caps, real worker process, core adapter, source-snapshot filter và ONNX inference black image bằng model có sẵn |
-| [T1 regression](evidence/s4/t1-regression.txt) | **143 PASS**, offline |
-| [Godot protocol regression](evidence/s4/godot-regression.txt) | **5 PASS**, không chạy Godot runtime lại |
-| [Webots S2 regression](evidence/s4/webots-regression.txt) | **13 PASS, 1 FAIL**: canonical world khác generated fixture. Blob local và HEAD cùng `317ab24ecbbd26ce9a25ce20644899727e4de3b0`; lỗi nhất quán đã có trong baseline, không sửa world/core trong S4 |
-| [Preservation và artifact QA cuối](evidence/s4/verification-final.json) | **5.196 protected tracked files không đổi so HEAD**, 77 local links hợp lệ; không nhận preserved hash là simulator runtime test |
-
-Lần thử regression bằng MSYS Python thiếu NumPy cũng được giữ tại [attempt log](evidence/s4/webots-regression-attempt.txt). Sau đó dùng Python310 với NumPy/OpenCV đã cài; không cài/upgrade production dependencies.
-
-## 5. Fidelity và giới hạn
-
-Profile triển khai là `ue5_static_proxy_rgbd_scan_v1`, khác S3 main contract: RGB/depth **80×60**, 72 ideal engine collision rays, synthetic odometry từ actual self-motion increments, không có wheel encoder/IMU. Camera cùng FOV/extrinsic; base frame ở floor projection, collider center cao .2 m. Depth Z dùng readback RGBA16F, đổi cm→m đúng một lần; có quantization. Native scene/rendering không đồng nghĩa empirical sensor response.
-
-Host chờ editor frames sau reset/motion. Task time là integer **100 ms/transaction**, robot dịch chuyển bằng 10 swept kinematic increments; scene tĩnh trong inference/capture. Engine render loop tiếp tục, **không global Chaos lockstep**, không dynamics bánh xe và không “physics 100 Hz đã xác minh”. Scan và private visibility lấy engine collision rays; primitive collision/visual geometry mới chỉ ở fixture đơn giản.
-
-Hai baseline nhẹ là seeded random và systematic sweep, dùng cùng detector/depth/report/safety. Core baseline dùng actual Robotics algorithm. Detector fixture là red connected-components từ ảnh thật; không phải person detection. Optional ONNX adapter đã chạy inference, nhưng chưa có human mesh/checkpoint provenance/pose diversity/calibration để gọi human-perception main baseline. Stress P là post-render synthetic darkening/depth bias+holes; N là synthetic pose increment drift; không gọi là khói, Astra/G4 hoặc calibrated wheel slip.
-
-Một layout family, hai seeds, short 3 s task budget, primitive seated surrogate, không train/validation/test corpus, không held-out identities/real-robot data/second machine/soak. P pilot có floor effect; RQ1 interaction descriptive bằng 0 không chứng minh không có interaction trên SAR thực. Offline report-coordinate perturbation chỉ kiểm độ nhạy evaluator, không thay thí nghiệm can thiệp sensor thật.
-
-## 6. Mức độ hoàn thành
-
-**Đã có implementation có thể chạy và chấm đúng ở phạm vi diagnostic MVP. Chưa đạt trọn main high-fidelity benchmark S3.** Foundation contracts/evaluator, real UE RGB-D/control/reset và fair local baselines có raw evidence. Mọi PASS trong tài liệu gắn đúng phạm vi; không tuyên bố hoàn thành secure evaluation, photorealistic corpus, physical Mecanum hoặc kết luận nghiên cứu.
-
-## 7. Chuyển sang S5
-
-1. Hoàn thiện native runtime integration trên toolchain có NetFxSDK hoặc worker tương thích; chỉ giữ một backend được nghiệm thu. Với UnrealCV/UnrealZoo, chặn privileged endpoint bằng OS/network isolation; freeze source/plugin/binary/assets tuple, không chỉ tag.
-2. Thay marker surrogate bằng licensed human meshes, torso anchors/visible masks, seated/prone/standing và occlusion strata; kiểm source/cooked/rendered/training rights từng asset. Chạy common ONNX detector và các baseline mạnh B1/B2/B3 cùng inputs/budget.
-3. Nghiệm thu full clock, real sensor capture stamps, 640×480 RGB-D/720 scan nếu dùng S3 profile, IMU/encoders, sync/depth planes/multi-range/extrinsics; fit synthetic response từ Astra/G4 rồi held-out validation.
-4. Dynamics Mecanum riêng: wheel/roller geometry, inertia/friction/slip/braking so với dữ liệu thật. Giữ ideal proxy là track riêng.
-5. Dev tuning/power theo scene families, đóng băng evaluator/thresholds/hypotheses, mở rộng asset lineage splits và independent graphics worker; run longer missions/soak và failure adjudication. Chưa có đủ family thì tiếp tục báo descriptive, không CI giả theo frame/seeds.
-
-Không commit/push/publish/deploy. Rollback: bỏ riêng các thư mục source/evidence S4 mới và phần liên kết S4 trong README; không cần chỉnh T1/Webots/Godot/production. Source cache/build products không thuộc deliverable.
+Không commit/push/publish/deploy. Rollback code S4 độc lập; canonical Webots world có thể regenerate bằng generator. Không cần thay production/T1 hoặc historical accepted results.

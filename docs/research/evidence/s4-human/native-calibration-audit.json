@@ -1,0 +1,20 @@
+{
+  "inventory": true,
+  "reference_episodes": 1,
+  "public_packets": 5,
+  "source_snapshot": true,
+  "errors": [],
+  "engine_exit_code": 0,
+  "engine_clean_exit": true,
+  "native_capture_packets": 28,
+  "readback_interval_s": {
+    "median": 0.093,
+    "max": 0.25
+  },
+  "asset_manifest_checks": {
+    "asset-manifest.json": "PASS",
+    "human-pose-manifest.json": "NOT_RECORDED_BY_EARLIER_RUN"
+  },
+  "controls": {},
+  "status": "PASS_OFFLINE_AUDIT"
+}

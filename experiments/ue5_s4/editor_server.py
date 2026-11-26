@@ -13,6 +13,7 @@ import struct
 import sys
 import time
 import traceback
+import zlib
 
 import unreal as ue
 
@@ -24,19 +25,44 @@ from sar_benchmark.scenario_contract import validate_scenario
 from experiments.webots_s2.geometry import footprint_separation
 
 
+def wire_payload(response):
+    return b"Z"+zlib.compress(canonical(response),1)
+
+
 class World:
     def __init__(self):
         self.actors = ue.get_editor_subsystem(ue.EditorActorSubsystem)
         self.world = ue.get_editor_subsystem(ue.UnrealEditorSubsystem).get_editor_world()
+        self.render_quality = os.environ.get("SAR_RENDER_QUALITY","preview")
+        require(self.render_quality in ("preview","standard"),"unsupported render quality")
+        level = 2 if self.render_quality=="standard" else 0
+        self.renderer_settings = {"sg.ViewDistanceQuality":level,"sg.AntiAliasingQuality":level,"sg.ShadowQuality":level,"sg.PostProcessQuality":level,
+                                  "sg.TextureQuality":level,"sg.EffectsQuality":level,"sg.FoliageQuality":level,
+                                  "r.AntiAliasingMethod":1 if level else 0,
+                                  "r.DefaultFeature.AutoExposure":0,"r.DefaultFeature.MotionBlur":0}
+        for name,value in self.renderer_settings.items():
+            ue.SystemLibrary.execute_console_command(self.world,name+" "+str(value))
+        # Static transactions need a few barrier frames, not an uncapped editor
+        # render loop competing with CPU inference on an integrated GPU.
+        ue.SystemLibrary.execute_console_command(self.world, "t.MaxFPS 10")
+        # UE 5.6 tonemapping adds frame-indexed LDR quantization dither even
+        # with AA/exposure disabled. Suppress its sub-RGB8 contribution so the
+        # nominal capture has no uncontrolled temporal noise. Output stays RGB8;
+        # controlled sensor noise belongs to the seeded response layer.
+        ue.SystemLibrary.execute_console_command(self.world, "r.BackbufferQuantizationDitheringOverride 32")
         self.spawned = []
         self.epoch = self.tick = 0
         self.path = 0.0
         self.events = []
         self.config = None
+        self.human = os.environ.get("SAR_PROFILE") == "human"
+        self.action_dt_ns = int(os.environ.get("SAR_ACTION_DT_NS","100000000"))
+        require(self.action_dt_ns in (100_000_000,500_000_000), "unsupported transaction interval")
         self.width, self.height = 80, 60
         self.camera = {"width": 80, "height": 60, "fx": 40.0, "fy": 40.0, "cx": 39.5, "cy": 29.5,
                        "T_base_optical": [[0, 0, 1, .25], [-1, 0, 0, 0], [0, -1, 0, .65], [0, 0, 0, 1]]}
-        self.rgb_actor, self.rgb_sensor, self.rgb_target = self.capture(ue.SceneCaptureSource.SCS_FINAL_COLOR_LDR, ue.TextureRenderTargetFormat.RTF_RGBA8)
+        rgb_format = ue.TextureRenderTargetFormat.RTF_RGBA8_SRGB if self.human else ue.TextureRenderTargetFormat.RTF_RGBA8
+        self.rgb_actor, self.rgb_sensor, self.rgb_target = self.capture(ue.SceneCaptureSource.SCS_FINAL_COLOR_LDR, rgb_format)
         self.depth_actor, self.depth_sensor, self.depth_target = self.capture(ue.SceneCaptureSource.SCS_SCENE_DEPTH, ue.TextureRenderTargetFormat.RTF_RGBA16F)
         self.materials = {}
         for name, color in (("Victim", (1.0, .01, .01)), ("Prop", (.2, .25, .3)), ("Robot", (.02, .1, .4))):
@@ -51,6 +77,10 @@ class World:
                 ue.MaterialEditingLibrary.recompile_material(material)
                 ue.EditorAssetLibrary.save_loaded_asset(material)
             self.materials[name] = material
+        if self.human:
+            from experiments.ue5_s4.human_scene import HumanSceneMixin
+            self.human_builder = HumanSceneMixin
+            HumanSceneMixin.init_human(self)
 
     def capture(self, source, fmt):
         actor = self.actors.spawn_actor_from_class(ue.SceneCapture2D, ue.Vector(25, 0, 65))
@@ -86,12 +116,15 @@ class World:
         self.tick, self.path, self.events = 0, 0.0, []
         self.config = config
         self.pose = [config["start_m"][0], config["start_m"][1], config["start_yaw"]]
-        self.shape("floor", [3, 0, -.1], [14, 12, .1])
-        for item in config["boxes"]:
-            self.shape(item["id"], item["center_m"], item["size_m"])
         self.victim_actors = {}
         self.victims = []
-        for index, victim in enumerate(config["victims"]):
+        if self.human:
+            self.human_builder.build_human_scene(self, config)
+        else:
+            self.shape("floor", [3, 0, -.1], [14, 12, .1])
+            for item in config["boxes"]:
+                self.shape(item["id"], item["center_m"], item["size_m"])
+        for index, victim in enumerate([] if self.human else config["victims"]):
             p = victim["anchor_m"]
             torso = self.shape(f"v{index}_torso", p, [.3, .4, .55], "Victim")
             self.victims.append({"gt_id": victim["gt_id"], "torso": torso})
@@ -102,6 +135,8 @@ class World:
                 self.victim_actors[part.get_name()] = victim["gt_id"]
         self.robot = self.shape("ugv_ideal_proxy", [self.pose[0], self.pose[1], .2], [.4, .4, .3], "Robot")
         self.robot.set_actor_rotation(ue.Rotator(pitch=0, yaw=-math.degrees(self.pose[2]), roll=0), False)
+        if self.human:
+            self.human_builder.robot_visual(self)
         self._geometry_check(reset=True)
         self.last_motion = {"requested_body_twist": [0.0] * 3, "actual_world_delta_per_s": [0.0] * 3}
 
@@ -123,7 +158,7 @@ class World:
         require(vector(action, 3) and -.1 <= action[0] <= .3 and abs(action[1]) <= .2 and abs(action[2]) <= .6, "invalid host twist")
         require(self.config is not None, "host not reset")
         start = list(self.pose)
-        for _ in range(10):
+        for _ in range(self.action_dt_ns//10_000_000):
             x, y, yaw = self.pose
             dx = (math.cos(yaw) * action[0] - math.sin(yaw) * action[1]) * .01
             dy = (math.sin(yaw) * action[0] + math.cos(yaw) * action[1]) * .01
@@ -138,13 +173,13 @@ class World:
             if self.events:
                 break
         self.tick += 1
-        measured = [(self.pose[i] - start[i]) / .1 for i in range(3)]
+        measured = [(self.pose[i] - start[i]) / (self.action_dt_ns/1e9) for i in range(3)]
         # Displacement is world-frame; retain requested body twist separately.
         self.last_motion = {"requested_body_twist": action, "actual_world_delta_per_s": measured}
 
     def trace(self, origin, end):
         return ue.SystemLibrary.line_trace_single(self.world, ue.Vector(*canonical_to_ue(origin)),
-            ue.Vector(*canonical_to_ue(end)), ue.TraceTypeQuery.TRACE_TYPE_QUERY1, False,
+            ue.Vector(*canonical_to_ue(end)), ue.TraceTypeQuery.TRACE_TYPE_QUERY1, self.human,
             [self.robot], ue.DrawDebugTrace.NONE, True)
 
     def close(self):
@@ -158,15 +193,24 @@ class World:
         ue.RenderingLibrary.release_render_target2d(self.depth_target)
         self.rgb_target = self.depth_target = self.rgb_sensor = self.depth_sensor = None
         self.materials.clear()
+        if self.human:
+            for light in self.human_lights: self.actors.destroy_actor(light)
+            self.human_lights = []
+            self.actors.destroy_actor(self.mask_actor)
+            ue.RenderingLibrary.release_render_target2d(self.mask_target)
+            self.mask_actor = self.mask_target = self.mask_sensor = None
 
     def observe(self):
         require(self.config is not None, "host not reset")
+        if self.human:
+            return self.human_builder.encoded_capture(self)
         actual = self.robot.get_actor_location()
         actual_rotation = self.robot.get_actor_rotation()
         self.pose = [actual.x / 100, -actual.y / 100, -math.radians(actual_rotation.yaw)]
         x, y, yaw = self.pose
         c, s = math.cos(yaw), math.sin(yaw)
         origin = [x + .25 * c, y + .25 * s, .65]
+        capture_start = time.monotonic_ns()
         for actor, sensor in ((self.rgb_actor, self.rgb_sensor), (self.depth_actor, self.depth_sensor)):
             actor.set_actor_location(ue.Vector(*canonical_to_ue(origin)), False, False)
             actor.set_actor_rotation(ue.Rotator(pitch=0, yaw=-math.degrees(yaw), roll=0), False)
@@ -176,17 +220,18 @@ class World:
         require(rgb_colors is not None and depth_colors is not None and len(rgb_colors) == self.width * self.height and len(depth_colors) == self.width * self.height, "readback failed")
         rgb = [channel for color in rgb_colors for channel in (color.r, color.g, color.b)]
         depth = [color.r / 100 if math.isfinite(color.r) and .01 <= color.r / 100 <= 10 else None for color in depth_colors]
+        capture_end = time.monotonic_ns()
         visible = {}
+        candidates = ((row,col) for row in range(self.height) for col in range(self.width))
         # Privileged visibility from actual engine collision rays at image pixel
         # centers. Scan all pixels: independent of the public detector or RGB.
-        for row in range(self.height):
-            for col in range(self.width):
+        for row, col in candidates:
                 # Skip floor/sky rays with no object-range depth. This uses only
                 # native clean depth, which is never provided as a GT annotation.
                 if depth[row * self.width + col] is None:
                     continue
-                right = (col - 39.5) / 40
-                down = (row - 29.5) / 40
+                right = (col - self.camera["cx"]) / self.camera["fx"]
+                down = (row - self.camera["cy"]) / self.camera["fy"]
                 direction = [c + s * right, s - c * right, -down]
                 end = [origin[i] + 12 * direction[i] for i in range(3)]
                 hit = self.trace(origin, end)
@@ -201,8 +246,9 @@ class World:
                     box = item["bbox"]
                     box[:] = [min(box[0], col), min(box[1], row), max(box[2], col + 1), max(box[3], row + 1)]
         scan = []
-        for index in range(72):
-            angle = -math.pi + index * math.tau / 72 + yaw
+        ray_count = 72
+        for index in range(ray_count):
+            angle = -math.pi + index * math.tau / ray_count + yaw
             hit = self.trace([x, y, .2], [x + 8 * math.cos(angle), y + 8 * math.sin(angle), .2])
             scan.append(hit.to_tuple()[3] / 100 if hit is not None else None)
         actual_victims = []
@@ -213,6 +259,8 @@ class World:
                 "events": self.events, "rgb": rgb, "depth_m": depth, "scan_m": scan, "camera": self.camera,
                 "visible": visible, "victims": actual_victims,
                 "motion": self.last_motion, "capture_wall_ns": time.monotonic_ns(),
+                "capture_start_wall_ns": capture_start, "capture_end_wall_ns": capture_end,
+                "available_wall_ns": time.monotonic_ns(), "profile": "human" if self.human else "diagnostic",
                 "camera_rotation": str(self.rgb_actor.get_actor_rotation()),
                 "clock_profile": "static_kinematic_transactions_not_Chaos_lockstep"}
 
@@ -248,7 +296,7 @@ class Server:
                 except Exception:
                     response["error"] = traceback.format_exc()
                     ue.log_error(response["error"])
-                payload = canonical(response)
+                payload = wire_payload(response)
                 self.output.extend(struct.pack("!I", len(payload)) + payload)
                 self.pending = None
                 return
@@ -300,7 +348,13 @@ class Server:
             try:
                 op, args = request["operation"], request["arguments"]
                 if op == "hello":
-                    result = {"engine_version": ue.SystemLibrary.get_engine_version(), "rendered": True, "clock_profile": "static_kinematic_transactions_not_Chaos_lockstep"}
+                    clock = time.get_clock_info("monotonic")
+                    result = {"engine_version": ue.SystemLibrary.get_engine_version(), "rendered": True, "clock_profile": "static_kinematic_transactions_not_Chaos_lockstep", "action_dt_ns":self.world.action_dt_ns,
+                              "monotonic_clock":{"implementation":clock.implementation,"resolution_s":clock.resolution}}
+                    result["renderer_controls"] = {"backbuffer_dither_precision_override":ue.SystemLibrary.get_console_variable_int_value("r.BackbufferQuantizationDitheringOverride"),
+                                                   "editor_fps_cap":ue.SystemLibrary.get_console_variable_float_value("t.MaxFPS"),
+                                                   "render_quality":self.world.render_quality,
+                                                   "settings":{name:ue.SystemLibrary.get_console_variable_int_value(name) for name in self.world.renderer_settings}}
                 elif op == "reset":
                     self.world.reset(args)
                     self.pending = response, 3
@@ -311,6 +365,9 @@ class Server:
                     return
                 elif op == "stop":
                     result = {"stopped": True, "tick": self.world.tick}
+                elif op == "overview":
+                    require(self.world.human and self.world.config is not None,"overview requires a reset human scene")
+                    result = self.world.human_builder.overview(self.world)
                 elif op == "shutdown":
                     self.exiting, result = True, {"closing": True}
                 else:
@@ -319,7 +376,7 @@ class Server:
             except Exception:
                 response["error"] = traceback.format_exc()
                 ue.log_error(response["error"])
-            payload = canonical(response)
+            payload = wire_payload(response)
             self.output.extend(struct.pack("!I", len(payload)) + payload)
         except Exception:
             ue.log_error(traceback.format_exc())

@@ -1,0 +1,62 @@
+{
+  "episode": "e001",
+  "method": "frontier",
+  "family": "original_rescue_layout_v1",
+  "pair_id": "indoor-clean-seated-0",
+  "kind": "clean",
+  "perception": 0,
+  "odometry": 0,
+  "metrics": {
+    "tp": 1,
+    "fp": 0,
+    "victims": 1,
+    "matches": [
+      [
+        0,
+        0
+      ]
+    ],
+    "recall": 1.0,
+    "safe_localization_recall": 1.0,
+    "precision": 1.0,
+    "duplicate_reports": 0,
+    "invalid_reports": 0,
+    "report_reasons": [
+      null
+    ],
+    "safe": true,
+    "unsafe": false,
+    "mission_complete": true,
+    "absent_false_alarm": null,
+    "absent_specificity": null,
+    "time_integrated_recall": 0.75,
+    "safe_time_integrated_recall": 0.75,
+    "first_correct_ns": 100000000,
+    "restricted_first_ns": 100000000,
+    "localization_xy_m": [
+      0.10746287440138189
+    ],
+    "localization_median_m": 0.10746287440138189,
+    "localization_p90_m": 0.10746287440138189,
+    "covariance_matched_inliers_only": [
+      {
+        "report": 0,
+        "mahalanobis2": 1.1548269374607179,
+        "nll_xy": -2.1898796508483866,
+        "within_50": true,
+        "within_90": true,
+        "within_95": true
+      }
+    ],
+    "uncertainty_unavailable_count": 0,
+    "path_m": 0.0,
+    "brier": 0.07223377752440285,
+    "terminal_reason": "FINISH"
+  },
+  "agent_latency_s": [
+    2.176232900004834,
+    2.0237306999988505,
+    2.117776999999478,
+    1.9948346000019228
+  ]
+}

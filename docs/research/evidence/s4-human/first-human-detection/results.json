@@ -1,0 +1,63 @@
+{
+  "rows": [
+    {
+      "episode": "e000",
+      "method": "sweep",
+      "family": "damaged_warehouse",
+      "pair_id": "indoor-clean-standing-0",
+      "kind": "clean",
+      "perception": 0,
+      "odometry": 0,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.8,
+        "safe_time_integrated_recall": 0.8,
+        "first_correct_ns": 100000000,
+        "restricted_first_ns": 100000000,
+        "localization_xy_m": [
+          0.0928513874632305
+        ],
+        "localization_median_m": 0.0928513874632305,
+        "localization_p90_m": 0.0928513874632305,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 1,
+        "path_m": 0.0,
+        "brier": 0.053582743161801005,
+        "terminal_reason": "FINISH"
+      },
+      "agent_latency_s": [
+        0.43863150000106543,
+        0.4956538999977056,
+        0.3801263999994262,
+        0.3023753999987093,
+        0.3032248999988951
+      ]
+    }
+  ],
+  "rq1": null,
+  "scope": "Human SAR dev scenes; no statistical generalization/empirical sensor fidelity claim",
+  "status": "COMPLETED_DIAGNOSTIC_UE_RUNTIME",
+  "engine_exit_code": 0,
+  "wall_duration_s": 166.00198259999888
+}

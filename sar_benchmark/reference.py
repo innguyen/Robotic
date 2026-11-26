@@ -21,7 +21,7 @@ def reference_score(data, threshold=.5):
             if p["report_id"] in used_names:
                 raise ContractError("id repeated")
             used_names.add(p["report_id"])
-            if (p["epoch"] != data["epoch"] or p["tick"] * DT_NS != slot["accepted_ns"] or
+            if (p["epoch"] != data["epoch"] or p["tick"] * data.get("action_dt_ns",DT_NS) != slot["accepted_ns"] or
                     slot["accepted_ns"] > data["terminal_ns"]):
                 raise ContractError("header mismatch")
             evidence_frames = []

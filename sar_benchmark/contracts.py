@@ -1,5 +1,4 @@
 """Strict JSON wire contracts; the agent never receives a backend/environment object."""
-import copy
 import json
 import math
 import re
@@ -119,12 +118,14 @@ OBS_FIELDS = ("protocol", "episode_id", "epoch", "tick", "sim_time_ns", "sequenc
 
 
 def validate_observation(obs):
-    fields(obs, OBS_FIELDS)
+    fields(obs, OBS_FIELDS, ("action_dt_ns",))
     require(obs["protocol"] == PROTOCOL and identifier(obs["episode_id"]), "invalid observation identity")
     require(integer(obs["epoch"], 1) and integer(obs["tick"]) and integer(obs["sequence"]), "invalid header")
-    require(integer(obs["sim_time_ns"]) and obs["sim_time_ns"] == obs["tick"] * DT_NS, "invalid clock")
+    step_ns = obs.get("action_dt_ns",DT_NS)
+    require(type(step_ns) is int and step_ns in (DT_NS,500_000_000), "unsupported action interval")
+    require(integer(obs["sim_time_ns"]) and obs["sim_time_ns"] == obs["tick"] * step_ns, "invalid clock")
     require(integer(obs["budget_ns"], DT_NS), "invalid budget")
-    require(obs["profile"] == "ue5_static_proxy_rgbd_scan_v1", "unsupported profile")
+    require(obs["profile"] in ("ue5_static_proxy_rgbd_scan_v1", "ue5_sar_human_rgbd_scan_v1"), "unsupported profile")
     camera = obs["camera"]
     fields(camera, ("width", "height", "fx", "fy", "cx", "cy", "T_base_optical"))
     require(integer(camera["width"], 1) and integer(camera["height"], 1), "invalid image size")
@@ -173,4 +174,14 @@ def validate_observation(obs):
 def public_copy(measurements):
     """Fail closed on nested canaries too; never forward upstream info/rewards."""
     validate_observation(measurements)
-    return copy.deepcopy(measurements)
+    # Validation fixes every container shape and guarantees scalar leaves.
+    # Copy dense sensor arrays in C rather than recursively visiting hundreds
+    # of thousands of immutable numeric objects on every delivery.
+    result = dict(measurements)
+    result["camera"] = {**measurements["camera"], "T_base_optical": [row[:] for row in measurements["camera"]["T_base_optical"]]}
+    for name, arrays in (("rgb", ("data",)), ("depth_m", ("data",)), ("scan", ("ranges_m", "status")), ("odom", ("pose",))):
+        result[name] = dict(measurements[name])
+        for field in arrays:
+            result[name][field] = measurements[name][field][:]
+    result["limits"] = {name: values[:] for name, values in measurements["limits"].items()}
+    return result

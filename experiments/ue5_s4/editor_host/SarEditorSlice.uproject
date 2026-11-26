@@ -4,6 +4,7 @@
   "Description": "SAR static-scene kinematic MVP using installed Unreal Python APIs",
   "Plugins": [
     {"Name": "PythonScriptPlugin", "Enabled": true},
-    {"Name": "EditorScriptingUtilities", "Enabled": true}
+    {"Name": "EditorScriptingUtilities", "Enabled": true},
+    {"Name": "AndroidFileServer", "Enabled": false}
   ]
 }

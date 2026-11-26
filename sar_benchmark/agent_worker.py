@@ -8,14 +8,23 @@ from .policies import SearchPolicy
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--method", choices=("random", "sweep", "core"), required=True)
+    parser.add_argument("--method", choices=("random", "sweep", "core", "frontier", "verify"), required=True)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--model")
+    parser.add_argument("--confidence", type=float, default=.4)
     args = parser.parse_args()
-    if args.method == "core":
+    detector = None
+    if args.model:
+        from .perception import OnnxPersonDetector
+        detector = OnnxPersonDetector(args.model, args.confidence)
+    if args.method in ("frontier", "verify"):
+        from .frontier_policy import FrontierPolicy
+        policy = FrontierPolicy(args.seed, detector, args.method == "verify")
+    elif args.method == "core":
         from .core_policy import CoreSearchPolicy
-        policy = CoreSearchPolicy(args.seed)
+        policy = CoreSearchPolicy(args.seed, detector)
     else:
-        policy = SearchPolicy(args.method, args.seed)
+        policy = SearchPolicy(args.method, args.seed, detector)
     try:
         for line in sys.stdin.buffer:
             obs = validate_observation(strict_loads(line))

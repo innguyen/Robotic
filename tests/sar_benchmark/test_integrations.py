@@ -6,7 +6,9 @@ import struct
 import sys
 import tempfile
 import threading
+import time
 import unittest
+from unittest.mock import patch
 
 from sar_benchmark.contracts import ContractError, canonical
 from sar_benchmark.scenario_contract import validate_scenario
@@ -66,6 +68,32 @@ class IntegrationTests(unittest.TestCase):
         finally:
             result = worker.close()
         self.assertEqual(result["exit_code"], 0)
+
+    def test_policy_watchdog_covers_worker_that_never_reads_large_input(self):
+        from sar_benchmark.runner import PolicyProcess
+        import subprocess
+        real_popen = subprocess.Popen
+        def sleeper(command,**kwargs):
+            return real_popen([sys.executable,"-c","import time; time.sleep(60)"],**kwargs)
+        with patch("sar_benchmark.runner.subprocess.Popen",side_effect=sleeper):
+            worker = PolicyProcess("sweep",0)
+        errors = []
+        def call():
+            try: worker.act({"large_input":"x"*2_000_000},timeout=.2)
+            except Exception as error: errors.append(error)
+        started = time.monotonic()
+        task = threading.Thread(target=call,daemon=True)
+        task.start();task.join(4)
+        stalled = task.is_alive()
+        if stalled:
+            worker.process.kill();worker.process.wait(timeout=3)
+            task.join(2)
+        try:
+            self.assertFalse(stalled,"stdin write escaped the watchdog")
+            self.assertIsInstance(errors[0],TimeoutError)
+            self.assertLess(time.monotonic()-started,4)
+        finally:
+            worker.close()
 
     def test_optional_core_search_consumes_public_sensors(self):
         try:

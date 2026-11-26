@@ -1,0 +1,18 @@
+{
+  "kind": "PARTIAL_LOCAL_RAW_INDEX",
+  "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\sar-dev-complete",
+  "source_inventory_sha256": "d3bc6dc444e0348a977fdcdff10b3a644a959c029771981934044e59cb1aef80",
+  "source_run_repository_relative": "experiments/ue5_s4/runs/sar-dev-complete",
+  "omitted": {
+    "private/host.jsonl.gz": {
+      "sha256": "b847507a66d3f8131becc98c1b0fab600d59ba066509511d501531cb4c04b536",
+      "bytes": 487013922
+    },
+    "public/observations.jsonl.gz": {
+      "sha256": "921d8dbbefd225d529139c87ecd104cfae9bb7480fe345aa5b129df0a366d6a4",
+      "bytes": 1144613875
+    }
+  },
+  "raw_streams_included": false,
+  "note": "Original run untouched. Scratch captures are already losslessly embedded in raw host stream. A partial index requires original local raw files for audit/replay."
+}

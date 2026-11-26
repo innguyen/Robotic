@@ -1,0 +1,15 @@
+{
+  "observed_epochs": [
+    59,
+    60
+  ],
+  "observed_max_channel_difference": 1,
+  "observed_changed_pixels": 1198,
+  "engine_source_sha256": {
+    "Source/Runtime/Renderer/Private/PostProcess/PostProcessTonemap.cpp": "cd8d8956e0ef65306c1bb22829fc8c8a4443d40916c7e371c08c02b585832b39",
+    "Shaders/Private/PostProcessTonemap.usf": "78af667d9847a96815ec8e40b3f06df7f7e14c00e0f6e255bb16b2338322af6e"
+  },
+  "diagnosis": "UE LDR backbuffer quantization dither is frame dependent, independent of AA/exposure settings",
+  "control": "r.BackbufferQuantizationDitheringOverride=32 suppresses dither below RGB8 quantization; native RGB output remains 8-bit",
+  "verification": "requires subsequent native reset calibration; no threshold relaxed"
+}

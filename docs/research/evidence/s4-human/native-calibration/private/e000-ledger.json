@@ -1,0 +1,121 @@
+{
+  "epoch": 1,
+  "budget_ns": 500000000,
+  "victims": [
+    {
+      "gt_id": "v0",
+      "anchor_m": [
+        4.0,
+        0.5,
+        1.2569248733683454
+      ]
+    }
+  ],
+  "frames": {
+    "0": {
+      "epoch": 1,
+      "capture_ns": 0,
+      "available_ns": 0,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "0131c34da2755cdae6515b534d20235034d8443aacb59b4529f8e30d0d0760ed"
+    },
+    "1": {
+      "epoch": 1,
+      "capture_ns": 100000000,
+      "available_ns": 100000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 800,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "dfc2e1e85be4f9c65ac4767714941bb208ec3471b2ac795e51efe1ecd8a2a47b"
+    },
+    "2": {
+      "epoch": 1,
+      "capture_ns": 200000000,
+      "available_ns": 200000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 801,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "bac8255f0d2f50b50111e164086f50e3afc8e357b77991f628e49fb5ebcf2659"
+    },
+    "3": {
+      "epoch": 1,
+      "capture_ns": 300000000,
+      "available_ns": 300000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 802,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "20f66a0c4f5e43537042e22e0b7e4e380c6630a15beb1b07e935ce1a1122abf2"
+    },
+    "4": {
+      "epoch": 1,
+      "capture_ns": 400000000,
+      "available_ns": 400000000,
+      "width": 320,
+      "height": 240,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 804,
+          "bbox": [
+            131,
+            73,
+            147,
+            148
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "886e360e0b0c86461dba88a9e70504c5c831fa053ca777da52b83b41af7f3362"
+    }
+  },
+  "reports": [],
+  "safety_events": [],
+  "path_m": 0.01,
+  "terminal_reason": "FINISH",
+  "terminal_ns": 400000000
+}

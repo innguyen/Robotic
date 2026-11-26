@@ -1,0 +1,54 @@
+{
+  "rows": [
+    {
+      "episode": "e000",
+      "method": "core",
+      "family": "collapsed_courtyard",
+      "pair_id": "outdoor-clean-standing-0",
+      "kind": "clean",
+      "perception": 0,
+      "odometry": 0,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.01,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      },
+      "agent_latency_s": [
+        1.4347551999999268,
+        1.7763408000027994,
+        1.6588757999998052,
+        1.2019760000002861,
+        0.9610737999973935
+      ]
+    }
+  ],
+  "rq1": null,
+  "scope": "Human SAR dev scenes; no statistical generalization/empirical sensor fidelity claim",
+  "status": "COMPLETED_DIAGNOSTIC_UE_RUNTIME",
+  "engine_exit_code": 0,
+  "wall_duration_s": 74.83320090000052
+}

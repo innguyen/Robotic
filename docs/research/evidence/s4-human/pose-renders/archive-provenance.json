@@ -1,0 +1,21 @@
+{
+  "kind": "PORTABLE_LOSSLESS_RAW_ARCHIVE",
+  "source_run_absolute": "C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\human-srgb-01",
+  "source_inventory_sha256": "deec96ea9d3a6dc7616055ed7510f7e6acf270d46d4128b36b338d099b6cd5ff",
+  "omitted": {
+    "private/capture-tmp/depth.exr": {
+      "sha256": "0d56e8ea59b71cf19adfae4cf55db77c859cc3898e058569c04d6b9835ba8954",
+      "bytes": 12744
+    },
+    "private/capture-tmp/mask.exr": {
+      "sha256": "6184dfb4993471f9fc6bde755799156d4846dd94824a3e304aaa1acc0744aa52",
+      "bytes": 4316
+    },
+    "private/capture-tmp/rgb.png": {
+      "sha256": "a586839072f760f0b951c4ca44b0e93ff50ccf2bc8de8ec736346da88e224d16",
+      "bytes": 128406
+    }
+  },
+  "raw_streams_included": true,
+  "note": "Original run untouched. Scratch captures are already losslessly embedded in raw host stream. A partial index requires original local raw files for audit/replay."
+}

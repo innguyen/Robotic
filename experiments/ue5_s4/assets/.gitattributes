@@ -1,0 +1,4 @@
+# Keep byte-pinned inputs and derived geometry intact across Git EOL settings.
+source/* -text
+derived/* -text
+manifest.json -text

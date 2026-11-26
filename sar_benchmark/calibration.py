@@ -52,3 +52,38 @@ def calibrate(backend):
             "checks": checks, "axes": records, "reset_initial_states": initial, "epochs": epochs,
             "collision_final_pose": obs["odom"]["pose"], "collision_events": truth["safety_events"],
             "scope": "static proxy axes, collision, zero and same-machine reset repeat only"}
+
+
+def calibrate_human(backend):
+    from .scenarios import sar_scenario
+    records,checks = [],{}
+    for distance in (.6,1.,2.,4.):
+        config = sar_scenario("absent",environment="outdoor",depth_model="ideal")
+        config["boxes"] = [{"id":"calibration_plane","center_m":[distance+.26,0,2.],"size_m":[.02,10.,6.]}]
+        obs,_ = backend.reset(config,30)
+        width,height = obs["camera"]["width"],obs["camera"]["height"]
+        samples = [obs["depth_m"]["data"][(height//2)*width+col] for col in (width//4,width//2,3*width//4)]
+        error = max(abs(value-distance) for value in samples if value is not None)
+        checks[f"plane_{distance}m"] = len(samples)==3 and all(v is not None for v in samples) and error < .01
+        records.append({"distance_m":distance,"optical_Z_samples_m":samples,"max_error_m":error})
+    config = sar_scenario("clean",environment="outdoor",depth_model="ideal")
+    states = []
+    for _ in range(10):
+        obs,truth = backend.reset(config,30)
+        states.append({"epoch":obs["epoch"],"pose":obs["odom"]["pose"],"scan_hash":hashlib.sha256(canonical(obs["scan"]["ranges_m"])).hexdigest(),
+                       "rgb_hash":hashlib.sha256(canonical(obs["rgb"]["data"])).hexdigest(),"visible":truth["frame"]["visible"]})
+    checks["epoch_unique"] = len({s["epoch"] for s in states})==10
+    checks["reset_pose_scan_repeat"] = len({canonical([s["pose"],s["scan_hash"]]) for s in states})==1
+    checks["reset_render_repeat"] = len({s["rgb_hash"] for s in states})==1
+    checks["visible_rendered_human"] = all(s["visible"].get("v0",{}).get("pixels",0)>=25 for s in states)
+    checks["scan_count_matches_host"] = len(obs["scan"]["ranges_m"]) in (360,720)
+    for axis,action,expected in (("forward",[.3,0,0],[.03,0,0]),("left",[0,.2,0],[0,.02,0]),("yaw",[0,0,.6],[0,0,.06])):
+        obs,_ = backend.reset(config,30)
+        moved,_ = backend.advance(action)
+        scale = obs.get("action_dt_ns",100_000_000)/100_000_000
+        checks[axis] = max(abs(a-b*scale) for a,b in zip(moved["odom"]["pose"],expected))<1e-5
+        stopped,_ = backend.advance([0,0,0])
+        checks[axis+"_zero"] = max(abs(a-b) for a,b in zip(moved["odom"]["pose"],stopped["odom"]["pose"]))<1e-6
+    backend.stop()
+    return {"status":"PASS_ENGINE_CALIBRATION" if all(checks.values()) else "FAIL_ENGINE_CALIBRATION", "checks":checks,"planes":records,
+            "resets":states,"scope":"native PNG/EXR depth Z, renders, scan, epochs and ideal actuation; not empirical sensor or wheel dynamics calibration"}

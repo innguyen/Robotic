@@ -1,10 +1,21 @@
 """Bounded JSON RPC used only by the trusted host; never handed to the agent."""
 import socket
 import struct
+import zlib
 
 from .contracts import canonical, strict_loads
 
 MAX_BYTES = 16 * 1024 * 1024
+
+
+def decode_payload(payload):
+    if payload.startswith(b"Z"):
+        decoder = zlib.decompressobj()
+        decoded = decoder.decompress(payload[1:], MAX_BYTES + 1)
+        if len(decoded) > MAX_BYTES or decoder.unconsumed_tail or not decoder.eof or decoder.unused_data:
+            raise ValueError("invalid/oversized compressed response")
+        return decoded
+    return payload
 
 
 def receive_exact(sock, size):
@@ -34,7 +45,7 @@ class HostClient:
         size = struct.unpack("!I", receive_exact(self.socket, 4))[0]
         if not 0 < size <= MAX_BYTES:
             raise ValueError("response too large")
-        response = strict_loads(receive_exact(self.socket, size))
+        response = strict_loads(decode_payload(receive_exact(self.socket, size)))
         if response["sequence"] != self.sequence:
             raise ValueError("out-of-order response")
         self.sequence += 1

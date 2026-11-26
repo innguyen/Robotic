@@ -7,8 +7,8 @@ from .policies import SearchPolicy, detections
 
 
 class CoreSearchPolicy(SearchPolicy):
-    def __init__(self, seed=0):
-        super().__init__("sweep", seed)
+    def __init__(self, seed=0, detector=None):
+        super().__init__("sweep", seed, detector)
         core = Path(__file__).resolve().parents[1] / "test version"
         sys.path.insert(0, str(core))
         from collision_monitor_ros1 import Config
@@ -33,10 +33,10 @@ class CoreSearchPolicy(SearchPolicy):
         self.nav.grid = self.nav.costmap.snapshot(pose, now)
         if action["reports"]:
             self.mission = self.SearchMission(self.nav, self.search_config)
-        candidates = [d["position"] for d in detections(obs)
+        candidates = [d["position"] for d in self.current_detections
                       if not any(math.dist(d["position"][:2], p[:2]) < .8 for p in self.reported)]
         target = min(candidates, key=lambda p: math.dist(p[:2], pose[:2]))[:2] if candidates else None
-        twist, _ = self.mission.step(pose, target, .55, now, .1)
+        twist, _ = self.mission.step(pose, target, .55, now, obs.get("action_dt_ns",100_000_000)/1e9)
         action["twist"] = [float(v) for v in twist]
         return action
 

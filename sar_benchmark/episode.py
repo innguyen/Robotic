@@ -36,7 +36,7 @@ class Episode:
         self.sequence = 0
         self.safety = SafetyGate()
         self.commands, self.violations = [], []
-        self.ledger = {"epoch": obs["epoch"], "budget_ns": self.budget_ticks * DT_NS,
+        self.ledger = {"epoch": obs["epoch"], "budget_ns": obs["budget_ns"], "action_dt_ns":obs.get("action_dt_ns",DT_NS),
                        "victims": truth["victims"], "frames": {}, "reports": [],
                        "safety_events": [], "path_m": 0.0, "terminal_reason": None, "terminal_ns": None}
         self.phase, self.obs = Phase.RUNNING, obs

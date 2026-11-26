@@ -1,0 +1,131 @@
+{
+  "frames": [
+    {
+      "episode": "e000",
+      "environment": "indoor",
+      "posture": "standing",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      },
+      "file": "native-indoor-standing-640.png",
+      "epoch": 7,
+      "tick": 0,
+      "sha256": "a61e411048e1c39128a9e3e7c0a3f3c91a1c9e5aec2d52440add3d5871beea47",
+      "source_run": "sar-profile-stable"
+    },
+    {
+      "episode": "e001",
+      "environment": "indoor",
+      "posture": "seated",
+      "visible": {
+        "v0": {
+          "pixels": 2687,
+          "bbox": [
+            262,
+            173,
+            294,
+            292
+          ]
+        }
+      },
+      "file": "native-indoor-seated-640.png",
+      "epoch": 8,
+      "tick": 0,
+      "sha256": "80148e905b44d163b71adeb4facd9d1966a1179452e39660f55e996a56920d95",
+      "source_run": "sar-profile-stable"
+    },
+    {
+      "episode": "e002",
+      "environment": "indoor",
+      "posture": "prone",
+      "visible": {
+        "v0": {
+          "pixels": 2789,
+          "bbox": [
+            235,
+            261,
+            386,
+            298
+          ]
+        }
+      },
+      "file": "native-indoor-prone-640.png",
+      "epoch": 9,
+      "tick": 0,
+      "sha256": "cbb5d19b846b0e45c4f68fffdb58783d136d77be357793f682f09c18c9f23833",
+      "source_run": "sar-profile-stable"
+    },
+    {
+      "episode": "e003",
+      "environment": "outdoor",
+      "posture": "standing",
+      "visible": {
+        "v0": {
+          "pixels": 3250,
+          "bbox": [
+            262,
+            146,
+            294,
+            296
+          ]
+        }
+      },
+      "file": "native-outdoor-standing-640.png",
+      "epoch": 10,
+      "tick": 0,
+      "sha256": "39bc17d5fb9000ced7c36367e0ffcbf9d833b7c76e1069e72604231e49f562c4",
+      "source_run": "sar-profile-stable"
+    },
+    {
+      "episode": "e004",
+      "environment": "outdoor",
+      "posture": "seated",
+      "visible": {
+        "v0": {
+          "pixels": 2687,
+          "bbox": [
+            262,
+            173,
+            294,
+            292
+          ]
+        }
+      },
+      "file": "native-outdoor-seated-640.png",
+      "epoch": 11,
+      "tick": 0,
+      "sha256": "86ca884cb206a09e386b714acd81bd525af2a9408afa0f043578b3b620e8df3e",
+      "source_run": "sar-profile-stable"
+    },
+    {
+      "episode": "e005",
+      "environment": "outdoor",
+      "posture": "prone",
+      "visible": {
+        "v0": {
+          "pixels": 2789,
+          "bbox": [
+            235,
+            261,
+            386,
+            298
+          ]
+        }
+      },
+      "file": "native-outdoor-prone-640.png",
+      "epoch": 12,
+      "tick": 0,
+      "sha256": "ae9f7d0cdc1168173c72cb2c15e1abfdb4f67326348f093589eb3c101333ac47",
+      "source_run": "sar-profile-stable"
+    }
+  ],
+  "scope": "Unmodified native PNGs from scored policy observations, not admission views"
+}

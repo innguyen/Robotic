@@ -1,0 +1,5 @@
+{
+  "status": "FAILED",
+  "traceback": "Traceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\runner.py\", line 251, in main\n    if episode.phase == Phase.RUNNING:\nRuntimeError: engine calibration failed; see calibration.json\n",
+  "completed_episodes": 54
+}

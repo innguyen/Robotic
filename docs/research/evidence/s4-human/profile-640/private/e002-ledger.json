@@ -1,0 +1,102 @@
+{
+  "epoch": 9,
+  "budget_ns": 400000000,
+  "action_dt_ns": 100000000,
+  "victims": [
+    {
+      "gt_id": "v0",
+      "anchor_m": [
+        4.0,
+        0.5,
+        0.14455146595676305
+      ]
+    }
+  ],
+  "frames": {
+    "0": {
+      "epoch": 9,
+      "capture_ns": 0,
+      "available_ns": 0,
+      "width": 640,
+      "height": 480,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 2789,
+          "bbox": [
+            235,
+            261,
+            386,
+            298
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "013bdbf4a5908d3d01b09c115054cf23fab2dc1725907173bfd1d21d9004bfe8"
+    },
+    "1": {
+      "epoch": 9,
+      "capture_ns": 100000000,
+      "available_ns": 100000000,
+      "width": 640,
+      "height": 480,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 2776,
+          "bbox": [
+            238,
+            261,
+            389,
+            297
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "8df4c4b962989ca0d48aeb7c73e249b9df792ae7dd765ab162646d7865d5b185"
+    },
+    "2": {
+      "epoch": 9,
+      "capture_ns": 200000000,
+      "available_ns": 200000000,
+      "width": 640,
+      "height": 480,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 2775,
+          "bbox": [
+            246,
+            261,
+            397,
+            297
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "a3fe07c44b4637555ffccd300be05820fbd71c2e476b02fc1a97cafc27dc5f18"
+    },
+    "3": {
+      "epoch": 9,
+      "capture_ns": 300000000,
+      "available_ns": 300000000,
+      "width": 640,
+      "height": 480,
+      "valid": true,
+      "visible": {
+        "v0": {
+          "pixels": 2793,
+          "bbox": [
+            256,
+            261,
+            408,
+            297
+          ]
+        }
+      },
+      "delivered_rgb_sha256": "54c8f34af2358a766c6e7a535d23062d22d5a9ec5a4490dd7f02d1aaaab82a8a"
+    }
+  },
+  "reports": [],
+  "safety_events": [],
+  "path_m": 0.0,
+  "terminal_reason": "FINISH",
+  "terminal_ns": 300000000
+}

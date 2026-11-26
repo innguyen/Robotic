@@ -1,0 +1,141 @@
+{
+  "scope": "All development attempts, including failures and intentional stops; no selection of best outcome as main result",
+  "attempts": [
+    {
+      "run": "human-import-01",
+      "local_path": "experiments\\ue5_s4\\runs\\human-import-01",
+      "reason": "Completed initial human/ONNX integration, older linear RGB readback",
+      "completed_episodes": 1,
+      "result_status": "COMPLETED_DIAGNOSTIC_UE_RUNTIME",
+      "engine_exit_code": 0,
+      "failure": null
+    },
+    {
+      "run": "human-postures-01",
+      "local_path": "experiments\\ue5_s4\\runs\\human-postures-01",
+      "reason": "Manually stopped owned UE process: per-pixel native readback too slow",
+      "completed_episodes": 1,
+      "result_status": null,
+      "engine_exit_code": null,
+      "failure": {
+        "status": "FAILED",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\episode.py\", line 78, in submit\n    obs, truth = self.backend.advance(checked)\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\ue_backend.py\", line 32, in advance\n    return self._convert(self.client.call(\"step\", {\"twist\": action}), action)\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\transport.py\", line 34, in call\n    size = struct.unpack(\"!I\", receive_exact(self.socket, 4))[0]\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\transport.py\", line 13, in receive_exact\n    piece = sock.recv(size)\nConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\runner.py\", line 207, in main\n    obs, ack = episode.submit(action)\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\episode.py\", line 86, in submit\n    self.terminate(\"INFRA_ERROR\")\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\episode.py\", line 98, in terminate\n    self.backend.stop()\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\ue_backend.py\", line 90, in stop\n    return self.client.call(\"stop\")\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\transport.py\", line 33, in call\n    self.socket.sendall(struct.pack(\"!I\", len(request)) + request)\nConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host\n",
+        "completed_episodes": 1
+      }
+    },
+    {
+      "run": "human-masks-01",
+      "local_path": "experiments\\ue5_s4\\runs\\human-masks-01",
+      "reason": "Failed native show-only property API; fixed with component API",
+      "completed_episodes": 0,
+      "result_status": null,
+      "engine_exit_code": null,
+      "failure": {
+        "status": "FAILED",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\runner.py\", line 198, in main\n    obs = episode.reset()\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\episode.py\", line 32, in reset\n    obs, truth = self.backend.reset(self.scenario, self.budget_ticks)\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\ue_backend.py\", line 27, in reset\n    raw = self.client.call(\"reset\", scenario)\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\transport.py\", line 42, in call\n    raise RuntimeError(response[\"error\"])\nRuntimeError: Traceback (most recent call last):\n  File \"C:/Projects/Robotic/experiments/ue5_s4/runs/human-masks-01/source/experiments/ue5_s4/editor_server.py\", line 289, in tick\n    response[\"result\"] = self.world.observe()\n                         ^^^^^^^^^^^^^^^^^^^^\n  File \"C:/Projects/Robotic/experiments/ue5_s4/runs/human-masks-01/source/experiments/ue5_s4/editor_server.py\", line 241, in observe\n    visible = self.human_builder.rendered_visibility(self,origin,yaw,depth)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Projects\\Robotic\\experiments\\ue5_s4\\runs\\human-masks-01\\source\\experiments\\ue5_s4\\human_scene.py\", line 98, in rendered_visibility\n    self.mask_sensor.set_editor_property(\"show_only_actors\",[victim[\"torso\"]])\nException: SceneCaptureComponent2D: Property 'ShowOnlyActors' for attribute 'show_only_actors' on 'SceneCaptureComponent2D' cannot be edited on templates\n\n",
+        "completed_episodes": 0
+      }
+    },
+    {
+      "run": "human-masks-02",
+      "local_path": "experiments\\ue5_s4\\runs\\human-masks-02",
+      "reason": "Completed rendered-mask integration, older readback path",
+      "completed_episodes": 4,
+      "result_status": "COMPLETED_DIAGNOSTIC_UE_RUNTIME",
+      "engine_exit_code": 0,
+      "failure": null
+    },
+    {
+      "run": "human-exr-01",
+      "local_path": "experiments\\ue5_s4\\runs\\human-exr-01",
+      "reason": "Completed PNG/EXR optimization and native calibration",
+      "completed_episodes": 1,
+      "result_status": "COMPLETED_DIAGNOSTIC_UE_RUNTIME",
+      "engine_exit_code": 0,
+      "failure": null
+    },
+    {
+      "run": "human-srgb-01",
+      "local_path": "experiments\\ue5_s4\\runs\\human-srgb-01",
+      "reason": "Completed six pose/environment smoke episodes; detector misses retained",
+      "completed_episodes": 6,
+      "result_status": "COMPLETED_DIAGNOSTIC_UE_RUNTIME",
+      "engine_exit_code": 0,
+      "failure": null
+    },
+    {
+      "run": "sar-pilot-final",
+      "local_path": "experiments\\ue5_s4\\runs\\sar-pilot-final",
+      "reason": "Manually stopped after discovering premature subthreshold reporting/dedup bug",
+      "completed_episodes": 0,
+      "result_status": null,
+      "engine_exit_code": null,
+      "failure": {
+        "status": "FAILED",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\episode.py\", line 78, in submit\n    obs, truth = self.backend.advance(checked)\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\ue_backend.py\", line 33, in advance\n    return self._convert(self.client.call(\"step\", {\"twist\": action}), action)\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\transport.py\", line 45, in call\n    size = struct.unpack(\"!I\", receive_exact(self.socket, 4))[0]\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\transport.py\", line 24, in receive_exact\n    piece = sock.recv(size)\nConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\runner.py\", line 214, in main\n    obs, ack = episode.submit(action)\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\episode.py\", line 86, in submit\n    self.terminate(\"INFRA_ERROR\")\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\episode.py\", line 98, in terminate\n    self.backend.stop()\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\ue_backend.py\", line 108, in stop\n    return self.client.call(\"stop\")\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\transport.py\", line 44, in call\n    self.socket.sendall(struct.pack(\"!I\", len(request)) + request)\nConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host\n",
+        "completed_episodes": 0
+      }
+    },
+    {
+      "run": "sar-dev-verified",
+      "local_path": "experiments\\ue5_s4\\runs\\sar-dev-verified",
+      "reason": "Manually stopped after two completed episodes to use validated array-copy optimization and editor render cap",
+      "completed_episodes": 2,
+      "result_status": null,
+      "engine_exit_code": null,
+      "failure": {
+        "status": "FAILED",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\episode.py\", line 78, in submit\n    obs, truth = self.backend.advance(checked)\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\ue_backend.py\", line 33, in advance\n    return self._convert(self.client.call(\"step\", {\"twist\": action}), action)\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\transport.py\", line 45, in call\n    size = struct.unpack(\"!I\", receive_exact(self.socket, 4))[0]\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\transport.py\", line 24, in receive_exact\n    piece = sock.recv(size)\nConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\runner.py\", line 214, in main\n    action = policy.act(obs)\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\episode.py\", line 86, in submit\n    self.terminate(\"INFRA_ERROR\")\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\episode.py\", line 98, in terminate\n    self.backend.stop()\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\ue_backend.py\", line 108, in stop\n    return self.client.call(\"stop\")\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\transport.py\", line 44, in call\n    self.socket.sendall(struct.pack(\"!I\", len(request)) + request)\nConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host\n",
+        "completed_episodes": 2
+      }
+    },
+    {
+      "run": "sar-dev-complete",
+      "local_path": "experiments\\ue5_s4\\runs\\sar-dev-complete",
+      "reason": "All 54 episodes finished, strict RGB reset calibration failed; data integrity PASS, run acceptance FAIL",
+      "completed_episodes": 54,
+      "result_status": null,
+      "engine_exit_code": 0,
+      "failure": {
+        "status": "FAILED",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\runner.py\", line 251, in main\n    if episode.phase == Phase.RUNNING:\nRuntimeError: engine calibration failed; see calibration.json\n",
+        "completed_episodes": 54
+      },
+      "inventory_sha256": "d3bc6dc444e0348a977fdcdff10b3a644a959c029771981934044e59cb1aef80"
+    },
+    {
+      "run": "sar-profile-acceptance",
+      "local_path": "experiments\\ue5_s4\\runs\\sar-profile-acceptance",
+      "reason": "Dither precision override alone: six 640x480 pose episodes, strict RGB reset still failed",
+      "completed_episodes": 6,
+      "result_status": null,
+      "engine_exit_code": 0,
+      "failure": {
+        "status": "FAILED",
+        "traceback": "Traceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\runner.py\", line 280, in main\n    from .calibration import calibrate, calibrate_human\nRuntimeError: engine calibration failed; see calibration.json\n",
+        "completed_episodes": 6
+      },
+      "inventory_sha256": "abecb9043ab6fb5858598c18b49d460012b72ce099f112a3575c418ac5542f6d"
+    },
+    {
+      "run": "sar-reset-light-order",
+      "local_path": "experiments\\ue5_s4\\runs\\sar-reset-light-order",
+      "reason": "Persistent light registration: 15 strict calibration checks PASS",
+      "completed_episodes": 1,
+      "result_status": "COMPLETED_HUMAN_DEV_UE_RUNTIME",
+      "engine_exit_code": 0,
+      "failure": null,
+      "inventory_sha256": "6085cabe343fdc37f11b5990623e745477efa6e46ae21e2bb2eedb8397d26721"
+    },
+    {
+      "run": "sar-profile-stable",
+      "local_path": "experiments\\ue5_s4\\runs\\sar-profile-stable",
+      "reason": "640x480/720 rays, six poses/environment cases, admission and 15 calibration checks PASS",
+      "completed_episodes": 6,
+      "result_status": "COMPLETED_HUMAN_DEV_UE_RUNTIME",
+      "engine_exit_code": 0,
+      "failure": null,
+      "inventory_sha256": "6c6994571cec9e7ff0952f59ec289d824e115aa0b67adbc4d593927a04f64843"
+    }
+  ]
+}

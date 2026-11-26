@@ -1,0 +1,20 @@
+{
+  "captured_utc": "2026-11-26T02:08:43.395031+00:00",
+  "scope": "Environment observed during S4 work; earlier manifests did not attest package versions at launch",
+  "python": "3.10.11 (tags/v3.10.11:7d4cc5a, Apr  5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]",
+  "python_executable": "C:\\Users\\lemin\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "numpy_version": "2.2.6",
+  "opencv_version": "4.14.0",
+  "package_distributions": {
+    "numpy": "2.2.6",
+    "opencv-python": "5.0.0.93",
+    "opencv-python-headless": "4.14.0.94"
+  },
+  "opencv_binary_sha256": {
+    "cv2.pyd": "441542da947fb1d51b4e1c4654ceb191bd7748f917a5f88dfeb50dc7d5221241"
+  },
+  "policy_opencv_threads": 1,
+  "policy_threads_provenance": "OnnxPersonDetector explicitly calls cv2.setNumThreads(1)",
+  "exr_enabled_for_trusted_native_readbacks": "1"
+}

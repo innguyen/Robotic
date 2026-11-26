@@ -16,7 +16,13 @@ from sar_benchmark.artifacts import write_json
 def collect():
     tracked = subprocess.check_output(["git", "ls-files", "-z"], cwd=ROOT).decode().split("\0")
     changed = subprocess.check_output(["git", "diff", "--name-only", "HEAD"], cwd=ROOT).decode().splitlines()
-    protected = [name for name in tracked if name and not name.startswith("docs/research/")]
+    # The continuation authorizes these implementation paths and the canonical
+    # generated S2 world. Existing accepted evidence is always protected.
+    mutable_prefixes = ("sar_benchmark/", "experiments/ue5_s4/", "tests/sar_benchmark/", "docs/research/tools/")
+    def mutable(name):
+        return (name.startswith(mutable_prefixes) or name == "experiments/webots_s2/worlds/s2_search.wbt"
+                or name in ("docs/research/s4-audit.md",))
+    protected = [name for name in tracked if name and not mutable(name)]
     altered = [name for name in changed if name in protected]
     digest = hashlib.sha256()
     for name in protected:
