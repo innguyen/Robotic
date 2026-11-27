@@ -1,0 +1,92 @@
+{
+  "environment": "outdoor",
+  "epoch": 7,
+  "passed": true,
+  "routes": {
+    "north_aisle": {
+      "expected_clear": true,
+      "hits": [],
+      "waypoints_m": [
+        [
+          0,
+          0
+        ],
+        [
+          1.0,
+          1.15
+        ],
+        [
+          1.5,
+          1.77
+        ],
+        [
+          2.87,
+          1.77
+        ],
+        [
+          3.22,
+          1.5
+        ],
+        [
+          3.65,
+          0.96
+        ],
+        [
+          4.23,
+          0.42
+        ]
+      ]
+    },
+    "south_aisle": {
+      "expected_clear": true,
+      "hits": [],
+      "waypoints_m": [
+        [
+          0,
+          0
+        ],
+        [
+          1.27,
+          -0.7
+        ],
+        [
+          1.49,
+          -1.99
+        ],
+        [
+          3.81,
+          -2.0
+        ],
+        [
+          4.23,
+          -1.25
+        ],
+        [
+          4.23,
+          0.42
+        ]
+      ]
+    },
+    "through_barrier": {
+      "expected_clear": false,
+      "hits": [
+        {
+          "actor": "jersey_barrier",
+          "distance_m": 2.266676330566406,
+          "segment": 0
+        }
+      ],
+      "waypoints_m": [
+        [
+          0,
+          0
+        ],
+        [
+          3.16,
+          0.5
+        ]
+      ]
+    }
+  },
+  "scope": "Private 40 x 40 x 30 cm axis-aligned swept chassis, centre Z 20 cm. Static translation only."
+}

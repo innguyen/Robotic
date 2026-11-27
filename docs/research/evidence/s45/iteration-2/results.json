@@ -1,0 +1,115 @@
+{
+  "rows": [
+    {
+      "episode": "e000",
+      "method": "frontier",
+      "family": "indoor_damaged_assets_v3",
+      "pair_id": "indoor-clean-standing-0",
+      "kind": "clean",
+      "perception": 0,
+      "odometry": 0,
+      "metrics": {
+        "tp": 0,
+        "fp": 0,
+        "victims": 1,
+        "matches": [],
+        "recall": 0.0,
+        "safe_localization_recall": 0.0,
+        "precision": null,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": false,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.0,
+        "safe_time_integrated_recall": 0.0,
+        "first_correct_ns": null,
+        "restricted_first_ns": 2000000000,
+        "localization_xy_m": [],
+        "localization_median_m": null,
+        "localization_p90_m": null,
+        "covariance_matched_inliers_only": [],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": null,
+        "terminal_reason": "FINISH"
+      },
+      "agent_latency_s": [
+        2.6789542000042275,
+        2.064447700002347,
+        2.0577704000024823,
+        2.2032586999994237
+      ]
+    },
+    {
+      "episode": "e001",
+      "method": "frontier",
+      "family": "outdoor_damaged_assets_v3",
+      "pair_id": "outdoor-clean-standing-0",
+      "kind": "clean",
+      "perception": 0,
+      "odometry": 0,
+      "metrics": {
+        "tp": 1,
+        "fp": 0,
+        "victims": 1,
+        "matches": [
+          [
+            0,
+            0
+          ]
+        ],
+        "recall": 1.0,
+        "safe_localization_recall": 1.0,
+        "precision": 1.0,
+        "duplicate_reports": 0,
+        "invalid_reports": 0,
+        "report_reasons": [
+          null
+        ],
+        "safe": true,
+        "unsafe": false,
+        "mission_complete": true,
+        "absent_false_alarm": null,
+        "absent_specificity": null,
+        "time_integrated_recall": 0.75,
+        "safe_time_integrated_recall": 0.75,
+        "first_correct_ns": 500000000,
+        "restricted_first_ns": 500000000,
+        "localization_xy_m": [
+          0.059216480995340784
+        ],
+        "localization_median_m": 0.059216480995340784,
+        "localization_p90_m": 0.059216480995340784,
+        "covariance_matched_inliers_only": [
+          {
+            "report": 0,
+            "mahalanobis2": 0.35065916214715565,
+            "nll_xy": -2.591963538505168,
+            "within_50": true,
+            "within_90": true,
+            "within_95": true
+          }
+        ],
+        "uncertainty_unavailable_count": 0,
+        "path_m": 0.0,
+        "brier": 0.20187085695546614,
+        "terminal_reason": "FINISH"
+      },
+      "agent_latency_s": [
+        1.9791366000063135,
+        2.795786599999701,
+        1.9870661000022665,
+        3.5866170000008424
+      ]
+    }
+  ],
+  "rq1": null,
+  "scope": "Human SAR dev scenes; no statistical generalization/empirical sensor fidelity claim",
+  "status": "FAILED_ENGINE_EXIT",
+  "engine_exit_code": 1,
+  "wall_duration_s": 489.44128899999487
+}

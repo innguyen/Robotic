@@ -143,7 +143,7 @@ def main():
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--suite", choices=("smoke", "pilot", "sar-smoke", "sar-pilot"), default="smoke")
     parser.add_argument("--environments", nargs="+", choices=("indoor","outdoor"), default=["indoor","outdoor"])
-    parser.add_argument("--scene-set",choices=("legacy","assets"),default="legacy")
+    parser.add_argument("--scene-set",choices=("legacy","assets","reference"),default="legacy")
     parser.add_argument("--cases", nargs="+", choices=("clean","occluded","absent","multi","obstacles","blocked"), default=["clean","occluded","absent","multi","obstacles","blocked"])
     parser.add_argument("--postures", nargs="+", choices=("standing","seated","prone"), default=["standing"])
     parser.add_argument("--size", default="320x240", choices=("160x120","320x240","640x480"))
@@ -167,11 +167,13 @@ def main():
         values = getattr(args,name)
         if len(values) != len(set(values)): parser.error("duplicate "+name)
     human = args.suite.startswith("sar")
-    if args.scene_set=="assets" and not human:parser.error("asset scenes require human SAR suite")
+    if args.scene_set!="legacy" and not human:parser.error("asset scenes require human SAR suite")
     if args.overview and not human: parser.error("overview requires a human SAR suite")
     if human:
-        if args.scene_set=="assets":
+        if args.scene_set!="legacy":
             required=("environment/lock.json","environment/meshes.json","anatomy/lock.json","anatomy/derived/poses.json","anatomy/dressed/poses.json")
+            if args.scene_set=="reference":
+                required += ("environment45/lock.json","environment45/meshes.json")
             if not all((ROOT/"experiments/ue5_s4/assets"/name).is_file() for name in required):
                 parser.error("restore/bake the locked environment and anatomy assets first")
         args.model = (args.model or ROOT / "experiments/ue5_s4/assets/source/yolov5n-v7.onnx").resolve()
@@ -230,23 +232,23 @@ def main():
     clock = time.get_clock_info("monotonic")
     manifest["runner_monotonic_clock"] = {"implementation":clock.implementation,"resolution_s":clock.resolution}
     if human:
-        active_poses=ROOT/"experiments/ue5_s4/assets"/("anatomy/dressed/poses.json" if args.scene_set=="assets" else "derived/poses.json")
+        active_poses=ROOT/"experiments/ue5_s4/assets"/("anatomy/dressed/poses.json" if args.scene_set!="legacy" else "derived/poses.json")
         manifest.update(track="sar_human_dev_static_synthetic", rgbd_size=[int(x) for x in args.size.split("x")],
                         detector="official_yolov5n_v7_person" if verified_model else "user_supplied_coco85_ONNX_unverified_provenance", model_sha256=digest(args.model), confidence=args.confidence,
                         scan_rays=args.scan_rays, depth_model=args.depth_model, asset_manifest_sha256=digest(ROOT / "experiments/ue5_s4/assets/manifest.json"),
                         derived_pose_manifest_sha256=digest(active_poses),
-                        human_asset_profile="makehuman_dressed_v2" if args.scene_set=="assets" else "cesium_man_legacy")
+                        human_asset_profile="makehuman_dressed_v2" if args.scene_set!="legacy" else "cesium_man_legacy")
         shutil.copyfile(ROOT / "experiments/ue5_s4/assets/manifest.json", store.path / "asset-manifest.json")
         shutil.copyfile(active_poses, store.path / "human-pose-manifest.json")
-        if args.scene_set=="assets":
-            manifest["scene_set"]="assets"
+        if args.scene_set!="legacy":
+            manifest["scene_set"]=args.scene_set
             manifest["scene_asset_manifests"]={}
-            for relative in ("environment/lock.json","environment/meshes.json","anatomy/lock.json","anatomy/derived/poses.json","anatomy/dressed/poses.json"):
+            for relative in required:
                 name=relative.replace("/","-")
                 shutil.copyfile(ROOT/"experiments/ue5_s4/assets"/relative,store.path/name)
                 manifest["scene_asset_manifests"][name]=digest(store.path/name)
             # Exact bytes used by the importer are retained, not just live paths.
-            for directory in ("environment","anatomy"):
+            for directory in dict.fromkeys(name.split("/")[0] for name in required):
                 shutil.copytree(ROOT/"experiments/ue5_s4/assets"/directory,store.path/"asset-inputs"/directory,
                                 ignore=shutil.ignore_patterns("__pycache__"))
             shutil.copytree(ROOT/"experiments/ue5_s4/assets/derived",store.path/"asset-inputs/derived")
@@ -304,6 +306,10 @@ def main():
                         views = [(stem,{})]
                         if config.get("scene_variant")=="indoor_damaged_assets_v2":
                             views.append((stem+"-breach",{"view":"breach"}))
+                        if args.scene_set=="reference":
+                            views.extend((stem+"-"+v,{"view":v}) for v in ("breach","detail","workstation"))
+                            if method==args.methods[0] and config["kind"]=="clean":
+                                write_json(store.path/"private"/(prefix+"-routes.json"),client.call("survey_routes",{}))
                         for name, arguments in views:
                             qa = client.call("overview",arguments)
                             qa_png = store.path/"private"/(name+".png")
@@ -358,11 +364,11 @@ def main():
         if args.calibrate:
             failure_phase = "calibration"
             calibration = calibrate_human(backend) if human else calibrate(backend)
-            if args.scene_set=="assets":
-                asset_calibration=calibrate_asset_scenes(backend)
+            if args.scene_set!="legacy":
+                asset_calibration=calibrate_asset_scenes(backend,args.scene_set)
                 write_json(store.path/"asset-calibration.json",asset_calibration)
                 calibration["checks"]["asset_scenes_reset_visibility"]=asset_calibration["status"]=="PASS_ENGINE_CALIBRATION"
-                geometry_calibration=calibrate_asset_geometry(backend)
+                geometry_calibration=calibrate_asset_geometry(backend,args.scene_set)
                 write_json(store.path/"asset-geometry-calibration.json",geometry_calibration)
                 calibration["checks"]["asset_native_geometry_probe"]=geometry_calibration["status"]=="PASS_ENGINE_CALIBRATION"
                 calibration["status"]="PASS_ENGINE_CALIBRATION" if all(calibration["checks"].values()) else "FAIL_ENGINE_CALIBRATION"
@@ -383,9 +389,12 @@ def main():
             client.close()
         if engine:
             try:
-                engine.wait(timeout=30)
+                # On integrated GPUs the larger reference site can take over
+                # 30 s to release textures and unload editor modules on exit.
+                engine.wait(timeout=120 if args.scene_set == "reference" else 30)
             except subprocess.TimeoutExpired:
                 # Only the process created above is terminated.
+                store.event({"type": "engine_shutdown_timeout"})
                 engine.kill()
                 engine.wait(timeout=10)
             store.event({"type": "engine_exit", "exit_code": engine.returncode})

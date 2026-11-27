@@ -1,0 +1,35 @@
+{
+  "inventory": true,
+  "reference_episodes": 2,
+  "public_packets": 6,
+  "source_snapshot": true,
+  "errors": [],
+  "engine_exit_code": 0,
+  "engine_clean_exit": true,
+  "robot_visual_geometry": true,
+  "delivery_timing_packets": 6,
+  "host_runner_clock_implementation_matches": true,
+  "native_capture_packets": 6,
+  "native_capture_window_wall_s": 40.0,
+  "readback_interval_s": {
+    "median": 0.2655,
+    "max": 1.188
+  },
+  "missing_native_scored_frames": 0,
+  "asset_manifest_checks": {
+    "asset-manifest.json": "PASS",
+    "human-pose-manifest.json": "PASS"
+  },
+  "scene_input_bytes_verified": 268,
+  "controls": {},
+  "data_integrity_status": "PASS_OFFLINE_DATA_AUDIT",
+  "requested_calibration_status": "NOT_REQUESTED",
+  "run_acceptance_errors": [],
+  "directional_counts": [
+    1
+  ],
+  "asset_material_compile_failures": [],
+  "scheduled_episode_count": 2,
+  "verified_scheduled_episode_identities": 2,
+  "status": "PASS_OFFLINE_AUDIT"
+}

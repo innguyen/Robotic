@@ -40,6 +40,11 @@ class World:
                                   "sg.TextureQuality":level,"sg.EffectsQuality":level,"sg.FoliageQuality":level,
                                   "r.AntiAliasingMethod":1 if level else 0,
                                   "r.DefaultFeature.AutoExposure":0,"r.DefaultFeature.MotionBlur":0}
+        if os.environ.get("SAR_SCENE_SET")=="reference":
+            # Avoid view-edge AO/SSR history and camera-dependent mip arrivals.
+            # Keep the native sun, cast shadows, cubemap and PBR lighting.
+            self.renderer_settings.update({"r.AmbientOcclusionLevels":0,"r.SSR.Quality":0,
+                                          "r.Streaming.FullyLoadUsedTextures":1})
         for name,value in self.renderer_settings.items():
             ue.SystemLibrary.execute_console_command(self.world,name+" "+str(value))
         # Static transactions need a few barrier frames, not an uncapped editor
@@ -51,6 +56,8 @@ class World:
         # controlled sensor noise belongs to the seeded response layer.
         ue.SystemLibrary.execute_console_command(self.world, "r.BackbufferQuantizationDitheringOverride 32")
         self.spawned = []
+        self.static_actors = []
+        self.static_layout = None
         self.epoch = self.tick = 0
         self.path = 0.0
         self.events = []
@@ -112,9 +119,19 @@ class World:
         validate_scenario(config)
         require(vector(config.get("start_m"), 3), "invalid start")
         require(len(config.get("victims", [])) <= 3, "too many victims")
+        layout = None
+        if config.get("scene_variant","").endswith("_v3"):
+            seats = [v for v in config["victims"] if v["posture"]=="seated"]
+            layout = (config["scene_variant"],config["boxes"],seats)
+        self.reuse_layout = layout is not None and layout==self.static_layout
+        keep = set(self.static_actors) if self.reuse_layout else set()
         for actor in self.spawned:
-            self.actors.destroy_actor(actor)
-        self.spawned.clear()
+            if actor not in keep:
+                self.actors.destroy_actor(actor)
+        self.spawned = [actor for actor in self.spawned if actor in keep]
+        self.static_actors = list(self.spawned)
+        if not self.reuse_layout:
+            self.static_layout = None
         self.epoch += 1
         self.tick, self.path, self.events = 0, 0.0, []
         self.config = config
@@ -123,6 +140,7 @@ class World:
         self.victims = []
         if self.human:
             self.human_builder.build_human_scene(self, config)
+            self.static_layout = layout
         else:
             self.shape("floor", [3, 0, -.1], [14, 12, .1])
             for item in config["boxes"]:
@@ -141,6 +159,8 @@ class World:
         if self.human:
             self.human_builder.robot_visual(self)
         self._geometry_check(reset=True)
+        if config.get("scene_variant","").endswith("_v3"):
+            ue.SystemLibrary.execute_console_command(self.world,"Editor.AsyncAssetCompilationFinishAll")
         self.last_motion = {"requested_body_twist": [0.0] * 3, "actual_world_delta_per_s": [0.0] * 3}
 
     def _geometry_check(self, reset=False):
@@ -396,7 +416,11 @@ class Server:
                     result = {"stopped": True, "tick": self.world.tick}
                 elif op == "overview":
                     require(self.world.human and self.world.config is not None,"overview requires a reset human scene")
-                    result = self.world.human_builder.overview(self.world,breach=args.get("view")=="breach")
+                    result = self.world.human_builder.overview(self.world,view=args.get("view"))
+                elif op == "survey_routes":
+                    require(self.world.config and self.world.config.get("scene_variant","").endswith("_v3"),"reference scene required")
+                    from experiments.ue5_s4.reference_scene import survey_routes
+                    result = survey_routes(self.world)
                 elif op == "shutdown":
                     self.exiting, result = True, {"closing": True}
                 else:

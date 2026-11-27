@@ -18,7 +18,8 @@ def validate_scenario(config):
     assets="scene_variant" in config
     if assets:
         require(config["scene_variant"] in (config["environment"]+"_damaged_assets_v1",
-                                             config["environment"]+"_damaged_assets_v2"), "invalid asset scene")
+                                             config["environment"]+"_damaged_assets_v2",
+                                             config["environment"]+"_damaged_assets_v3"), "invalid asset scene")
     require(config["schema_version"] == PROTOCOL, "unsupported scenario version")
     require(config["kind"] in ("clean", "occluded", "absent", "multi", "sensor_black", "obstacles", "blocked"), "unsupported scenario kind")
     require(human or config["kind"] not in ("obstacles","blocked"), "navigation challenges require human profile")
@@ -30,6 +31,11 @@ def validate_scenario(config):
             -math.pi <= config["start_yaw"] <= math.pi, "invalid start pose")
     require(type(config["sensor_black"]) is bool and config["sensor_black"] == (config["kind"] == "sensor_black"), "invalid black control")
     require(type(config["boxes"]) is list and len(config["boxes"]) <= 30, "invalid boxes")
+    registered = {}
+    if config.get("scene_variant","").endswith("_v3"):
+        from .asset_scenarios import reference_layout
+        boxes,_ = reference_layout(config["environment"])
+        registered = {b["id"]:b for b in boxes if b.get("mesh")=="reference_surface"}
     seen = set()
     for box in config["boxes"]:
         fields(box, ("id", "center_m", "size_m"), (("material","mesh") if assets else ("material",)) if human else ())
@@ -37,7 +43,8 @@ def validate_scenario(config):
             require(box["material"] in ("Concrete", "Brick", "Metal") + (("Debris",)+PROP_IDS if assets else ()), "invalid material")
         if "mesh" in box:
             from .asset_scenarios import MESH_IDS
-            require(box["mesh"] in MESH_IDS,"unreviewed scene mesh")
+            require(box["mesh"] in MESH_IDS or (box["mesh"]=="reference_surface" and identifier(box["id"]) and
+                    registered.get(box["id"])==box),"unreviewed scene mesh or footprint")
         require(identifier(box["id"]) and box["id"] not in seen, "invalid box identity")
         seen.add(box["id"])
         require(vector(box["center_m"], 3) and vector(box["size_m"], 3) and all(0 < v <= 20 for v in box["size_m"]), "invalid box geometry")

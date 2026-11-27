@@ -38,14 +38,16 @@ def import_obj(source, name, architectural=False):
     return mesh
 
 
-def texture_pbr(root, name, lock):
+def texture_pbr(root, name, lock, two_sided=False):
     files={item["file"]:item for item in lock["files"]}
     channels = {"Diffuse":ue.MaterialProperty.MP_BASE_COLOR, "nor_dx":ue.MaterialProperty.MP_NORMAL,
                 "Rough":ue.MaterialProperty.MP_ROUGHNESS}
     if name+"/Metal.jpg" in files:
         channels["Metal"] = ue.MaterialProperty.MP_METALLIC
+    if name+"/Alpha.jpg" in files:
+        channels["Alpha"] = ue.MaterialProperty.MP_OPACITY_MASK
     signature=hashlib.sha256("".join(files[name+"/"+channel+".jpg"]["sha256"] for channel in channels).encode()).hexdigest()[:12]
-    asset_name="M_"+name+"_"+signature
+    asset_name="M_"+name+"_"+signature+("_both" if two_sided else "")
     existing=ue.load_asset("/Game/SarAssets/"+asset_name)
     if existing:return existing
     textures={}
@@ -64,12 +66,17 @@ def texture_pbr(root, name, lock):
         ue.EditorAssetLibrary.save_loaded_asset(texture)
         textures[channel]=texture
     asset=ue.AssetToolsHelpers.get_asset_tools().create_asset(asset_name,"/Game/SarAssets",ue.Material,ue.MaterialFactoryNew())
+    if two_sided:
+        asset.set_editor_property("two_sided",True)
+    if "Alpha" in channels:
+        asset.set_editor_property("blend_mode",ue.BlendMode.BLEND_MASKED)
+        asset.set_editor_property("two_sided",True)
     library=ue.MaterialEditingLibrary
     for channel,prop in channels.items():
         expression=library.create_material_expression(asset,ue.MaterialExpressionTextureSample)
         expression.set_editor_property("texture",textures[channel])
         expression.set_editor_property("sampler_type",ue.MaterialSamplerType.SAMPLERTYPE_NORMAL if channel=="nor_dx" else ue.MaterialSamplerType.SAMPLERTYPE_COLOR if channel=="Diffuse" else ue.MaterialSamplerType.SAMPLERTYPE_LINEAR_COLOR)
-        library.connect_material_property(expression,"R" if channel in ("Rough","Metal") else "RGB",prop)
+        library.connect_material_property(expression,"R" if channel in ("Rough","Metal","Alpha") else "RGB",prop)
     library.recompile_material(asset);ue.EditorAssetLibrary.save_loaded_asset(asset)
     return asset
 
@@ -116,16 +123,21 @@ def sky_material(root, lock):
     return asset
 
 
-def wardrobe_materials(root):
-    lock = json.loads((root/"lock.json").read_bytes())
+def wardrobe_materials(root, override=None, files=None):
+    if override is None:
+        files = json.loads((root/"lock.json").read_bytes())["files"]
+        root = root/"source"
+        override = {s:s+"_diffuse.png" for s in ("skin","eyes","bob","shirt","trousers","footwear")}
     materials = {}
-    for slot in ("skin","eyes","bob","shirt","trousers","footwear"):
-        filename = slot+"_diffuse.png"
-        source = root/"source"/filename
+    for slot,filename in override.items():
+        source = root/filename
         sha = hashlib.sha256(source.read_bytes()).hexdigest()
-        if sha != lock["files"][filename]["sha256"]:
+        if sha != files[filename]["sha256"]:
             raise ValueError("wardrobe texture hash mismatch: "+filename)
         name = "M_HM08_v2_"+slot+"_"+sha[:12]
+        normal = files.get("shirt_normal.png") if slot=="shirt" else None
+        if normal:
+            name += "_"+normal["sha256"][:10]
         asset = ue.load_asset("/Game/SarAssets/"+name)
         if asset is None:
             tex_name = "T_HM08_"+slot+"_"+sha[:12]
@@ -142,6 +154,22 @@ def wardrobe_materials(root):
             sample = library.create_material_expression(asset,ue.MaterialExpressionTextureSample)
             sample.set_editor_property("texture",texture)
             library.connect_material_property(sample,"RGB",ue.MaterialProperty.MP_BASE_COLOR)
+            if normal:
+                normal_source = root/"shirt_normal.png"
+                if hashlib.sha256(normal_source.read_bytes()).hexdigest()!=normal["sha256"]:
+                    raise ValueError("garment normal hash mismatch")
+                normal_name = "T_ShirtNormal_"+normal["sha256"][:12]
+                task.set_editor_property("filename",str(normal_source))
+                task.set_editor_property("destination_name",normal_name)
+                ue.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
+                texture = ue.load_asset("/Game/SarAssets/"+normal_name)
+                texture.set_editor_property("srgb",False)
+                texture.set_editor_property("compression_settings",ue.TextureCompressionSettings.TC_NORMALMAP)
+                ue.EditorAssetLibrary.save_loaded_asset(texture)
+                sample = library.create_material_expression(asset,ue.MaterialExpressionTextureSample)
+                sample.set_editor_property("texture",texture)
+                sample.set_editor_property("sampler_type",ue.MaterialSamplerType.SAMPLERTYPE_NORMAL)
+                library.connect_material_property(sample,"RGB",ue.MaterialProperty.MP_NORMAL)
             if slot == "bob":
                 asset.set_editor_property("blend_mode",ue.BlendMode.BLEND_MASKED)
                 asset.set_editor_property("two_sided",True)
@@ -228,11 +256,17 @@ def place(world, name, mesh_id, center, size, material, collision=True, yaw_deg=
 
 def build(world, config):
     material={"Concrete":"cracked_concrete","Brick":"broken_brick_wall","Debris":"concrete_debris"}
+    reference = config["scene_variant"].endswith("_v3")
     place(world,"asset_ground","panel_"+config["environment"]+"_ground",[3,0,-.06],[9,8.4,.12],
-          world.asset_materials["cracked_concrete" if config["environment"]=="indoor" else "concrete_debris"])
+          world.asset_materials["cracked_concrete" if config["environment"]=="indoor" else "road_damaged_2" if reference else "concrete_debris"])
     if config["scene_variant"].endswith("_v2"):
         build_architecture(world,config["environment"])
+    if reference:
+        from .reference_scene import build as build_reference
+        build_reference(world,config["environment"])
     for box in config["boxes"]:
+        if reference and box.get("mesh") == "reference_surface":
+            continue  # native collision already exists on the placed architecture
         key=box.get("material","Concrete")
         pbr=world.asset_materials.get(material.get(key,key),world.materials.get(key))
         if "mesh" in box:

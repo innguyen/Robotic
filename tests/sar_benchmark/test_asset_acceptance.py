@@ -19,6 +19,19 @@ from test_pipeline import FixtureBackend,observation
 
 
 class AssetTests(unittest.TestCase):
+    def test_reference_surfaces_are_bound_to_the_native_layout(self):
+        for environment in ("indoor","outdoor"):
+            case = sar_scenario(environment=environment,scene_set="reference")
+            validate_scenario(case)
+            historical = sar_scenario(environment=environment,scene_set="assets")
+            self.assertEqual(case["victims"],historical["victims"])
+            self.assertNotEqual(case["family"],historical["family"])
+            self.assertTrue(any(x>4 for x,y in reachable_grid(case)))
+            proxy = next(b for b in case["boxes"] if b.get("mesh")=="reference_surface")
+            proxy["center_m"][0] += 1.
+            with self.assertRaises(ContractError):
+                validate_scenario(case)
+
     def test_site_obj_import_places_asymmetric_geometry_in_authored_robot_frame(self):
         # Native UE OBJ import reflects Y once. An off-centre triangle makes
         # a second reflection and reversed winding independently observable.

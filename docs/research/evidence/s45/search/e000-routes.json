@@ -1,0 +1,50 @@
+{
+  "environment": "indoor",
+  "epoch": 6,
+  "passed": true,
+  "routes": {
+    "records_corridor": {
+      "expected_clear": true,
+      "hits": [],
+      "waypoints_m": [
+        [
+          0,
+          0
+        ],
+        [
+          1.31,
+          -1.37
+        ],
+        [
+          3.48,
+          -1.39
+        ],
+        [
+          4.14,
+          -0.81
+        ]
+      ]
+    },
+    "through_partition": {
+      "expected_clear": false,
+      "hits": [
+        {
+          "actor": "shell_indoor_plastered_wall_02_0",
+          "distance_m": 2.2849778747558593,
+          "segment": 0
+        }
+      ],
+      "waypoints_m": [
+        [
+          0,
+          0
+        ],
+        [
+          2.93,
+          0.38
+        ]
+      ]
+    }
+  },
+  "scope": "Private 40 x 40 x 30 cm axis-aligned swept chassis, centre Z 20 cm. Static translation only."
+}

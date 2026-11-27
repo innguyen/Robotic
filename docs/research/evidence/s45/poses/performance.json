@@ -1,0 +1,31 @@
+{
+  "run": "s45-final-poses",
+  "inventory_sha256": "0a66b080a5bc3922e19655d6bd04d900f08fa92618e03f93f61eaa666cc2d8a4",
+  "host_runner_clock_matches": true,
+  "scenes": [
+    {
+      "environment": "indoor",
+      "episodes": 1,
+      "captures": 4,
+      "wall_s": 37.265,
+      "engine_callbacks": 315,
+      "callback_fps": 8.452971957600965,
+      "memory_samples": 35,
+      "max_sampled_working_set_bytes": 284573696,
+      "max_sampled_private_commit_bytes": 3729498112,
+      "observed_intervals_per_wall_s": 0.0805044948342949
+    },
+    {
+      "environment": "outdoor",
+      "episodes": 1,
+      "captures": 4,
+      "wall_s": 35.86,
+      "engine_callbacks": 291,
+      "callback_fps": 8.1148912437256,
+      "memory_samples": 34,
+      "max_sampled_working_set_bytes": 337018880,
+      "max_sampled_private_commit_bytes": 3767115776,
+      "observed_intervals_per_wall_s": 0.08365867261572783
+    }
+  ]
+}

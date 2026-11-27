@@ -89,7 +89,7 @@ def calibrate_human(backend):
             "resets":states,"scope":"native PNG/EXR depth Z, renders, scan, epochs and ideal actuation; not empirical sensor or wheel dynamics calibration"}
 
 
-def calibrate_asset_scenes(backend):
+def calibrate_asset_scenes(backend,scene_set="assets"):
     """Trusted QA viewpoints, never used as episode starts or policy evidence."""
     from .scenarios import sar_scenario
     checks,records={},[]
@@ -97,7 +97,7 @@ def calibrate_asset_scenes(backend):
         for posture in ("standing","seated","prone"):
             for severity in (0,1):
                 config=sar_scenario("clean",perception=severity,environment=environment,posture=posture,
-                                    depth_model="ideal",scene_set="assets")
+                                    depth_model="ideal",scene_set=scene_set)
                 config["start_m"]=[3.6,-2.,.2] if environment=="indoor" else [4.7,-.4,.2]
                 target=config["victims"][0]["anchor_m"]
                 config["start_yaw"]=math.atan2(target[1]-config["start_m"][1],target[0]-config["start_m"][0])
@@ -118,10 +118,10 @@ def calibrate_asset_scenes(backend):
             "scope":"3 exact RGB/depth/scan reset repeats per asset scene, pose and light condition, from privileged QA views; not detector or empirical sensor acceptance"}
 
 
-def calibrate_asset_geometry(backend):
+def calibrate_asset_geometry(backend,scene_set="assets"):
     """Negative native probe: reject a start embedded in a non-box mesh."""
     from .scenarios import sar_scenario
-    config=sar_scenario("absent",environment="outdoor",depth_model="ideal",scene_set="assets")
+    config=sar_scenario("absent",environment="outdoor",depth_model="ideal",scene_set=scene_set)
     config["boxes"]=[{"id":"overlap_probe_wall","center_m":[0.,0.,.8],"size_m":[2.,.2,1.6],
                       "material":"Brick","mesh":"fractured_wall"}]
     error=None
@@ -131,7 +131,7 @@ def calibrate_asset_geometry(backend):
         error=str(exc)
     rejected=error is not None and "reset native overlap:" in error and "overlap_probe_wall" in error
     # Restore a valid world after the deliberate failed reset.
-    restored=sar_scenario("absent",environment="outdoor",depth_model="ideal",scene_set="assets")
+    restored=sar_scenario("absent",environment="outdoor",depth_model="ideal",scene_set=scene_set)
     obs,truth=backend.reset(restored,4)
     checks={"embedded_nonbox_mesh_rejected_by_native_overlap":rejected,
             "valid_reset_after_negative_probe":not truth["safety_events"]}

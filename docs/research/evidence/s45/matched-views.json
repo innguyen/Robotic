@@ -1,0 +1,272 @@
+{
+  "indoor": {
+    "before": {
+      "episode": "e000",
+      "source_run": "s4-site-registered-poses",
+      "epoch": 18,
+      "tick": 0,
+      "capture": {
+        "optical": {
+          "T_base_optical": [
+            [
+              0,
+              0,
+              1,
+              0.25
+            ],
+            [
+              -1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              -1,
+              0,
+              0.65
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "cx": 319.5,
+          "cy": 239.5,
+          "fx": 320.0,
+          "fy": 320.0,
+          "height": 480,
+          "width": 640
+        },
+        "robot_pose": [
+          0.0,
+          -0.0,
+          -0.0
+        ],
+        "overview": {
+          "size": [
+            640,
+            480
+          ],
+          "camera_world_m": [
+            -0.3,
+            -5.8,
+            5.3
+          ],
+          "look_at_world_m": [
+            3.0,
+            0.0,
+            0.7
+          ]
+        }
+      },
+      "robot_image": "s4-site/registered-poses/run-frames/e000-robot.png",
+      "robot_sha256": "b7d19df0990aae9159c48af671e9d73f89b5c3d3d339250f10a723d10dc0d75f",
+      "overview_image": "s4-site/registered-poses/run-frames/overview.png"
+    },
+    "after": {
+      "episode": "e000",
+      "source_run": "s45-final-poses",
+      "epoch": 6,
+      "tick": 0,
+      "capture": {
+        "optical": {
+          "T_base_optical": [
+            [
+              0,
+              0,
+              1,
+              0.25
+            ],
+            [
+              -1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              -1,
+              0,
+              0.65
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "cx": 319.5,
+          "cy": 239.5,
+          "fx": 320.0,
+          "fy": 320.0,
+          "height": 480,
+          "width": 640
+        },
+        "robot_pose": [
+          0.0,
+          -0.0,
+          -0.0
+        ],
+        "overview": {
+          "size": [
+            640,
+            480
+          ],
+          "camera_world_m": [
+            -0.3,
+            -5.8,
+            5.3
+          ],
+          "look_at_world_m": [
+            3.0,
+            0.0,
+            0.7
+          ]
+        }
+      },
+      "robot_image": "s45/poses/frames/e000-robot.png",
+      "robot_sha256": "e090044a730e055b0e86a0380f46364e480868f249aea1d39b59fac7e68d5e42",
+      "overview_image": "s45/poses/frames/overview.png"
+    },
+    "matched": true
+  },
+  "outdoor": {
+    "before": {
+      "episode": "e003",
+      "source_run": "s4-site-registered-poses",
+      "epoch": 21,
+      "tick": 0,
+      "capture": {
+        "optical": {
+          "T_base_optical": [
+            [
+              0,
+              0,
+              1,
+              0.25
+            ],
+            [
+              -1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              -1,
+              0,
+              0.65
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "cx": 319.5,
+          "cy": 239.5,
+          "fx": 320.0,
+          "fy": 320.0,
+          "height": 480,
+          "width": 640
+        },
+        "robot_pose": [
+          0.0,
+          -0.0,
+          -0.0
+        ],
+        "overview": {
+          "size": [
+            640,
+            480
+          ],
+          "camera_world_m": [
+            -0.3,
+            -5.8,
+            5.3
+          ],
+          "look_at_world_m": [
+            3.0,
+            0.0,
+            0.7
+          ]
+        }
+      },
+      "robot_image": "s4-site/registered-poses/run-frames/e003-robot.png",
+      "robot_sha256": "27417b01712f71428cfd1e3295a6cb12bdad1b9a00ef4a2b8f9b8cf72465d3e6",
+      "overview_image": "s4-site/registered-poses/run-frames/e003-overview.png"
+    },
+    "after": {
+      "episode": "e001",
+      "source_run": "s45-final-poses",
+      "epoch": 7,
+      "tick": 0,
+      "capture": {
+        "optical": {
+          "T_base_optical": [
+            [
+              0,
+              0,
+              1,
+              0.25
+            ],
+            [
+              -1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              -1,
+              0,
+              0.65
+            ],
+            [
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "cx": 319.5,
+          "cy": 239.5,
+          "fx": 320.0,
+          "fy": 320.0,
+          "height": 480,
+          "width": 640
+        },
+        "robot_pose": [
+          0.0,
+          -0.0,
+          -0.0
+        ],
+        "overview": {
+          "size": [
+            640,
+            480
+          ],
+          "camera_world_m": [
+            -0.3,
+            -5.8,
+            5.3
+          ],
+          "look_at_world_m": [
+            3.0,
+            0.0,
+            0.7
+          ]
+        }
+      },
+      "robot_image": "s45/poses/frames/e001-robot.png",
+      "robot_sha256": "aa868af62275942638b3cf8d4779654345cb1b03ecc7c9972647ef8d0bd13bb6",
+      "overview_image": "s45/poses/frames/e001-overview.png"
+    },
+    "matched": true
+  }
+}

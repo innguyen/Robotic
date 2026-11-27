@@ -1,0 +1,6 @@
+{
+  "status": "FAILED",
+  "phase": "calibration",
+  "traceback": "Traceback (most recent call last):\n  File \"C:\\Projects\\Robotic\\sar_benchmark\\runner.py\", line 375, in main\n    write_json(store.path / \"calibration.json\", calibration)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: engine calibration failed; see calibration.json\n",
+  "completed_episodes": 2
+}

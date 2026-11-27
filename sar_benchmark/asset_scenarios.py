@@ -57,3 +57,21 @@ def asset_layout(environment):
 PROP_IDS=("concrete_road_barrier_02","painted_wooden_chair_02","wooden_crate_01",
           "metal_office_desk","utility_box_01","steel_frame_shelves_01")
 MESH_IDS=("fractured_wall","rubble_heap","fallen_slab","exposed_rebar")+PROP_IDS
+
+
+def reference_layout(environment):
+    """Conservative admission bounds for the static S4.5 collision surfaces."""
+    boxes,target = asset_layout(environment)
+    if environment=="outdoor":
+        boxes=[b for b in boxes if b["id"]!="loading_crate"]
+    for box in boxes:
+        if box.get("mesh")=="rubble_heap" or (environment=="indoor" and box["id"] in ("north_masonry","south_masonry")):
+            box["mesh"]="reference_surface"
+    extras = ([("filing_west",(.66,3.24,.94),(1.15,.51,1.88)),
+               ("filing_east",(5.58,2.96,.94),(1.15,.51,1.88))]
+              if environment=="indoor" else
+              [("cart",(5.56,-2.87,.70),(1.86,1.50,1.40)),("generator",(3.58,2.29,.30),(1.0,.87,.60)),
+               ("trolley",(5.81,-.60,.71),(.90,.93,1.42))])
+    boxes.extend({"id":name,"center_m":list(center),"size_m":list(size),"mesh":"reference_surface"}
+                 for name,center,size in extras)
+    return boxes,target

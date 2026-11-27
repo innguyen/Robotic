@@ -1,0 +1,15 @@
+{
+  "original_run": "experiments/ue5_s4/runs/s45-validation",
+  "inventory_sha256": "85b89f6ae550626156ce54b9ca03b615c1a62ff40d922ec22fa11e64fc9143d0",
+  "raw": {
+    "private/host.jsonl.gz": {
+      "sha256": "17bbba7c478030f7f58cfaba9346ae668628e7398a2cc379c45abe57f68a7fde",
+      "bytes": 35393575
+    },
+    "public/observations.jsonl.gz": {
+      "sha256": "fbf69c749090f753506c56c918cc5008758ef681b47e3049c156382d9085db24",
+      "bytes": 12014573
+    }
+  },
+  "retained": "Selected runtime evidence. Full raw streams and source snapshots live in original_run."
+}

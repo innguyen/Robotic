@@ -1,5 +1,9 @@
 *.sh text eol=lf
 *.bat text eol=crlf
+experiments/ue5_s4/assets/environment45/source/** -text
+experiments/ue5_s4/assets/environment45/derived/*.obj text eol=lf
+experiments/ue5_s4/assets/environment45/meshes.json text eol=lf
+docs/research/evidence/s45/** -text
 
 # Preserve certificate source hashes and byte-exact journal/replay evidence.
 "test version/benchmark/*.py" text eol=lf

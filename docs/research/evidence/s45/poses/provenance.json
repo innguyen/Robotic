@@ -1,0 +1,15 @@
+{
+  "original_run": "experiments/ue5_s4/runs/s45-final-poses",
+  "inventory_sha256": "0a66b080a5bc3922e19655d6bd04d900f08fa92618e03f93f61eaa666cc2d8a4",
+  "raw": {
+    "private/host.jsonl.gz": {
+      "sha256": "f332f6ebee16ecf1c65045ce4e0627da9817128cf507eb35290a3272ff5b434a",
+      "bytes": 35915197
+    },
+    "public/observations.jsonl.gz": {
+      "sha256": "a3af0b3a1286cc991e223461014f41468a6f8949c8ad715614ceb5b7d14f5f57",
+      "bytes": 12111062
+    }
+  },
+  "retained": "Selected runtime evidence. Full raw streams and source snapshots live in original_run."
+}

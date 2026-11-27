@@ -107,13 +107,16 @@ class HumanSceneMixin:
         self.mask_sensor.set_editor_property("primitive_render_mode",ue.SceneCapturePrimitiveRenderMode.PRM_USE_SHOW_ONLY_LIST)
         self.human_meshes, self.pose_metadata = import_humans(os.environ["SAR_ASSET_ROOT"])
         self.anatomy_meshes = None
-        if os.environ.get("SAR_SCENE_SET")=="assets":
+        if os.environ.get("SAR_SCENE_SET") in ("assets","reference"):
             self.anatomy_meshes,self.anatomy_metadata=import_humans(str(Path(os.environ["SAR_ASSET_ROOT"])/"anatomy"))
             human_root = Path(os.environ["SAR_ASSET_ROOT"])/"anatomy"
             self.dressed_meshes,_ = import_humans(human_root,"dressed")
             from experiments.ue5_s4.asset_scene import initialize, wardrobe_materials
             initialize(self,os.environ["SAR_ASSET_ROOT"])
             self.wardrobe = wardrobe_materials(human_root)
+            if os.environ["SAR_SCENE_SET"]=="reference":
+                from .reference_scene import initialize as initialize_reference
+                initialize_reference(self,os.environ["SAR_ASSET_ROOT"])
         self.materials.update({name: material(name, color, patterned=pattern) for name, color, pattern in (
             ("Concrete", (.35, .32, .28), True), ("Brick", (.4, .18, .10), True),
             ("Floor", (.22, .23, .25), True), ("Ground", (.24, .18, .11), True),
@@ -196,7 +199,10 @@ class HumanSceneMixin:
         if assets:
             if self.anatomy_meshes is None:raise RuntimeError("asset scene requires SAR_SCENE_SET=assets")
             from experiments.ue5_s4.asset_scene import build
-            build(self,config)
+            if not self.reuse_layout:
+                build(self,config)
+                if config["scene_variant"].endswith("_v3"):
+                    self.static_actors = list(self.spawned)
         else:
             self.shape("ground", [3, 0, -.05], [20, 16, .1], "Ground" if config["environment"] == "outdoor" else "Floor")
             for box in config["boxes"]:
@@ -204,24 +210,33 @@ class HumanSceneMixin:
             if config["environment"] == "indoor":
                 self.shape("ceiling_beam", [3, 0, 2.65], [6, .18, .3], "Metal")
         sky = self.shape("sky", [0, 0, 0], [300, 300, 300], "Sky", "Sphere")
-        if assets and config["scene_variant"].endswith("_v2"):
+        dressed = assets and config["scene_variant"].endswith(("_v2","_v3"))
+        reference = assets and config["scene_variant"].endswith("_v3")
+        if dressed:
             sky.static_mesh_component.set_material(0,self.asset_materials["Daylight"])
         sky.static_mesh_component.set_collision_enabled(ue.CollisionEnabled.NO_COLLISION)
         sky.static_mesh_component.set_cast_shadow(False)
         for light,intensity in zip(self.human_lights,(.5,4.) if config["perception"] else (2.5,24.)):
             light.light_component.set_editor_property("intensity",intensity)
         if self.ambient_sky:
-            site = assets and config["scene_variant"].endswith("_v2")
+            site = dressed
             self.ambient_sky.set_intensity((.07 if config["perception"] else .72) if site else 0.)
+            if reference:
+                self.ambient_sky.set_intensity(.14 if config["perception"] else 1.35)
             fill = self.human_lights[1]
             fill.set_actor_location(ue.Vector(250,0,238 if site and config["environment"]=="indoor" else 300),False,False)
+            if reference and config["environment"]=="indoor":
+                fill.set_actor_location(ue.Vector(95,-155,207),False,False)
+                fill.set_actor_rotation(ue.Rotator(pitch=-24,yaw=35),False)
+                fill.light_component.set_editor_property("intensity",12. if config["perception"] else 110.)
+            else:
+                fill.set_actor_rotation(ue.Rotator(pitch=-90,yaw=0),False)
         self.victim_actors, self.victims = {}, []
         for index, victim in enumerate(config["victims"]):
             actor = self.actors.spawn_actor_from_class(ue.StaticMeshActor, ue.Vector(victim["anchor_m"][0]*100, -victim["anchor_m"][1]*100, victim["anchor_m"][2]*100))
             actor.set_actor_label("human_" + str(index))
             component = actor.static_mesh_component
             component.set_mobility(ue.ComponentMobility.MOVABLE)
-            dressed = assets and config["scene_variant"].endswith("_v2")
             meshes = self.dressed_meshes if dressed else self.anatomy_meshes if assets else self.human_meshes
             mesh = meshes[victim["posture"]]
             component.set_static_mesh(mesh)
@@ -234,20 +249,27 @@ class HumanSceneMixin:
                     slot_name = next((name for name in self.wardrobe if name in key), None)
                     if slot_name is None:
                         raise RuntimeError("unmapped dressed body material slot: "+key)
-                    component.set_material(i,self.wardrobe[slot_name])
+                    wardrobe = self.reference_wardrobe[config["environment"]] if reference else {}
+                    component.set_material(i,wardrobe.get(slot_name,self.wardrobe[slot_name]))
                 else:
                     component.set_material(i, self.materials["Skin" if "skin" in key else "Trousers" if "trouser" in key else "Boots" if "boots" in key else "Shirt"])
             self.spawned.append(actor)
             self.victims.append({"gt_id": victim["gt_id"], "torso": actor})
             self.victim_actors[actor.get_name()] = victim["gt_id"]
 
-    def overview(self, breach=False):
+    def overview(self, view=None):
         """Trusted QA view only; restore the agent camera and never deliver it."""
         old_location,old_rotation = self.rgb_actor.get_actor_location(),self.rgb_actor.get_actor_rotation()
         x,y,_ = self.pose
         position,look_at = [-.3,-5.8,5.3],[3.,0.,.7]
-        if breach:
+        if view=="breach":
             position,look_at = [-1.1,5.9,6.4],[3.1,.0,.65]
+        elif view=="detail":
+            position,look_at = (([.60,-.22,1.63],[2.38,-1.76,2.58]) if self.config["environment"]=="indoor"
+                                else ([6.77,-.48,1.13],[9.35,1.48,2.38]))
+        elif view=="workstation":
+            position,look_at = (([4.44,-.58,1.56],[5.68,.27,.94]) if self.config["environment"]=="indoor"
+                                else ([3.19,1.73,1.25],[4.92,3.1,.66]))
         yaw = math.atan2(look_at[1]-position[1],look_at[0]-position[0])
         pitch = math.atan2(look_at[2]-position[2],math.dist(position[:2],look_at[:2]))
         try:

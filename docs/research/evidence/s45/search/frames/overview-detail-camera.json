@@ -1,0 +1,103 @@
+{
+  "camera_world_m": [
+    0.6,
+    -0.22,
+    1.63
+  ],
+  "epoch": 6,
+  "look_at_world_m": [
+    2.38,
+    -1.76,
+    2.58
+  ],
+  "robot_geometry_recipe": {
+    "half_length_m": 0.13,
+    "half_width_m": 0.17,
+    "mast_center_z_m": 0.43,
+    "mast_size_m": [
+      0.04,
+      0.04,
+      0.45
+    ],
+    "wheel_radius_m": 0.05,
+    "wheel_thickness_m": 0.06
+  },
+  "robot_pose_m": [
+    0.0,
+    -0.0,
+    -0.0
+  ],
+  "robot_visual_poses": [
+    {
+      "label": "wheel_0",
+      "position_m": [
+        -0.13,
+        -0.17,
+        0.05
+      ],
+      "world_scale": [
+        0.1,
+        0.1,
+        0.06
+      ]
+    },
+    {
+      "label": "wheel_1",
+      "position_m": [
+        -0.13,
+        0.17,
+        0.05
+      ],
+      "world_scale": [
+        0.1,
+        0.1,
+        0.06
+      ]
+    },
+    {
+      "label": "wheel_2",
+      "position_m": [
+        0.13,
+        -0.17,
+        0.05
+      ],
+      "world_scale": [
+        0.1,
+        0.1,
+        0.06
+      ]
+    },
+    {
+      "label": "wheel_3",
+      "position_m": [
+        0.13,
+        0.17,
+        0.05
+      ],
+      "world_scale": [
+        0.1,
+        0.1,
+        0.06
+      ]
+    },
+    {
+      "label": "sensor_mast",
+      "position_m": [
+        0.0,
+        -0.0,
+        0.43
+      ],
+      "world_scale": [
+        0.04000000000000001,
+        0.04000000000000001,
+        0.44999999999999996
+      ]
+    }
+  ],
+  "scope": "PRIVATE QA overview; not an agent observation or scored evidence",
+  "size": [
+    320,
+    240
+  ],
+  "tick": 0
+}

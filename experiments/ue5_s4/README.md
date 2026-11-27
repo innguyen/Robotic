@@ -1,5 +1,7 @@
 # Native UE SAR benchmark
 
+Chọn `--scene-set reference` cho hai cảnh S4.5. [Pipeline, nguồn art và lệnh dựng](assets/environment45/README.md) · [Ảnh so sánh và video](../../docs/research/s45-visual-qa.md) · [Kiểm định runtime](../../docs/research/s45-audit.md)
+
 Một backend UE 5.6.1 / D3D11 / PythonScriptPlugin. Primitive diagnostic, legacy Cesium scenes và **asset-based scenes** dùng chung runtime/evaluator. `--scene-set assets` chọn damaged building hai khoang hoặc semi-outdoor service courtyard có bố cục khác nhau, mesh/PBR CC0, structural fractures, rubble và anatomical humans. `--scene-set legacy` (mặc định để tương thích) giữ fixtures cũ. Sensors vẫn synthetic, robot swept kinematic; chưa phải photorealistic corpus hay physical JetAuto. [Audit và evidence](../../docs/research/s4-audit.md), [visual QA trước/sau](../../docs/research/s4-visual-qa.md).
 
 ## Asset scenes

@@ -172,11 +172,14 @@ def audit(path):
         file=path/name
         if not file.is_file() or digest(file)!=sha:
             checks["errors"].append(name+": scene asset manifest mismatch")
-    if manifest.get("scene_set")=="assets":
+    if manifest.get("scene_set") in ("assets","reference"):
         checks["scene_input_bytes_verified"]=0
-        for category in ("environment","anatomy"):
+        categories = ["environment","anatomy"]
+        if manifest["scene_set"]=="reference":
+            categories.append("environment45")
+        for category in categories:
             root=path/"asset-inputs"/category
-            metadata = "meshes.json" if category == "environment" else "derived/poses.json"
+            metadata = "meshes.json" if category != "anatomy" else "derived/poses.json"
             for relative in ("lock.json", metadata):
                 recorded = (category + "/" + relative).replace("/", "-")
                 actual = root / relative
